@@ -1,0 +1,25 @@
+itversity- durga gadiraju
+
+big data,spark 
+
+big data concepts
+
+nosql language ,cassandra, 
+
+spark 
+
+map reduce engine
+
+sqoop -data injestion
+
+hive -RDMS
+
+nosql 
+
+hadoop
+
+hdfs
+
+resilient
+
+rent -- 30 
