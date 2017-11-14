@@ -1,0 +1,30 @@
+azure eventhub/azure queue integration with talend esb.
+
+ampq protocol supports with talend campq component.
+
+talend esb router
+
+writing data  to azure datalakestore
+
+calling azure data lake factory
+
+Talend Interaction with Powershare; Configure talend with Hdicluster & Run Spark / HIVE jobs; POT talend jobs with Azure Data lake store (R&W) 
+
+---------
+AMC
+log servers
+
+
+job template
+powerpoint for job template
+components to install tac,git installation --- video, document
+
+
+Talend Document Best Practices
+
+how AMC works and how 
+
+Talend AMC
+
+ESB Jobs
+
