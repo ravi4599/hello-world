@@ -1,3 +1,0 @@
-Joblets
-how data m0ves from golden gate to kafka
-Talend command Line
