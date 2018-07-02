@@ -1,0 +1,74 @@
+package com.test.rccl;
+
+
+import javax.jms.*;
+import com.tibco.tibjms.TibjmsQueueConnectionFactory;
+import java.util.Enumeration;
+
+public class TibcoQueueReader {
+
+    static String      serverUrl       = "tcp://rhlsaems154.na.rccl.com:30006";
+    static String      userName        = "CEMBROStageID";
+    static String      password        = "CEMBROStageID";
+    static  String      queueName       = "Q.CEM.PUBLISHCONSUMERPROFILE.CEREBRO";
+
+
+    public static void main (String [] args) throws Exception {
+
+        javax.jms.QueueConnectionFactory factory = new com.tibco.tibjms.TibjmsQueueConnectionFactory(serverUrl);
+        javax.jms.QueueConnection connection = factory.createQueueConnection(userName, password);
+        javax.jms.QueueSession session = connection.createQueueSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
+
+
+
+        // Use createQueue() to enable receiving from dynamic queues.
+        javax.jms.Queue receiverQueue = session.createQueue(queueName);
+        javax.jms.QueueReceiver receiver = session.createReceiver(receiverQueue);
+
+        // Start  the connection
+        System.out.println("Start the connection ...");
+        connection.start();
+        System.out.println("Connection  is established ");
+
+        // Test method call  -- TETS just to verify the queue.,
+        //verifyQueue(session,receiverQueue);
+
+
+
+        // read queue messages , this loop runs infinite.
+        while (true) {
+            javax.jms.TextMessage message = (TextMessage) receiver.receive();
+            if (message == null)
+                break;
+
+            System.out.println("Received message: " + message.getText());
+        }
+
+        connection.close();
+
+    }
+
+    public static void verifyQueue(QueueSession session, Queue inq) throws Exception {
+
+        QueueBrowser qb = session.createBrowser(inq);  // incomimg queue
+        Enumeration msgs = qb.getEnumeration();
+        int counter = 0;
+
+       // System.out.println(" Total length of the enumeration: "+msgs.);
+
+        while (msgs.hasMoreElements()) {
+            System.out.println("Reading queue ....");
+            Message message = (javax.jms.Message)msgs.nextElement();
+            System.out.println(message.getJMSMessageID());
+           // System.err.println("Browsed message: number="+message.getIntProperty("msg_num"));
+            counter++;
+        }
+
+    }
+
+
+
+
+
+
+}
