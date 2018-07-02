@@ -1,0 +1,39 @@
+tmap --- left join + inner join
+
+only 2 join in tmap
+
+
+
+a left join b
+union
+b left join a
+
+
+a -> table
+
+b -> table
+
+
+
+filter in tmap
+
+
+
+
+job ---> extra ---> jvm parameters
+
+
+advanced setting
+
+
+bulk components
+
+
+repeat the question pls
+
+big data no idea
+
+is it in the context
+
+
+I guess it works
