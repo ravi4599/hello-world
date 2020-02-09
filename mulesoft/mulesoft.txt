@@ -1,0 +1,4 @@
+middle ware, similar to tibco, components are built in. community and enterprise editions are available.some components will not be available in community edition,
+high visibility, on premise, cloud.
+
+standalone, mule managment console, tomcat, jboss

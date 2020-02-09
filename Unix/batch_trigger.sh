@@ -1,0 +1,3 @@
+d=$(date -d '+1min' '+%F %T')
+echo $d
+sh /data/talend/Talend-6.4.1/tac/apache-tomcat/webapps/org.talend.administrator/WEB-INF/classes/MetaServletCaller.sh --tac-url=http://ip-10-3-100-215:8080/org.talend.administrator --json-params='{"actionName":"updateTrigger","authPass":"rvoleti","authUser":"ravi-teja.voleti@capgemini.com","id":24,"label":"jSFStreamingtoKafkaVoyages","repeatInterval":86460,"startTime":"'"$d"'"}'

@@ -1,0 +1,7 @@
+ Apache ServiceMix.
+ 
+ Data exchanges
+ 
+ Enterprise Integration Patterns
+ 
+ http://www.kai-waehner.de/blog/2012/05/04/apache-camel-tutorial-introduction/
