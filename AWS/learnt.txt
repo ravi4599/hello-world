@@ -1,3 +1,0 @@
-redshift
-
-copy - sql statement 

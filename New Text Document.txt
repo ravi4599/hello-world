@@ -1,2 +1,0 @@
-spark submit
-	AWS SNS, EC2,LAMBDA
