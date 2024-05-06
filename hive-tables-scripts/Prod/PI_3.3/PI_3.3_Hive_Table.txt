@@ -1,0 +1,39 @@
+drop table vv_db.hvtb_nbx_landing_sw_dwh_res_hotel;
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_landing_sw_dwh_res_hotel(
+  rec_hotel_id double, 
+  rec_res_id double, 
+  rec_guest_id double, 
+  request_type string, 
+  start_date timestamp, 
+  end_date timestamp, 
+  city_code string, 
+  hotel_id double, 
+  hotel_code string, 
+  hotel_name string, 
+  hotel_category string, 
+  room_seq_number double, 
+  room_category string, 
+  room_type string, 
+  occupancy double, 
+  hotel_space_type string, 
+  allocation_id double, 
+  inv_result string, 
+  is_land_component string, 
+  package_id double, 
+  package_type string, 
+  package_code string, 
+  package_name string, 
+  product_type string, 
+  pre_post_mode string, 
+  comments string, 
+  load_data_timestamp timestamp, 
+  hotel_bed_type string, 
+  rec_land_id int
+  ) 
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-prod-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_hotel"
+;

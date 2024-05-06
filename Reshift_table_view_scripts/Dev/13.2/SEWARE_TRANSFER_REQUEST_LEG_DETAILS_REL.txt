@@ -1,0 +1,38 @@
+CREATE EXTERNAL TABLE hive_schema_stg.SEWARE_TRANSFER_REQUEST_LEG_DETAILS_REL
+(
+TRANSFER_REQUEST_LEG_DETAIL_ID	integer,
+REC_START_DTTM	timestamp,
+REC_END_DTTM	timestamp,
+SRC_RES_ID	integer,
+SRC_SAIL_ID	integer,
+PICKUP_DATE	timestamp,
+PRIMARY_SAILOR_NAME	varchar(100),
+NUMBER_OF_PASSENGERS	integer,
+QTY_OF_LUGGAGE	integer,
+PICKUP_TIME	timestamp,
+PICKUP_POI	integer,
+PICKUP_LOCATION	varchar(100),
+PICKUP_ADDRESS	varchar(500),
+PICKUP_CITY	varchar(50),
+PICKUP_ZIP	varchar(20),
+DROPOFF_POI	integer,
+DROPOFF_LOCATION	varchar(100),
+DROPOFF_ADDRESS	varchar(500),
+DROPOFF_CITY	varchar(50),
+DROPOFF_ZIP	varchar(20),
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash varchar(256),
+md5_hash varchar(256))
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/hvtb_mart_sw_transreq_legdetails_rel'
+  
+  create or replace view seaware.SEWARE_TRANSFER_REQUEST_LEG_DETAILS_REL
+as select * from  hive_schema_stg.SEWARE_TRANSFER_REQUEST_LEG_DETAILS_REL
+with no schema binding;

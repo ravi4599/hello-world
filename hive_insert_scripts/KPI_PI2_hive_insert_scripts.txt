@@ -1,0 +1,100 @@
+INSERT INTO vv_db.hvtb_nbx_core_sw_agency_dim (agency_id, rec_start_dttm, rec_end_dttm, src_agency_id, agency_name, agency_code, agency_market, agency_class, agency_sales_region, agency_sales_district, agency_country, agency_state, agency_zip, md5_dim, etl_ld_status) VALUES(-1, '1900-01-01 00:00:00','9999-12-31 00:00:00',-1, 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA');
+
+INSERT INTO vv_db.hvtb_nbx_core_sw_sail_dim (sail_id, rec_start_dttm, rec_end_dttm, src_sail_id, sail_days, sail_route_code, sail_port_from, sail_port_to, sail_geog_area_code, dep_ref_id, arr_ref_id, sail_date_from, sail_date_to, md5_dim, etl_ld_status) VALUES(-1, '1900-01-01 00:00:00', '9999-12-31 00:00:00', -1, -1, 'NA', 'NA', 'NA', 'NA', -1, -1, 'NA', 'NA', 'NA', 'NA');
+
+INSERT INTO vv_db.hvtb_nbx_core_sw_cabin_master
+(cabin_id, rec_start_dttm, rec_end_dttm, cabin_number, ship, deck_number, cabin_name, cabin_rank, cabin_category, cabin_category_rank, cabin_category_generic, cabin_category_generic_rank, cabin_capacity, etl_ld_status, etl_ld_dt, etl_upd_dt, md5)
+VALUES(-1, '1900-01-01 00:00:00', '9999-12-31 00:00:00', 'NA', 'NA', -1, 'NA', -1, 'NA', -1, 'NA', -1, -1, 'NA', 'NA', 'NA', 'NA');
+
+
+INSERT INTO vv_db.hvtb_nbx_core_sw_guest_dim
+(
+  guest_id,
+  rec_start_dttm,
+  rec_end_dttm,
+  src_guest_id,
+  guest_seqn,
+  guest_type,
+  client_id,
+  age,
+  age_category,
+  gender,
+  city,
+  country,
+  zip,
+  state,
+  citizenship,
+  citizenship_name,
+  residency,
+  last_name,
+  first_name,
+  middle_name,
+  sex,
+  email,
+  phone_intl_code,
+  phone_number  
+)
+VALUES
+(
+  -1,
+  '1900-10-31 00:00:00',
+  '9999-12-31 00:00:00',
+  -1,
+  null,
+  'NA',
+  null,
+  null,
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  null,
+  'NA'
+);
+
+
+
+INSERT INTO vv_db.hvtb_nbx_core_sw_package_dim (package_id, rec_start_dttm, rec_end_dttm, src_package_id, package_class, package_type, package_code, package_name, etl_ld_status, md5_dim,src_sail_id) VALUES(-1, '1900-01-01 00:00:00','9999-12-31 00:00:00', -1, 'NA', 'NA', 'NA', 'NA', 'NC', 'NA',-1);
+
+ 
+ INSERT INTO vv_db.hvtb_nbx_core_sw_reservation_dim
+(
+  res_id,
+  rec_start_dttm,
+  rec_end_dttm,
+  src_res_id,
+  res_init_date,
+  res_guest_count,
+  res_mode,
+  cancellation_date,
+  res_status,
+  operator,
+  res_type
+)
+VALUES
+(
+  -1,
+  '1900-10-31 00:00:00',
+  '9999-12-31 00:00:00',
+  -1,
+  '1900-10-31 00:00:00',
+  -1,
+  'NA',
+  '1900-10-31 00:00:00',
+  'NA',
+  'NA',
+  'NA'
+);
+INSERT INTO vv_db.hvtb_nbx_core_crm_agent_master_dim
+(agent_id, rec_start_dttm, rec_end_dttm, id, seaware_agent_id__c, name, lastname, firstname, mailingcity, mailingcountry, mailingpostalcode, mailingstate, mailingstreet, othercity, othercountry, otherphone, otherpostalcode, otherstate, otherstreet, seaware_agencyid__c, createddate, agent_status__c, agent_type_c, preferred_contact_phone_number__c, email, ownerid, role__c, fmdc_approver__c, seacity_access_key__c, md5_dim, etl_ld_status)
+VALUES(-1, '1900-01-01 00:00:00', '9999-12-31 00:00:00', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA', 'NA');

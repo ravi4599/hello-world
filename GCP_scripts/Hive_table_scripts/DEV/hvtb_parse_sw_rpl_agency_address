@@ -1,0 +1,34 @@
+select count(*) from vv_db.hvtb_parse_sw_rpl_agency_address;
+
+CREATE EXTERNAL TABLE `vv_db.hvtb_parse_sw_rpl_agency_address`(
+  `agency_id` int, 
+  `seq_number` int, 
+  `address_type` string, 
+  `address_line1` string, 
+  `address_line2` string, 
+  `address_city` string, 
+  `state_code` string, 
+  `zip` string, 
+  `country_code` string, 
+  `is_address_mailing` string, 
+  `is_address_shipping` string, 
+  `comments` string, 
+  `agency_addr_id` int, 
+  `address_line3` string, 
+  `address_line4` string, 
+  `address_essential` string, 
+  `op` string, 
+  `ts_ms` timestamp, 
+  `shipcode` string, 
+  `voyageid` string, 
+  `batchtime` timestamp)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+ 'gs://vv-dev-nbx-cluster/data/parse/seaware/hvtb_parse_sw_rpl_agency_address';

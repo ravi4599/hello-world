@@ -1,0 +1,7 @@
+CREATE EXTERNAL TABLE vv_db_mig.hvtb_nbx_core_sw_transaction_evt(trans_id bigint, src_trans_id int, res_id int, trans_status string, form_of_trans string, trans_type string, entity_type string, entity_id int, trans_time_stamp timestamp, currency_trans string, amount_full_trans double, rate_transprice double, currency_price string, amount_full_price double, rate_pricebase double, operator string, coupon_id int, is_dest_entity string, etl_ld_status string,etl_load_dt timestamp,etl_upd_dt timestamp,primaryhash string,md5_hash string)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (  'serialization.format' = '1')
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-staging-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_transaction_evt'

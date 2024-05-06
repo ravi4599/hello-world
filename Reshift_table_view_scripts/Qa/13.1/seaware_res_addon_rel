@@ -1,0 +1,25 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_res_addon_rel(
+res_addon_id int,
+res_id int,
+guest_id int,
+addon_id bigint,
+quantity int,
+rec_start_dttm timestamp,
+rec_end_dttm timestamp,
+effective_date timestamp,
+is_default char(1),
+is_auto char(1),
+promotion_id bigint,
+comments varchar(255),
+addon_status varchar(15),
+notes varchar(2000),
+paid_date timestamp,
+etl_ld_status varchar(30),
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash varchar(50),
+md5_hash varchar(50)
+)
+STORED AS PARQUET LOCATION 's3://vv-qa-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_res_addon_rel';
+
+CREATE OR REPLACE VIEW seaware.seaware_res_addon_rel AS SELECT * FROM hive_schema_stg.seaware_res_addon_rel WITH NO SCHEMA BINDING;

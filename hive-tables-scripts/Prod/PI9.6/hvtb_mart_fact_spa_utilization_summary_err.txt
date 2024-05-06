@@ -1,0 +1,10 @@
+ spark.sql(s"""CREATE EXTERNAL TABLE `shipdw`.`hvtb_mart_fact_spa_utilization_summary_err`(`voyage_id` string, `ship_code` string, `voyage_skey` bigint, `service_type_skey` bigint, `outlet_skey` bigint, `venue_skey` bigint, `utilization_date_skey` bigint, `utilization_date` date, `total_available_hours` int, `total_booked_hours` int, `count_reservations` int, `count_prevoyage_bookings` int, `total_revenue_amount` double, `total_target_amount` double, `load_dt` timestamp, `upd_dt` timestamp, `primaryhash` string, `md5_hash` string,`part_dt` date)
+         
+            ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+            WITH SERDEPROPERTIES (
+              'serialization.format' = '1'
+            )
+            STORED AS
+              INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+              OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+            LOCATION 's3://vv-prod-emr-cluster/data/mart/hvtb_mart_fact_spa_utilization_summary_err'""")

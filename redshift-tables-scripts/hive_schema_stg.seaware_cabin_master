@@ -1,0 +1,29 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_cabin_master(
+  cabin_id int, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  cabin_number varchar, 
+  ship varchar, 
+  deck_number int, 
+  cabin_name varchar, 
+  cabin_rank int, 
+  cabin_category varchar, 
+  CABIN_CATEGORY_DESC	varchar,
+  cabin_category_rank int, 
+  cabin_category_generic varchar, 
+  cabin_category_generic_rank int, 
+  cabin_capacity int, 
+  etl_ld_status varchar, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp, 
+  md5 varchar
+  )
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_cabin_master'
+;

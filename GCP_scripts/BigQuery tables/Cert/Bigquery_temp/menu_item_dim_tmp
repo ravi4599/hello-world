@@ -1,0 +1,19 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.menu_item_dim_tmp(menu_item_skey bigint                           
+, voyage_id string                                                                            
+, menu_item_id string                                                                         
+, menu_item_sku_number string                                                                 
+, menu_item_name string                                                                       
+, menu_item_small_description string                                                          
+, menu_item_long_description string                                                          
+, menu_item_type_name string                                                                  
+, menu_item_type_description string                                                          
+, menu_item_plu_number string                                                                  
+, load_dt timestamp                                                                                 
+, upd_dt timestamp                                                                                  
+, primaryhash string                                                                         
+, md5_hash string                                                                            
+)                              
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_menu_item/*']
+);

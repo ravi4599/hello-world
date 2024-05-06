@@ -1,0 +1,33 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_sw_rpl_res_commission_cancel(
+  `res_commiss_detail_id` int, 
+  `res_package_id` int, 
+  `guest_id` int, 
+  `res_id` int, 
+  `commiss_source` string, 
+  `commiss_code` string, 
+  `percent` int,
+  `amount` double,
+  `invoice_item_type` string,
+  `commiss_fare` int,
+  `is_manual_adjustment` string,
+  `res_product_id` int,
+  `invoice_hdr_id` int,
+  `client_id` int,  
+  `guest_seqn` int,  
+  `amount_in_hdr_curr` int,  
+  `agency_id` int,  
+  `payout_date` timestamp, 
+  `gl_prototype_id` int, 
+  `load_data_timestamp` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n', 
+  'serialization.format'='\u0001') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_res_commission_cancel'

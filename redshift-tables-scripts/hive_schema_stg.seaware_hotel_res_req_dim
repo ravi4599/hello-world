@@ -1,0 +1,33 @@
+create external table hive_schema_stg.seaware_hotel_res_req_dim(
+hotel_res_req_id	int,
+src_hotel_res_req_id	int,
+src_res_id	int,
+src_guest_id	int,
+request_type	varchar,
+start_date	timestamp,
+end_date	timestamp,
+city_code	varchar,
+hotel_id	int,
+hotel_category	varchar,
+room_seq_number	int,
+room_category	varchar,
+room_type	varchar,
+occupancy	int,
+hotel_space_type	varchar,
+allocation_id	int,
+inv_result	varchar,
+is_land_component	varchar,
+hotel_bed_type	varchar,
+effective_date	timestamp,
+etl_ld_status varchar, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp, 
+  md5_dim varchar)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_hotel_res_req_dim'

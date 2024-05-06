@@ -1,0 +1,1 @@
+spark.sql("create view `shipdw`.`hvtb_parse_folio_vperson_account_detail` as select * from  `shipdw`.`hvtb_lnd_folio_vperson_account_detail`")

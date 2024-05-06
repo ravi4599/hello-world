@@ -1,0 +1,18 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_promotion_lkp
+(
+  promotion_id int, 
+  promo_code Varchar(15),
+  promo_group Varchar(30),
+  promo_name Varchar(40),
+  etl_ld_status Varchar(15),
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_promotion_lkp'
+;

@@ -1,0 +1,942 @@
+{
+  "interpreterSettings": {
+    "2ANGGHHMQ": {
+      "id": "2ANGGHHMQ",
+      "name": "spark",
+      "group": "spark",
+      "properties": {
+        "zeppelin.spark.printREPLOutput": "true",
+        "spark.yarn.jar": "",
+        "master": "yarn-client",
+        "zeppelin.spark.maxResult": "1000",
+        "zeppelin.dep.localrepo": "/usr/lib/zeppelin/local-repo",
+        "spark.app.name": "Zeppelin",
+        "zeppelin.spark.importImplicit": "true",
+        "zeppelin.spark.useHiveContext": "true",
+        "zeppelin.interpreter.localRepo": "/usr/lib/zeppelin/local-repo/2ANGGHHMQ",
+        "args": "",
+        "spark.home": "/usr/lib/spark",
+        "zeppelin.spark.concurrentSQL": "false",
+        "zeppelin.pyspark.python": "/home/hadoop/anaconda/bin/python",
+        "zeppelin.interpreter.output.limit": "102400"
+      },
+      "status": "READY",
+      "interpreterGroup": [
+        {
+          "name": "spark",
+          "class": "org.apache.zeppelin.spark.SparkInterpreter",
+          "defaultInterpreter": false,
+          "editor": {
+            "language": "scala",
+            "editOnDblClick": false
+          }
+        },
+        {
+          "name": "pyspark",
+          "class": "org.apache.zeppelin.spark.PySparkInterpreter",
+          "defaultInterpreter": false,
+          "editor": {
+            "language": "python",
+            "editOnDblClick": false
+          }
+        },
+        {
+          "name": "sql",
+          "class": "org.apache.zeppelin.spark.SparkSqlInterpreter",
+          "defaultInterpreter": false,
+          "editor": {
+            "language": "sql",
+            "editOnDblClick": false
+          }
+        }
+      ],
+      "dependencies": [],
+      "option": {
+        "remote": true,
+        "port": -1,
+        "perNote": "isolated",
+        "perUser": "isolated",
+        "isExistingProcess": false,
+        "setPermission": false,
+        "users": [],
+        "isUserImpersonate": false
+      }
+    },
+    "2AM1YV5CU": {
+      "id": "2AM1YV5CU",
+      "name": "angular",
+      "group": "angular",
+      "properties": {},
+      "status": "READY",
+      "interpreterGroup": [
+        {
+          "name": "angular",
+          "class": "org.apache.zeppelin.angular.AngularInterpreter",
+          "defaultInterpreter": false,
+          "editor": {
+            "editOnDblClick": true
+          }
+        }
+      ],
+      "dependencies": [],
+      "option": {
+        "remote": true,
+        "port": -1,
+        "perNote": "shared",
+        "perUser": "shared",
+        "isExistingProcess": false,
+        "setPermission": false,
+        "isUserImpersonate": false
+      }
+    },
+    "2BRWU4WXC": {
+      "id": "2BRWU4WXC",
+      "name": "python",
+      "group": "python",
+      "properties": {
+        "zeppelin.interpreter.output.limit": "102400",
+        "zeppelin.python": "/home/hadoop/anaconda/bin/python",
+        "zeppelin.python.maxResult": "1000",
+        "zeppelin.interpreter.localRepo": "/usr/lib/zeppelin/local-repo/2BRWU4WXC"
+      },
+      "status": "READY",
+      "interpreterGroup": [
+        {
+          "name": "python",
+          "class": "org.apache.zeppelin.python.PythonInterpreter",
+          "defaultInterpreter": false,
+          "editor": {
+            "language": "python",
+            "editOnDblClick": false
+          }
+        }
+      ],
+      "dependencies": [],
+      "option": {
+        "remote": true,
+        "port": -1,
+        "perNote": "shared",
+        "perUser": "isolated",
+        "isExistingProcess": false,
+        "setPermission": false,
+        "users": [],
+        "isUserImpersonate": false
+      }
+    },
+    "2AJXGMUUJ": {
+      "id": "2AJXGMUUJ",
+      "name": "md",
+      "group": "md",
+      "properties": {
+        "zeppelin.interpreter.output.limit": "102400",
+        "zeppelin.interpreter.localRepo": "/usr/lib/zeppelin/local-repo/2AJXGMUUJ"
+      },
+      "status": "READY",
+      "interpreterGroup": [
+        {
+          "name": "md",
+          "class": "org.apache.zeppelin.markdown.Markdown",
+          "defaultInterpreter": false,
+          "editor": {
+            "language": "markdown",
+            "editOnDblClick": true
+          }
+        }
+      ],
+      "dependencies": [],
+      "option": {
+        "remote": true,
+        "port": -1,
+        "perNote": "shared",
+        "perUser": "shared",
+        "isExistingProcess": false,
+        "setPermission": false,
+        "isUserImpersonate": false
+      }
+    },
+    "2AKK3QQXU": {
+      "id": "2AKK3QQXU",
+      "name": "sh",
+      "group": "sh",
+      "properties": {
+        "zeppelin.interpreter.output.limit": "102400",
+        "shell.command.timeout.millisecs": "60000",
+        "zeppelin.interpreter.localRepo": "/usr/lib/zeppelin/local-repo/2AKK3QQXU"
+      },
+      "status": "READY",
+      "interpreterGroup": [
+        {
+          "name": "sh",
+          "class": "org.apache.zeppelin.shell.ShellInterpreter",
+          "defaultInterpreter": false,
+          "editor": {
+            "language": "sh",
+            "editOnDblClick": false
+          }
+        }
+      ],
+      "dependencies": [],
+      "option": {
+        "remote": true,
+        "port": -1,
+        "perNote": "shared",
+        "perUser": "shared",
+        "isExistingProcess": false,
+        "setPermission": false,
+        "isUserImpersonate": false
+      }
+    }
+  },
+  "interpreterBindings": {
+    "2CP7H7KGM": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPNCPFN3": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CP3K417A": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPNVDFM9": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPGR2HGM": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CRADHRBD": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQBUZCVQ": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQZMNTHC": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQNGHZD2": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CR23ZJPD": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPXC632N": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CR1Q57SR": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQYV9E6S": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CN1G5GJQ": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CN5J4S64": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CKEB54DK": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQT83Z9N": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CMR7VMNX": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CMG6WES9": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CK2KKBTB": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CNBWMD18": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQ969YK7": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CNUXZSZW": [],
+    "2CRCPBBSA": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CR3S3BXH": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CNWYKCRJ": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQ5GKM1A": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CP3S5S8R": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CMS4U8GE": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CSHHVR25": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPHRW9T2": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CP83E5PY": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CR4GJYU4": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQM4U2CY": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CP49JAVP": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CN6C3TK7": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQGS561R": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPPPTFJD": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CNJY8DVB": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CSA18KH7": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CM8MR6B7": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CSDMS27S": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPM3Q2FD": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CNXAZXEG": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPF5QCQP": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CN4Y6C9Z": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CRT743XV": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPKAYKET": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CR53KMYE": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CR51GT9E": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CN6GRJJS": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPUQZADB": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CRQGYAKJ": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CP9AR8PR": [
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CNEWMJQM": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CKFCVH57": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CNJ4342V": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQ36C2C7": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQGWSC9W": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQP94QKH": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CR3FYASU": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CN5GEYU9": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CKMB3V7X": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQXMKGQB": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQ99GNUN": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CP2H1R7Q": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQ23JNUW": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CRZRHEUJ": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQ5YNFTH": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CNHF1C6Y": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPHZTMKG": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQ6X3G8E": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQDZ88FQ": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CNPR8DW5": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQK156E1": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CRTWBYE5": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CN4K6DH3": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CP4PHJ2B": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CMQGEPGJ": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPZMD871": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQD899GB": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPHACHMM": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CNHN3FSA": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQY1FXMC": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQF6U9HU": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQWXK6RT": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CP5JR2XX": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CN9BBD6E": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CNX59KFZ": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPM1NJCW": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQM5HM8D": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CNRZ9GJ7": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPUYK3H9": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CNERB5AG": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPS29YD2": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPUFSXN8": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CN41WYBC": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQYTGWM2": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CR7WQA5G": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CPE81AW3": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CQSB3CQM": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2CRUQXP2E": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ],
+    "2A94M5J1Z": [
+      "2ANGGHHMQ",
+      "2AJXGMUUJ",
+      "2AM1YV5CU",
+      "2AKK3QQXU",
+      "2BRWU4WXC"
+    ]
+  },
+  "interpreterRepositories": [
+    {
+      "id": "central",
+      "type": "default",
+      "url": "http://repo1.maven.org/maven2/",
+      "releasePolicy": {
+        "enabled": true,
+        "updatePolicy": "daily",
+        "checksumPolicy": "warn"
+      },
+      "snapshotPolicy": {
+        "enabled": true,
+        "updatePolicy": "daily",
+        "checksumPolicy": "warn"
+      },
+      "mirroredRepositories": [],
+      "repositoryManager": false
+    },
+    {
+      "id": "local",
+      "type": "default",
+      "url": "file:///var/lib/zeppelin/.m2/repository",
+      "releasePolicy": {
+        "enabled": true,
+        "updatePolicy": "daily",
+        "checksumPolicy": "warn"
+      },
+      "snapshotPolicy": {
+        "enabled": true,
+        "updatePolicy": "daily",
+        "checksumPolicy": "warn"
+      },
+      "mirroredRepositories": [],
+      "repositoryManager": false
+    }
+  ]
+}
+

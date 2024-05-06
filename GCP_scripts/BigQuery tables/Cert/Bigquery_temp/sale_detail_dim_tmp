@@ -1,0 +1,5 @@
+CREATE EXTERNAL TABLE hive_schema_stg.sale_detail_dim_tmp(sale_detail_skey BIGINT, voyage_id STRING, sale_id BIGINT, sale_detail_src STRING, sale_operator_num INT, receipt_number BIGINT, check_status STRING, sales_voyagenumber STRING, location STRING, line_type STRING, line_Status STRING, line_description STRING, src_deleted_flag BOOLEAN, sale_group_description STRING, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_sale_detail/*']
+);    

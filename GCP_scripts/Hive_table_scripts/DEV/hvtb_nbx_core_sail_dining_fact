@@ -1,0 +1,35 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_sail_dining_fact`(
+  `src_facility_id` int, 
+  `snapshot_date` date, 
+  `dining_kind` string, 
+  `dining_availability` string, 
+  `wtl_abs` int, 
+  `wtl_wgt` int, 
+  `gty_abs` int, 
+  `gty_wgt` int, 
+  `ok_abs` int, 
+  `ok_wgt` int, 
+  `total_tables` int, 
+  `avlbase_tables` int, 
+  `avlparty_tables` int, 
+  `usagetotals_abs_tables` int, 
+  `usagetotals_wgt_tables` int, 
+  `total_seats` int, 
+  `avlbase_seats` int, 
+  `avlparty_seats` int, 
+  `usagetotals_abs_seats` int, 
+  `usagetotals_wgt_seats` int, 
+  `sail_id` int, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp, 
+  `dining_datetime_slot` timestamp)
+PARTITIONED BY ( 
+  `part_dt` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_sail_dining_fact';

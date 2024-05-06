@@ -1,0 +1,10 @@
+sudo find /var/log/hadoop/hdfs/ -type f -name 'gc.log-*' -mtime +15 -exec rm -f {} \;
+sudo find /var/log/hadoop/hdfs/audit/solr/spool/archive/ -type f -name 'spool_hdfs*log' -mtime +2 -exec rm -f {} \;
+sudo find /var/log/hadoop/hdfs/audit/hdfs/spool/archive/ -type f -name 'spool_hdfs*log' -mtime +2 -exec rm -f {} \;
+sudo find /var/log/hadoop/hdfs/audit/solr/spool/ -type f -name 'spool_hdfs*.log' -mtime +2 -exec rm -f {} \;
+sudo find /var/log/hbase/audit/solr/spool/archive/ -type f -name 'spool_hbaseMaster_*.log' -mtime +2 -exec rm -f {} \;
+sudo find /var/log/hive/ -type f -name 'hiveserver2-gc-*.log.0.current' -mtime +90 -exec rm -f {} \;
+sudo find /var/log/hive/ -type f -name 'hiveserver2.log.*.gz' -mtime +90 -exec rm -f {} \;
+sudo find /var/log/hive/ -type f -name 'hiveserverinteractive-gc-*.log.0.current' -mtime +90 -exec rm -f {} \;
+sudo find /var/log/hive/ -type f -name 'hiveserver2Interactive.log.*.gz' -mtime +90 -exec rm -f {} \;
+sudo find /var/log/hive/ -type f -name 'hivemetastore.log.*.gz' -mtime +90 -exec rm -f {} \;

@@ -1,0 +1,35 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_sw_rpl_am_code`(
+	amenity_code string,
+	record_id int,
+	am_category string,
+	amenity_type string,
+	provider_code string,
+	amenity_name string,
+	comments string,
+	use_tax string,
+	subcode_mandatory string,
+	mandatory_before_dlv string,
+	code_active string,
+	addon_restricted string,
+	addon_order_basis string,
+	addon_inv_item_type string,
+	include_in_order string,
+	initial_status string,
+	linked_club_type string,
+	linked_club_level string,
+	coupon_class string,
+	manual_price string,
+	use_as_client_prefer string,
+    load_data_timestamp timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n', 
+  'serialization.format'='\u0001') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_am_code'  

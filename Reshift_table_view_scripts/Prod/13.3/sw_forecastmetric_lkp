@@ -1,0 +1,13 @@
+CREATE EXTERNAL TABLE hive_schema_stg.sw_forecastmetric_lkp(
+forecast_metric_id bigint,
+forecast_metric_desc varchar(30),
+etl_ld_status varchar(20),
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash varchar(50), 
+md5_hash varchar(50))
+STORED AS PARQUET
+LOCATION
+'s3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_forecastmetric_lkp';
+
+CREATE OR REPLACE VIEW shipdw.sw_forecastmetric_lkp AS SELECT * FROM hive_schema_stg.sw_forecastmetric_lkp with no schema binding;

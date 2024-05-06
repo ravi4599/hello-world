@@ -1,0 +1,5 @@
+CREATE EXTERNAL TABLE Hive_schema_stg.person_loyalty_dim(voyage_id varchar(100),person_loyalty_skey int8,person_loyalty_id varchar(100),person_id varchar(100),person_card_type varchar(100),person_card_status varchar(100),person_card_level int4,person_card_color int4,person_card_color_value varchar(100),load_dt timestamp,upd_dt timestamp,primaryhash varchar(100),md5_hash varchar(100))
+STORED AS PARQUET
+LOCATION 's3://vv-qa-emr-cluster/data/mart/hvtb_mart_dim_personloyalty'
+
+CREATE or replace VIEW shipdw.person_loyalty_dim  AS SELECT * FROM hive_schema_stg.person_loyalty_dim with no schema binding;

@@ -1,0 +1,40 @@
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_shorex_pkg_lkp(
+shorex_pkg_id	int, 
+src_shorex_pkg_id	int, 
+package_class	string, 
+package_type	string, 
+package_code	string, 
+package_name	string, 
+location_from	string, 
+location_to	string, 
+geog_area_code	string, 
+etl_ld_status string, 
+etl_ld_dt timestamp, 
+etl_upd_dt timestamp
+)
+stored as parquet
+location "s3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_shorex_pkg_lkp"
+
+
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_shorex_dim
+(
+res_id	int, 
+guest_id	int, 
+shorex_pkg_id	int, 
+shorex_mode	string, 
+shorex_timing	string, 
+vacation_date	timestamp,
+effective_date	timestamp,
+shorex_start_date	timestamp,
+shorex_end_date	timestamp,
+rec_start_dttm	timestamp,
+rec_end_dttm	timestamp,
+md5_dim string, 
+etl_ld_status string, 
+etl_ld_dt timestamp, 
+etl_upd_dt timestamp
+)
+stored as parquet
+location "s3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_shorex_dim" ;

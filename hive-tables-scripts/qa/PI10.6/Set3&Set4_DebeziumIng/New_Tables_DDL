@@ -1,0 +1,380 @@
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_lnd_mxp_plu_categories`(`batchinstanceid` string, `voyageid` string, `batchtime` timestamp, `message` string, `shipcode` string)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_plu_categories'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_plu_categories(ROW_COUNTER bigint,PLU_Categ_ID bigint,PLU_Categ_Nr int,PLU_Categ_Desc string,Sortkey int,Sales_Group_ID bigint,Active boolean,GUID string,Rec_Created timestamp,Rec_Changed timestamp,Rec_Deleted boolean,Created_By_ID bigint,Changed_By_ID bigint,CREATED_AT_ID int,CHANGED string,LAST_CHANGE_LOG_ID bigint,op string,ts_ms timestamp,shipcode string,voyageid string,batchtime timestamp)
+PARTITIONED BY (part_date date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_plu_categories'
+
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_lnd_mxp_plu_items`(`batchinstanceid` string, `voyageid` string, `batchtime` timestamp, `message` string, `shipcode` string)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_plu_items'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_plu_items(ROW_COUNTER bigint,PLU_ID bigint,PLU_Type string,PLU_Group_ID bigint,PLU_Nr bigint,PLU_Desc string,PLU_Short_Desc string,Sales_Tax_Group_ID bigint,Gratuity_PLU_ID bigint,Sortkey int,Active boolean,Open_Price boolean,No_Discount boolean,Age_Restricted boolean,Scan_Code string,Foreign_Code string,Interface_Category_Code string,Remote_Print_Category_ID bigint,GUID string,Rec_Created timestamp,Rec_Changed timestamp,Rec_Deleted boolean,Created_By_ID bigint,Changed_By_ID bigint,Gratuity_Type string,Gratuity_Value decimal(15,3),Item_Description string,Discount_Group_ID bigint,Commission_ID bigint,CREATED_AT_ID int,CHANGED string,LAST_CHANGE_LOG_ID bigint,ITEM_NAME_ENGLISH string,ITEM_NAME_SPANISH string,ITEM_NAME_FRENCH string,ITEM_NAME_GERMAN string,ITEM_NAME_ITALIAN string,ITEM_NAME_PORTUGUESE string,ITEM_NAME_GREEK string,ITEM_NAME_DUTCH string,ITEM_NAME_RUSSIAN string,ITEM_NAME_JAPANESE string,ITEM_NAME_CHINESE string,ITEM_NAME_OTHER1 string,ITEM_NAME_OTHER2 string,ITEM_NAME_OTHER3 string,AGE_RESTRICTION_LEVEL int,op string,ts_ms timestamp,shipcode string,voyageid string,batchtime timestamp)
+PARTITIONED BY (part_date date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_plu_items'
+
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_lnd_mxp_calender_dates`(`batchinstanceid` string, `voyageid` string, `batchtime` timestamp, `message` string, `shipcode` string)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_calender_dates'
+
+
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_parse_mxp_calender_dates`(`row_counter` int, `calender_day_id` int, `calender_date` timestamp, `is_business_day` boolean, `created_by_id` int, `created_at_id` int, `created` timestamp, `last_changed` timestamp, `changed` string, `guid` string, `last_change_log_id` bigint, `op` string, `ts_ms` timestamp, `shipcode` string, `voyageid` string, `batchtime` timestamp)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_calender_dates'
+
+
+
+Create external table shipdw.hvtb_lnd_mxp_guest_order_detail( batchinstanceid String,voyageid String,batchtime Timestamp, message String,shipcode string) partitioned by (part_date Date) STORED AS parquet LOCATION 's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_guest_order_detail';
+
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_guest_order_detail(ROW_COUNTER int,GUEST_ORDER_DETAIL_ID bigint,GUEST_ORDER_ID bigint,RECIPE_DISH_ID int,RECIPE_DISH_SERVING_STYLE_ID int,CREATED_AT_ID int,CREATED_BY_ID int,CREATED timestamp,LAST_CHANGED timestamp,CHANGED string,GUID string,COMMENT string,ORDER_QTY decimal(18,2),COURSE_ID int,STATUS_ID int,REC_DELETED boolean,GUEST_ORDER_TICKET_ID bigint,SEQUENCE_NO int,GUEST_ORDER_PLACED timestamp,GUEST_ORDER_COMPLETED timestamp,SIDE_DISH_COMMENT string,OVERVIEW_GUEST_ORDER_TICKET_ID bigint,MEALS_BY_DATE_DISH_ID bigint,LAST_CHANGE_LOG_ID bigint,CREATED_BY_PERSON_ID int,op string,ts_ms timestamp,shipcode string,  voyageid string, batchtime timestamp)PARTITIONED BY ( part_date date)STORED AS PARQUET LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_guest_order_detail'
+
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_mxp_menu_dishes( batchinstanceid String,voyageid String,batchtime Timestamp, message String,shipcode string) partitioned by (part_date Date) STORED AS parquet LOCATION 's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_menu_dishes';
+
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_menu_dishes(ROW_COUNTER int,MENU_DISH_ID int,MENU_ID int,RECIPE_DISH_ID int,REC_DELETED boolean,COURSE_ID int,MENU_DISH_CONTRACT_PRICE decimal(18,4),MENU_DISH_AVG_PRICE decimal(18,4),MENU_DISH_BUDGET_PRICE decimal(18,4),CREATED_AT_ID int,CREATED_BY_ID int,CREATED timestamp,LAST_CHANGED timestamp,CHANGED string,GUID string,SEQUENCE decimal(18,2),SPECIAL_DISH_CATEGORY_ID int,MENU_DISH_SALES_PRICE decimal(18,2),MENU_DISPLAY_NAME_ID int,MENU_DISH_ADDITIONAL_TEXT string,SALES_MIX_GROUP_ID int,ANALYSIS_HISTORICAL_AVG_COUNT int,ANALYSIS_PLANNED_COUNT int,ANALYSIS_SALES_MIX_PERCENTAGE decimal(18,2),ANALYSIS_COST_SELECTED_CITY decimal(18,2),ANALYSIS_COST_AVERAGE decimal(18,2),ANALYSIS_COST_CONTRACT decimal(18,2),ANALYSIS_COST_BUDGET decimal(18,2),ANALYSIS_LAST_UPDATED timestamp,TOTAL_ANALYSIS_PLANNED_COUNT decimal(18,2),TOTAL_ANALYSIS_SALES_MIX_PERCENTAGE decimal(18,2),TOTAL_ANALYSIS_COST_SELECTED_CITY decimal(18,2),TOTAL_ANALYSIS_COST_AVERAGE decimal(18,2),TOTAL_ANALYSIS_COST_CONTRACT decimal(18,2),TOTAL_ANALYSIS_COST_BUDGET decimal(18,2),NOT_VISIBLE_DIGITAL_SIGNAGE boolean,REC_SELECTED boolean,NOT_VISIBLE_ON_WAITER_ORDER boolean,LAST_CHANGE_LOG_ID bigint,MENU_DISH_GROUP_ID int,EXCLUDE_PRE_ORDERING boolean,op string,ts_ms timestamp,shipcode string,  voyageid string, batchtime timestamp)PARTITIONED BY ( part_date date)STORED AS PARQUET LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_menu_dishes'
+
+
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_mxp_operators( batchinstanceid String,voyageid String,batchtime Timestamp, message String,shipcode string) partitioned by (part_date Date) STORED AS parquet LOCATION 's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_operators';
+
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_operators(ROW_COUNTER bigint,
+	Operator_ID bigint,
+	Business_Unit_ID int,
+	Operator_Nr int,
+	Operator_Name string,
+	Sales_Group_ID bigint,
+	Sign_In_Method int,
+	Pin_code int,
+	Bar_code int,
+	Active boolean,
+	Signed_In boolean,
+	MXP_User_ID int,
+	Operator_Sign_In timestamp,
+	Operator_Sign_In_Terminal bigint,
+	Operator_Sign_Out timestamp,
+	Override boolean,
+	GUID string,
+	Rec_Created timestamp,
+	Rec_Changed timestamp,
+	Rec_Deleted boolean,
+	Created_By_ID bigint,
+	Changed_By_ID bigint,
+	Fingerprint_Data string,
+	Additional_Info string,
+	CREATED_AT_ID int,
+	CHANGED string,
+	EMPLOYEE_RANK_ID bigint,
+	LAST_CHANGE_LOG_ID bigint,
+	Boardcard_Number string,
+op string,ts_ms timestamp,shipcode string,  voyageid string, batchtime timestamp)PARTITIONED BY ( part_date date)STORED AS PARQUET LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_operators'
+
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_mxp_person_schedule_tables( batchinstanceid String,voyageid String,batchtime Timestamp, message String,shipcode string) partitioned by (part_date Date) STORED AS parquet LOCATION 's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_person_schedule_tables';
+
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_person_schedule_tables(ROW_COUNTER int,
+	PERSON_SCHEDULE_TABLE_ID bigint,
+	PERSON_WORK_SCHEDULE_ID bigint,
+	TABLE_BY_MEAL_ID bigint,
+	REC_DELETED boolean,
+	CREATED_AT_ID int,
+	CREATED_BY_ID int,
+	CREATED timestamp,
+	LAST_CHANGED timestamp,
+	CHANGED string,
+	GUID string,
+	LAST_CHANGE_LOG_ID bigint,
+op string,ts_ms timestamp,shipcode string,  voyageid string, batchtime timestamp)PARTITIONED BY ( part_date date)STORED AS PARQUET LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_person_schedule_tables'
+
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_mxp_org_structure_tables( batchinstanceid String,voyageid String,batchtime Timestamp, message String,shipcode string) partitioned by (part_date Date) STORED AS parquet LOCATION 's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_org_structure_tables';
+
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_org_structure_tables(ROW_COUNTER int,
+	ORG_STRUCTURE_TABLE_ID int,
+	ORG_STRUCTURE_ID int,
+	TABLE_NUMBER int,
+	TABLE_DEFAULT_SIZE int,
+	TABLE_CURRENT_SIZE int,
+	TABLE_MIN_SIZE int,
+	TABLE_MAX_SIZE int,
+	TABLE_SHAPE_ID int,
+	TABLE_POSITION_X int,
+	TABLE_POSITION_Y int,
+	TABLE_ORIENTATION_ID int,
+	TABLE_IS_MOVEABLE boolean,
+	TABLE_IS_SMOKING boolean,
+	TABLE_COMMENT string,
+	ORG_STRUCTURE_WAITER_STATION_ID int,
+	REC_DELETED boolean,
+	CREATED_AT_ID int,
+	CREATED_BY_ID int,
+	CREATED timestamp,
+	LAST_CHANGED timestamp,
+	CHANGED string,
+	GUID string,
+	IS_OPTIONAL_TABLE boolean,
+	TABLE_TYPE_ID int,
+	LAST_CHANGE_LOG_ID bigint,
+	op string,ts_ms timestamp,shipcode string,  voyageid string, batchtime timestamp)PARTITIONED BY ( part_date date)STORED AS PARQUET LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_org_structure_tables' 
+
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_mxp_reservations( batchinstanceid String,voyageid String,batchtime Timestamp, message String,shipcode string) partitioned by (part_date Date) STORED AS parquet LOCATION 's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_reservations';
+
+
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_reservations(ROW_COUNTER int,
+	RESERVATION_ID int,
+	MEALS_BY_DATE_ID int,
+	TABLE_BY_MEAL_ID bigint,
+	ORG_UNIT_ID int,
+	ORG_COST_CENTER_ID int,
+	RESERVATION_CATEGORY_ID int,
+	RESERVATION_METHOD_ID int,
+	RESERVATION_DESCRIPTION string,
+	RESERVATION_MADE_BY string,
+	RESERVATION_REFERENCE_CODE string,
+	RESERVATION_CONFIRMATION_CODE string,
+	RESERVATION_REFERENCE_ID int,
+	RESERVATION_DATE_TIME_TYPE_ID int,
+	RESERVATION_FROM_DATE timestamp,
+	RESERVATION_FROM_TIME timestamp,
+	RESERVATION_TO_DATE timestamp,
+	RESERVATION_TO_TIME timestamp,
+	RESERVATION_TYPE_ID int,
+	RESERVATION_STATUS_ID int,
+	RESERVATION_SIZE_OF_PARTY int,
+	RESERVATION_WILL_SHARE boolean,
+	RESERVATION_WILL_SHARE_COMMENT string,
+	RESERVATION_COMMENT string,
+	RESERVATION_TABLE_PREFERENCE string,
+	RESERVATION_SMOKING_TABLE boolean,
+	RESERVATON_CULINARY_REQUEST string,
+	RESERVATION_CELEBRATION string,
+	RESERVATION_RESOURCE_ID int,
+	SEATED_AT_TABLE_BY_MEAL_ID bigint,
+	RESERVATION_SEATED_AT timestamp,
+	ACTIVE boolean,
+	REC_DELETED boolean,
+	CREATED_AT_ID int,
+	CREATED_BY_ID int,
+	CREATED timestamp,
+	LAST_CHANGED timestamp,
+	CHANGED string,
+	GUID string,
+	RESERVATION_FACILITY_ID int,
+	RESERVATION_EQUIPMENT_ID int,
+	LIABILITY_RELEASE_SIGNATURE string,
+	LIABILITY_RELEASE_DATE timestamp,
+	VACANCY_ID string,
+	REQUESTED_GENDER string,
+	RESERVATION_CREATED_BY string,
+	RESERVATION_CANCELLED_BY string,
+	CANCELLATION_PERIOD decimal(18,2),
+	CANCELLATION_PERIOD_UNIT int,
+	CANCELLATION_AMOUNT decimal(18,2),
+	CANCELLATION_TYPE string,
+	RESERVATION_CREATED_BY_ID int,
+	RESERVATION_EXTERNAL_ID bigint,
+	RESERVATION_RESOURCE2_ID int,
+	RESERVATION_LOCKED boolean,
+	LAST_CHANGE_LOG_ID bigint,
+	HASHBYTES string,
+	RESERVATION_COLOR_OVERRIDE string,
+	op string,ts_ms timestamp,shipcode string,  voyageid string, batchtime timestamp)PARTITIONED BY ( part_date date)STORED AS PARQUET LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_reservations'
+
+
+
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_lnd_mxp_checks`(`batchinstanceid` string, `voyageid` string, `batchtime` timestamp, `message` string, `shipcode` string)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_checks'
+
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_parse_mxp_checks`(`row_counter` bigint, `check_id` bigint, `business_unit_id` int, `receipt_nr` bigint, `batch_nr` int, `operation_id` bigint, `table_nr` int,`account_nr` bigint, `period_id` bigint, `sales_date` timestamp, `sales_time` timestamp, `sales_outlet_id` bigint, `sales_group_id` bigint,`terminal_id` bigint,`pos_machine_id` bigint,`currency_id` bigint,`check_status` string,`comment` string,`voided_parent` bigint,`void_operator_id` bigint,`void_reason` string,`synchronized` timestamp,`resync_needed` boolean,`guid` string,`rec_created` timestamp,`rec_changed` timestamp,`rec_deleted` boolean,`created_by_id` bigint,`changed_by_id` bigint,`depletion_status` string,`created_at_id` int,`changed` string,`last_change_log_id` bigint,`tax_region_id` bigint,`tax_currency_id` bigint,`tax_exchange_rate` double,`discount_plu_id` bigint,`discount_value` decimal(16,2),`discount_type_id` int,`noprint` boolean,`auth_method` string,`op` string,`ts_ms` timestamp,`shipcode` string,`voyageid` string,`batchtime` timestamp)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_checks'
+
+
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_lnd_mxp_guest_order_tickets`(`batchinstanceid` string, `voyageid` string, `batchtime` timestamp, `message` string, `shipcode` string)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_guest_order_tickets'
+
+
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_parse_mxp_guest_order_tickets`(`row_counter` int, `guest_order_ticket_id` int, `guest_order_ticket_status_id` int, `guest_order_ticket_completed` timestamp, `guest_order_ticket_comment` string, `created_at_id` int, `creayed_by_id` int, `created` timestamp, `last_changed` timestamp, `changed` string, `guid` string, `guest_order_ticket_notified` timestamp, `print_order_ticket` timestamp, `print_pickup_ticket` timestamp, `re_print_order_ticket` boolean, `re_print_pickup_ticket` boolean, `last_change_log_id` bigint, `meals_by_date_id` int, `waiter_station_no` int, `created_by_person_id` int, `ticket_type_id` int, `consolidate_dishes` boolean, `link_ticket_id` int, `printer_name` string, `printer_name_alternate` string,`op` string,`ts_ms` timestamp,`shipcode` string,`voyageid` string,`batchtime` timestamp)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_guest_order_tickets'
+
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_lnd_mxp_menus`(`batchinstanceid` string, `voyageid` string, `batchtime` timestamp, `message` string, `shipcode` string)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_menus'
+
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_parse_mxp_menus`(`row_counter` int, `menu_id` int, `menu_code` string, `menu_name` string, `menu_category_id` int, `menu_comments` string, `active` boolean, `rec_deleted` boolean, `created_at_id` int, `created_by_id` int, `created` timestamp, `last_changed` timestamp, `changed` string, `guid` string, `analysis_city_id` int, `analysis_guest_count` int, `analysis_org_unit_id` int, `menu_is_quick_select` boolean, `menu_display_name` string, `menu_description` string, `last_change_log_id` bigint,`op` string,`ts_ms` timestamp,`shipcode` string,`voyageid` string,`batchtime` timestamp)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_menus'
+
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_lnd_mxp_person_schedules`(`batchinstanceid` string, `voyageid` string, `batchtime` timestamp, `message` string, `shipcode` string)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_person_schedules'
+
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_parse_mxp_person_schedules`(`row_counter` int, `person_schedule_id` int, `person_id` int, `person_schedule_type_id` string, `person_schedule_from` timestamp, `person_schedule_to` timestamp, `person_schedule_comment` string, `rec_deleted` boolean, `created_at_id` int, `created_by_id` int, `created` timestamp, `last_changed` timestamp, `changed` string, `guid` string, `person_schedule_category_id` int, `person_schedule_location_id` int, `org_unit_id` int, `person_schedule_sub_location_id` int, `person_schedule_template_id` int, `position_id` int, `last_change_log_id` bigint, `person_schedule_overnight` boolean,`op` string,`ts_ms` timestamp,`shipcode` string,`voyageid` string,`batchtime` timestamp)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_person_schedules'
+
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_lnd_mxp_table_seats_by_meals`(`batchinstanceid` string, `voyageid` string, `batchtime` timestamp, `message` string, `shipcode` string)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_table_seats_by_meals'
+
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_parse_mxp_table_seats_by_meals`(`row_counter` int, `table_seat_by_meal_id` bigint, `table_by_meal_id` int, `seat_no` int, `seat_status_id` int, `table_by_meal_seated_at` timestamp, `rec_deleted` boolean,`created_at_id` int, `created_by_id` int, `created` timestamp, `last_changed` timestamp, `changed` string, `guid` string,`org_unit_id` int,`last_change_log_id` bigint,`op` string,`ts_ms` timestamp,`shipcode` string,`voyageid` string,`batchtime` timestamp)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_table_seats_by_meals'
+
+
+
+
+
+
+
+
+

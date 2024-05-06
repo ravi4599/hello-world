@@ -1,0 +1,20 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_crew_activity_detail(
+  voyage_id string, 
+  crew_activity_detail_skey bigint, 
+  crew_activity_guid string, 
+  is_actuals boolean, 
+  schedule_activity_created_datetime timestamp, 
+  schedule_activity_createdby_person_id string, 
+  schedule_activity_updated_datetime timestamp, 
+  schedule_activity_updatedby_person_id string, 
+  actual_company_name string, 
+  actual_manning_agent string, 
+  actual_clockin_clock string, 
+  is_actual_clockin_manual_entry boolean, 
+  actual_clockout_clock string, 
+  is_actual_clockout_manual_entry boolean, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string)
+  STORED AS PARQUET LOCATION 'gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_crew_activity_detail';

@@ -1,0 +1,63 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_accomodations(
+  row_counter int, 
+  accomodation_id int, 
+  org_unit_id int, 
+  org_structure_id int, 
+  person_type_id int, 
+  accomodation_number string, 
+  floor_no int, 
+  floor_name string, 
+  default_beds int, 
+  max_beds int, 
+  accomodation_category_id int, 
+  accomodation_comment string, 
+  accomodation_bed_rooms decimal(18,2), 
+  accomodation_bathrooms decimal(18,2), 
+  accomodation_living_rooms decimal(18,2), 
+  accomodation_windows decimal(18,0), 
+  accomodation_balconies decimal(18,2), 
+  accomodation_view_id int, 
+  rec_deleted boolean, 
+  active boolean, 
+  created_at_id int, 
+  created_by_id int, 
+  created timestamp, 
+  changed string, 
+  last_changed timestamp, 
+  guid string, 
+  org_unit_muster_station_id int, 
+  vessel_life_craft_id int, 
+  phone_number decimal(18,0), 
+  current_beds int, 
+  department_id int, 
+  stewardess_section_id int, 
+  safety_section_id int, 
+  delivery_sequence int, 
+  door_lock_type_id int, 
+  door_lock_interface_code string, 
+  accomodation_position_x int, 
+  accomodation_position_y int, 
+  to_the_left_of_accomodation_id int, 
+  opposite_of_accomodation_id int, 
+  phone_number_direct_dial_in decimal(18,0), 
+  status_make_up_room boolean, 
+  status_do_not_disturb boolean, 
+  phone_class_of_service int, 
+  status_room_ready timestamp, 
+  last_change_log_id bigint, 
+  status_decline_service boolean, 
+  op string, 
+  ts_ms timestamp, 
+  shipcode string, 
+  voyageid string, 
+  batchtime timestamp)
+PARTITIONED BY ( 
+  part_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/parse/mxp/hvtb_parse_mxp_accomodations';

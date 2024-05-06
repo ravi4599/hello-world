@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_restriction(voyage_id STRING, restriction_skey BIGINT, restriction_id INT, person_id INT, restriction_guid STRING, restriction_type STRING, restriction_categoryId INT, restriction_category_code STRING, restriction_category STRING, restriction_comment STRING, restriction_from_date TIMESTAMP, restriction_to_date TIMESTAMP, src_deleted_flag BOOLEAN, src_created_date TIMESTAMP, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_restriction';

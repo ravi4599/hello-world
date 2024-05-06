@@ -1,0 +1,22 @@
+CREATE EXTERNAL TABLE hive_schema_stg.device_operation_fact(voyage_id varchar(100)                
+, ship_code varchar(100)                                                                            
+, voyage_skey bigint                                                                                
+, device_skey bigint                                                                                
+, game_skey bigint                                                                                  
+, game_date_time timestamp                                                                          
+, open_transaction_id bigint 
+,  closed_transaction_id bigint 
+, device_start_dt timestamp
+, device_closed_dt timestamp                                                                      
+, load_dt timestamp                                                                                 
+, upd_dt timestamp                                                                                  
+, primaryhash varchar(100)                                                                          
+, md5_hash varchar(100)                                                                             
+)                                                                                                   
+PARTITIONED BY (part_dt date                                                                        
+)                                                                                                                                                                                                   
+STORED AS PARQUET LOCATION 's3://vv-prod-emr-cluster/data/mart/hvtb_mart_fact_device_operation';
+
+
+
+create or replace view shipdw.device_operation_fact as select * from hive_schema_stg.device_operation_fact with no schema binding;

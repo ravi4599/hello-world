@@ -1,0 +1,28 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_competitor_product_lkp
+(competitor_product_id bigint,
+embark_port varchar,
+embark_port_code varchar,
+debark_port varchar,
+debark_port_code varchar,
+Is_Embark_Debark_Port_Same varchar,
+meta_product varchar,
+sail_days_min bigint,
+sail_days_max bigint,
+Includes_Chrismas varchar,
+Includes_NYE varchar,
+sub_product varchar,
+etl_ld_status varchar,
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash varchar,
+md5_hash varchar
+)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware/hvtb_nbx_core_sw_competitor_product_lkp';
+  

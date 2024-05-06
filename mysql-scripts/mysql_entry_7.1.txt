@@ -1,0 +1,28 @@
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWStgRPL_SHIP_ROOM', 'hvtb_nbx_landing_sw_rpl_ship_room', 'Hive', 'SHIP_ROOM', 'Postgresql', 'SPF_daily', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWStgRPL_SHIP_FACILITY', 'hvtb_nbx_landing_sw_rpl_ship_facility', 'Hive', 'SHIP_FACILITY', 'Postgresql', 'SPF_daily', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSPFShipFacilityLkp', 'hvtb_nbx_core_spf_ship_facility_lkp', 'Hive', 'hvtb_nbx_landing_sw_rpl_ship_facility', 'Hive', 'SPF_daily',now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSPFShipRoomDim', 'hvtb_nbx_core_sw_ship_room_dim', 'Hive', 'hvtb_nbx_landing_sw_rpl_ship_room', 'Hive', 'SPF_daily',now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWStgRPL_RES_INVOICE_ITEM', 'hvtb_nbx_landing_sw_rpl_res_invoice_item', 'Hive', 'RES_INVOICE_ITEM', 'Postgresql', 'SPF_daily', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jNewsLetterAcxiomReservation', 'NEWSLETTER_STG.HBTB_NBX_ACXIOM_RESERVATION', 'Redshift', 'HBTB_NBX_ACXIOM_RESERVATION', 'Hbase', 'realtime', now());
+
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jNewsLetterAcxiom', 'NEWSLETTER_STG.HBTB_NBX_ACXIOM', 'Redshift', 'HBTB_NBX_ACXIOM', 'Hbase', 'realtime', now());

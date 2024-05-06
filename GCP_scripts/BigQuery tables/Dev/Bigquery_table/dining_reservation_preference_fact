@@ -1,0 +1,10 @@
+CREATE  EXTERNAL TABLE hive_schema_stg.dining_reservation_preference_fact
+WITH PARTITION COLUMNS
+OPTIONS (
+  uris=['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_dining_reservation_preference/*'],
+  format=PARQUET,
+  hive_partition_uri_prefix='gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_dining_reservation_preference/'
+);
+
+
+CREATE OR REPLACE VIEW shipdw.dining_reservation_preference_fact as SELECT * FROM hive_schema_stg.dining_reservation_preference_fact;

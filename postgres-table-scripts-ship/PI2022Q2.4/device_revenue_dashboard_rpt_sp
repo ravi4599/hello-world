@@ -1,0 +1,107 @@
+CREATE OR REPLACE FUNCTION shipdw.device_revenue_dashboard_rpt_sp(voyage_id character varying)
+ RETURNS void
+ LANGUAGE plpgsql
+AS $function$
+	BEGIN
+		DELETE FROM shipdw.device_revenue_dashboard_rpt;
+
+	INSERT INTO shipdw.device_revenue_dashboard_rpt (
+
+		SELECT 
+		$1 ,
+drf.ship_code, 
+drf.voyage_skey, 
+drf.device_skey, 
+cast (drf.game_skey as bigint), 
+drf.game_date_time, 
+drf.opener_amount, 
+drf.opener_adj_amount, 
+drf.closer_amount, 
+drf.closer_adj_amount, 
+drf.fill_amount, 
+drf.fill_adj_amount, 
+drf.credit_amount, 
+drf.credit_adj_amount, 
+drf.need_amount, 
+drf.estimated_drop_amount, 
+drf.unposted_drop_amount, 
+drf.posted_drop_amount, 
+drf.posted_drop_other_amount, 
+drf.posted_drop_other_adj_amount, 
+drf.marker_amount, 
+drf.marker_adj_amount, 
+drf.table_jackpot_amount, 
+drf.table_jackpot_adjustment_amount, 
+drf.posted_drop_promochip_amount, 
+drf.posted_drop_promo_adj_amount, 
+drf.cash_drop_amount, 
+drf.total_drop_amount, 
+drf.table_win_amount, 
+drf.hold_pct,
+vd.voyage_number,
+vd.cruise_id,
+vd.voyage_description,
+vd.voyage_start_date,
+vd.voyage_end_date,
+vd.voyage_length,
+vd.voyage_status,
+vd.ship_name,
+vd.next_voyage_number,
+vd.previous_voyage_number,
+vd.next_voyage_skey,
+vd.previous_voyage_skey,
+dd.device_id,
+dd.device_type_id,
+dd.device_type_name,
+dd.device_sub_type_name,
+dd.device_machine_number,
+dd.device_category_id,
+dd.device_category_name,
+dd.device_sub_category_id,
+dd.device_sub_category_name,
+dd.device_cab_type_id,
+dd.device_cab_type_name,
+dd.device_serial_number,
+dd.device_zone_id,
+dd.device_zone_name,
+dd.coin_denom_amt,
+dd.bank_id,
+dd.bank_name,
+dd.mix_type_id,
+dd.mix_type_name,
+dd.device_theme_name,
+dd.game_site_id,
+dd.game_site_name,
+dd.currency_name,
+dd.device_mode_id,
+dd.device_mode_name,
+dd.device_operating_dt,
+dd.calc_package_name,
+dd.calc_package_id,
+dd.device_timeon_in_seconds,
+dd.total_buy_in_amt,
+dd.total_walked_with_amt,
+dd.average_wager_amt,
+dd.debit_point_amt,
+dd.credit_point_amt,
+dd.debit_comp_point_amt,
+dd.credit_base_point_amt,
+dd.credit_comp_point_amt,
+dd.debit_bonus_point_amt,
+dd.credit_bonus_point_amt,
+dd.cedit_tier_point_amt,
+dd.credit_bonus_comp_point_amt,
+gd.game_id, 
+gd.game_name, 
+gd.game_master_prom
+FROM shipdw.device_revenue_fact drf
+left join shipdw.voyage_dim vd 
+on drf.voyage_skey = vd.voyage_skey 
+left join shipdw.device_dim dd 
+on dd.device_skey = drf.device_skey 
+left join shipdw.game_dim gd 
+on gd.game_skey = drf.game_skey
+
+);	END;
+$function$
+;

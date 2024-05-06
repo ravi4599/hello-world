@@ -1,0 +1,30 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_crm_agent_master_dim_seaware_agencyid__c(
+seaware_agencyid__c string,
+new_seaware_agencyid__c string)
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_agent_master_dim_seaware_agencyid__c'
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_crm_agent_master_dim_seaware_agent_id__c(
+seaware_agent_id__c string,
+new_seaware_agent_id__c string)
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_agent_master_dim_seaware_agent_id__c'
+  
+  
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_crm_agent_master_dim_ownerid(
+ownerid string,
+new_ownerid string)
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_agent_master_dim_ownerid'
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_crm_agent_master_dim_agent_id(
+agent_id string,
+new_agent_id string)
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_agent_master_dim_agent_id'
+
+
+  
+  
+  
+  

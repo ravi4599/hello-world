@@ -1,0 +1,22 @@
+CREATE TABLE hive_schema_stg.sale_detail_dim (
+	voyage_id text NULL,
+	sale_detail_skey int8 NULL,
+	sale_id int8 NULL,
+	sale_detail_src text NULL,
+	sale_operator_num int4 NULL,
+	receipt_number int4 NULL,
+	check_status text NULL,
+	sales_voyagenumber text NULL,
+	"location" text NULL,
+	line_type text NULL,
+	line_status text NULL,
+	line_description text NULL,
+	src_deleted_flag bool NULL,
+	sale_group_description text null,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL
+);
+
+create or replace view shipdw.sale_detail_dim as select * from hive_schema_stg.sale_detail_dim ;

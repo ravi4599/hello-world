@@ -1,0 +1,28 @@
+select count(*) from vv_db.hvtb_nbx_lnd_sw_rpl_res_chargeable_action;
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_parse_sw_rpl_res_chargeable_action(
+action_id int, 
+entity_type string, 
+entity_id int, 
+res_action_type string, 
+action_timestamp timestamp, 
+is_added_manually string,
+is_paid string,
+paid_timestamp timestamp ,
+designated_payment_code string,
+is_paid_set_manually string,
+op string, 
+ts_ms timestamp, 
+shipcode string, 
+voyageid string, 
+batchtime timestamp)
+PARTITIONED BY ( 
+  part_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 
+ 'gs://vv-dev-nbx-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_res_chargeable_action';
+  

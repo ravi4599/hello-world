@@ -1,0 +1,7 @@
+-- TABLE CREATION OnBoard - VXP.table_management.settings_layout
+
+spark.sql("""CREATE TABLE shipdw.hvtb_lnd_vxp_table_management_settings_layout (id int, created_utc timestamp, public_id string, origin_public_id string, name string, is_default boolean, settings_id int, VoyageId string, BatchTime timestamp) PARTITIONED BY (Part_Date date) STORED AS PARQUET LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_table_management_settings_layout' """).show(50,false)
+
+--VIEW CREATION
+
+spark.sql("CREATE VIEW shipdw.hvtb_parse_vxp_table_management_settings_layout as select * from shipdw.hvtb_lnd_vxp_table_management_settings_layout").show(50,false)

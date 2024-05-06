@@ -1,0 +1,24 @@
+
+-- Drop table
+
+-- DROP TABLE hive_schema_stg.personstatushistory_fact;
+
+CREATE TABLE hive_schema_stg.personstatushistory_fact(
+	voyage_id text NOT NULL,
+	person_status_id text NULL,
+	person_skey int8 NULL,
+	ship_code text NULL,
+	voyage_skey int8 NULL,
+	person_type_code text NULL,
+	embark_date date NULL,
+	debark_date date NULL,
+	status text NULL,
+	status_type_code text NULL,
+	status_changed_date_time timestamp NULL,
+	is_deleted_flg bool NULL
+	src_last_modified_timestamp timestamp NULL,
+	src_added_timestamp timestamp NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	part_dt date NOT NULL
+);

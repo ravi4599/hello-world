@@ -1,0 +1,61 @@
+CREATE EXTERNAL TABLE hive_schema_stg.SEAWARE_PROMOTION_LKP         
+(promotion_id int8, 
+  promo_code string, 
+  promo_group string, 
+  promo_name string, 
+  etl_ld_status string,
+  load_dt timestamp,
+  upd_dt timestamp
+  )
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_promotion_lkp' 
+  
+CREATE EXTERNAL TABLE hive_schema_stg.SEAWARE_ALLOCATION_LKP(
+allocation_id int8,
+src_allocation_id int8,
+allocation_inv_result varchar(5),
+etl_ld_status varchar(30),
+load_dt timestamp,
+upd_dt timestamp)
+STORED AS PARQUET
+LOCATION
+  's3://vv-qa-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_allocation_lkp'
+ 
+
+ 
+CREATE EXTERNAL TABLE hive_schema_stg.SEAWARE_INVOICE_ITEM_TYPE_LKP(
+  invoice_item_type_id int8,
+  invoice_item_type varchar(15),
+  invoice_item_subtype varchar(15),
+  etl_ld_status varchar(15),
+ load_dt timestamp,
+ upd_dt timestamp
+)
+STORED AS PARQUET
+LOCATION
+  's3://vv-qa-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_invoice_item_type_lkp'
+  
+  
+  CREATE EXTERNAL TABLE  Hive_schema_stg_mig.seaware_price_area_lkp(
+
+price_area_id int8,
+
+price_area varchar(100),
+
+etl_ld_status varchar(50)
+
+load_dt timestamp,
+
+upd_dt timestamp)
+
+STORED AS PARQUET
+
+LOCATION
+
+'s3://vv-qa-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_price_area_lkp'

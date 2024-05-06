@@ -1,0 +1,40 @@
+CREATE TABLE hive_schema_stg.virtual_queue_fact (
+	voyage_id text NULL,
+	ship_code text NULL,
+	voyage_skey int8 NULL,
+	virtual_queue_detail_skey int8 NULL,
+	virtual_queue_definition_skey int8 NULL,
+	person_skey  int8 NULL,
+	queue_joined_datetime timestamp NULL,
+	queue_canceled_datetime timestamp NULL,
+	queue_notified_datetime timestamp NULL,
+	queue_completed_datetime timestamp NULL,
+	queue_total_wait_time_seconds int4 NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL,
+	part_dt date NULL
+);
+
+CREATE TABLE hive_schema_stg.virtual_queue_fact_err (
+	voyage_id text NULL,
+	ship_code text NULL,
+	voyage_skey int8 NULL,
+	virtual_queue_detail_skey int8 NULL,
+	virtual_queue_definition_skey int8 NULL,
+	person_skey  int8 NULL,
+	queue_joined_datetime timestamp NULL,
+	queue_canceled_datetime timestamp NULL,
+	queue_notified_datetime timestamp NULL,
+	queue_completed_datetime timestamp NULL,
+	queue_total_wait_time_seconds int4 NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL,
+	part_dt date NULL
+);
+
+
+CREATE VIEW shipdw.virtual_queue_fact as select * from hive_schema_stg.virtual_queue_fact ;

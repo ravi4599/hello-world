@@ -1,0 +1,58 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_parse_sw_rpl_ship_inventory_alloc`(
+  	`allocation_id` decimal(10),
+	`allocation_owner_type` string,
+	`allocation_owner_id` int,
+	`operator_id` string,
+	`allocation_timestamp` timestamp,
+	`priority` int,
+	`ship_code` string,
+	`rel_day_from` int,
+	`rel_day_to` int,
+	`sail_date_from` timestamp,
+	`sail_date_to` timestamp,
+	`cabin_category` string,
+	`depends_on_id` decimal(10),
+	`inventory_request_type` string,
+	`inventory_result_type` string,
+	`cabin_number` string,
+	`probability` decimal(7,4),
+	`decline_reason` int,
+	`release_timestamp` timestamp,
+	`occupancy` int,
+	`price_category` string,
+	`rollaway_beds_requested` string,
+	`reserve_type` string,
+	`wtl_owner_flag` string,
+	`dlgt_res_id` int,
+	`is_dlgt_obj` string,
+	`overlay_day_from` int,
+	`overlay_day_to` int,
+	`dep_ref_id` int,
+	`arr_ref_id` int,
+	`overlay_ref_from` int,
+	`overlay_ref_to` int,
+	`is_soft_assign` string,
+	`child_occupancy` int,
+	`max_cabin_occupancy` int,
+	`gender` string,
+	`berth_number` int,
+	`fz_adjustment` int,
+	`allotment_cabin_id` int,
+	`allotment_agreement_id` int,
+	`pax_reserve_type` string,
+	`pax_type` string,
+  	`op` string,
+  	`ts_ms` timestamp,
+  	`shipcode` string,
+  	`voyageid` string,
+  	`batchtime` timestamp)
+PARTITIONED BY (
+  `part_date` date)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/parse/seaware/hvtb_parse_sw_rpl_ship_inventory_alloc'

@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE `vv_db`.`hvtb_nbx_core_sw_reservation_dim`(`res_id` INT, `rec_start_dttm` TIMESTAMP, `rec_end_dttm` TIMESTAMP, `src_res_id` INT, `res_init_date` TIMESTAMP, `res_guest_count` INT, `res_mode` STRING, `cancellation_date` TIMESTAMP, `res_status` STRING, `operator` STRING, `res_type` STRING, `is_internal` STRING, `source_code` STRING, `effective_date` TIMESTAMP, `vip_status` STRING, `stage` STRING, `booking_source` STRING, `last_modifiedby_id` STRING, `hotel_flag` STRING, `src_sail_id` INT, `seaware_agency_id` INT, `seaware_agent_id` INT, `agency_id` INT, `agent_id` INT, `sec_agency_id` INT, `sec_agent_id` INT, `opted_fvc` STRING, `cancellation_case` STRING, `src_group_id` INT, `currency` STRING, `currency_rate` DOUBLE, `etl_ld_status` STRING, `load_dt` TIMESTAMP, `upd_dt` TIMESTAMP, `primaryhash` STRING, `md5_hash` STRING, `scd_hash` STRING)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-cert-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_reservation_dim'

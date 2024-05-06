@@ -1,0 +1,15 @@
+CREATE TABLE hive_schema_stg.incident_guest_fact(
+	voyage_id varchar(100) NULL,
+	ship_code varchar(10) NULL,
+	voyage_skey int NULL,
+	incident_detail_skey bigint NOT NULL,
+	impacted_guest_person_skey bigint NOT NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash varchar(40),
+	md5_hash varchar(40),
+	part_dt date
+)
+STORED AS PARQUET LOCATION 's3://vv-qa-emr-cluster/data/mart/hvtb_mart_fact_incident_guest' ;
+
+CREATE OR REPLACE VIEW shipdw.incident_guest_fact AS SELECT * FROM hive_schema_stg.incident_guest_fact dmd with no schema binding;

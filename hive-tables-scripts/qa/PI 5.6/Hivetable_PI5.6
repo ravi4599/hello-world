@@ -1,0 +1,327 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_sw_rpl_res_package`(
+	`RES_PACKAGE_ID` int,
+	`START_DATE` timestamp ,
+	`END_DATE` timestamp ,
+	`EFFECTIVE_DATE` timestamp ,
+	`RES_ID` int,
+            `GUEST_ID` int,
+`PACKAGE_TYPE` string,
+       	`PACKAGE_ID` int,
+	`IS_PRICEABLE` string,
+`DEP_REF_ID` int,
+`ARR_REF_ID` int,
+`SHIP_CODE` string,
+`CABIN_CATEGORY` string ,
+`CABIN_CATEGORY_BERTH` string ,
+`CABIN_SEQ_NUMBERS` string ,
+`PACKAGE_CLASS` string ,
+`HOTEL_REQUEST_ID` int ,
+`RES_ADDON_ID` int ,
+`DINING_REQUEST_ID` int ,
+`CAR_REQ_LEG_ID` int ,
+`SHIPROOM_REQUEST_ID` int ,
+`PACKAGE_STATUS` string ,
+`PPS_CARD_OWNER_ID` int ,
+	`COMMENT_ID` int ,
+	`IS_NO_SHOW` string ,
+	`CAB_CTG_UPG_PROMO` string ,
+	`PLACE_COUNT` int,
+	`PARENT_GUEST_ID` int ,
+	`SRC_PACKAGE_ID` int,
+	`SRC_DEP_REF_ID` int ,
+	`SRC_PACKAGE_CLASS` string,
+	`SRC_ARR_REF_ID` int ,
+	`SRC_LINK_DESCRIPTION` string,
+	`RES_PRODUCT_ID` int ,
+	`PLACE_COUNT_RESERVED` int,
+	`SOURCE_CODE` string,
+	`AIR_PRODUCT_ID` int ,
+	`TRANSFER_REQUEST_ID` int ,
+	`EXTRA_GUEST_COUNT` int ,
+	`RES_TOUR_ITEM_ID` int )
+	ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='_', 
+  'line.delim'='\n', 
+  'serialization.format'='_') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_res_package'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1574320697');
+
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_sw_transaction_evt`(
+  `trans_id` int, 
+  `src_trans_id` int, 
+  `res_id` int, 
+  `trans_status` string, 
+  `form_of_trans` string, 
+  `trans_type` string, 
+  `entity_type` string, 
+  `entity_id` int, 
+  `trans_time_stamp` timestamp, 
+  `currency_trans` string, 
+  `amount_full_trans` double, 
+  `rate_transprice` int, 
+  `currency_price` string, 
+  `amount_full_price` double, 
+  `rate_pricebase` int, 
+  `operator` string, 
+  `coupon_id` int, 
+  `rec_trans_id` int,
+  `is_dest_entity` string,
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_transaction_evt'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1577341429'); 
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_crm_case`(
+  `accountid` string, 
+  `assetid` string, 
+  `booked_activities__c` string, 
+  `booking_payments__c` string, 
+  `businesshoursid` string, 
+  `caseaudience__c` string, 
+  `casenumber` string, 
+  `casesubreason__c` string, 
+  `case_resolution__c` string, 
+  `category__c` string, 
+  `closeddate` timestamp, 
+  `contactid` string, 
+  `count_child_cases__c` double, 
+  `count_closed_cases__c` double, 
+  `createdbyid` string, 
+  `createddate` timestamp, 
+  `description` string, 
+  `entitlementid` string, 
+  `escalation_reason__c` string, 
+  `id` string, 
+  `isclosed` boolean, 
+  `isclosedoncreate` boolean, 
+  `isdeleted` boolean, 
+  `isescalated` boolean, 
+  `isstopped` boolean, 
+  `lastmodifiedbyid` string, 
+  `lastmodifieddate` timestamp, 
+  `last_interaction_date__c` timestamp, 
+  `link__c` string, 
+  `milestonestatus` string, 
+  `navigatorname__c` string, 
+  `origin` string, 
+  `ownerid` string, 
+  `parentid` string, 
+  `priority` string, 
+  `productid` string, 
+  `reason` string, 
+  `recordtypeid` string, 
+  `sailor_email__c` string, 
+  `sailor_name__c` string, 
+  `ship__c` string, 
+  `slaexitdate` timestamp, 
+  `slastartdate` timestamp, 
+  `status` string, 
+  `stopstarttimestamp` timestamp, 
+  `subject` string, 
+  `sub_category__c` string, 
+  `suppliedcompany` string, 
+  `suppliedemail` string, 
+  `suppliedname` string, 
+  `suppliedphone` string, 
+  `systemmodstamp` timestamp, 
+  `transferred_to__c` string, 
+  `type` string, 
+  `voyage__c` string, 
+  `webfname__c` string, 
+  `weblname__c` string, 
+  `reservation_number__c` string, 
+  `caseownerid__c` string, 
+  `case_sub_resolution__c` string, 
+  `complaint_type__c` string, 
+  `complaint__c` boolean, 
+  `request_assistance_queue__c` string, 
+  `request_assistance_reason__c` string, 
+  `external_case_resolution__c` string, 
+  `external_case_sub_resolution__c` string, 
+  `case_activity_counter__c` double, 
+  `reopened__c` boolean, 
+  `total_case_resolution_time__c` double, 
+  `external_escalation__c` boolean, 
+  `escalated__c` boolean, 
+  `first_contact_resolution_chat__c` boolean, 
+  `job_id` string, 
+  `load_data_timestamp` timestamp, 
+  `epoc` bigint, 
+  `year` int, 
+  `month` int, 
+  `day` int)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+WITH SERDEPROPERTIES ( 
+  'timestamp.formats'='yyyy-MM-dd\'T\'HH:mm:ss.SSSZ') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/core/crm/hvtb_nbx_core_crm_case'
+TBLPROPERTIES (
+  'spark.sql.create.version'='2.2 or prior', 
+  'spark.sql.sources.schema.numParts'='2', 
+  'transient_lastDdlTime'='1578573620');
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_crm_case_cdc`(
+  `accountid` string, 
+  `assetid` string, 
+  `booked_activities__c` string, 
+  `booking_payments__c` string, 
+  `businesshoursid` string, 
+  `caseaudience__c` string, 
+  `casenumber` string, 
+  `casesubreason__c` string, 
+  `case_resolution__c` string, 
+  `category__c` string, 
+  `closeddate` timestamp, 
+  `contactid` string, 
+  `count_child_cases__c` double, 
+  `count_closed_cases__c` double, 
+  `createdbyid` string, 
+  `createddate` timestamp, 
+  `description` string, 
+  `entitlementid` string, 
+  `escalation_reason__c` string, 
+  `id` string, 
+  `isclosed` boolean, 
+  `isclosedoncreate` boolean, 
+  `isdeleted` boolean, 
+  `isescalated` boolean, 
+  `isstopped` boolean, 
+  `lastmodifiedbyid` string, 
+  `lastmodifieddate` timestamp, 
+  `last_interaction_date__c` timestamp, 
+  `link__c` string, 
+  `milestonestatus` string, 
+  `navigatorname__c` string, 
+  `origin` string, 
+  `ownerid` string, 
+  `parentid` string, 
+  `priority` string, 
+  `productid` string, 
+  `reason` string, 
+  `recordtypeid` string, 
+  `sailor_email__c` string, 
+  `sailor_name__c` string, 
+  `ship__c` string, 
+  `slaexitdate` timestamp, 
+  `slastartdate` timestamp, 
+  `status` string, 
+  `stopstarttimestamp` timestamp, 
+  `subject` string, 
+  `sub_category__c` string, 
+  `suppliedcompany` string, 
+  `suppliedemail` string, 
+  `suppliedname` string, 
+  `suppliedphone` string, 
+  `systemmodstamp` timestamp, 
+  `transferred_to__c` string, 
+  `type` string, 
+  `voyage__c` string, 
+  `webfname__c` string, 
+  `weblname__c` string, 
+  `reservation_number__c` string, 
+  `caseownerid__c` string, 
+  `case_sub_resolution__c` string, 
+  `complaint_type__c` string, 
+  `complaint__c` boolean, 
+  `request_assistance_queue__c` string, 
+  `request_assistance_reason__c` string, 
+  `external_case_resolution__c` string, 
+  `external_case_sub_resolution__c` string, 
+  `case_activity_counter__c` double, 
+  `reopened__c` boolean, 
+  `total_case_resolution_time__c` double, 
+  `external_escalation__c` boolean, 
+  `escalated__c` boolean, 
+  `first_contact_resolution_chat__c` boolean, 
+  `job_id` string, 
+  `load_data_timestamp` timestamp, 
+  `epoc` bigint, 
+  `year` int, 
+  `month` int, 
+  `day` int)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='', 
+  'line.delim'='\n', 
+  'serialization.format'='', 
+  'timestamp.formats'='yyyy-MM-dd\'T\'HH:mm:ss.SSSZ') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/landing/crm/hvtb_nbx_landing_crm_case_cdc'
+TBLPROPERTIES (
+  'last_modified_by'='admin', 
+  'last_modified_time'='1548770429', 
+  'transient_lastDdlTime'='1578635730');
+ 
+ CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_crm_case_dim`(
+  `case_id` int, 
+  `rec_start_dttm` timestamp, 
+ `rec_end_dttm` timestamp, 
+  `id` string, 
+  `contactid` string, 
+  `accountid` string, 
+  `type` string, 
+  `casenumber` string, 
+  `reason` string, 
+  `createddate` timestamp, 
+  `closeddate` timestamp, 
+  `caseownerid__c` string, 
+  `casesubreason__c` string, 
+  `case_resolution__c` string, 
+  `case_sub_resolution__c` string, 
+  `complaint_type__c` string, 
+  `origin` string, 
+  `subject` string, 
+  `complaint__c` boolean, 
+  `request_assistance_queue__c` string, 
+  `request_assistance_reason__c` string, 
+  `external_case_resolution__c` string, 
+  `external_case_sub_resolution__c` string, 
+  `case_activity_counter__c` double, 
+  `reopened__c` boolean, 
+  `escalated__c` boolean, 
+  `total_case_resolution_time__c` double, 
+  `external_escalation__c` boolean, 
+  `first_contact_resolution_chat__c` boolean, 
+  `status` string, 
+  `ownerid` string, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+ `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_case_dim'
+TBLPROPERTIES (
+  'spark.sql.create.version'='2.2 or prior', 
+  'spark.sql.sources.schema.numParts'='1', 
+                'transient_lastDdlTime'='1578645889')

@@ -1,0 +1,1 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_lkp_venue_density_threshold (vxp_venue_id string, venue_id string, venue_name string, threshold1 int, threshold2 int ) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE LOCATION 's3://vv-staging-emr-cluster/data/venue_density_lkup/'

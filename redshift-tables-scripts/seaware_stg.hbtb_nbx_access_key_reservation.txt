@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS seaware_stg.hbtb_nbx_access_key_reservation
+(
+	reservationid BIGINT   ENCODE lzo
+	,res_access_key_name VARCHAR(100)   ENCODE lzo
+	,res_access_key_val VARCHAR(100)   ENCODE lzo
+	,date_updated TIMESTAMP WITHOUT TIME ZONE   ENCODE lzo
+)

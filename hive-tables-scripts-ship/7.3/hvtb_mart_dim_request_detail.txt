@@ -1,0 +1,25 @@
+----------spark table--------------
+
+spark.sql("""Create external table shipdw.hvtb_mart_dim_request_detail(request_detail_skey int,voyage_id string,request_id bigint,request_guid string, request_description string,request_priority int,request_category_id int,request_category_name string,request_type_id int,request_type_name string, request_type_priority int,load_dt timestamp,upd_dt timestamp,primaryhash string,md5_hash string) partitioned by (Part_Date Date) STORED AS parquet LOCATION '/data/apps/nbx/hive/mart/hvtb_mart_dim_request_detail'""") 
+
+
+
+----------postgres table-------------
+CREATE TABLE hive_schema_stg.request_detail_dim (
+request_detail_skey int4,
+voyage_id text,
+request_id int8,
+request_guid text,
+request_description text,
+request_priority int,
+request_category_id int,
+request_category_name text,
+request_type_id int,
+request_type_name text, 
+request_type_priority int,
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash text,
+md5_hash text
+);
+

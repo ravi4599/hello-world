@@ -1,0 +1,40 @@
+
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_crm_agency_master_dim_parentid(
+parentid varchar(100),
+new_parentid varchar(100))
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_agency_master_dim_parentid'
+
+
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_crm_agency_master_dim_seaware_parent_agency_id(
+seaware_parent_agency_id varchar(100),
+new_seaware_parent_agency_id varchar(100))
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_agency_master_dim_seaware_parent_agency_id'
+
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_crm_agency_master_dim_ownerid(
+ownerid varchar(100),
+new_ownerid varchar(100))
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_agency_master_dim_ownerid'
+  
+  
+
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_crm_agency_master_dim_agency_id(
+agency_id varchar(100),
+new_agency_id varchar(100))
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_agency_master_dim_agency_id'
+
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_crm_agency_master_dim_seaware_agency_id__c(
+seaware_agency_id__c varchar(100),
+new_seaware_agency_id__c varchar(100))
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_agency_master_dim_seaware_agency_id__c'
+  
+
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_crm_agency_master_dim_client_id__c(
+client_id__c varchar(100),
+new_client_id__c varchar(100))
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_agency_master_dim_client_id__c'

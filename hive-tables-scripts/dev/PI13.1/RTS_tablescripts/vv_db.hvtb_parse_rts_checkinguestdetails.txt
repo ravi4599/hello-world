@@ -1,0 +1,46 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_parse_rts_checkinguestdetails`(
+guestid string, 
+reservationnumber string, 
+reservationguestid string, 
+reservationembarkdate string, 
+reservationdebarkdate string, 
+statuscode string,
+paymentstatusCode string,
+guestModerationStatus string,
+guestOverallDocumentStatus string,
+isGuestOnBoard boolean,
+isValidated boolean,
+isAssociatedFlightBooking boolean,
+isItineraryRulesApplied boolean,
+checkinGuestDetails_security_photo string,
+health_questions string,
+checkinGuestDetails_emergency_contact string,
+checkinGuestDetails_travel_documents string,
+post_voyage string,
+checkinGuestDetails_embarkation_slot string,
+checkinGuestDetails_voyage_contract string,
+checkinGuestDetails_payment_method string,
+checkinGuestDetails_pregnancy string,
+percentageCheckinStatus_security_photo integer,
+percentageCheckinStatus_emergency_contact integer,
+percentageCheckinStatus_travel_documents integer,
+percentageCheckinStatus_embarkation_slot integer,
+percentageCheckinStatus_payment_method integer,
+percentageCheckinStatus_voyage_contract integer,
+checkinGuestDetails_totalPercentageCheckinStatus integer,
+n string,
+precruiseinfo_prepostcruiseid string,
+postcruiseinfo_prepostcruiseid string,
+batchtime timestamp, 
+voyageid string,
+shipcode string)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/parse/mxp/hvtb_parse_rts_checkinguestdetails'

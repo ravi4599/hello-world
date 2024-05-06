@@ -1,0 +1,10 @@
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_parse_ars_activity_slot`(`voyageid` string, `batchtime` timestamp, `activity_id` string, `activity_code` string, `slot_id` string, `slot_code` string, `starttime` timestamp, `endtime` timestamp, `status` string, `availablecapacity` bigint, `totalcapacity` bigint, `capacityid` string, `isbookingstopped` boolean, `iscancelled` boolean, `isdeleted` boolean, `iswaitlistenable` boolean, `shipcode` string)
+PARTITIONED BY (`partdate` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-dev-nbx-cluster/data/parse/vxp/hvtb_parse_ars_activity_slot';

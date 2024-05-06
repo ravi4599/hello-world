@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS `vv_db.vv_synonyms_match_scores`;
+CREATE EXTERNAL TABLE `vv_db.vv_synonyms_match_scores`(
+  `id_seaware` string, 
+  `activity_sailor_scores` string, 
+  `time_stamp` string, 
+  `date_stamp` timestamp
+  )
+STORED AS PARQUET
+LOCATION 's3a://vv-dev-emr-cluster/data/core/calendar_rec_files/match_scores';
+SELECT * FROM `vv_db.vv_synonyms_match_scores`;

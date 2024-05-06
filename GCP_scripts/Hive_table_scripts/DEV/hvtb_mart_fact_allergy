@@ -1,0 +1,3 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_fact_allergy(
+voyage_id string, order_detail_skey bigint, menu_item_skey bigint, dining_reservation_detail_skey bigint, person_skey bigint, allergy_skey bigint, allergy_details_category string, src_deleted_flg boolean, load_dt timestamp, upd_dt timestamp)
+PARTITIONED BY (part_dt date) STORED AS PARQUET LOCATION'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_allergy';

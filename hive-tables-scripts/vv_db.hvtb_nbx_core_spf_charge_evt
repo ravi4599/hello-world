@@ -1,0 +1,34 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_spf_charge_evt`(
+  `charge_detail_id` int, 
+  `src_record_id` int, 
+  `res_id` int, 
+  `action_type` string, 
+  `charge_id` int, 
+  `charge_component_code` string, 
+  `charge_state` string, 
+  `guest_seqn` int, 
+  `amount` double, 
+  `amount_in_hdr_curr` double, 
+  `explanation` string, 
+  `change_area` string, 
+  `src_package_id` int, 
+  `action_timestamp` timestamp, 
+  `is_added_manually` string, 
+  `is_paid` string, 
+  paid_timestamp timestamp,
+  `comments` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `md5_dim` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/core/spf/hvtb_nbx_core_spf_charge_evt'
+;

@@ -1,0 +1,40 @@
+
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_trw_header( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-prod-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_trw_header' 
+
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_trw_header(
+TRW_HEADER_ID int,
+TRW_TYPE string,
+START_DATE timestamp,
+END_DATE timestamp,
+IS_MATCHED string,
+COMMENTS string,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-prod-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_trw_header'
+
+
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_trw_detail( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-prod-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_trw_detail' 
+
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_trw_detail(
+TRW_DETAIL_ID int,
+TRW_HEADER_ID int,
+ENTITY_TYPE string,
+ENTITY_ID int,
+IS_MATCHED string,
+COMMENTS string,
+IS_MAIN string,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-prod-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_trw_detail'
+
+
+
+
+
+

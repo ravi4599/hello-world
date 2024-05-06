@@ -1,0 +1,17 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_mart_lkp_donation_item_rel`(
+  `donation_item_skey` bigint, 
+  `donation_type` string, 
+  `category_type` string, 
+  `category_value` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n ', 
+  'serialization.format'='') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/DonationItemRel'

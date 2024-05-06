@@ -1,0 +1,21 @@
+spark.sql("""CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_cabin_master_dim(  
+cabin_id bigint,
+rec_start_dttm timestamp,
+rec_end_dttm timestamp,
+cabin_number string,
+ship string,
+deck_number int,
+cabin_name string,
+cabin_rank int,
+cabin_category string,
+cabin_category_desc string,
+cabin_category_rank int,
+cabin_category_generic string,
+cabin_category_generic_rank int,
+cabin_capacity string,
+etl_ld_status string,
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash string,
+md5_hash string
+) STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_cabin_master_dim'""")

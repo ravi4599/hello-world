@@ -1,0 +1,13 @@
+spark.sql(""" Drop TABLE shipdw.hvtb_lnd_question_dim """)
+
+spark.sql(""" CREATE EXTERNAL TABLE shipdw.hvtb_lnd_question_dim (
+
+  BatchInstanceID string ,
+  VoyageId string ,
+  BatchTime timestamp ,
+  Message string ,
+  ShipCode string ,
+  part_date date
+)  
+LOCATION '/data/apps/nbx/hive/landing/mxp/hvtb_lnd_question_dim'
+""")

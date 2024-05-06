@@ -1,0 +1,18 @@
+CREATE EXTERNAL TABLE hive_schema_stg.shipboard_survey_questions_dim_tmp(question_skey bigint           
+, src_question_id string                                                                       
+, question_text string                                                                        
+, master_question string                                                                      
+, category string                                                                              
+, type string                                                                                
+, master_location string                                                                      
+, is_primaryquestion string                                                                     
+, is_closingquestion string                                                                     
+, load_dt timestamp                                                                                 
+, upd_dt timestamp                                                                                  
+, primaryhash string                                                                          
+, md5_hash string                                                                             
+)                                                                                                   
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_shipboard_survey_questions_dim/*']
+);         

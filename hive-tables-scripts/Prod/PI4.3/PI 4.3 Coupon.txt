@@ -1,0 +1,118 @@
+
+
+Drop table vv_db.hvtb_nbx_landing_sw_dwh_res_coupon;
+
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_coupon(
+rec_id int,
+rec_res_id int, 
+rec_guest_id int,
+rec_pkg_id int,
+coupon_id int, 
+amount  double,
+coupon_class string
+)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+'field.delim'='', 
+'line.delim'='\n', 
+'serialization.format'='') 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_coupon'
+
+Drop table vv_db.hvtb_nbx_landing_sw_dwh_coupon;
+
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_sw_dwh_coupon`(
+  `rec_coupon_id` int, 
+  `coupon_id` int, 
+  `user_defined_coupon_id` string, 
+  `issue_date` timestamp, 
+  `valid_from` timestamp, 
+  `valid_to` timestamp, 
+  `effective_from` timestamp, 
+  `effective_to` timestamp, 
+  `coupon_category` string, 
+  `coupon_class` string, 
+  `coupon_class_code` string, 
+  `coupon_class_comments` string, 
+  `apply_as_payment` string, 
+  `apply_as_discount` string, 
+  `office_code` string, 
+  `res_id` int, 
+  `entity_type` string, 
+  `entity_id` int, 
+  `is_used` string, 
+  `is_active` string, 
+  `currency_code` string, 
+  `amount` double, 
+  `amount_left` double, 
+  `charge_code` string, 
+  `reason_code` string, 
+  `comments` string, 
+  `etl_ld_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='', 
+  'line.delim'='\n', 
+  'serialization.format'='') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_coupon'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1568269439');
+
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_sw_coupon_dim`(
+  `coupon_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_coupon_id` int, 
+  `user_defined_coupon_id` string, 
+  `issue_date` timestamp, 
+  `valid_from` timestamp, 
+  `valid_to` timestamp, 
+  `effective_from` timestamp, 
+  `effective_to` timestamp, 
+  `coupon_category` string, 
+  `coupon_class` string, 
+  `coupon_class_code` string, 
+  `coupon_class_comments` string, 
+  `apply_as_payment` string, 
+  `apply_as_discount` string, 
+  `office_code` string, 
+  `res_id` int, 
+  `entity_type` string, 
+  `entity_id` int, 
+  `is_used` string, 
+  `is_active` string, 
+  `currency_code` string, 
+  `amount` double, 
+  `amount_left` double, 
+  `charge_code` string, 
+  `reason_code` string, 
+  `comments` string, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_coupon_dim'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1567504505');
+
+
+
+

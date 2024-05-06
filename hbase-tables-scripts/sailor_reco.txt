@@ -1,0 +1,13 @@
+CREATE TABLE SAILOR_RECO
+(
+   SAILOR_ID varchar(0) PRIMARY KEY,
+   activity_sailor_scores varchar(0),
+   time_stamp varchar(0),
+   probability varchar(0),
+   rev_per_act varchar(0),
+   rev_scores varchar(0),
+   aff_rev_new_rank varchar(0),
+   calendar_details varchar(0),
+   cal_reco varchar(0)
+)
+;

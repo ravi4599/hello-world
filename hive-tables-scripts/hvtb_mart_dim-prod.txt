@@ -1,0 +1,8 @@
+spark.sql("CREATE EXTERNAL TABLE hvtb_mart_dim_charge(charge_skey bigint,voyage_id string,charge_id string,person_skey bigint,person_type string,load_dt timestamp,upd_dt timestamp,primaryhash string,md5_hash string)STORED AS PARQUET LOCATION '/data/apps/nbx/hive/mart/hvtb_mart_dim_charge'")
+
+
+spark.sql("CREATE EXTERNAL TABLE hvtb_mart_dim_wearable( wearable_skey bigint, voyage_id string, wearable_id string, person_skey bigint, load_dt timestamp, upd_dt timestamp, primaryhash string, md5_hash string) STORED AS PARQUET LOCATION '/data/apps/nbx/hive/mart/hvtb_mart_dim_wearable'")
+
+
+spark.sql("CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_booking_detail(booking_detail_skey bigint, reservation_number string, booking_id string, status string, cancellation_reason string, waiver_code string, waiver_status string, payment_status string, voyage_id string, load_dt timestamp, upd_dt timestamp, primaryhash string, md5_hash string)
+STORED AS PARQUET LOCATION '/data/apps/nbx/hive/mart/hvtb_mart_dim_booking_detail'")

@@ -1,0 +1,43 @@
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_coupon_dim`(
+   `coupon_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_coupon_id` int, 
+  `user_defined_coupon_id` string, 
+  `issue_date` timestamp, 
+  `valid_from` timestamp, 
+  `valid_to` timestamp, 
+  `effective_from` timestamp, 
+  `effective_to` timestamp, 
+  `coupon_category` string, 
+  `coupon_class` string, 
+  `coupon_class_code` string, 
+  `coupon_class_comments` string, 
+  `apply_as_payment` string, 
+  `apply_as_discount` string, 
+  `office_code` string, 
+  `res_id` int, 
+  `entity_type` string, 
+  `entity_id` int, 
+  `is_used` string, 
+  `is_active` string, 
+  `currency_code` string, 
+  `amount` double, 
+  `amount_left` double, 
+  `charge_code` string, 
+  `reason_code` string, 
+  `comments` string, 
+  `etl_ld_status` string,
+  `load_dt` timestamp,
+  `upd_dt` timestamp,
+  `primaryhash` string,
+  `md5_hash` string,
+   scd_hash string)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_coupon_dim'

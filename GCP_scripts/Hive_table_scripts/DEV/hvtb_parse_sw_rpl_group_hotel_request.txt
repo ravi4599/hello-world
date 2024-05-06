@@ -1,0 +1,36 @@
+ CREATE EXTERNAL TABLE `vv_db.hvtb_parse_sw_rpl_group_hotel_request`(
+  `record_id` int, 
+  `product_type` string, 
+  `hotel_request_type` string, 
+  `hotel_category` string, 
+  `hotel_room_category` string, 
+  `hotel_id` int, 
+  `hotel_room_type` string, 
+  `quantity` int, 
+  `n_of_guests` int, 
+  `cabin_category` string, 
+  `package_type` string, 
+  `ship_code` string, 
+  `city_code` string, 
+  `stay_date_from` timestamp, 
+  `stay_date_to` timestamp, 
+  `group_id` int, 
+  `effective_date` timestamp, 
+  `package_id` int, 
+  `hotel_space_type` string, 
+  `occupancy` int, 
+  `op` string, 
+  `ts_ms` timestamp, 
+  `shipcode` string, 
+  `voyageid` string, 
+  `batchtime` timestamp)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/parse/seaware/hvtb_parse_sw_rpl_group_hotel_request'

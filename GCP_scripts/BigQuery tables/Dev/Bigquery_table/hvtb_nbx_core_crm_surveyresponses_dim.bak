@@ -1,0 +1,21 @@
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_crm_surveyresponses_dim(src_surveyresponses_id string
+, case_number__c string                                                                        
+, createddate timestamp                                                                             
+, createdbyid string                                                                          
+, comments__c string                                                                          
+, question__c string                                                                          
+, response__c string                                                                          
+, surveyquestion__c string                                                                    
+, survey_sent__c timestamp                                                                          
+, md5_dim string                                                                              
+, etl_ld_status string                                                                         
+, etl_ld_dt timestamp                                                                               
+, etl_upd_dt timestamp                                                                              
+)                                                                                                   
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_mart_dim_crm_surveyresponses/*']
+);
+
+
+create or replace view crm.hvtb_nbx_core_crm_surveyresponses_dim  as select * from hive_schema_stg.hvtb_nbx_core_crm_surveyresponses_dim;

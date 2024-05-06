@@ -1,0 +1,22 @@
+CREATE EXTERNAL TABLE hive_schema_stg.SEAWARE_PAYMENT_SCHEDULE_DIM(
+  res_payment_due_item_id bigint,
+  src_res_payment_due_item_id int,
+  res_id int, 
+  guest_id int, 
+  payment_type varchar(30), 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  due_date date, 
+  amount DOUBLE PRECISION, 
+  etl_ld_status varchar(30),
+  load_dt timestamp,
+  upd_dt timestamp,
+  primaryhash varchar(30),
+  md5_hash varchar(30),
+   scd_hash varchar(30))
+STORED AS PARQUET
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_payment_schedule_dim'
+
+
+CREATE OR REPLACE VIEW seaware.SEAWARE_PAYMENT_SCHEDULE_DIM AS SELECT * FROM hive_schema_stg.SEAWARE_PAYMENT_SCHEDULE_DIM with no schema binding;

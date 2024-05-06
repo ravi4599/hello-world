@@ -1,0 +1,25 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_group_dim(
+  group_id int, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  src_group_id int, 
+  group_init_date timestamp, 
+  group_status string, 
+  group_type string, 
+  group_name string, 
+  group_mode string, 
+  is_internal string, 
+  source_code string, 
+  office_code string, 
+  operator string, 
+  n_of_guests int, 
+  cancellation_date timestamp, 
+  etl_ld_status string, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string, 
+  scd_hash string)
+STORED AS PARQUET LOCATION
+'gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_group_dim';
+  

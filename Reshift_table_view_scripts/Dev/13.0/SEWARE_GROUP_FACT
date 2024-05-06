@@ -1,0 +1,34 @@
+CREATE EXTERNAL TABLE hive_schema_stg.SEWARE_GROUP_FACT         
+(
+snapshot_time timestamp, 
+GROUP_ID int,
+GUEST_SEQN int,
+PACKAGE_ID int,
+INVOICE_ITEM_TYPE_ID int,
+PRICE_AREA_ID int,
+SHIP_ID int,
+AGENT_ID int,
+AGENCY_ID int,
+PROMOTION_ID int,
+ADDON_ID int,
+CARDECK_ID int,
+SHOREX_ID int,
+HOTEL_GROUP_REQ_ID int,
+SAIL_ID int, 
+AMOUNT float,
+COMMISSION_PERCENT float,
+QUANTITY float,
+CURRENCY varchar(5),
+CURRENCY_RATE float,
+CABIN_CATEGORY varchar(4),
+GENERIC_CATEGORY varchar(15),
+etl_ld_dt timestamp, 
+etl_upd_dt timestamp,
+snapshot_date date )
+STORED AS PARQUET
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_group_fact';
+  
+  
+
+CREATE OR REPLACE VIEW seaware.SEWARE_GROUP_FACT as SELECT * FROM hive_schema_stg.SEWARE_GROUP_FACT;

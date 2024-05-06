@@ -1,0 +1,19 @@
+CREATE TABLE hive_schema_stg.terminal_checkin_fact (
+voyage_id text null,
+voyage_skey int8 not null,
+ship_code text null,
+checkin_id text null,
+checkin_type text NULL,
+person_skey int8 not null,
+person_type text null,
+checkin_start_date timestamp null,
+checkin_end_date timestamp null,
+checkin_time_in_seconds timestamp null,
+load_dt timestamp null,
+upd_dt timestamp null,
+primaryhash text null,
+md5_hash text null,
+part_dt date null
+);
+
+CREATE OR REPLACE VIEW shipdw.terminal_checkin_fact as SELECT * FROM hive_schema_stg.terminal_checkin_fact;

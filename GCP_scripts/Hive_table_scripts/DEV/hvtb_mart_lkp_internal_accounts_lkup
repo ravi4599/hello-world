@@ -1,0 +1,4 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_mart_lkp_internal_accounts_lkup`(
+  `internal_account_skey` bigint, 
+  `revenue_type` string, 
+  `account_nbr` string) STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_lkp_internal_accounts_lkup';

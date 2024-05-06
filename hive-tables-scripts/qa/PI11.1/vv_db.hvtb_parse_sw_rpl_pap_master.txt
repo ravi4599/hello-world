@@ -1,0 +1,31 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_parse_sw_rpl_pap_master`(
+  `pap_code` string, 
+  `pap_id` int, 
+  `priority` int, 
+  `program_currency` string, 
+  `agency_domestic` string, 
+  `pap_type` string, 
+  `comments` string, 
+  `pap_name` string, 
+  `external_rules` string, 
+  `is_price_program` string, 
+  `promo_group` string, 
+  `coupon_class` string, 
+  `print_cruise_fare_amount` string, 
+  `manual_input_value_type` string, 
+  `is_active` string, 
+  `op` string, 
+  `ts_ms` timestamp, 
+  `shipcode` string, 
+  `voyageid` string, 
+  `batchtime` timestamp)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/parse/seaware/hvtb_parse_sw_rpl_pap_master'

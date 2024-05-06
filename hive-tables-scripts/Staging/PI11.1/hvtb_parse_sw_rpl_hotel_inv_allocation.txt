@@ -1,0 +1,42 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_parse_sw_rpl_hotel_inv_allocation(
+  ALLOCATION_ID int  ,
+	ALLOCATION_OWNER_TYPE string  ,
+	ALLOCATION_OWNER_ID int ,
+	ALLOCATION_TIMESTAMP timestamp  ,
+	OPERATOR_ID string ,
+	INVENTORY_REQUEST_TYPE string  ,
+	DEPENDS_ON_ID int ,
+	SEQ_NUMBER int ,
+	PROBABILITY decimal(7,4)  ,
+	INVENTORY_RESULT_TYPE string ,
+	HOTEL_ROOM_CATEGORY string ,
+	HOTEL_CATEGORY string  ,
+	HOTEL_ID int ,
+	CHECK_IN_DATE timestamp  ,
+	CHECK_OUT_DATE timestamp  ,
+	HOTEL_ROOM_TYPE string ,
+	PRIORITY int  ,
+	OCCUPANCY int  ,
+	DECLINE_REASON int ,
+	RELEASE_TIMESTAMP timestamp ,
+	SHIP_CODE string ,
+	CITY_CODE string  ,
+	WTL_OWNER_FLAG string ,
+	DLGT_RES_ID int ,
+	IS_DLGT_OBJ string ,
+	HOTEL_SPACE_TYPE string  ,
+  op string,
+  ts_ms timestamp,
+  shipcode string,
+  voyageid string,
+  batchtime timestamp)
+PARTITIONED BY (
+  part_date date)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-staging-emr-cluster/data/parse/seaware/hvtb_parse_sw_rpl_hotel_inv_allocation'

@@ -1,0 +1,9 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.order_fact_err
+(
+`voyage_id` string, `ship_code` string, `voyage_skey` bigint, `order_detail_skey` bigint, `venue_skey` bigint, `order_placed_by_person_skey` bigint, `order_delivered_to_person_skey` bigint, `order_delivered_by_person_skey` bigint, `sale_detail_skey` bigint, `order_placed_datetime` timestamp, `order_modified_datetime` timestamp, `order_min_wait_time` int, `order_max_wait_time` int, `order_delivery_time_taken_mins` int, `order_delayed_flg` boolean, `order_delivered_datetime` timestamp, `order_amount` string, `order_cancellation_date` timestamp, `order_cancellation_refund_amount` string, `order_cancellation_reason` string, `order_total_number_items` int, `load_dt` timestamp, `upd_dt` timestamp, `primaryhash` string, `md5_hash` string,
+  part_dt date
+)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_order_err/*']
+ );

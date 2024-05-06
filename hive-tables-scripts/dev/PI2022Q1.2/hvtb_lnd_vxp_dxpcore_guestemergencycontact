@@ -1,0 +1,30 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_dxp_guestemergencycontact(
+	guestemergencycontactid string,
+    name string,
+    relationship string,
+    phonenumber string,
+    emailid string,
+    isdeleted boolean,
+    addeddate timestamp,
+    addedby string,
+    lastmodifieddate timestamp,
+    lastmodifiedby string,
+    firstname string,
+    lastname string,
+    countrytelephonecode string,
+    lastmodifiedbyuserid string,
+    lastmodifiedbyapplicationid string,
+	VoyageId string, 
+	BatchTime timestamp, 
+	ShipCode string)
+	PARTITIONED BY (Part_Date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/landing/vxp/hvtb_lnd_vxp_dxp_guestemergencycontact';
+  
+CREATE OR REPLACE VIEW shipdw.hvtb_parse_vxp_dxp_guestemergencycontact as select * from shipdw.hvtb_lnd_vxp_dxp_guestemergencycontact;

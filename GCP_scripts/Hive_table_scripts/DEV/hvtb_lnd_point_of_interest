@@ -1,0 +1,21 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_lnd_point_of_interest`(
+  `point_of_interest` string, 
+  `address` string, 
+  `city` string, 
+  `zip` string, 
+  `filename` string, 
+  `batchtime` timestamp, 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/mart/hvtb_lnd_point_of_interest';
+  
+  
+  CREATE OR REPLACE VIEW `vv_db.hvtb_parse_point_of_interest` AS select * from `vv_db`.`hvtb_lnd_point_of_interest`;
+  
+  

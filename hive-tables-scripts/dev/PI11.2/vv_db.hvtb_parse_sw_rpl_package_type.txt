@@ -1,0 +1,37 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_parse_sw_rpl_package_type`(
+  	`PACKAGE_TYPE_ID` int, 
+	`PACKAGE_TYPE` string, 
+	`LAND_DAYS` int, 
+	`SAIL_DAYS` int, 
+	`COMMENTS` string, 
+	`PRODUCT_TYPE` string, 
+	`TC_PACKAGE_TYPE` string, 
+	`LAND_DAYS_POST` int, 
+	`IS_LAND_ONLY` string, 
+	`IS_MULTI_SAIL` string, 
+	`IS_SHOREX` string, 
+	`IS_SECONDARY` string, 
+	`IS_ACTIVE` string, 
+	`SHOREX_TIMING` string, 
+	`EXTRA_SEAT_QUESTION` string, 
+	`PRE_POST_MODE` string, 
+	`PACKAGE_CLASS` string, 
+	`SAIL_SEGMENTS` string, 
+	`CAPACITY` int, 
+	`ALLOW_SEGMENTS` string, 
+	`PACKAGE_TYPE_NAME` string,
+  	`op` string,
+  	`ts_ms` timestamp,
+  	`shipcode` string,
+  	`voyageid` string,
+  	`batchtime` timestamp)
+PARTITIONED BY (
+  `part_date` date)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/parse/seaware/hvtb_parse_sw_rpl_package_type'

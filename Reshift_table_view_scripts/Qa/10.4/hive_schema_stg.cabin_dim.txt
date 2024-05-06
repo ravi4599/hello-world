@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE hive_schema_stg.cabin_dim(voyage_id text, cabin_skey bigint, cabin_number text, ship_code text, cabin_floor_name text, cabin_category text, cabin_type text, cabin_category_generic text, load_dt timestamp, upd_dt timestamp, primaryhash text, md5_hash text)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/mart/hvtb_mart_dim_cabin'

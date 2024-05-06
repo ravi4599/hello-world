@@ -1,0 +1,17 @@
+CREATE EXTERNAL TABLE hive_schema_stg.codedescription(
+voyage_id varchar(100),
+code_skey bigint,
+code_type varchar(100),
+activity_id varchar(100),
+activity_slot_code varchar(100),
+code varchar(100),
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash varchar(50),
+md5_hash varchar(50))
+STORED AS PARQUET
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/codedescription'
+
+
+CREATE OR REPLACE VIEW shipdw.codedescription AS SELECT * FROM hive_schema_stg.codedescription with no schema binding;

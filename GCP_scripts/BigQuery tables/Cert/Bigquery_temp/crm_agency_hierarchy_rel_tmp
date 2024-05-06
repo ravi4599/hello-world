@@ -1,0 +1,18 @@
+CREATE OR REPLACE  EXTERNAL TABLE hive_schema_stg.crm_agency_hierarchy_rel_tmp(
+  agency_id string,
+  child_agency_id string,
+  agency_name string,
+  child_agency_name string,
+  seaware_agency_id string,
+  child_seaware_agency_id string,
+  immediate_parent_agency_id string,
+  level int,
+  load_dt timestamp,
+   upd_dt timestamp,
+   primaryhash string,
+   md5_hash string
+)
+OPTIONS (
+format = 'PARQUET',
+uris = ['gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_crm_agency_hierarchy_rel/*']
+);

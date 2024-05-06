@@ -1,0 +1,18 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_lnd_nepa_postvoyage_question`(
+  `batchtime` timestamp, 
+  `src_question_id` string, 
+  `variable_id` string, 
+  `type` string, 
+  `start` string, 
+  `finish` string, 
+  `answer_code` int, 
+  `question_text` string, 
+  `answer_label` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/landing/hvtb_lnd_nepa_postvoyage_question'

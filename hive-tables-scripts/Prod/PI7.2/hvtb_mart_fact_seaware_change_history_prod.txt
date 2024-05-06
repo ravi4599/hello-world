@@ -1,0 +1,21 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_mart_fact_seaware_change_history(
+  change_id bigint, 
+  src_res_id bigint, 
+  attrib_name string, 
+  paramtype string, 
+  old_value string, 
+  new_value string, 
+  changed_by string, 
+  changed_timestamp timestamp,
+  load_dt timestamp,
+  upd_dt timestamp)
+PARTITIONED BY ( 
+  part_dt date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/mart/hvtb_mart_fact_seaware_change_history'

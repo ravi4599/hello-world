@@ -1,0 +1,187 @@
+--------------------------------------------------------------------------------------------
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_agency(
+BatchInstanceID String,
+VoyageId String,
+BatchTime Timestamp,
+Message String)
+partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-staging-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_agency' 
+-------------------------------------------------------------
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_agency(
+AGENCY_ID int,
+AGENCY_NAME_TYPED string,
+AGENCY_NAME string,
+ARC_NUMBER string,
+IATA_NUMBER string,
+CLIA_NUMBER string,
+IS_ACTIVE string,
+IS_DOMESTIC string,
+IS_INTERNAL string,
+USE_GUEST_ADDR string,
+COMMENTS string,
+MARKETING_MSG string,
+IS_GSA string,
+CONSORTIUM_TYPE string,
+IS_CONSORTIUM string,
+AGENCY_TYPE string,
+DEFAULT_CURRENCY string,
+VENDOR_NUMBER string,
+USE_DFLT_CONSORTIUM string,
+BC_TYPE_ID int,
+TAXPAYER_TYPE string,
+TAXPAYER_NUMBER string,
+CONTACT_NAME string,
+WEB_ADDRESS string,
+AGENCY_NAME_ESSENTIAL string,
+FLOATING_DEPOSIT string,
+LANGUAGE_CODE string,
+OFFICE_CODE string,
+AG_ENTITY_TYPE string,
+IS_FAX_EMAIL_SECURED string,
+ABTA_NUMBER string,
+NOTIF_DFLT_DISTR_TYPE string,
+TAXOWNER_NAME string,
+INVOICING_NUMBER int,
+AGENCY_CODE string,
+FPR_AT_GROSS string,
+INVOICING_IS_STOPPED string,
+INVOICING_DELAY_UNTIL timestamp,
+INVOICING_ERROR_MSG string,
+BALANCE_RECALC_ERROR_MSG string,
+IS_WHITELABEL string,
+VALID_CURRENCIES string,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp)
+partitioned by (Part_Date Date) STORED AS PARQUET LOCATION 's3://vv-staging-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_agency'
+
+----------------------------------------------------------------------------------------------------------------------
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_res_hotel_request(
+BatchInstanceID String,
+VoyageId String,
+BatchTime Timestamp,
+Message String)
+partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-staging-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_res_hotel_request' 
+-------------------------------------------------------------
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_res_hotel_request(
+HOTEL_REQUEST_ID int,
+RES_ID int,
+ROOM_SEQ_NUMBER int,
+DATE_FROM timestamp,
+DATE_TO timestamp,
+HOTEL_REQUEST_TYPE string,
+HOTEL_CATEGORY string,
+HOTEL_ROOM_CATEGORY string,
+HOTEL_ID int,
+HOTEL_ROOM_TYPE string,
+ALLOCATION_ID int,
+INVENTORY_REQUEST_TYPE string,
+INVENTORY_RESULT_TYPE string,
+HOTEL_CATEGORY_PACKAGE string,
+OCCUPANCY int,
+CITY_CODE string,
+PACKAGE_ID int,
+HOTEL_SPACE_TYPE string,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp)
+partitioned by (Part_Date Date) STORED AS PARQUET LOCATION 's3://vv-staging-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_res_hotel_request'
+---------------------------------------------------------------------------
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_res_history(
+BatchInstanceID String,
+VoyageId String,
+BatchTime Timestamp,
+Message String)
+partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-staging-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_res_history' 
+-------------------------------------------------------------
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_res_history(
+RES_ID int,
+TRANS_TIMESTAMP timestamp,
+PERFORMER string,
+SUBJECT string,
+SOURCE_CODE string,
+EXTERNAL_USER_ID1 string,
+EXTERNAL_USER_ID2 string,
+COMMENTS string,
+XML_PACK_MODE int,
+RES_SUMMARY string,
+CLIENT_ID int,
+USER_TYPE string,
+TRANS_ID int,
+AGENT_ID int,
+AGENCY_ID int,
+USER_INITIATED string,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp)
+partitioned by (Part_Date Date) STORED AS PARQUET LOCATION 's3://vv-staging-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_res_history'
+
+-----------------------------------------------------------------------------------
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_res_event(
+BatchInstanceID String,
+VoyageId String,
+BatchTime Timestamp,
+Message String)
+partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-staging-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_res_event' 
+-------------------------------------------------------------
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_res_event(
+RECORD_ID int,
+RES_EVENT_TYPE string,
+RES_ID int,
+EVENT_TIMESTAMP timestamp,
+OPERATOR_ID string,
+OLD_STATUS string,
+NEW_STATUS string,
+OLD_SHIP_CODE string,
+OLD_SAIL_FROM timestamp,
+OLD_SAIL_TO timestamp,
+NEW_SHIP_CODE string,
+NEW_SAIL_FROM timestamp,
+NEW_SAIL_TO timestamp,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp)
+partitioned by (Part_Date Date) STORED AS PARQUET LOCATION 's3://vv-staging-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_res_event'
+
+---------------------------------------------------------------------------------------------
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_sail_activity(
+BatchInstanceID String,
+VoyageId String,
+BatchTime Timestamp,
+Message String)
+partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-staging-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_sail_activity' 
+-------------------------------------------------------------
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_sail_activity(
+SAIL_ACTIVITY_ID int,
+SAIL_EVENT_DATE_TIME timestamp,
+SAIL_EVENT_TYPE string,
+PORT_CODE string,
+PIER_CODE string,
+MAY_EMBARK string,
+MAY_DISEMBARK string,
+SHIP_CODE string,
+RELATIVE_DAY int,
+ACTIVITY string,
+COMMENTS string,
+DEP_ARR_CODE string,
+DEP_ARR_REF_ID int,
+NOTES string,
+OWNERSHIP_CODE string,
+SETUP_SESSION_ID int,
+DEL_SESSION_ID int,
+SETUP_FROM timestamp,
+SETUP_TO timestamp,
+TENDER_MODE string,
+SAIL_EVENT_TS string,
+DRESS_CODE string,
+IS_ACTIVE string,
+SAIL_EVENT_DATE_TIME_UTC timestamp,
+DECK_ONLY string,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp)
+partitioned by (Part_Date Date) STORED AS PARQUET LOCATION 's3://vv-staging-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_sail_activity'

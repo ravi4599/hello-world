@@ -1,0 +1,25 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_parse_sw_rpl_airport_address (
+	address_city string,
+	address_line1 string,
+	address_line2 string,
+	zip string,
+	comments string,
+	is_address_mailing string,
+	is_address_shipping string,
+	seq_number int,
+	airport_code string,
+	address_type string,
+	state_code string,
+	country_code string,
+	airport_addr_id string,
+	address_line3 string,
+	address_line4 string)
+	PARTITIONED BY (Part_Date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/parse/seaware/hvtb_parse_sw_rpl_airport_address';

@@ -1,0 +1,2 @@
+spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_ars_activitygroup(activitygroupid,  groupcode, name, description, activitylocationid, iconimagemediaid, openingtime, closingtime, parentactivitygroupid, isdeleted, addeddate, lastmodifieddate, addedby, lastmodifiedby, sourceid, grouptype, VoyageId, BatchTime, ShipCode, Part_Date) AS
+select * from shipdw.hvtb_lnd_vxp_ars_activitygroup """)

@@ -1,0 +1,6 @@
+drop table hive_schema_stg.dining_menu_item_dim;
+CREATE  TABLE hive_schema_stg.dining_menu_item_dim(voyage_id text, dining_menu_item_skey bigint, dining_menu_item_code text, dining_menu_item_name text, dining_menu_item_group text, dining_menu_item_category text, dining_menu_item_sub_category text, src_deleted_flag boolean, src_active_flag boolean, load_dt timestamp, upd_dt timestamp, primaryhash text, md5_hash text);
+
+CREATE OR REPLACE VIEW shipdw.dining_menu_item_dim
+AS 
+SELECT * FROM hive_schema_stg.dining_menu_item_dim;

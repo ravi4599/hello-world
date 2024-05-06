@@ -1,0 +1,6 @@
+
+drop table shipdw.hvtb_mart_dim_dining_menu_item;
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_dining_menu_item(voyage_id string, dining_menu_item_skey bigint, dining_menu_item_code string, dining_menu_item_name string, dining_menu_item_group string, dining_menu_item_category string, dining_menu_item_sub_category string, src_deleted_flag boolean, src_active_flag boolean, load_dt timestamp, upd_dt timestamp, primaryhash string, md5_hash string)
+STORED AS PARQUET
+LOCATION '/data/apps/nbx/hive/mart/hvtb_mart_dim_dining_menu_item';
+

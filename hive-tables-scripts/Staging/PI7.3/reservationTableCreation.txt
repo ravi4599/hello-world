@@ -1,0 +1,6 @@
+create external table vv_db.hvtb_lnd_vxp_reservation(reservationid string,reservationnumber string,bookedbyguestid string,shipcode string,sailingpackagecode string, fromdate date,todate date,bookeddate timestamp,currencycode string,faretypeid string,paymentmodecode string,paymentreferencetoken string,pmsid string,reservationstatusid string,guestcount integer,stateroomcount integer,accessiblestateroomcount integer,paidamount  decimal(9,2),totalamount decimal(9,2),cartdetail string,iscabincruisecontractoptin boolean,addeddate timestamp,addedby string,lastmodifieddate timestamp,lastmodifiedby string,expensetype integer,expenselimit decimal(10,2),ispartyexpenselimitoptin boolean,voyagenumber string,faretypecode string,reservationstatuscode string,paymentstatuscode string,agencyemail string,VoyageId string,BatchTime string)PARTITIONED BY ( Part_Date date) STORED AS PARQUET LOCATION 's3://vv-staging-emr-cluster/data/landing/VXP/hvtb_lnd_vxp_reservation'
+
+create view vv_db.hvtb_parse_vxp_reservation as select * from vv_db.hvtb_lnd_vxp_reservation 
+
+
+

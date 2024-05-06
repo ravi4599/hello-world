@@ -1,0 +1,30 @@
+CREATE OR REPLACE view seaware.seware_charge_event_dim as select * from hive_schema_stg.seware_charge_event_dim ;
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.seware_charge_event_dim(
+  `charge_detail_id` BIGINT, 
+  `src_record_id` BIGINT, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp,
+  `res_id` BIGINT, 
+  `action_type` string, 
+  `charge_id` BIGINT, 
+  `charge_component_code` string, 
+  `charge_state` string, 
+  `guest_seqn` BIGINT, 
+  `amount` float64, 
+  `amount_in_hdr_curr` float64, 
+  `explanation` string, 
+  `change_area` string, 
+  `src_package_id` BIGINT, 
+  `action_timestamp` timestamp, 
+  `is_added_manually` string, 
+  `is_paid` string,
+paid_timestamp timestamp,  
+  `comments` string, 
+   load_dt timestamp,
+   upd_dt timestamp,
+   primaryhash string,
+   md5_hash string
+   )
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_seware_charge_event_dim/*']);

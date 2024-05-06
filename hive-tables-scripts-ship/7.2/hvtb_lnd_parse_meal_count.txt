@@ -1,0 +1,7 @@
+spark.sql("""Create external table shipdw.hvtb_lnd_tbl_mng_sh_meal_count( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/mxp/hvtb_lnd_tbl_mng_sh_meal_count'""")
+
+
+spark.sql("CREATE EXTERNAL TABLE shipdw.hvtb_parse_tbl_mng_meal_count( voyageid string, batchtime timestamp, mealid int, mealdate string, restaurant string, restaurantCode string, meal string, mealCode string) PARTITIONED BY ( partdate date) STORED AS PARQUET LOCATION 'hdfs://DEV/data/apps/nbx/hive/parsing/mxp/hvtb_parse_tbl_mng_meal_count'")
+
+
+spark.sql("CREATE EXTERNAL TABLE shipdw.hvtb_parse_tbl_mng_meal_count_dishes( voyageid string, batchtime timestamp, mealid int, course string, courseCode string, dishId int, dishName string, dishCode string, dishorder int) PARTITIONED BY ( partdate date) STORED AS PARQUET LOCATION 'hdfs://DEV/data/apps/nbx/hive/parsing/mxp/hvtb_parse_tbl_mng_meal_count_dishes'")

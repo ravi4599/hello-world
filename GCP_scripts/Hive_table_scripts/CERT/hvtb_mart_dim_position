@@ -1,0 +1,13 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_position(
+  position_skey bigint, 
+  voyage_id string, 
+  position_id int, 
+  position_code string, 
+  position_name string, 
+  position_dept_id int, 
+  position_dept_name string, 
+  src_active_flag boolean, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string) STORED AS PARQUET LOCATION 'gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_position';

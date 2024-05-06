@@ -1,0 +1,13 @@
+spark.sql("drop view if exists shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule")
+spark.sql("drop view if exists shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule_placedeck")
+spark.sql("drop view if exists shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule_section")
+
+spark.sql("""Create External table shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule ( `id` bigint, `public_id` string, `tms_date` date, `day_period` string, `team_member_id` string, `team_member_role` string, `VoyageId` string, `BatchTime` timestamp)
+PARTITIONED BY (`Part_date` date) Stored as Parquet Location 'hdfs://DEV/data/apps/nbx/hive/parsing/vxp/hvtb_parse_vxp_housekeeping_team_member_schedule' """)
+
+spark.sql("""Create External table shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule_placedeck ( `id` bigint, `public_id` string, `team_member_id` string, `place_deck_ids` bigint, `VoyageId` string, `BatchTime` timestamp)
+PARTITIONED BY (`Part_date` date) Stored as Parquet Location 'hdfs://DEV/data/apps/nbx/hive/parsing/vxp/hvtb_parse_vxp_housekeeping_team_member_schedule_placedeck' """)
+
+
+spark.sql("""Create External table shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule_section ( `id` bigint, `public_id` string, `team_member_id` string, `place_section_ids` bigint, `VoyageId` string, `BatchTime` timestamp)
+PARTITIONED BY (`Part_date` date) Stored as Parquet Location 'hdfs://DEV/data/apps/nbx/hive/parsing/vxp/hvtb_parse_vxp_housekeeping_team_member_schedule_section' """)

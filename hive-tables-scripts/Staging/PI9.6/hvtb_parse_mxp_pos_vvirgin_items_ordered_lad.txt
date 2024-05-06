@@ -1,0 +1,25 @@
+
+CREATE EXTERNAL TABLE `shipdw.hvtb_parse_mxp_pos_vvirgin_items_ordered_lad`(
+  `crewid` int, 
+  `possaleid` bigint, 
+  `plunr` bigint, 
+  `itemname` string, 
+  `itemgroup` string, 
+  `itemcategory` string, 
+  `itemorderedattime` timestamp, 
+  `itemservedattime` timestamp, 
+  `locationcode` string, 
+  `checkstatus` string, 
+  `tableid` int, 
+  `voyageid` string, 
+  `batchtime` timestamp, 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-staging-emr-cluster/data/mart/hvtb_parse_mxp_pos_vvirgin_items_ordered_lad'
+TBLPROPERTIES 

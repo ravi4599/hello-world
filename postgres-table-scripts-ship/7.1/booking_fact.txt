@@ -1,0 +1,3 @@
+CREATE TABLE Hive_schema_stg.booking_fact(
+voyage_id text, booking_detail_skey bigint, person_skey bigint, activity_skey bigint, activity_slot_skey bigint, vendor_skey bigint, booked_by_person_skey bigint, paid_by_person_skey bigint, number_of_people int, booking_paid_amount double precision, booking_remaining_amount double precision, refund_paid_amount double precision, refund_remaining_amount double precision, load_dt timestamp, upd_dt timestamp
+part_dt date)

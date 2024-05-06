@@ -1,0 +1,21 @@
+
+-- Drop table
+
+-- DROP TABLE hive_schema_stg.sailor_lovelist_fact_err;
+
+CREATE TABLE hive_schema_stg.sailor_lovelist_fact_err (
+	voyage_id text NULL,
+	src_favouriteid text NULL,
+	ship_code text NULL,
+	voyage_skey int8 NULL,
+	person_skey int8 NULL,
+	activity_skey int8 NULL,
+	lovelisted_datetime_utc timestamp NULL,
+	src_deleted_flag bool NULL,
+	src_lastmodified_datetime_utc timestamp NULL,
+	load_dt timestamp NOT NULL,
+	upd_dt timestamp NOT NULL,
+	primaryhash text NULL,
+	md5_hash text NULL,
+	part_dt date NOT NULL
+);

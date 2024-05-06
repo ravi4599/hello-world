@@ -1,0 +1,16 @@
+CREATE TABLE hive_schema_stg.venue_dim (
+	venue_skey int8 NULL,
+	voyage_id text NULL,
+	venue_id text NULL,
+	venue_name text NULL,
+	venue_sector_name text NULL,
+	data_src text NULL,
+	density_threshold_1 int4 NULL,
+	density_threshold_2 int4 NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL
+);
+
+create view shipdw.venue_dim as select * from hive_schema_stg.venue_dim;

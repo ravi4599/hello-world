@@ -1,0 +1,32 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_lnd_vxp_guestboardingnumber`(
+  `guestboardingnumberid` string, 
+  `reservationguestid` string, 
+  `boardingnumber` int, 
+  `slotnumber` int, 
+  `isdeleted` boolean, 
+  `addedby` string, 
+  `addeddate` timestamp, 
+  `lastmodifiedby` string, 
+  `lastmodifieddate` timestamp, 
+  `shipcode` string, 
+  `embarkdate` date, 
+  `guestid` string, 
+  `reservationid` string, 
+  `purgedate` timestamp, 
+  `checkedinboardingnumber` int, 
+  `onboardedboardingnumber` int, 
+  `isboardingnumberpreassigned` boolean, 
+  `voyageid` string, 
+  `batchtime` timestamp)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_guestboardingnumber';
+  
+  

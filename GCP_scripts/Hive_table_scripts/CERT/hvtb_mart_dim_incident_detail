@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_incident_detail(voyage_id STRING, incident_detail_skey BIGINT, incident_id STRING, incident_description STRING, incident_comment STRING, incident_reference_id STRING, incident_external_reference_id STRING, incident_resolution_amount DOUBLE, incident_resolution_amount_currency STRING, incident_reporter_type STRING, incident_resolution_description STRING, incident_notify_flg BOOLEAN, incident_raised_by_notes STRING, incident_attended_by_notes STRING, incident_priority STRING, incident_severity STRING, incident_score DOUBLE, incident_status_changed_datetime_utc TIMESTAMP, incident_status_changed_datetime TIMESTAMP, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_incident_detail';

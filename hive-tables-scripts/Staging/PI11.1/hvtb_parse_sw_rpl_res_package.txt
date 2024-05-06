@@ -1,0 +1,59 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_parse_sw_rpl_res_package(
+  RES_PACKAGE_ID int  ,
+	START_DATE timestamp  ,
+	END_DATE timestamp  ,
+	EFFECTIVE_DATE timestamp  ,
+	RES_ID int  ,
+	GUEST_ID int  ,
+	PACKAGE_TYPE string ,
+	PACKAGE_ID int ,
+	IS_PRICEABLE string  ,
+	DEP_REF_ID int ,
+	ARR_REF_ID int ,
+	SHIP_CODE string ,
+	CABIN_CATEGORY string ,
+	CABIN_CATEGORY_BERTH string ,
+	CABIN_SEQ_NUMBERS string ,
+	PACKAGE_CLASS string  ,
+	HOTEL_REQUEST_ID int ,
+	RES_ADDON_ID int ,
+	DINING_REQUEST_ID int ,
+	CAR_REQ_LEG_ID int ,
+	SHIPROOM_REQUEST_ID int ,
+	PACKAGE_STATUS string ,
+	PPS_CARD_OWNER_ID int ,
+	COMMENT_ID int ,
+	IS_NO_SHOW string  ,
+	CAB_CTG_UPG_PROMO string ,
+	PLACE_COUNT int ,
+	PARENT_GUEST_ID int ,
+	SRC_PACKAGE_ID int ,
+	SRC_DEP_REF_ID int ,
+	SRC_PACKAGE_CLASS string ,
+	SRC_ARR_REF_ID int ,
+	SRC_LINK_DESCRIPTION string ,
+	RES_PRODUCT_ID int ,
+	PLACE_COUNT_RESERVED int ,
+	SOURCE_CODE string ,
+	AIR_PRODUCT_ID int ,
+	TRANSFER_REQUEST_ID int ,
+	EXTRA_GUEST_COUNT int ,
+	RES_TOUR_ITEM_ID int ,
+	EXT_COMP_ID int ,
+  op string,
+  ts_ms timestamp,
+  shipcode string,
+  voyageid string,
+  batchtime timestamp)
+PARTITIONED BY (
+  part_date date)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-staging-emr-cluster/data/parse/seaware/hvtb_parse_sw_rpl_res_package'
+
+

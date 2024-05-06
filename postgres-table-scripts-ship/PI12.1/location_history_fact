@@ -1,0 +1,25 @@
+CREATE TABLE hive_schema_stg.location_history_fact (
+   voyage_id text,
+   ship_code text,
+   voyage_skey int8,
+   person_skey int8,
+   venue_skey int8,
+   event_skey int8,
+   capture_date_utc_skey int8,
+   capture_time_utc_skey int8,
+   capture_datetime_utc timestamp,
+   capture_date_local_skey int8,
+   capture_time_local_skey int8,
+   capture_datetime timestamp,
+   location_event_type text,
+   location_room text,
+   location_level text,
+   location_tags text,
+   logicalplace text,
+   src_locationeventid text,
+   load_dt timestamp,   
+   upd_dt timestamp,
+   part_dt date
+)
+
+CREATE OR REPLACE VIEW shipdw.location_history_fact AS SELECT * FROM hive_schema_stg.location_history_fact;

@@ -1,0 +1,25 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_sw_rpl_package_type_vendor_link`(
+  `record_id` int, 
+  `package_type` string, 
+  `vendor_id` int, 
+  `date_from` timestamp, 
+  `date_to` timestamp,
+  `comments` string,
+  `load_data_timestamp` timestamp )
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n',
+  'serialization.format'='\u0001') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_package_type_vendor_link'
+
+
+
+
+/*MSH-34089_Greeshma_12march2020*/

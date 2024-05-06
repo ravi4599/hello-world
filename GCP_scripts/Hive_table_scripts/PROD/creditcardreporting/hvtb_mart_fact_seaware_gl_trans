@@ -1,0 +1,10 @@
+spark.sql("""create external table `shipdw`.`hvtb_mart_fact_seaware_gl_trans`(trans_id integer,src_trans_id integer,src_gl_trans_id integer,gl_batch_id integer,gl_trans_amount float,trans_time_stamp timestamp,comments string,full_dbt_gl string,full_crd_gl string,seq_number integer,gl_trans_type string,entity_type string,gl_trans_source string,n_of_days integer,entity_id integer,period_id integer,currency_code string,is_completed boolean,full_n_of_days integer,orig_item_code string,orig_item_subcode string,orig_item_rec_id integer,dlgt_res_id integer,is_last_for_trans boolean,prorate_method string,trans_hist_id integer,logical_date date,gl_package_id integer,guest_id integer,office_code string,gl_trans_amount_base float,exchange_rate integer,res_package_start_date timestamp,res_package_end_date timestamp,res_package_class string,gl_trans_base_currency string,coupon_id integer,res_package_id integer,orig_item_addcode string,reverse_accrual_period integer, `load_dt` timestamp, `upd_dt` timestamp, `primaryhash` string, `md5_hash` string )
+PARTITIONED BY (`part_dt` DATE)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_fact_seaware_gl_trans'""")

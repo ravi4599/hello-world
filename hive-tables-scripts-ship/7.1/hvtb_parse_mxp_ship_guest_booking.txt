@@ -1,0 +1,10 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_ship_guest_booking(booking_arrival string, booking_cruisedays double, booking_isvip boolean, booking_cruisenumber string, booking_departure string, booking_reference string, booking_manifesttype string, booking_chargeid string, booking_lastchanged string, booking_nonrevenue boolean, booking_voyageid bigint, booking_cabinnumber string, booking_cabincategory string, booking_cabintype string, bookingguid string, bookingid double, person_guid string, person_id double, voyageid string, batchtime timestamp)
+PARTITIONED BY (partdate date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION '/data/apps/nbx/hive/parsing/mxp/hvtb_parse_mxp_ship_guest_booking'

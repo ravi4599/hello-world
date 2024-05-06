@@ -1,0 +1,1 @@
+CREATE VIEW shipdw.hvtb_parse_folio_vperson_account_detail as SELECT * from shipdw.hvtb_lnd_folio_vperson_account_detail

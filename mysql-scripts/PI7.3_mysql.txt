@@ -1,0 +1,96 @@
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWStgRPL_RES_PROMOTION', 'hvtb_nbx_landing_sw_rpl_res_promotion', 'Hive', 'RPL_RES_PROMOTION', 'Postgresql', 'SPF_daily', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWStgRPL_PAP_MASTER', 'hvtb_nbx_landing_sw_rpl_pap_master', 'Hive', 'PAP_MASTER', 'Postgresql', 'SPF_daily', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSWStgRPL_SHIP_DINING_REQUEST', '', 'Hive', 'SHIP_DINING_REQUEST', 'POSTGRESQL', 'SPF_DAILY',now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSWRPLShip_Dining_Request_Dim', '', 'Hive', '', '', 'SPF_daily',now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_VenueVXP_Parse', '', '', '', '', 'Sailorreport_runtime',now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_Requestcategory_Parse', '', '', '', '', 'Sailorreport_runtime',now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_RequestType_Parse', '', '', '', '', 'Sailorreport_runtime',now());
+
+INSERT INTO vv_metadata.job_info-
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_Request_Parse', '', '', '', '', 'Sailorreport_runtime',now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_RequestFact', '', '', '', '', 'SailorReport_daily',now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_Requestdetail_Dim', '', '', '', '', 'SailorReport_daily',now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_VenueVXP_Dim', '', '', '', '', 'SailorReport_daily',now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPresail_IncrementalGuestBoarding', '', '', '', '', 'presail_daily',now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPresail_IncrementalBoarding', '', '', '', '', 'presail_daily',now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPresail_IncrementalPersonStatus', '', '', '', '', 'presail_daily',now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPresail_IncrementalReservation', '', '', '', '', 'presail_daily',now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPresail_BoardingNumberdim', '', '', '', '', 'presail_daily',now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPresail_BoardingFact', '', '', '', '', 'presail_daily',now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPresail_IncrementalReservation', '', '', '', '', 'presail_daily',now());  
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPresail_IncrementalMxpCountries', '', '', '', '', 'presailmxp_daily', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPresail_IncrementalMxpPerson', '', '', '', '', 'presailmxp_daily', now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPresail_IncrementalMxpPersonAddress', '', '', '', '', 'presailmxp_daily', now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPresail_IncrementalMxpPersonBooking', '', '', '', '', 'presailmxp_daily', now());

@@ -1,0 +1,404 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_specialrequest(
+specialrequest_skey bigint, 
+voyage_id string, 
+person_skey bigint, 
+specialrequest_id bigint, 
+specialrequest_guid string, 
+specialrequest_type string, 
+specialrequest_date timestamp, 
+specialrequest_description string, 
+specialrequest_comment string, 
+specialrequest_upd_date timestamp, 
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_specialrequest'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_person(
+person_skey bigint, 
+person_id string, 
+person_guid string, 
+person_charge_id string, 
+guest_wearable_id string, 
+account_number string, 
+person_type string, 
+person_first_name string, 
+person_middle_name string, 
+person_last_name string, 
+person_dob date, 
+person_age int, 
+person_nationality string, 
+address_country string, 
+address_type string, 
+address_mailing string, 
+address_line1 string, 
+address_line2 string, 
+address_line3 string, 
+address_postal_code string, 
+address_city string, 
+address_state string, 
+booking_arrival_date timestamp, 
+booking_departure_date timestamp, 
+booking_reference string, 
+cabin_number string, 
+cabin_category string, 
+cabin_type string, 
+mega_rockstar_flag boolean, 
+vip_flag boolean, 
+sailor_tribe string, 
+sailor_subtribe string, 
+voyage_id string, 
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string, 
+seaware_id string, 
+person_card_status string, 
+person_card_type string, 
+person_card_level decimal(2,0), 
+person_card_color decimal(1,0), 
+person_card_color_value string)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_person'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_restriction(
+restriction_skey bigint, 
+voyage_id string, 
+person_skey bigint, 
+restrictions_guid string, 
+restrictions_type string, 
+categoryid bigint, 
+category_code string, 
+category string, 
+comment string, 
+from_date timestamp, 
+to_date timestamp, 
+deleted_flag boolean, 
+created_date timestamp, 
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_restriction'
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_preference(
+preference_skey bigint, 
+person_skey bigint, 
+voyage_id string, 
+preference_id bigint, 
+category string, 
+description string, 
+comment string, 
+allergy string, 
+preference_upd_date timestamp, 
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_preference'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_device(
+device_skey bigint, 
+voyage_id string, 
+device_id bigint, 
+device_type_id bigint, 
+device_type_name string, 
+device_sub_type_name string, 
+device_machine_number string, 
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_device'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_pos_item(
+item_skey bigint, 
+voyage_id string, 
+item_plu_number string, 
+item_name string, 
+item_plu_group_number string, 
+item_plu_group_name string, 
+item_plu_category_number string, 
+item_plu_category_name string, 
+partner_share_pct decimal(10,0), 
+vv_gross_pct decimal(10,0), 
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_pos_item'
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_folio_item(
+folio_item_skey bigint, 
+voyage_id string, 
+folio_item_quickcode string, 
+quickcode_name string, 
+quickcode_type string, 
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_folio_item'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_sale_detail(
+sale_detail_skey bigint, 
+voyage_id string, 
+sale_id bigint, 
+sale_detail_src string, 
+sale_operator_num int, 
+receipt_number int, 
+check_status string, 
+location string, 
+line_type string, 
+line_status string, 
+line_description string, 
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_sale_detail'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_itinerary(
+itinerary_skey bigint, 
+voyage_id string, 
+voyage_number string, 
+itinerary_id string, 
+voyage_itinerary_guid string, 
+itinerary_name string, 
+itinerary_day int, 
+itinerary_embark_dt timestamp, 
+itinerary_debark_dt timestamp, 
+itinerary_embark_port_code string, 
+itinerary_debark_port_code string, 
+gangway_open_time timestamp, 
+gangway_close_time timestamp, 
+itinerary_departure_time timestamp, 
+itinerary_arrival_time timestamp, 
+itinerary_isseaday boolean, 
+itinerary_day_date timestamp, 
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_itinerary'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_voyage
+(
+voyage_skey bigint, 
+voyage_id string, 
+voyage_number string, 
+voyage_guid string, 
+voyage_description string, 
+voyage_start_date timestamp, 
+voyage_end_date timestamp, 
+voyage_length int, 
+voyage_status string, 
+ship_guid string, 
+ship_code string, 
+ship_name string, 
+isseaday int, 
+actual_capacity_days int, 
+booked_capacity_days int, 
+actual_sailor_days int, 
+built_capacity_days int, 
+sailed_cabin_occupancy_pct int, 
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_voyage'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_fact_revenue(
+voyage_id string, 
+sale_detail_skey bigint, 
+pos_item_skey bigint, 
+folio_item_skey bigint, 
+person_skey bigint, 
+itinerary_skey bigint, 
+outlet_skey bigint, 
+activity_skey bigint, 
+sale_date_skey bigint, 
+sale_time_skey bigint, 
+device_skey bigint, 
+time_on_device_seconds int, 
+avg_wager_amount double, 
+casino_game_dph int, 
+theoritical_winnings double, 
+booking_reference_number string, 
+sale_quantity int, 
+item_list_price_amount double, 
+debit_amount double, 
+credit_amount double, 
+tax_amount double, 
+discount_amount double, 
+discount_value double, 
+cost_of_goods double, 
+manual_adjustment_amount double, 
+total_collected_sales_amount double, 
+total_collected_sales_ap double, 
+total_shared_revenue_amount double, 
+total_shared_revenue_ap double, 
+source_type string, 
+load_dt timestamp, 
+upd_dt timestamp)
+PARTITIONED BY ( 
+part_dt date)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/hvtb_mart_fact_revenue'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_date(
+date_id int, 
+date date, 
+day smallint, 
+month smallint, 
+firstofmonth date, 
+monthname string, 
+week smallint, 
+dayofweek smallint, 
+quarter smallint, 
+year smallint, 
+endofmonth date, 
+endofquarter date, 
+endofhalf date, 
+firstofyear date, 
+endofyear date, 
+styleyyyy-mm-dd string, 
+stylemm/dd/yyyy string)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+'field.delim'=',', 
+'serialization.format'=',') 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/core/util/DateDim'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_time(
+timeofday double, 
+s_key bigint, 
+etl_ld_dt date, 
+etl_upd_dt timestamp, 
+hours_of_day string, 
+minutes_of_day bigint, 
+second_of_day bigint, 
+quarter_hour_of_day string, 
+daytime_name string, 
+day_night string)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+'field.delim'=',', 
+'serialization.format'=',') 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/core/util/Time_Dim_Second'
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_outlet(
+outlet_skey bigint, 
+outlet_id int, 
+outlet_name string, 
+voyageid string, 
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_outlet'

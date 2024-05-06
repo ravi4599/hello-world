@@ -1,0 +1,11 @@
+CREATE TABLE rec_business_rules
+(
+   assigned_activity_cnt integer,
+   max_assigned_activity_cnt integer,
+   activity_dinning integer,
+   activity_entertainment integer,
+   activity_shore_excu integer,
+   activity_spa integer,
+   rule_id integer PRIMARY KEY
+)
+;

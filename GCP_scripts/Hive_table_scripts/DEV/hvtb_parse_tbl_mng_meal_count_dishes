@@ -1,0 +1,10 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_tbl_mng_meal_count_dishes(voyageid string, batchtime timestamp, mealid int, course string, coursecode string, dishid int, dishname string, dishcode string, dishorder int, ShipCode string)
+PARTITIONED BY (partdate date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-dev-nbx-cluster/data/parse/vxp/hvtb_parse_tbl_mng_meal_count_dishes';

@@ -1,0 +1,76 @@
+create or replace view seaware.seaware_reservation_dim
+AS
+SELECT 
+   res_id,             
+   rec_start_dttm,     
+   rec_end_dttm,       
+   src_res_id,         
+   res_init_date,      
+   res_guest_count,    
+   res_mode,           
+   cancellation_date,  
+   res_status,         
+   operator,           
+   res_type,           
+   is_internal,        
+   source_code,        
+   effective_date,
+   SALES_CHANNEL, 
+   SUB_SALES_CHANNEL, 
+   CASE WHEN SUB_SALES_CHANNEL='SAILOR SERVICES' and (source_code='IN HOUSE' or source_code='INT-ASSC'or source_code='INT-CON')THEN 'SS VIA CALL/CHAT'
+     WHEN SUB_SALES_CHANNEL='SAILOR SERVICES' and source_code='INT-AGENT' THEN 'SS VIA FMDC'
+     WHEN SUB_SALES_CHANNEL='VV.COM' THEN 'VV.COM'
+     WHEN SUB_SALES_CHANNEL='FIRST MATES' and source_code='INT-AGENT' THEN 'FM VIA FMDC'
+     WHEN SUB_SALES_CHANNEL='FIRST MATES' and source_code='OPENTRAVEL' THEN 'FM VIA VV.COM'
+     WHEN SUB_SALES_CHANNEL='FIRST MATES' and (source_code='IN HOUSE' or source_code='INT-ASSC'or source_code='INT-CON') THEN 'FM VIA SAILOR SERVICES'
+     END AS SUB_SUB_SALES_CHANNEL ,    
+   etl_ld_dt,          
+   etl_upd_dt  
+
+FROM 
+(SELECT
+   res_id,             
+   rec_start_dttm,     
+   rec_end_dttm,       
+   src_res_id,         
+   res_init_date,      
+   res_guest_count,    
+   res_mode,           
+   cancellation_date,  
+   res_status,         
+   operator,           
+   res_type,           
+   is_internal,        
+   source_code,        
+   effective_date,
+   CASE WHEN is_internal ='Y' THEN 'SAILOR' ELSE 'FM' END AS SALES_CHANNEL, 
+   CASE WHEN is_internal='N' THEN 'FIRST MATES'
+        WHEN is_internal='Y' AND source_code ='OPENTRAVEL' THEN 'VV.COM'
+        WHEN is_internal='Y' AND (source_code ='IN HOUSE' OR source_code ='INT-ASSC' OR source_code='INT-CON') THEN 'SAILOR SERVICES' 
+         WHEN is_internal='Y' AND source_code ='INT-AGENT' THEN 'SAILOR SERVICES'
+         END  AS SUB_SALES_CHANNEL,     
+   etl_ld_dt,          
+   etl_upd_dt    
+from hive_schema_stg.seaware_reservation_dim
+) RESERVATION_DIM
+with no schema binding;
+
+
+create or replace view seaware.seaware_guest_dim
+as select * from hive_schema_stg.seaware_guest_dim
+with no schema binding;
+
+create or replace view seaware.seaware_package_dim 
+AS
+SELECT    package_id,      
+   rec_start_dttm,  
+   rec_end_dttm,    
+   src_package_id,  
+   package_class,   
+   package_type,    
+   package_code,    
+   package_name,    
+   etl_ld_dt,       
+   etl_upd_dt
+FROM hive_schema_stg.seaware_package_dim
+

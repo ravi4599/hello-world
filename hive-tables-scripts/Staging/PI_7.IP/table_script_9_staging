@@ -1,0 +1,49 @@
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_ship_room( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-staging-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_ship_room'
+
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_ship_room(
+SHIP_ROOM_ID int,
+FACILITY_ID int,
+ROOM_NUMBER int,
+ROOM_NAME string,
+ROOM_SIZE Decimal(38,10),
+MAX_OCCUPANCY int,
+CLEANING_TIME int,
+COMMENTS string,
+EFF_DATE_FROM timestamp,
+EFF_DATE_TO timestamp,
+op string,
+ts_ms timestamp,
+VoyageId string,
+Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-staging-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_ship_room'
+
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_ship_facility( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-staging-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_ship_facility'
+
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_ship_facility(
+FACILITY_ID int,SHIP_CODE string,FACILITY_TYPE string,FACILITY_CODE string,FACILITY_NAME string,DECK_NUMBER int,FACILITY_SIZE int,MAX_OCCUPANCY int,IMAGE_ID int,EFF_DATE_FROM timestamp,EFF_DATE_TO timestamp,COMMENTS string,ASSIGN_MODE string,FACILITY_RANK int,FACILITY_SUBTYPE string,op string,ts_ms timestamp,VoyageId string,Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-staging-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_ship_facility'
+
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_ship_room_request( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-staging-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_ship_room_request'
+
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_ship_room_request(
+REQUEST_ID int,OWNER_TYPE String,OWNER_ID int,EFFECTIVE_DATE Timestamp,RESPONSIBLE_GUEST int,INVENTORY_REQUEST_TYPE String,SHIP_CODE String,FACILITY_TYPE String,LAYOUT_CODE String,USAGE_START Timestamp,USAGE_DURATION int,PARTY_SIZE int,ALLOCATION_ID int,EXTERNAL_GUEST_COUNT int,ATTACHMENT_ID int,COMMENTS String,NOTES String,QUANTITY int,OWNERSHIP_MODE String,NO_SHOW_COUNT int,IS_SAIL_CANCELED String,EXT_COMP_ID int,FACILITY_SUBTYPE String,op string,ts_ms timestamp,VoyageId string,Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-staging-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_ship_room_request'
+
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_ship_room_alloc( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-staging-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_ship_room_alloc'
+
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_ship_room_alloc(
+ALLOCATION_ID int, ALLOCATION_OWNER_TYPE string, ALLOCATION_OWNER_ID int, OPERATOR_ID string,INVENTORY_REQUEST_TYPE string,ALLOCATION_TIMESTAMP timestamp, PRIORITY int,INVENTORY_RESULT_TYPE string,PROBABILITY decimal(7,4),DECLINE_REASON int,RELEASE_TIMESTAMP timestamp,SHIP_CODE string,FACILITY_TYPE string  , USAGE_START timestamp,USAGE_DURATION int,PARTY_SIZE int,ASSIGNED_ROOM_ID int,LAYOUT_CODE string,DLGT_RES_ID int,IS_DLGT_OBJ string ,op string,ts_ms timestamp,VoyageId string,
+Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-staging-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_ship_room_alloc'
+
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_res_promotion( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-staging-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_res_promotion'
+
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_res_promotion(
+RES_PROMO_ID int,RES_ID  int,GUEST_ID int,PROMO_CODE string,IS_EXCLUDED string,IS_ACTIVE string,RES_PACKAGE_ID int,IS_MANUAL string,PROMO_VALUE decimal(10,2), PROMO_VALUE_TYPE string,op string,ts_ms timestamp,VoyageId string,
+Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-staging-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_res_promotion'

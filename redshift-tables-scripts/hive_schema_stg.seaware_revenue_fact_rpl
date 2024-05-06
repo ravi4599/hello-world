@@ -1,0 +1,30 @@
+create external table hive_schema_stg.seaware_revenue_fact (
+snapshot_date timestamp,
+res_id int,
+guest_id int,
+package_id int,
+invoice_item_type_id int,
+price_area_id int,
+ship_id int,
+agent_id int,
+agency_id int,
+promotion_id int,
+addon_id int,
+cardeck_id int,
+shorex_id int,
+hotel_res_req_id int,
+ship_room_req_id int,
+sail_id int,
+amount float,
+commission_percent float,
+net_due float,
+addon_qty float,
+currency varchar(3),
+currency_rate float,
+coupon_class_id int,
+guest_flight_id int,
+etl_ld_dt timestamp,
+etl_upd_dt timestamp
+)
+STORED AS PARQUET  
+Location 's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_revenue_fact' ;

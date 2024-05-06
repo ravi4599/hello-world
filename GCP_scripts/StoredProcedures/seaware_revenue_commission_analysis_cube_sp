@@ -1,0 +1,1510 @@
+CREATE OR REPLACE PROCEDURE `seaware.seaware_revenue_commission_analysis_cube_sp`()
+BEGIN 
+drop table if exists seaware.seaware_revenue_commission_analysis_cube_temp;
+
+create table seaware.seaware_revenue_commission_analysis_cube_temp as 
+(
+			select
+				revn.snapshot_date
+              , revn.res_id
+              , revn.guest_id
+			  , revn.package_id
+			  , inv.invoice_item_type
+			  , inv.invoice_item_subtype
+			  , inv.invoice_item_type_id
+			  , revn.sail_id
+			  , revn.ship_id
+			  , revn.addon_id
+			  , revn.price_area_id 
+			  , revn.currency booking_currency
+			  , revn.currency_rate booking_currency_rate 
+			  , revn.promotion_id
+			  , revn.ship_room_req_id
+			  , revn.hotel_res_req_id 	
+              , max(revn.agency_id) agency_id --Using agent & agency ids from reservation_dim in main query 
+			  , max(revn.agent_id) agent_id --Using agent & agency ids from reservation_dim in main query 
+			,sum(revn.amount) amount
+ 			,sum(revn.voyage_amount) voyage_amount
+			,sum(revn.taxesandfees) taxesandfees
+			,sum(revn.manual_adj) manual_adj
+			,sum(revn.insurance) insurance
+			,sum(revn.aon_insurace_payment) aon_insurace_payment
+			,sum(revn.voyage_commission_amt) voyage_commission_amt
+			,sum(revn.tax_commision_amt) tax_commision_amt
+			,sum(revn.voyage_credit_card_fee) voyage_credit_card_fee
+			,sum(revn.insurance_credit_card_fee) insurance_credit_card_fee
+			,sum(revn.taxesandfees_credit_card_fee) taxesandfees_credit_card_fee
+			,sum(revn.actual_gross_ticket_revenue) actual_gross_ticket_revenue
+			,sum(revn.actual_gross_other_revenue) actual_gross_other_revenue
+			,sum(revn.actual_gross_onboard_revenue) actual_gross_onboard_revenue
+			,sum(revn.actual_gross_total_revenue) actual_gross_total_revenue
+			,max(net_due) net_due
+			,sum(revn.amount_usd) amount_usd
+			,sum(revn.voyage_amount_usd) voyage_amount_usd
+			,sum(revn.taxesandfees_usd) taxesandfees_usd
+			,sum(revn.manual_adj_usd) manual_adj_usd
+			,sum(revn.insurance_usd) insurance_usd
+			,sum(revn.aon_insurace_payment_usd) aon_insurace_payment_usd
+			,sum(revn.voyage_commission_amt_usd) voyage_commission_amt_usd
+			,sum(revn.tax_commision_amt_usd) tax_commision_amt_usd
+			,sum(revn.voyage_credit_card_fee_usd) voyage_credit_card_fee_usd
+			,sum(revn.insurance_credit_card_fee_usd) insurance_credit_card_fee_usd
+			,sum(revn.taxesandfees_credit_card_fee_usd) taxesandfees_credit_card_fee_usd
+			,sum(revn.actual_gross_ticket_revenue_usd) actual_gross_ticket_revenue_usd
+			,sum(revn.actual_gross_other_revenue_usd) actual_gross_other_revenue_usd
+			,sum(revn.actual_gross_onboard_revenue_usd) actual_gross_onboard_revenue_usd
+			,sum(revn.actual_gross_total_revenue_usd) actual_gross_total_revenue_usd
+			,sum(case when invoice_item_type='HOTEL FARE' then amount END) as hotel_fare
+			,sum(case when invoice_item_type='HOTEL FARE' then amount END)*revn.currency_rate as hotel_fare_usd
+			,COALESCE(sum(case when invoice_item_type='HOTEL FARE' then amount END)     *0.025, 0)                         AS hotel_credit_card_fee
+			,COALESCE(sum(case when invoice_item_type='HOTEL FARE' then amount END)*revn.currency_rate     *0.025, 0)                         AS hotel_credit_card_fee_usd 
+			,sum(case when invoice_item_type='SHORE THINGS' then amount END) as shorethings_fare
+			,sum(case when invoice_item_type='SHORE THINGS' then amount END)*revn.currency_rate as shorethings_fare_usd 
+			,max(sd.sail_days) PCDs
+			,max(sd.sail_days) sail_days
+			,sum(revn.actual_gross_ticket_revenue)/max(sd.sail_days) actual_ticket_gpd
+			,(sum(revn.actual_gross_ticket_revenue)/max(sd.sail_days))*revn.currency_rate as actual_ticket_gpd_usd
+			,sum(revn.actual_gross_onboard_revenue)/max(sd.sail_days) actual_onboard_gpd 
+			,(sum(revn.actual_gross_onboard_revenue)/max(sd.sail_days))*revn.currency_rate as actual_onboard_gpd_usd 
+			,sum(revn.actual_gross_other_revenue)/max(sd.sail_days) actual_other_gpd 
+			,(sum(revn.actual_gross_other_revenue)/max(sd.sail_days))*revn.currency_rate as actual_other_gpd_usd 
+			,sum(revn.actual_gross_total_revenue)/max(sd.sail_days) actual_total_gpd
+			,(sum(revn.actual_gross_total_revenue)/max(sd.sail_days))*revn.currency_rate as actual_total_gpd_usd
+			,2770 * max(sd.sail_days) as APCDs
+			,sum(sd.sail_days) as total_sail_days 
+			--,sum(sd.sail_days)/(2770 * max(sd.sail_days)) as load_factor 
+			, -1 as charge_id, null as charge_component_code, null as charge_state, null as action_type, null as charge_explanation, 
+null as charge_change_area, cast('1900-01-01'as date) as charge_action_timestamp, null as charge_is_added_manually, null as charge_is_final,safe_cast( null as string) as charge_comments, -1 as charge_src_record_id,
+sum(0) as charge_amount,
+1 as row_num 
+            from
+                seaware.seaware_revenue_fact revn
+                left join
+                    hive_schema_stg.seaware_invoice_item_type_lkp inv
+                    on
+                        revn.invoice_item_type_id = inv.invoice_item_type_id
+				left join 
+					hive_schema_stg.seaware_sail_dim sd	
+					on sd.sail_id = revn.sail_id 
+            where
+                revn.snapshot_date =
+                (
+                    select
+                        max(snapshot_date)
+                    from
+                        hive_schema_stg.seaware_revenue_fact
+                )
+            group by
+				revn.snapshot_date
+              , revn.res_id
+              , revn.guest_id
+			  , revn.package_id
+              , inv.invoice_item_type
+			  , inv.invoice_item_subtype
+			  , inv.invoice_item_type_id
+			  , revn.sail_id
+			  , revn.ship_id 
+			  , revn.price_area_id 
+			  , revn.addon_id
+			  , revn.ship_room_req_id
+			  , revn.hotel_res_req_id 
+			  , booking_currency
+			  , booking_currency_rate 
+			  , promotion_id
+			  --, sail_days
+			  , charge_id
+			  , charge_component_code
+			  , charge_state
+			  , charge_explanation 
+			  , charge_change_area
+			  , charge_action_timestamp
+			  , charge_is_added_manually
+			  , charge_is_final
+			  , charge_comments
+			  , charge_src_record_id 		  
+UNION ALL
+            select
+			  cast (null as date) as snapshot_date
+              , safe_cast(rd_curr.res_id as int64)
+              , case when rel.guest_id is null then safe_Cast(rel_seqn1.guest_id as int64) else safe_cast(rel.guest_id as int64) end as guest_id  
+			  , case when pd.package_id is null then safe_cast(pd_voy.package_id as int64) else safe_cast(pd.package_id as int64) end as package_id 
+			  , safe_cast(null as string) as invoice_item_type
+			  , safe_cast(null as string) as invoice_item_subtype
+			  , -1 invoice_item_type_id
+			  , safe_cast(sd.sail_id as int64)
+			  , safe_cast(sh.ship_id as int64)
+			  , -1 addon_id
+			  , -1 price_area_id 
+			  , cast(null as string) as booking_currency
+			  , cast(null as float64) as booking_currency_rate 
+			  , -1 as promotion_id
+			  , -1 as ship_room_req_id
+			  , -1 as hotel_res_req_id 	
+              , safe_cast(ad.agency_id as int64) --Using agent & agency ids from reservation_dim 
+			  , safe_cast(agt.agent_id as int64) --Using agent & agency ids from reservation_dim 
+			,0 amount
+ 			,0 voyage_amount
+			,0 taxesandfees
+			,0 manual_adj
+			,0 insurance
+			,0 aon_insurace_payment
+			,0 voyage_commission_amt
+			,0 tax_commision_amt
+			,0 voyage_credit_card_fee
+			,0 insurance_credit_card_fee
+			,0 taxesandfees_credit_card_fee
+			,0 actual_gross_ticket_revenue
+			,0 actual_gross_other_revenue
+			,0 actual_gross_onboard_revenue
+			,0 actual_gross_total_revenue
+			,0 net_due
+			,0 amount_usd
+			,0 voyage_amount_usd
+			,0 taxesandfees_usd
+			,0 manual_adj_usd
+			,0 insurance_usd
+			,0 aon_insurace_payment_usd
+			,0 voyage_commission_amt_usd
+			,0 tax_commision_amt_usd
+			,0 voyage_credit_card_fee_usd
+			,0 insurance_credit_card_fee_usd
+			,0 taxesandfees_credit_card_fee_usd
+			,0 actual_gross_ticket_revenue_usd
+			,0 actual_gross_other_revenue_usd
+			,0 actual_gross_onboard_revenue_usd
+			,0 actual_gross_total_revenue_usd
+			,0 as hotel_fare
+			,0 as hotel_fare_usd
+			,0 as hotel_credit_card_fee
+			,0 AS hotel_credit_card_fee_usd 
+			,0 as shorethings_fare
+			,0 as shorethings_fare_usd 
+			,0 as PCDs
+			,0 as sail_days
+			,0 as actual_ticket_gpd
+			,0 as actual_ticket_gpd_usd
+			,0 as actual_onboard_gpd 
+			,0 as actual_onboard_gpd_usd 
+			,0 as actual_other_gpd 
+			,0 as actual_other_gpd_usd 
+			,0 as actual_total_gpd
+			,0 as actual_total_gpd_usd
+			,0 as APCDs
+			,0 as total_sail_days
+			, safe_cast(c.charge_id as int64),
+			 safe_cast(c.charge_component_code as int64), 
+			 safe_cast(c.charge_state as int64),
+			  c.action_type, 
+				safe_cast(c.explanation as int64) as charge_explanation, 
+safe_Cast(c.change_area as int64) as charge_change_area, 
+cast(c.action_timestamp as date) as charge_action_timestamp,
+safe_cast( c.is_added_manually as int64) as charge_is_added_manually,
+ safe_cast(c.is_final as int64) as charge_is_final, 
+c.comments  as charge_comments,
+ safe_Cast(c.src_record_id as int64) charge_src_record_id,
+safe_cast(c.amount as int64) as charge_amount,
+row_number() over (partition by c.res_id,case when rel.guest_id is null then rel_seqn1.guest_id else rel.guest_id end,case when pd.package_id is null then pd_voy.package_id else pd.package_id end,c.charge_id order by c.src_record_id asc) as row_num     	
+from seaware.seaware_charge_evt c 
+left join hive_schema_stg.seaware_reservation_dim rd on c.res_id=rd.res_id 
+left join hive_schema_stg.seaware_reservation_dim rd_curr on rd.src_res_id=rd_curr.src_res_id and rd_curr.rec_end_dttm='9999-12-31' 
+--left join hive_schema_stg.seaware_res_guest_rel rel on rd_curr.res_id=rel.res_id and c.guest_seqn = rel.guest_seqn 
+left join (select res_id, guest_id, guest_seqn from hive_schema_stg.seaware_res_guest_rel union all select distinct res_id, gd.guest_id, guest_seqn from hive_schema_stg.seaware_revenue_fact f 
+join hive_schema_stg.seaware_guest_dim gd on f.guest_id = gd.guest_id 
+where snapshot_date = (select max(snapshot_date) from hive_schema_stg.seaware_revenue_fact)) rel on rd_curr.res_id=rel.res_id and c.guest_seqn = rel.guest_seqn 
+left join hive_schema_stg.seaware_package_dim pd on c.src_package_id=pd.src_package_id and pd.rec_end_dttm='9999-12-31' 
+left join hive_schema_stg.seaware_sail_dim sd on rd.src_sail_id = sd.src_sail_id and sd.rec_end_dttm ='9999-12-31' 
+left join hive_schema_stg.seaware_ship_dim sh on sd.ship_id = sh.ship_id 
+left join hive_schema_stg.seaware_package_dim pd_voy on rd_curr.src_sail_id = pd_voy.src_sail_id and pd_voy.package_class='VOYAGE'	and pd_voy.rec_end_dttm = '9999-12-31'
+left join hive_schema_stg.seaware_res_guest_rel rel_seqn1 on rel_seqn1.res_id = rd_curr.res_id and rel_seqn1.guest_seqn =1 
+--left join hive_schema_stg.crm_agency_master agc on rd_curr.seaware_agency_id = agc.seaware_agency_id__c and agc.rec_end_dttm ='9999-12-31' 
+left join hive_schema_stg.seaware_agency_dim ad on ad.src_agency_id = rd_curr.seaware_agency_id and ad.rec_end_dttm = '9999-12-31' 
+left join hive_schema_stg.crm_agent_master agt on safe_cast(rd_curr.seaware_agent_id as string) = agt.seaware_agent_id__c and agt.rec_end_dttm = '9999-12-31' 
+where rd_curr.res_id is not null and (rel.guest_id is not null or rel_seqn1.guest_id is not null) 
+and c.rec_end_dttm = '9999-12-31' --Uncomment once DE team has included the column. Done in DEV, to be migrated to PROD. 
+);
+
+drop table if exists seaware.seaware_revenue_commission_analysis_cube_rpt;
+
+--delete from seaware.seaware_revenue_commission_analysis_cube_rpt;
+
+create table seaware.seaware_revenue_commission_analysis_cube_rpt as 
+--insert into seaware.seaware_revenue_commission_analysis_cube_rpt 
+with s2 as
+    (select max(snapshot_date) as max_snap_date from hive_schema_stg.seaware_commission_fact)
+select main.*,
+(base_commission_voyagefare + bonus_commission) as voyagefare_commission,
+(base_commission_voyagefare_usd + bonus_commission_usd) as voyagefare_commission_usd, 
+(base_commission_voyagefare + bonus_commission + base_commission_taxesandfees) as protected_commission,
+(base_commission_voyagefare_usd + bonus_commission_usd + base_commission_taxesandfees_usd) as protected_commission_usd,
+(base_commission_voyagefare + base_commission_taxesandfees) as base_protected_commission,
+(base_commission_voyagefare_usd + base_commission_taxesandfees_usd) as base_protected_commission_usd,
+--(base_commission_voyagefare + bonus_commission + protected_commission + base_commission_taxesandfees + bonus_commission_taxesandfees + red_hot_bonus_commission_voyage_fare) as ticket_commissions,
+(base_commission_voyagefare + bonus_commission + (base_commission_voyagefare + bonus_commission + base_commission_taxesandfees) + base_commission_taxesandfees + red_hot_bonus_commission_voyage_fare) as ticket_commissions,
+--(base_commission_voyagefare_usd + bonus_commission_usd + protected_commission_usd + base_commission_taxesandfees_usd + bonus_commission_taxesandfees_usd + red_hot_bonus_commission_voyage_fare_usd) as ticket_commissions_usd,
+(base_commission_voyagefare_usd + bonus_commission_usd + (base_commission_voyagefare_usd + bonus_commission_usd + base_commission_taxesandfees_usd) + base_commission_taxesandfees_usd + red_hot_bonus_commission_voyage_fare_usd) as ticket_commissions_usd,
+	(base_commission_shorex + base_commission_sailorloot) as Commissions_for_onboard_items,
+	(base_commission_shorex_usd + base_commission_sailorloot_usd) as Commissions_for_onboard_items_usd,
+	(base_commission_insurance + base_commission_hotelfare) as Commissions_for_other_revenue_items,
+	(base_commission_insurance_usd + base_commission_hotelfare_usd) as Commissions_for_other_revenue_items_usd,
+	(voyage_credit_card_fee + insurance_credit_card_fee + taxesandfees_credit_card_fee + hotel_credit_card_fee) as credit_card_fees,
+	(voyage_credit_card_fee_usd + insurance_credit_card_fee_usd + taxesandfees_credit_card_fee_usd + hotel_credit_card_fee_usd) as credit_card_fees_usd,
+	(insurance_credit_card_fee + hotel_credit_card_fee) as credit_card_fees_Other_revenue_items,
+	(insurance_credit_card_fee_usd + hotel_credit_card_fee_usd) as credit_card_fees_Other_revenue_items_usd,
+	--(actual_gross_ticket_revenue - ticket_commissions - credit_card_fees) as net_ticket_revenue,
+	(actual_gross_ticket_revenue - (base_commission_voyagefare + bonus_commission + (base_commission_voyagefare + bonus_commission + base_commission_taxesandfees) + base_commission_taxesandfees + red_hot_bonus_commission_voyage_fare) - (voyage_credit_card_fee + insurance_credit_card_fee + taxesandfees_credit_card_fee + hotel_credit_card_fee)) as net_ticket_revenue,
+	--(actual_gross_ticket_revenue_usd - ticket_commissions_usd - credit_card_fees_usd) as net_ticket_revenue_usd 
+	(actual_gross_ticket_revenue_usd - (base_commission_voyagefare_usd + bonus_commission_usd + (base_commission_voyagefare_usd + bonus_commission_usd + base_commission_taxesandfees_usd) + base_commission_taxesandfees_usd + red_hot_bonus_commission_voyage_fare_usd) - (voyage_credit_card_fee_usd + insurance_credit_card_fee_usd + taxesandfees_credit_card_fee_usd + hotel_credit_card_fee_usd)) as net_ticket_revenue_usd,
+	CURRENT_TIMESTAMP as etl_ld_dt 
+from 	
+(
+	select
+    revenue_comm_etc.invoice_item_type as  invoice_item_type,
+	revenue_comm_etc.invoice_item_subtype,
+	revenue_comm_etc.booking_currency,
+	revenue_comm_etc.booking_currency_rate,
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.amount end as amount,
+	--revenue_fact.amount,
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.voyage_amount end as voyage_amount,
+	--revenue_fact.voyage_amount,
+	revenue_comm_etc.taxesandfees,
+	revenue_comm_etc.manual_adj,
+	revenue_comm_etc.insurance,
+	revenue_comm_etc.aon_insurace_payment,
+	revenue_comm_etc.voyage_commission_amt,
+	revenue_comm_etc.tax_commision_amt,
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.voyage_credit_card_fee end as voyage_credit_card_fee,
+	--revenue_fact.voyage_credit_card_fee,
+	revenue_comm_etc.insurance_credit_card_fee,
+	revenue_comm_etc.taxesandfees_credit_card_fee,
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.actual_gross_ticket_revenue end as actual_gross_ticket_revenue,
+	--revenue_fact.actual_gross_ticket_revenue,
+	revenue_comm_etc.actual_gross_other_revenue,
+	revenue_comm_etc.actual_gross_onboard_revenue,
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.actual_gross_total_revenue end as actual_gross_total_revenue,
+	--revenue_fact.actual_gross_total_revenue,
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.net_due end as net_due,
+	--revenue_fact.net_due,
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.amount_usd end as amount_usd,
+	--revenue_fact.amount,
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.voyage_amount_usd end as voyage_amount_usd,
+	--revenue_fact.amount_usd,
+	--revenue_fact.voyage_amount_usd,
+	revenue_comm_etc.taxesandfees_usd,
+	revenue_comm_etc.manual_adj_usd,
+	revenue_comm_etc.insurance_usd,
+	revenue_comm_etc.aon_insurace_payment_usd,
+	revenue_comm_etc.voyage_commission_amt_usd,
+	revenue_comm_etc.tax_commision_amt_usd,
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.voyage_credit_card_fee_usd end as voyage_credit_card_fee_usd,
+	--revenue_fact.voyage_credit_card_fee_usd,
+	revenue_comm_etc.insurance_credit_card_fee_usd,
+	revenue_comm_etc.taxesandfees_credit_card_fee_usd,
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.actual_gross_ticket_revenue_usd end as actual_gross_ticket_revenue_usd,
+	--revenue_fact.actual_gross_ticket_revenue_usd,
+	revenue_comm_etc.actual_gross_other_revenue_usd,
+	revenue_comm_etc.actual_gross_onboard_revenue_usd,
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.actual_gross_total_revenue_usd end as actual_gross_total_revenue_usd,
+	--revenue_fact.actual_gross_total_revenue_usd,
+	revenue_comm_etc.hotel_fare,
+	revenue_comm_etc.hotel_fare_usd,
+	revenue_comm_etc.hotel_credit_card_fee,
+	revenue_comm_etc.hotel_credit_card_fee_usd, 
+	revenue_comm_etc.shorethings_fare,
+	revenue_comm_etc.shorethings_fare_usd, 
+	revenue_comm_etc.PCDs,
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.actual_ticket_gpd end as actual_ticket_gpd,
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.actual_ticket_gpd_usd end as actual_ticket_gpd_usd,
+	--revenue_fact.actual_ticket_gpd,
+	--revenue_fact.actual_ticket_gpd_usd,
+	revenue_comm_etc.actual_onboard_gpd,
+	revenue_comm_etc.actual_onboard_gpd_usd, 
+	revenue_comm_etc.actual_other_gpd,
+	revenue_comm_etc.actual_other_gpd_usd, 
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.actual_total_gpd end as actual_total_gpd,
+	case when revenue_comm_etc.invoice_item_type = 'VOYAGE FARE' and  revenue_comm_etc.commission_code = 'BONUS' then 0 else revenue_comm_etc.actual_total_gpd_usd end as actual_total_gpd_usd,
+	--revenue_fact.actual_total_gpd,
+	--revenue_fact.actual_total_gpd_usd,
+	revenue_comm_etc.APCDs,
+	revenue_comm_etc.total_sail_days,
+	revenue_comm_etc.load_factor,
+	seaware_price_area_lkp.price_area_id,
+	seaware_price_area_lkp.price_area,
+	revenue_comm_etc.currency_code as commission_currency_code,
+	revenue_comm_etc.currency_rate as commission_currency_rate,
+	--seaware_commission_fact.invoice_item_type as invoice_item_type_commission, 
+	revenue_comm_etc.commission_percent,
+	case when (revenue_comm_etc.amount is not null and revenue_comm_etc.amount<>0) then (revenue_comm_etc.amount*COALESCE(revenue_comm_etc.commission_percent,0)/100) else revenue_comm_etc.commission_amount end as commission_amount, --seaware_commission_fact.commission_amount,
+	case when revenue_comm_etc.commission_fare is not null then
+	case when revenue_comm_etc.amount is not null then revenue_comm_etc.amount else revenue_comm_etc.commission_fare end end as commission_fare, --seaware_commission_fact.commission_fare,
+	revenue_comm_etc.commission_payout_date,
+	case
+        when (
+                revenue_comm_etc.net_due=0
+                and date_diff(revenue_comm_etc.snapshot_date,seaware_sail_dim.sail_date_from,day)<=120
+                and date_diff(tran.trans_time_stamp,next_day(CURRENT_DATE,'Friday'),day)>2
+            )
+            then
+                (
+                    case
+                        when mod(extract(week from tran.trans_time_stamp),2)=0
+                            then date_trunc(date_add(safe_cast(tran.trans_time_stamp as date),Interval 1 week),week(Friday))
+                            else date_add(date_trunc(date_add(safe_cast(tran.trans_time_stamp as date),Interval 1 week),week(Friday)),interval 1 week)
+                    end
+                )
+    end expected_payout_date,
+revenue_comm_etc.base_commission_voyagefare_regular,
+revenue_comm_etc.base_commission_voyagefare_protected,
+revenue_comm_etc.base_commission_voyagefare_manual,
+(revenue_comm_etc.base_commission_voyagefare_regular + revenue_comm_etc.base_commission_voyagefare_protected + revenue_comm_etc.base_commission_voyagefare_manual) as base_commission_voyagefare,
+revenue_comm_etc.base_commission_taxesandfees_regular,
+revenue_comm_etc.base_commission_taxesandfees_protected,
+revenue_comm_etc.base_commission_taxesandfees_manual,
+(revenue_comm_etc.base_commission_taxesandfees_regular + revenue_comm_etc.base_commission_taxesandfees_protected + revenue_comm_etc.base_commission_taxesandfees_manual) as base_commission_taxesandfees,
+revenue_comm_etc.base_commission_shorex_regular,
+revenue_comm_etc.base_commission_shorex_protected,
+revenue_comm_etc.base_commission_shorex_manual,
+(revenue_comm_etc.base_commission_shorex_regular + revenue_comm_etc.base_commission_shorex_protected + revenue_comm_etc.base_commission_shorex_manual) as base_commission_shorex,
+revenue_comm_etc.base_commission_sailorloot_regular,
+revenue_comm_etc.base_commission_sailorloot_protected,
+revenue_comm_etc.base_commission_sailorloot_manual,
+(revenue_comm_etc.base_commission_sailorloot_regular + revenue_comm_etc.base_commission_sailorloot_protected + revenue_comm_etc.base_commission_sailorloot_manual) as base_commission_sailorloot,
+revenue_comm_etc.base_commission_hotelfare_regular,
+revenue_comm_etc.base_commission_hotelfare_protected,
+revenue_comm_etc.base_commission_hotelfare_manual,
+(revenue_comm_etc.base_commission_hotelfare_regular + revenue_comm_etc.base_commission_hotelfare_protected + revenue_comm_etc.base_commission_hotelfare_manual) as base_commission_hotelfare,
+revenue_comm_etc.base_commission_insurance_regular,
+revenue_comm_etc.base_commission_insurance_protected,
+(revenue_comm_etc.base_commission_insurance_regular + revenue_comm_etc.base_commission_insurance_protected) as base_commission_insurance,
+revenue_comm_etc.bonus_commission_voyagefare_regular,
+revenue_comm_etc.bonus_commission_voyagefare_protected,
+revenue_comm_etc.bonus_commission_voyagefare_manual,
+(revenue_comm_etc.bonus_commission_voyagefare_regular + revenue_comm_etc.bonus_commission_voyagefare_protected + revenue_comm_etc.bonus_commission_voyagefare_manual) as bonus_commission,
+--revenue_comm_etc.voyagefare_commission,
+revenue_comm_etc.gsa_commission_voyagefare,
+revenue_comm_etc.gsa_commission_taxesandfees,
+revenue_comm_etc.gsa_commission_insurance,
+revenue_comm_etc.gsa_commission_shorex,
+revenue_comm_etc.gsa_commission_sailorloot,
+--revenue_comm_etc.protected_commission,
+--revenue_comm_etc.base_protected_commission,
+revenue_comm_etc.base_commission_other_bookable,
+revenue_comm_etc.base_commission_voyagefare_regular_usd,
+revenue_comm_etc.base_commission_voyagefare_protected_usd,
+revenue_comm_etc.base_commission_voyagefare_manual_usd,
+(revenue_comm_etc.base_commission_voyagefare_regular_usd + revenue_comm_etc.base_commission_voyagefare_protected_usd + revenue_comm_etc.base_commission_voyagefare_manual_usd) as base_commission_voyagefare_usd,
+revenue_comm_etc.base_commission_taxesandfees_regular_usd,
+revenue_comm_etc.base_commission_taxesandfees_protected_usd,
+revenue_comm_etc.base_commission_taxesandfees_manual_usd,
+(revenue_comm_etc.base_commission_taxesandfees_regular_usd + revenue_comm_etc.base_commission_taxesandfees_protected_usd + revenue_comm_etc.base_commission_taxesandfees_manual_usd) as base_commission_taxesandfees_usd,
+revenue_comm_etc.base_commission_shorex_regular_usd,
+revenue_comm_etc.base_commission_shorex_protected_usd,
+revenue_comm_etc.base_commission_shorex_manual_usd,
+(revenue_comm_etc.base_commission_shorex_regular_usd + revenue_comm_etc.base_commission_shorex_protected_usd + revenue_comm_etc.base_commission_shorex_manual_usd) as base_commission_shorex_usd,
+revenue_comm_etc.base_commission_sailorloot_regular_usd,
+revenue_comm_etc.base_commission_sailorloot_protected_usd,
+revenue_comm_etc.base_commission_sailorloot_manual_usd,
+(revenue_comm_etc.base_commission_sailorloot_regular_usd + revenue_comm_etc.base_commission_sailorloot_protected_usd + revenue_comm_etc.base_commission_sailorloot_manual_usd) as base_commission_sailorloot_usd,
+revenue_comm_etc.base_commission_hotelfare_regular_usd,
+revenue_comm_etc.base_commission_hotelfare_protected_usd,
+revenue_comm_etc.base_commission_hotelfare_manual_usd,
+(revenue_comm_etc.base_commission_hotelfare_regular_usd + revenue_comm_etc.base_commission_hotelfare_protected_usd + revenue_comm_etc.base_commission_hotelfare_manual_usd) as base_commission_hotelfare_usd,
+revenue_comm_etc.base_commission_insurance_regular_usd,
+revenue_comm_etc.base_commission_insurance_protected_usd,
+(revenue_comm_etc.base_commission_insurance_regular_usd + revenue_comm_etc.base_commission_insurance_protected_usd) as base_commission_insurance_usd,
+revenue_comm_etc.bonus_commission_voyagefare_regular_usd,
+revenue_comm_etc.bonus_commission_voyagefare_protected_usd,
+revenue_comm_etc.bonus_commission_voyagefare_manual_usd,
+(revenue_comm_etc.bonus_commission_voyagefare_regular_usd + revenue_comm_etc.bonus_commission_voyagefare_protected_usd + revenue_comm_etc.bonus_commission_voyagefare_manual_usd) as bonus_commission_usd,
+--revenue_comm_etc.voyagefare_commission_usd,
+revenue_comm_etc.gsa_commission_voyagefare_usd,
+revenue_comm_etc.gsa_commission_taxesandfees_usd,
+revenue_comm_etc.gsa_commission_insurance_usd,
+revenue_comm_etc.gsa_commission_shorex_usd,
+revenue_comm_etc.gsa_commission_sailorloot_usd,
+--revenue_comm_etc.protected_commission_usd,
+--revenue_comm_etc.base_protected_commission_usd,
+revenue_comm_etc.base_commission_other_bookable_usd,
+	(case when seaware_reservation_dim.SUB_SALES_CHANNEL = 'FIRST MATES' then revenue_comm_etc.voyage_amount else 0 end) * 0.0425 as red_hot_bonus_commission_voyage_fare,
+	(case when seaware_reservation_dim.SUB_SALES_CHANNEL = 'FIRST MATES' then revenue_comm_etc.voyage_amount_usd else 0 end) * 0.0425 as red_hot_bonus_commission_voyage_fare_usd,
+	0 as net_onboard_revenue, -- awaiting clarification on formula
+	0 as net_other_revenue, -- awaiting clarification on formula
+	0 as net_net_ticket_revenue, -- awaiting clarification on formula
+	revenue_comm_etc.commission_type_id,
+	revenue_comm_etc.commission_code,
+	revenue_comm_etc.commission_source,
+	revenue_comm_etc.is_cancelled_comm,--Uncomment once column is added in the commission_fact. Done in DEV, to be migrated to PROD.
+	revenue_comm_etc.charge_id,
+	revenue_comm_etc.charge_component_code,
+	revenue_comm_etc.charge_state,
+	revenue_comm_etc.action_type,
+	revenue_comm_etc.charge_explanation, 
+	revenue_comm_etc.charge_change_area,
+	revenue_comm_etc.charge_action_timestamp,
+	revenue_comm_etc.charge_is_added_manually,
+	revenue_comm_etc.charge_is_final,
+	revenue_comm_etc.charge_comments,
+	revenue_comm_etc.charge_src_record_id,
+	--revenue_comm_etc.charge_amount,	
+	case when revenue_comm_etc.commission_source = 'PROTECTED' and  revenue_comm_etc.commission_code in ('SECONDARY','BONUS') then 0 else revenue_comm_etc.charge_amount end as charge_amount,--23/12/2020 Updated during unit testing as charge amount was duplicating for multiple commission records for same charge id. Charge amount will be shown only for 'PROTECTED' and 'STANDARD' commission record.
+	geo_analysis.source geo_analysis_source,
+	geo_analysis.country,
+	geo_analysis.state, 
+    geo_analysis.zip, 
+    geo_analysis.lat_sailor, 
+    geo_analysis.long_sailor, 
+    geo_analysis.lat_miami, 
+    geo_analysis.long_miami, 
+    geo_analysis.distance_miles, 
+    geo_analysis.distance_group, 
+    geo_analysis.msa, 
+    geo_analysis.mapped_msa, 
+    geo_analysis.msa_personal_income, 
+    geo_analysis.target_population_quantity, 
+    geo_analysis.total_population_quantity,
+	hbtb_nbx_sailor_tribes_vw.sailor_tribe, 
+	hbtb_nbx_sailor_tribes_vw.sailor_subtribe,
+	revenue_comm_etc.is_active_promotion,
+	revenue_comm_etc.promo_mode,
+	seaware_promotion_lkp.promotion_id as promotion_id,
+	seaware_promotion_lkp.promo_code as promo_code,
+	seaware_promotion_lkp.promo_name as promo_name,
+	seaware_promotion_lkp.promo_group as promo_group,
+	seaware_reservation_dim.res_id as res_id,
+	seaware_reservation_dim.src_res_id as src_res_id,
+	seaware_reservation_dim.res_init_date as res_init_date,
+	seaware_reservation_dim.res_guest_count as res_guest_count,
+	seaware_reservation_dim.res_mode as res_mode,
+	seaware_reservation_dim.cancellation_date as res_cancellation_date,
+	seaware_reservation_dim.res_status as res_status,
+	seaware_reservation_dim.operator as res_operator,
+	seaware_reservation_dim.res_type as res_type,
+	seaware_reservation_dim.is_internal as res_is_internal,
+	seaware_reservation_dim.source_code as res_source_code,
+	seaware_reservation_dim.effective_date as res_effective_date,
+	seaware_reservation_dim.booking_source as res_booking_source,
+	seaware_reservation_dim.sales_channel as res_sales_channel,
+	seaware_reservation_dim.sub_sales_channel as res_sub_sales_channel,
+	seaware_reservation_dim.sub_sub_sales_channel as res_sub_sub_sales_channel,
+	seaware_reservation_dim.vip_status as vip_status,
+	seaware_reservation_dim.stage as res_stage,
+	seaware_reservation_dim.booking_source_erp as booking_source_erp,
+	seaware_reservation_dim.last_modifiedby_id as res_last_modifiedby_id,
+	seaware_reservation_dim.hotel_flag as res_hotel_flag,
+	seaware_reservation_dim.opted_fvc as res_opted_fvc,
+	seaware_reservation_dim.auto_cancelled as res_auto_cancelled,
+	seaware_guest_dim.guest_id as guest_id,
+	seaware_guest_dim.src_guest_id as src_guest_id,
+	seaware_guest_dim.guest_seqn as guest_seqn,
+	seaware_guest_dim.guest_type as guest_type,
+	seaware_guest_dim.client_id as client_id,
+	seaware_guest_dim.age as guest_age,
+	seaware_guest_dim.age_category as guest_age_category,
+	seaware_guest_dim.gender as guest_gender,
+	seaware_guest_dim.address_line1 as guest_address_line1,
+	seaware_guest_dim.address_line2 as guest_address_line2,
+	seaware_guest_dim.city as guest_city,
+	seaware_guest_dim.country as guest_country,
+	seaware_guest_dim.zip as guest_zip,
+	seaware_guest_dim.state as guest_state,
+	seaware_guest_dim.citizenship as guest_citizenship,
+	seaware_guest_dim.citizenship_name as guest_citizenship_name,
+	seaware_guest_dim.last_name as guest_last_name,
+	seaware_guest_dim.first_name as guest_first_name,
+	seaware_guest_dim.sex as guest_sex,
+	seaware_guest_dim.tier_level as guest_tier_level,
+	seaware_guest_dim.birthday as guest_birthday,
+	seaware_guest_dim.email as guest_email,
+	seaware_guest_dim.phone_intl_code as guest_phone_intl_code,
+	seaware_guest_dim.phone_number as guest_phone_number,
+	seaware_group_dim.group_id,
+	seaware_group_dim.src_group_id,
+	seaware_group_dim.group_init_date,
+	seaware_group_dim.group_status,
+	seaware_group_dim.group_type,
+	seaware_group_dim.group_name,
+	seaware_group_dim.group_mode,
+	seaware_group_dim.is_internal as group_is_internal,
+	seaware_group_dim.source_code as group_source_code,
+	seaware_group_dim.office_code as group_office_code,
+	seaware_group_dim.operator as group_operator,
+	seaware_group_dim.n_of_guests as group_n_of_guests, 
+	seaware_group_dim.cancellation_date as group_cancellation_date, 
+	seaware_group_dim.sales_channel as group_sales_channel,
+	seaware_group_dim.sub_sales_channel as group_sub_sales_channel,
+	seaware_group_dim.sub_sub_sales_channel as group_sub_sub_sales_channel,
+	seaware_booked_cabin_reservation_dim.price_category,
+seaware_booked_cabin_reservation_dim.price_category_rank,
+seaware_booked_cabin_reservation_dim.berth_category,
+seaware_booked_cabin_reservation_dim.berth_category_rank,
+seaware_booked_cabin_reservation_dim.assigned_category,
+seaware_booked_cabin_reservation_dim.assigned_category_rank,
+seaware_booked_cabin_reservation_dim.generic_category,
+seaware_booked_cabin_reservation_dim.allocation_id as cabin_allocation_id,
+seaware_booked_cabin_reservation_dim.reserve_type as cabin_reserve_type,
+seaware_cabin_master.cabin_id,
+seaware_cabin_master.cabin_number,
+seaware_cabin_master.ship as cabin_ship,
+seaware_cabin_master.deck_number as cabin_deck_number,
+seaware_cabin_master.cabin_name,
+seaware_cabin_master.cabin_rank,
+seaware_cabin_master.cabin_category,
+seaware_cabin_master.cabin_category_rank,
+seaware_cabin_master.cabin_category_generic,
+seaware_cabin_master.cabin_category_generic_rank,
+seaware_cabin_master.cabin_capacity,
+revenue_comm_etc.addon_quantity,
+seaware_addon_lkp.addon_id,
+seaware_addon_lkp.res_addon_code,
+seaware_addon_lkp.addon_name,
+seaware_addon_lkp.addon_category,
+seaware_addon_lkp.addon_type,
+seaware_sail_dim.sail_id,
+seaware_sail_dim.src_sail_id,
+seaware_sail_dim.sail_days,
+seaware_sail_dim.sail_route_code,
+seaware_sail_dim.sail_port_from,
+seaware_sail_dim.sail_port_to,
+seaware_sail_dim.sail_geog_area_code,
+seaware_sail_dim.sail_date_from,
+seaware_sail_dim.sail_date_to,
+seaware_ship_dim.ship_id,
+seaware_ship_dim.ship,
+seaware_ship_dim.ship_name,
+case when seaware_package_dim.package_id is null then p_voy.package_id else seaware_package_dim.package_id end as package_id,
+case when seaware_package_dim.package_id is null then p_voy.src_package_id else seaware_package_dim.src_package_id end as src_package_id,
+case when seaware_package_dim.package_id is null then p_voy.package_class else seaware_package_dim.package_class end as package_class,
+case when seaware_package_dim.package_id is null then p_voy.product_type else seaware_package_dim.product_type end as product_type,
+case when seaware_package_dim.package_id is null then p_voy.package_type else seaware_package_dim.package_type end as package_type,
+case when seaware_package_dim.package_id is null then p_voy.package_code else seaware_package_dim.package_code end as package_code,
+case when seaware_package_dim.package_id is null then p_voy.package_name else seaware_package_dim.package_name end as package_name,
+case when seaware_package_dim.package_id is null then p_voy.shorex_mode else seaware_package_dim.shorex_mode end as shorex_mode,
+case when seaware_package_dim.package_id is null then p_voy.vacation_date else seaware_package_dim.vacation_date end as vacation_date,
+case when seaware_package_dim.package_id is null then p_voy.shorex_timing else seaware_package_dim.shorex_timing end as shorex_timing,
+case when seaware_package_dim.package_id is null then p_voy.geog_area_code else seaware_package_dim.geog_area_code end as geog_area_code,
+case when seaware_package_dim.package_id is null then p_voy.season_code else seaware_package_dim.season_code end as season_code,
+case when seaware_package_dim.package_id is null then p_voy.is_active else seaware_package_dim.is_active end as pkg_is_active,
+p_voy.package_name as product_name,	
+/*Agency details from Seaware-Begin*/
+seaware_agency_dim.agency_id seaware_ad_agency_id,
+seaware_agency_dim.src_agency_id seaware_ad_src_agency_id,
+seaware_agency_dim.agency_name as seaware_ad_agency_name, 
+seaware_agency_dim.agency_code as seaware_ad_agency_code,
+seaware_agency_dim.agency_sales_district as seaware_ad_agency_sales_district,
+seaware_agency_dim.agency_country as seaware_ad_agency_country,
+seaware_agency_dim.agency_state as seaware_ad_agency_state,
+seaware_agency_dim.agency_zip as seaware_ad_agency_zip,
+seaware_crm_agency_master.agency_id as seaware_crm_agency_id,
+seaware_crm_agency_master.seaware_agency_id__c as seaware_agency_id,
+/*seaware_crm_agency_master.seaware_parent_agency_id as seaware_parent_agency_id,
+seaware_crm_agency_master.seaware_parent_agency_name as seaware_parent_agency_name,
+seaware_crm_agency_master.seaware_parent_agency_firstname as seaware_parent_agency_firstname,
+seaware_crm_agency_master.seaware_parent_agency_lastname as seaware_parent_agency_lastname,
+*/ --Added as part of agency_link change. Change yet to be migrated to PROD.
+seaware_crm_agency_master.name as seaware_crm_agency_name,
+seaware_crm_agency_master.lastname as seaware_agency_lastname,
+seaware_crm_agency_master.firstname as seaware_agency_firstname,
+seaware_crm_agency_master.billingcity as seaware_agecny_billingcity,
+seaware_crm_agency_master.billingcountry as seaware_agency_billingcountry,
+seaware_crm_agency_master.billingpostalcode as seaware_agency_billingpostalcode,
+seaware_crm_agency_master.billingstate as seaware_agency_billingstate,
+seaware_crm_agency_master.billingstreet as seaware_agency_billingstreet,
+seaware_crm_agency_master.createddate as seaware_agecny_createddate,
+seaware_crm_agency_master.status__c as seaware_agecny_status, 
+seaware_crm_agency_master.territorynametext__c as seaware_agency_territorynametext,
+seaware_crm_agency_master.ownerid as seaware_agecny_ownerid,
+seaware_crm_agency_master.primary_affiliation__c as seaware_agency_primary_affiliation,
+seaware_crm_agency_master.parentid as seaware_agency_parentid,
+seaware_crm_agency_master.agency_classification__c as seaware_agency_classification,
+seaware_crm_agency_master.agency_sub_type__c as seaware_agency_sub_type,
+seaware_crm_agency_master.is_touroperator__c as seaware_agency_is_touroperator,
+seaware_crm_agency_master.client_id__c as seaware_agency_client_id,
+seaware_crm_agency_master.createdbyid as seaware_agency_createdbyid,
+seaware_crm_agency_master.lastmodifiedbyid as seaware_agency_lastmodifiedbyid,
+seaware_crm_agency_master.personhasoptedoutofemail as seaware_agency_personhasoptedoutofemail,
+seaware_crm_agency_master.hand_raiser__c as seaware_agency_hand_raiser,
+seaware_crm_agency_master.vip_tier__c as seaware_agency_vip_tier,
+seaware_crm_agency_master.webuser__c as seaware_agency_webuser,
+seaware_crm_agency_master.currency_type__c as seaware_agency_currency_type,
+/*Agency details from Seaware-End*/
+/*Agency details from CRM-Begin*/
+crm_agency_master.agency_id as crm_agency_id,
+crm_agency_master.seaware_agency_id__c as crm_seaware_agency_id,
+crm_agency_master.seaware_parent_agency_id as crm_seaware_parent_agency_id,
+crm_parent_agency.name as crm_seaware_parent_agency_name,
+crm_parent_agency.firstname as crm_seaware_parent_agency_firstname,
+crm_parent_agency.lastname as crm_seaware_parent_agency_lastname,--Added as part of agency_link change. Change yet to be migrated to PROD. Done in DEV, to be migrated to PROD.
+crm_agency_master.name as crm_agency_name,
+crm_agency_master.lastname as crm_agency_lastname,
+crm_agency_master.firstname as crm_agency_firstname,
+crm_agency_master.billingcity as crm_agecny_billingcity,
+crm_agency_master.billingcountry as crm_agency_billingcountry,
+crm_agency_master.billingpostalcode as crm_agency_billingpostalcode,
+crm_agency_master.billingstate as crm_agency_billingstate,
+crm_agency_master.billingstreet as crm_agency_billingstreet,
+crm_agency_master.createddate as crm_agecny_createddate,
+crm_agency_master.status__c as crm_agecny_status, 
+crm_agency_master.territorynametext__c as crm_agency_territorynametext,
+crm_agency_master.ownerid as crm_agecny_ownerid,
+crm_agency_master.primary_affiliation__c as crm_agency_primary_affiliation,
+crm_agency_master.parentid as crm_agency_parentid,
+crm_agency_master.agency_classification__c as crm_agency_classification,
+crm_agency_master.agency_sub_type__c as crm_agency_sub_type,
+crm_agency_master.is_touroperator__c as crm_agency_is_touroperator,
+crm_agency_master.client_id__c as crm_agency_client_id,
+crm_agency_master.createdbyid as crm_agency_createdbyid,
+crm_agency_master.lastmodifiedbyid as crm_agency_lastmodifiedbyid,
+crm_agency_master.personhasoptedoutofemail as crm_agency_personhasoptedoutofemail,
+crm_agency_master.hand_raiser__c as crm_agency_hand_raiser,
+crm_agency_master.vip_tier__c as crm_agency_vip_tier,
+crm_agency_master.webuser__c as crm_agency_webuser,
+crm_agency_master.currency_type__c as crm_agency_currency_type,
+/*Agency details from CRM-End*/
+/*Agent details from Seaware-Begin*/
+seaware_crm_agent_master.agent_id seaware_agent_id,
+seaware_crm_agent_master.seaware_agent_id__c as seaware_src_agent_id,
+seaware_crm_agent_master.name as seaware_agent_name,
+seaware_crm_agent_master.lastname as seaware_agent_lastname,
+seaware_crm_agent_master.firstname as seaware_agent_firstname,
+seaware_crm_agent_master.mailingcity as seaware_agent_mailingcity,
+seaware_crm_agent_master.mailingcountry as seaware_agent_mailingcountry,
+seaware_crm_agent_master.mailingpostalcode as seaware_agent_mailingpostalcode,
+seaware_crm_agent_master.mailingstate as seaware_agent_mailingstate,
+seaware_crm_agent_master.mailingstreet as seaware_agent_mailingstreet,
+seaware_crm_agent_master.seaware_agencyid__c as seaware_agent_seaware_agencyid,
+seaware_crm_agent_master.createddate as seaware_agent_createddate,
+seaware_crm_agent_master.agent_status__c as seaware_agent_status,
+seaware_crm_agent_master.agent_type_c as seaware_agent_type,
+seaware_crm_agent_master.email as seaware_agent_email,
+seaware_crm_agent_master.ownerid as seaware_agent_ownerid,
+seaware_crm_agent_master.role__c as seaware_agent_role,
+seaware_crm_agent_master.fmdc_approver__c as seaware_agent_fmdc_approver, 
+/*Agent details from Seaware-End*/
+/*Agent details from CRM-Begin*/
+crm_agent_master.agent_id crm_agent_id,
+crm_agent_master.seaware_agent_id__c as crm_seaware_src_agent_id,
+crm_agent_master.name as crm_agent_name,
+crm_agent_master.lastname as crm_agent_lastname,
+crm_agent_master.firstname as crm_agent_firstname,
+crm_agent_master.mailingcity as crm_agent_mailingcity,
+crm_agent_master.mailingcountry as crm_agent_mailingcountry,
+crm_agent_master.mailingpostalcode as crm_agent_mailingpostalcode,
+crm_agent_master.mailingstate as crm_agent_mailingstate,
+crm_agent_master.mailingstreet as crm_agent_mailingstreet,
+crm_agent_master.seaware_agencyid__c as crm_agent_seaware_agencyid,
+crm_agent_master.createddate as crm_agent_createddate,
+crm_agent_master.agent_status__c as crm_agent_status,
+crm_agent_master.agent_type_c as crm_agent_type,
+crm_agent_master.email as crm_agent_email,
+crm_agent_master.ownerid as crm_agent_ownerid,
+crm_agent_master.role__c as crm_agent_role,
+crm_agent_master.fmdc_approver__c as crm_agent_fmdc_approver, 
+/*Agent details from CRM-End*/
+seaware_hotel_res_req_dim.hotel_res_req_id AS hotel_res_req_id_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.request_type AS request_type_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.start_date AS start_date_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.end_date AS end_date_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.city_code AS city_code_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.hotel_id AS hotel_id_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.hotel_category AS hotel_category_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.room_seq_number AS room_seq_number_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.room_category AS room_category_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.room_type AS room_type_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.occupancy AS occupancy_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.hotel_space_type AS hotel_space_type_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.allocation_id AS allocation_id_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.inv_result AS inv_result_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.is_land_component AS is_land_component_seaware_hotel_res_req_dim,
+seaware_hotel_res_req_dim.hotel_bed_type AS hotel_bed_type_seaware_hotel_res_req_dim,
+seaware_hotel_lkp.hotel_code AS hotel_code_seaware_hotel_lkp,
+seaware_hotel_lkp.hotel_name AS hotel_name_seaware_hotel_lkp,
+seaware_hotel_lkp.hotel_type AS hotel_type_seaware_hotel_lkp,
+seaware_hotel_lkp.is_active AS is_active_seaware_hotel_lkp,
+seaware_hotel_lkp.hotel_rating AS hotel_rating_seaware_hotel_lkp,
+seaware_hotel_lkp.address_type AS address_type_seaware_hotel_lkp,
+seaware_hotel_lkp.address_line1 AS address_line1_seaware_hotel_lkp,
+seaware_hotel_lkp.address_line2 AS address_line2_seaware_hotel_lkp,
+seaware_hotel_lkp.address_line3 AS address_line3_seaware_hotel_lkp,
+seaware_hotel_lkp.address_line4 AS address_line4_seaware_hotel_lkp,
+seaware_hotel_lkp.address_city AS address_city_seaware_hotel_lkp,
+seaware_hotel_lkp.state_code AS state_code_seaware_hotel_lkp,
+seaware_hotel_lkp.zip AS zip_seaware_hotel_lkp,
+seaware_hotel_lkp.country_code AS country_code_seaware_hotel_lkp,
+seaware_ship_room_request_dim.ship_room_req_id AS ship_room_req_id_seaware_ship_room_request_dim,
+seaware_ship_room_request_dim.src_request_id AS src_request_id_seaware_ship_room_request_dim,
+seaware_ship_room_request_dim.effective_date AS effective_date_seaware_ship_room_request_dim,
+seaware_ship_room_request_dim.inventory_request_type AS inventory_request_type,
+seaware_ship_room_request_dim.usage_start AS usage_start,
+seaware_ship_room_request_dim.usage_duration AS usage_duration,
+seaware_ship_room_request_dim.party_size AS party_size_seaware_ship_room_request_dim,
+seaware_ship_room_request_dim.quantity AS quantity,
+seaware_ship_room_request_dim.allocation_id AS allocation_id_seaware_ship_room_request_dim,
+seaware_ship_room_request_dim.ship_room_id AS ship_room_id,
+seaware_ship_room_dim.src_ship_room_id AS src_ship_room_id,
+seaware_ship_room_dim.facility_id AS facility_id_seaware_ship_room_dim,
+seaware_ship_room_dim.room_number AS room_number,
+seaware_ship_room_dim.room_name AS room_name,
+seaware_ship_room_dim.room_size AS room_size,
+seaware_ship_room_dim.max_occupancy AS max_occupancy_seaware_ship_room_dim,
+seaware_ship_facility_lkp.ship_code AS ship_code_seaware_ship_facility_lkp,
+seaware_ship_facility_lkp.facility_type AS facility_type_seaware_ship_facility_lkp,
+seaware_ship_facility_lkp.facility_code AS facility_code_seaware_ship_facility_lkp,
+seaware_ship_facility_lkp.facility_name AS facility_name_seaware_ship_facility_lkp,
+seaware_ship_facility_lkp.deck_number AS deck_number_seaware_ship_facility_lkp,
+seaware_ship_facility_lkp.facility_size AS facility_size_seaware_ship_facility_lkp,
+seaware_ship_facility_lkp.assign_mode AS assign_mode_seaware_ship_facility_lkp,
+seaware_ship_facility_lkp.facility_rank AS facility_rank_seaware_ship_facility_lkp,
+seaware_ship_facility_lkp.facility_subtype AS facility_subtype_seaware_ship_facility_lkp,
+pi.ITIN_RECORD_ID as pkg_itinerary_itin_record_id,
+pi.package_type pkg_itinerary_package_type,
+pi.location_type_from pkg_itinerary_location_type_from,
+pi.location_type_to pkg_itinerary_location_type_to,	
+pi.location_code_from pkg_itinerary_location_code_from,
+pi.location_code_to pkg_itinerary_location_code_to,
+pi.DAY_NUM_FROM as pkg_itinerary_day_num_from,
+pi.time_from pkg_itinerary_time_from,
+pi.DAY_NUM_TO as pkg_itinerary_day_num_to,
+pi.time_to pkg_itinerary_time_to, 
+pi.COMPONENT_TYPE as pkg_itinerary_component_type,
+pi.COMPONENT_CODE as pkg_itinerary_component_code,
+pi.CAN_BE_EXCLUDED as pkg_itinerary_can_be_excluded,
+pi.IS_OPTIONAL as pkg_itinerary_is_optional,
+pi.PACKAGE_LINKS_INCLUSIVE as pkg_itinerary_package_links_inclusive,
+pi.DESCRIPTION as pkg_itinerary_description,
+pi.SEQ_NUM as pkg_itinerary_seq_num,
+pi.CITY_FROM as pkg_itinerary_city_from,
+pi.CITY_TO as pkg_itinerary_city_to,
+pi.OPTION_GROUP as pkg_itinerary_option_group, 
+vl.DATE_FROM as vendor_link_date_from,
+vl.DATE_TO as vendor_link_date_to,
+v.vendor_id,
+v.vendor_name,
+v.VENDOR_CODE,
+v.VENDOR_NAME_TYPED,
+v.CONTACT as vendor_contact,
+v.IS_ACTIVE as vendor_is_active,
+v.EMAIL as vendor_email,
+pt.PACKAGE_TYPE_ID,
+pt.PACKAGE_TYPE as pt_PACKAGE_TYPE,
+pt.LAND_DAYS,
+pt.SAIL_DAYS as pt_sail_days,
+pt.COMMENTS as tour_name,
+pt.PRODUCT_TYPE as pt_product_type,
+pt.LAND_DAYS_POST,
+pt.IS_LAND_ONLY,
+pt.IS_MULTI_SAIL,
+pt.IS_SHOREX,
+pt.IS_SECONDARY,
+pt.IS_ACTIVE as pt_is_active,
+pt.SHOREX_TIMING as pt_shorex_timing,
+pt.EXTRA_SEAT_QUESTION,
+pt.PRE_POST_MODE,
+pt.PACKAGE_CLASS as pt_package_class,
+pt.SAIL_SEGMENTS,
+pt.CAPACITY as pt_capacity,
+pt.ALLOW_SEGMENTS,
+pt.PACKAGE_TYPE_NAME 
+from
+	(select  
+case when revenue_comm.revenue_comm_res_id is null then 
+	case when seaware_promotion_dim.res_id is null then 
+		case when seaware_res_package_rel.res_id is null then 
+			seaware_addon_fact.res_id 
+		else 
+			seaware_res_package_rel.res_id 
+		end 	
+	else 
+		seaware_promotion_dim.res_id 
+	end 
+else 	
+	revenue_comm.revenue_comm_res_id 
+end as res_id,
+case when revenue_comm.revenue_comm_guest_id is null then 
+	case when seaware_promotion_dim.guest_id is null then 
+		case when seaware_res_package_rel.guest_id is null then 
+			seaware_addon_fact.guest_id 
+		else 
+			seaware_res_package_rel.guest_id 
+		end 	
+	else 
+		seaware_promotion_dim.guest_id 
+	end 
+else 	
+	revenue_comm.revenue_comm_guest_id 
+end as guest_id,
+case when revenue_comm.revenue_comm_promotion_id is null then 
+	seaware_promotion_dim.promotion_id  
+else 	
+	revenue_comm.revenue_comm_promotion_id 
+end as promotion_id,
+case when revenue_comm.revenue_comm_package_id is null then 
+	case when seaware_promotion_dim.package_id is null then 
+		seaware_res_package_rel.package_id  
+	else 
+		seaware_promotion_dim.package_id  
+	end 
+else 	
+	revenue_comm.revenue_comm_package_id 
+end as package_id,
+case when revenue_comm.revenue_comm_addon_id is null then 
+	seaware_addon_fact.addon_id   
+else 	
+	revenue_comm.revenue_comm_addon_id  
+end as addon_id, 
+seaware_promotion_dim.is_active as is_active_promotion,
+seaware_promotion_dim.promo_mode,
+seaware_addon_fact.quantity as addon_quantity,
+CASE WHEN (revenue_comm.invoice_item_type='VOYAGE FARE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source not in ('PROTECTED','MANUAL')) THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_voyagefare_regular,
+CASE WHEN (revenue_comm.invoice_item_type='VOYAGE FARE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'PROTECTED') THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_voyagefare_protected,
+CASE WHEN (revenue_comm.invoice_item_type='VOYAGE FARE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'MANUAL') THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_voyagefare_manual,
+CASE WHEN (revenue_comm.invoice_item_type='TAXES & FEES' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source not in ('PROTECTED','MANUAL')) THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_taxesandfees_regular,
+CASE WHEN (revenue_comm.invoice_item_type='TAXES & FEES' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'PROTECTED') THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_taxesandfees_protected,
+CASE WHEN (revenue_comm.invoice_item_type='TAXES & FEES' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'MANUAL') THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_taxesandfees_manual,
+CASE WHEN (revenue_comm.invoice_item_type='SHORE THINGS' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source not in ('PROTECTED','MANUAL')) THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_shorex_regular,
+CASE WHEN (revenue_comm.invoice_item_type='SHORE THINGS' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'PROTECTED') THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_shorex_protected,
+CASE WHEN (revenue_comm.invoice_item_type='SHORE THINGS' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'MANUAL') THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_shorex_manual,
+--base_commission_shorex_regular + base_commission_shorex_protected + base_commission_shorex_manual,
+CASE WHEN (revenue_comm.invoice_item_type in ('SAILOR LOOT','SAILOR LOOT +') and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source not in ('PROTECTED','MANUAL')) THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_sailorloot_regular,
+CASE WHEN (revenue_comm.invoice_item_type in ('SAILOR LOOT','SAILOR LOOT +') and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'PROTECTED') THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_sailorloot_protected,
+CASE WHEN (revenue_comm.invoice_item_type in ('SAILOR LOOT','SAILOR LOOT +') and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'MANUAL') THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_sailorloot_manual,
+CASE WHEN (revenue_comm.invoice_item_type='HOTEL FARE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source not in ('PROTECTED','MANUAL')) THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_hotelfare_regular,
+CASE WHEN (revenue_comm.invoice_item_type='HOTEL FARE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'PROTECTED') THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_hotelfare_protected,
+CASE WHEN (revenue_comm.invoice_item_type='HOTEL FARE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'MANUAL') THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_hotelfare_manual,
+CASE WHEN (revenue_comm.invoice_item_type='INSURANCE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source not in ('PROTECTED','MANUAL')) THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_insurance_regular,
+CASE WHEN (revenue_comm.invoice_item_type='INSURANCE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'PROTECTED') THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as base_commission_insurance_protected,
+CASE WHEN (revenue_comm.invoice_item_type='VOYAGE FARE' and revenue_comm.commission_code = 'BONUS'   
+and revenue_comm.commission_source not in ('PROTECTED','MANUAL')) THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as bonus_commission_voyagefare_regular,
+CASE WHEN (revenue_comm.invoice_item_type='VOYAGE FARE' and revenue_comm.commission_code = 'BONUS'   
+and revenue_comm.commission_source = 'PROTECTED') THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as bonus_commission_voyagefare_protected,
+CASE WHEN (revenue_comm.invoice_item_type='VOYAGE FARE' and revenue_comm.commission_code = 'BONUS'   
+and revenue_comm.commission_source = 'MANUAL') THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as bonus_commission_voyagefare_manual,
+CASE 
+         WHEN revenue_comm.commission_source = 'GSA, BOOKING, VOYAGE FARE' THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as gsa_commission_voyagefare,
+CASE 
+         WHEN revenue_comm.commission_source = 'GSA, BOOKING, TAXES & FEES' THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as gsa_commission_taxesandfees,
+CASE 
+         WHEN revenue_comm.commission_source = 'GSA, BOOKING, INSURANCE' THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as gsa_commission_insurance,
+CASE 
+         WHEN revenue_comm.commission_source = 'GSA, BOOKING, SHORE THINGS' THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as gsa_commission_shorex,
+CASE 
+         WHEN revenue_comm.commission_source = 'GSA, BOOKING, SAILOR LOOT' THEN case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end  
+       ELSE 0 
+    END as gsa_commission_sailorloot,
+CASE WHEN (revenue_comm.invoice_item_type in ('VOYAGE FARE','TAXES & FEES','INSURANCE') ) THEN 0 ELSE case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end   
+    END as base_commission_other_bookable, 
+CASE WHEN (revenue_comm.invoice_item_type='VOYAGE FARE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source not in ('PROTECTED','MANUAL')) THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate    
+       ELSE 0 
+    END as base_commission_voyagefare_regular_usd,
+CASE WHEN (revenue_comm.invoice_item_type='VOYAGE FARE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'PROTECTED') THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_voyagefare_protected_usd,
+CASE WHEN (revenue_comm.invoice_item_type='VOYAGE FARE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'MANUAL') THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate  
+       ELSE 0 
+    END as base_commission_voyagefare_manual_usd,
+CASE WHEN (revenue_comm.invoice_item_type='TAXES & FEES' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source not in ('PROTECTED','MANUAL')) THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_taxesandfees_regular_usd,
+CASE WHEN (revenue_comm.invoice_item_type='TAXES & FEES' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'PROTECTED') THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_taxesandfees_protected_usd,
+CASE WHEN (revenue_comm.invoice_item_type='TAXES & FEES' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'MANUAL') THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_taxesandfees_manual_usd,
+CASE WHEN (revenue_comm.invoice_item_type='SHORE THINGS' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source not in ('PROTECTED','MANUAL')) THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_shorex_regular_usd,
+CASE WHEN (revenue_comm.invoice_item_type='SHORE THINGS' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'PROTECTED') THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_shorex_protected_usd,
+CASE WHEN (revenue_comm.invoice_item_type='SHORE THINGS' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'MANUAL') THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_shorex_manual_usd,
+CASE WHEN (revenue_comm.invoice_item_type in ('SAILOR LOOT','SAILOR LOOT +') and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source not in ('PROTECTED','MANUAL')) THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_sailorloot_regular_usd,
+CASE WHEN (revenue_comm.invoice_item_type in ('SAILOR LOOT','SAILOR LOOT +') and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'PROTECTED') THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_sailorloot_protected_usd,
+CASE WHEN (revenue_comm.invoice_item_type in ('SAILOR LOOT','SAILOR LOOT +') and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'MANUAL') THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_sailorloot_manual_usd,
+CASE WHEN (revenue_comm.invoice_item_type='HOTEL FARE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source not in ('PROTECTED','MANUAL')) THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_hotelfare_regular_usd,
+CASE WHEN (revenue_comm.invoice_item_type='HOTEL FARE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'PROTECTED') THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_hotelfare_protected_usd,
+CASE WHEN (revenue_comm.invoice_item_type='HOTEL FARE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'MANUAL') THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_hotelfare_manual_usd,
+CASE WHEN (revenue_comm.invoice_item_type='INSURANCE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source not in ('PROTECTED','MANUAL')) THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_insurance_regular_usd,
+CASE WHEN (revenue_comm.invoice_item_type='INSURANCE' and revenue_comm.commission_code in ('STANDARD', 'SECONDARY') 
+and revenue_comm.commission_source = 'PROTECTED') THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as base_commission_insurance_protected_usd,
+CASE WHEN (revenue_comm.invoice_item_type='VOYAGE FARE' and revenue_comm.commission_code = 'BONUS'   
+and revenue_comm.commission_source not in ('PROTECTED','MANUAL')) THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as bonus_commission_voyagefare_regular_usd,
+CASE WHEN (revenue_comm.invoice_item_type='VOYAGE FARE' and revenue_comm.commission_code = 'BONUS'   
+and revenue_comm.commission_source = 'PROTECTED') THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as bonus_commission_voyagefare_protected_usd,
+CASE WHEN (revenue_comm.invoice_item_type='VOYAGE FARE' and revenue_comm.commission_code = 'BONUS'   
+and revenue_comm.commission_source = 'MANUAL') THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as bonus_commission_voyagefare_manual_usd,
+CASE 
+         WHEN revenue_comm.commission_source = 'GSA, BOOKING, VOYAGE FARE' THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as gsa_commission_voyagefare_usd,
+CASE 
+         WHEN revenue_comm.commission_source = 'GSA, BOOKING, TAXES & FEES' THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as gsa_commission_taxesandfees_usd,
+CASE 
+         WHEN revenue_comm.commission_source = 'GSA, BOOKING, INSURANCE' THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as gsa_commission_insurance_usd,
+CASE 
+         WHEN revenue_comm.commission_source = 'GSA, BOOKING, SHORE THINGS' THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as gsa_commission_shorex_usd,
+CASE 
+         WHEN revenue_comm.commission_source = 'GSA, BOOKING, SAILOR LOOT' THEN (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate   
+       ELSE 0 
+    END as gsa_commission_sailorloot_usd,
+CASE WHEN (revenue_comm.invoice_item_type in ('VOYAGE FARE','TAXES & FEES','INSURANCE') ) THEN 0 ELSE (case when revenue_comm.amount is not null then (revenue_comm.amount*COALESCE(revenue_comm.commission_percent,0)/100) else revenue_comm.commission_amount end) * revenue_comm.rev_comm_currency_rate    
+    END as base_commission_other_bookable_usd,
+revenue_comm.* 
+from 
+(
+	select 
+	case when revenue_fact.snapshot_date is null then commission_fact.snapshot_date else revenue_fact.snapshot_date end as snapshot_date, 
+	case when revenue_fact.res_id is null then commission_fact.res_id else revenue_fact.res_id end as revenue_comm_res_id, 
+	case when revenue_fact.guest_id is null then commission_fact.guest_id else revenue_fact.guest_id end as revenue_comm_guest_id,
+	case when revenue_fact.package_id is null then commission_fact.package_id else revenue_fact.package_id end as revenue_comm_package_id,
+	case when revenue_fact.invoice_item_type is null then commission_fact.invoice_item_type else revenue_fact.invoice_item_type end as invoice_item_type,
+	revenue_fact.invoice_item_subtype, 
+	case when revenue_fact.invoice_item_type_id is null then commission_fact.invoice_item_type_id else revenue_fact.invoice_item_type_id end as invoice_item_type_id,
+	case when revenue_fact.sail_id is null then commission_fact.sail_id else revenue_fact.sail_id end as sail_id,
+	case when revenue_fact.ship_id is null then commission_fact.ship_id else revenue_fact.sail_id end as ship_id,
+	revenue_fact.addon_id as revenue_comm_addon_id, 
+	revenue_fact.price_area_id, revenue_fact.booking_currency, revenue_fact.booking_currency_rate, revenue_fact.promotion_id as revenue_comm_promotion_id,
+	revenue_fact.ship_room_req_id, revenue_fact.hotel_res_req_id,  	
+	case when revenue_fact.agency_id is null then commission_fact.agency_id else revenue_fact.agency_id end as agency_id, 
+	case when revenue_fact.agent_id is null then commission_fact.agent_id else revenue_fact.agent_id end as agent_id,  
+	 revenue_fact.amount, revenue_fact.voyage_amount, revenue_fact.taxesandfees, revenue_fact.manual_adj, revenue_fact.insurance, revenue_fact.aon_insurace_payment, revenue_fact.voyage_commission_amt, revenue_fact.tax_commision_amt, revenue_fact.voyage_credit_card_fee, revenue_fact.insurance_credit_card_fee, revenue_fact.taxesandfees_credit_card_fee, revenue_fact.actual_gross_ticket_revenue, revenue_fact.actual_gross_other_revenue, revenue_fact.actual_gross_onboard_revenue, revenue_fact.actual_gross_total_revenue, revenue_fact.net_due, revenue_fact.amount_usd, revenue_fact.voyage_amount_usd, revenue_fact.taxesandfees_usd, revenue_fact.manual_adj_usd, revenue_fact.insurance_usd, revenue_fact.aon_insurace_payment_usd, revenue_fact.voyage_commission_amt_usd, revenue_fact.tax_commision_amt_usd, revenue_fact.voyage_credit_card_fee_usd, revenue_fact.insurance_credit_card_fee_usd, revenue_fact.taxesandfees_credit_card_fee_usd, revenue_fact.actual_gross_ticket_revenue_usd, revenue_fact.actual_gross_other_revenue_usd, revenue_fact.actual_gross_onboard_revenue_usd, revenue_fact.actual_gross_total_revenue_usd, revenue_fact.hotel_fare, revenue_fact.hotel_fare_usd, revenue_fact.hotel_credit_card_fee, revenue_fact.hotel_credit_card_fee_usd, revenue_fact.shorethings_fare, revenue_fact.shorethings_fare_usd, revenue_fact.PCDs, revenue_fact.sail_days, revenue_fact.actual_ticket_gpd, revenue_fact.actual_ticket_gpd_usd, revenue_fact.actual_onboard_gpd, revenue_fact.actual_onboard_gpd_usd, revenue_fact.actual_other_gpd, revenue_fact.actual_other_gpd_usd, revenue_fact.actual_total_gpd, revenue_fact.actual_total_gpd_usd, revenue_fact.APCDs,revenue_fact.total_sail_days, cast(revenue_fact.total_sail_days as float)/case when revenue_fact.APCDs=0 then 1 else cast(revenue_fact.APCDs as float) end as load_factor,
+	 commission_fact.currency_code, commission_fact.currency_rate, commission_fact.commission_type_skey, commission_fact.commission_percent, commission_fact.commission_amount, commission_fact.commission_fare, commission_fact.commission_payout_date,commission_fact.commission_type_id,
+	 commission_fact.commission_code,commission_fact.commission_source,
+	 commission_fact.is_cancelled as is_cancelled_comm,--Uncomment once column is added in commission_fact. Done in DEV, to be migrated to PROD.
+	 /* commission_fact.base_commission_voyagefare_regular, commission_fact.base_commission_voyagefare_protected, commission_fact.base_commission_voyagefare_manual, commission_fact.base_commission_voyagefare, commission_fact.base_commission_taxesandfees_regular, commission_fact.base_commission_taxesandfees_protected, commission_fact.base_commission_taxesandfees_manual, commission_fact.base_commission_taxesandfees, commission_fact.base_commission_shorex_regular, commission_fact.base_commission_shorex_protected, commission_fact.base_commission_shorex_manual, commission_fact.base_commission_shorex, commission_fact.base_commission_sailorloot_regular, commission_fact.base_commission_sailorloot_protected, commission_fact.base_commission_sailorloot_manual, commission_fact.base_commission_sailorloot, commission_fact.base_commission_hotelfare_regular, commission_fact.base_commission_hotelfare_protected, commission_fact.base_commission_hotelfare_manual, commission_fact.base_commission_hotelfare, commission_fact.base_commission_insurance, commission_fact.bonus_commission_voyagefare_regular, commission_fact.bonus_commission_voyagefare_protected, commission_fact.bonus_commission_voyagefare_manual, commission_fact.bonus_commission, commission_fact.voyagefare_commission, commission_fact.gsa_commission_voyagefare, commission_fact.gsa_commission_taxesandfees, commission_fact.gsa_commission_insurance, commission_fact.gsa_commission_shorex, commission_fact.gsa_commission_sailorloot, commission_fact.protected_commission, commission_fact.base_protected_commission, commission_fact.base_commission_other_bookable, commission_fact.base_commission_voyagefare_regular_usd, commission_fact.base_commission_voyagefare_protected_usd, commission_fact.base_commission_voyagefare_manual_usd, commission_fact.base_commission_voyagefare_usd, commission_fact.base_commission_taxesandfees_regular_usd, commission_fact.base_commission_taxesandfees_protected_usd, commission_fact.base_commission_taxesandfees_manual_usd, commission_fact.base_commission_taxesandfees_usd, commission_fact.base_commission_shorex_regular_usd, commission_fact.base_commission_shorex_protected_usd, commission_fact.base_commission_shorex_manual_usd, commission_fact.base_commission_shorex_usd, commission_fact.base_commission_sailorloot_regular_usd, commission_fact.base_commission_sailorloot_protected_usd, commission_fact.base_commission_sailorloot_manual_usd, commission_fact.base_commission_sailorloot_usd, commission_fact.base_commission_hotelfare_regular_usd, commission_fact.base_commission_hotelfare_protected_usd, commission_fact.base_commission_hotelfare_manual_usd, commission_fact.base_commission_hotelfare_usd, commission_fact.base_commission_insurance_usd, commission_fact.bonus_commission_voyagefare_regular_usd, commission_fact.bonus_commission_voyagefare_protected_usd, commission_fact.bonus_commission_voyagefare_manual_usd, commission_fact.bonus_commission_usd, commission_fact.voyagefare_commission_usd, commission_fact.gsa_commission_voyagefare_usd, commission_fact.gsa_commission_taxesandfees_usd, commission_fact.gsa_commission_insurance_usd, commission_fact.gsa_commission_shorex_usd, commission_fact.gsa_commission_sailorloot_usd, commission_fact.protected_commission_usd, commission_fact.base_protected_commission_usd, commission_fact.base_commission_other_bookable_usd, */ 
+	case when revenue_fact.booking_currency is null then commission_fact.currency_code else revenue_fact.booking_currency end as rev_comm_currency_code,
+	case when revenue_fact.booking_currency_rate is null then commission_fact.currency_rate else revenue_fact.booking_currency_rate end as rev_comm_currency_rate,
+	revenue_fact.charge_id, revenue_fact.charge_component_code, revenue_fact.charge_state, revenue_fact.action_type, revenue_fact.charge_explanation, 
+revenue_fact.charge_change_area, revenue_fact.charge_action_timestamp, revenue_fact.charge_is_added_manually, revenue_fact.charge_is_final, revenue_fact.charge_comments, revenue_fact.charge_src_record_id, revenue_fact.charge_amount	
+	 from
+    	(
+        select snapshot_date
+              , res_id
+              , guest_id
+			  , package_id
+			  , invoice_item_type
+			  , invoice_item_subtype
+			  , invoice_item_type_id
+			  , sail_id
+			  , ship_id
+			  , addon_id
+			  , price_area_id 
+			  , booking_currency
+			  , booking_currency_rate 
+			  , promotion_id
+			  , ship_room_req_id
+			  , hotel_res_req_id 	
+              , agency_id --Using agent & agency ids from reservation_dim in main query 
+			  , agent_id --Using agent & agency ids from reservation_dim in main query 
+			, amount
+ 			,voyage_amount
+			,taxesandfees
+			,manual_adj
+			,insurance
+			,aon_insurace_payment
+			,voyage_commission_amt
+			,tax_commision_amt
+			,voyage_credit_card_fee
+			,insurance_credit_card_fee
+			,taxesandfees_credit_card_fee
+			,actual_gross_ticket_revenue
+			,actual_gross_other_revenue
+			,actual_gross_onboard_revenue
+			,actual_gross_total_revenue
+			,net_due
+			,amount_usd
+			,voyage_amount_usd
+			,taxesandfees_usd
+			,manual_adj_usd
+			,insurance_usd
+			,aon_insurace_payment_usd
+			,voyage_commission_amt_usd
+			,tax_commision_amt_usd
+			,voyage_credit_card_fee_usd
+			,insurance_credit_card_fee_usd
+			,taxesandfees_credit_card_fee_usd
+			,actual_gross_ticket_revenue_usd
+			,actual_gross_other_revenue_usd
+			,actual_gross_onboard_revenue_usd
+			,actual_gross_total_revenue_usd
+			,hotel_fare
+			,hotel_fare_usd
+			,hotel_credit_card_fee
+			,hotel_credit_card_fee_usd 
+			,shorethings_fare
+			,shorethings_fare_usd 
+			,PCDs
+			,sail_days
+			,actual_ticket_gpd
+			,actual_ticket_gpd_usd
+			,actual_onboard_gpd 
+			,actual_onboard_gpd_usd 
+			,actual_other_gpd 
+			,actual_other_gpd_usd 
+			,actual_total_gpd
+			,actual_total_gpd_usd
+			,APCDs
+			,total_sail_days 
+			--,sum(sd.sail_days)/(2770 * max(sd.sail_days)) as load_factor 
+			, charge_id, charge_component_code, charge_state, action_type, charge_explanation, 
+charge_change_area, charge_action_timestamp, charge_is_added_manually, charge_is_final, charge_comments, charge_src_record_id,
+charge_amount, row_num from    
+			/*(
+			select
+				revn.snapshot_date
+              , revn.res_id
+              , revn.guest_id
+			  , revn.package_id
+			  , inv.invoice_item_type
+			  , inv.invoice_item_subtype
+			  , inv.invoice_item_type_id
+			  , revn.sail_id
+			  , revn.ship_id
+			  , revn.addon_id
+			  , revn.price_area_id 
+			  , revn.currency booking_currency
+			  , revn.currency_rate booking_currency_rate 
+			  , revn.promotion_id
+			  , revn.ship_room_req_id
+			  , revn.hotel_res_req_id 	
+              , max(revn.agency_id) agency_id --Using agent & agency ids from reservation_dim in main query 
+			  , max(revn.agent_id) agent_id --Using agent & agency ids from reservation_dim in main query 
+			,sum(revn.amount) amount
+ 			,sum(revn.voyage_amount) voyage_amount
+			,sum(revn.taxesandfees) taxesandfees
+			,sum(revn.manual_adj) manual_adj
+			,sum(revn.insurance) insurance
+			,sum(revn.aon_insurace_payment) aon_insurace_payment
+			,sum(revn.voyage_commission_amt) voyage_commission_amt
+			,sum(revn.tax_commision_amt) tax_commision_amt
+			,sum(revn.voyage_credit_card_fee) voyage_credit_card_fee
+			,sum(revn.insurance_credit_card_fee) insurance_credit_card_fee
+			,sum(revn.taxesandfees_credit_card_fee) taxesandfees_credit_card_fee
+			,sum(revn.actual_gross_ticket_revenue) actual_gross_ticket_revenue
+			,sum(revn.actual_gross_other_revenue) actual_gross_other_revenue
+			,sum(revn.actual_gross_onboard_revenue) actual_gross_onboard_revenue
+			,sum(revn.actual_gross_total_revenue) actual_gross_total_revenue
+			,max(net_due) net_due
+			,sum(revn.amount_usd) amount_usd
+			,sum(revn.voyage_amount_usd) voyage_amount_usd
+			,sum(revn.taxesandfees_usd) taxesandfees_usd
+			,sum(revn.manual_adj_usd) manual_adj_usd
+			,sum(revn.insurance_usd) insurance_usd
+			,sum(revn.aon_insurace_payment_usd) aon_insurace_payment_usd
+			,sum(revn.voyage_commission_amt_usd) voyage_commission_amt_usd
+			,sum(revn.tax_commision_amt_usd) tax_commision_amt_usd
+			,sum(revn.voyage_credit_card_fee_usd) voyage_credit_card_fee_usd
+			,sum(revn.insurance_credit_card_fee_usd) insurance_credit_card_fee_usd
+			,sum(revn.taxesandfees_credit_card_fee_usd) taxesandfees_credit_card_fee_usd
+			,sum(revn.actual_gross_ticket_revenue_usd) actual_gross_ticket_revenue_usd
+			,sum(revn.actual_gross_other_revenue_usd) actual_gross_other_revenue_usd
+			,sum(revn.actual_gross_onboard_revenue_usd) actual_gross_onboard_revenue_usd
+			,sum(revn.actual_gross_total_revenue_usd) actual_gross_total_revenue_usd
+			,sum(case when invoice_item_type='HOTEL FARE' then amount END) as hotel_fare
+			,sum(case when invoice_item_type='HOTEL FARE' then amount END)*revn.currency_rate as hotel_fare_usd
+			,COALESCE(hotel_fare     *0.025, 0)                         AS hotel_credit_card_fee
+			,COALESCE(hotel_fare_usd     *0.025, 0)                         AS hotel_credit_card_fee_usd 
+			,sum(case when invoice_item_type='SHORE THINGS' then amount END) as shorethings_fare
+			,sum(case when invoice_item_type='SHORE THINGS' then amount END)*revn.currency_rate as shorethings_fare_usd 
+			,max(sd.sail_days) PCDs
+			,max(sd.sail_days) sail_days
+			,sum(revn.actual_gross_ticket_revenue)/max(sd.sail_days) actual_ticket_gpd
+			,(sum(revn.actual_gross_ticket_revenue)/max(sd.sail_days))*revn.currency_rate as actual_ticket_gpd_usd
+			,sum(revn.actual_gross_onboard_revenue)/max(sd.sail_days) actual_onboard_gpd 
+			,(sum(revn.actual_gross_onboard_revenue)/max(sd.sail_days))*revn.currency_rate as actual_onboard_gpd_usd 
+			,sum(revn.actual_gross_other_revenue)/max(sd.sail_days) actual_other_gpd 
+			,(sum(revn.actual_gross_other_revenue)/max(sd.sail_days))*revn.currency_rate as actual_other_gpd_usd 
+			,sum(revn.actual_gross_total_revenue)/max(sd.sail_days) actual_total_gpd
+			,(sum(revn.actual_gross_total_revenue)/max(sd.sail_days))*revn.currency_rate as actual_total_gpd_usd
+			,2770 * max(sd.sail_days) as APCDs
+			,sum(sd.sail_days) as total_sail_days 
+			--,sum(sd.sail_days)/(2770 * max(sd.sail_days)) as load_factor 
+			, -1 as charge_id, null as charge_component_code, null as charge_state, null as action_type, null as charge_explanation, 
+null as charge_change_area, '1900-01-01'::date as charge_action_timestamp, null as charge_is_added_manually, null as charge_is_final, null as charge_comments, -1 as charge_src_record_id,
+sum(0) as charge_amount 
+            from
+                seaware.seaware_revenue_fact revn
+                left join
+                    hive_schema_stg.seaware_invoice_item_type_lkp inv
+                    on
+                        revn.invoice_item_type_id = inv.invoice_item_type_id
+				left join 
+					hive_schema_stg.seaware_sail_dim sd	
+					on sd.sail_id = revn.sail_id 
+            where
+                revn.snapshot_date =
+                (
+                    select
+                        max(snapshot_date)
+                    from
+                        hive_schema_stg.seaware_revenue_fact
+                )
+            group by
+				revn.snapshot_date
+              , revn.res_id
+              , revn.guest_id
+			  , revn.package_id
+              , inv.invoice_item_type
+			  , inv.invoice_item_subtype
+			  , inv.invoice_item_type_id
+			  , revn.sail_id
+			  , revn.ship_id 
+			  , revn.price_area_id 
+			  , revn.addon_id
+			  , revn.ship_room_req_id
+			  , revn.hotel_res_req_id 
+			  , booking_currency
+			  , booking_currency_rate 
+			  , promotion_id
+			  , sail_days
+			  , charge_id
+			  , charge_component_code
+			  , charge_state
+			  , charge_explanation 
+			  , charge_change_area
+			  , charge_action_timestamp
+			  , charge_is_added_manually
+			  , charge_is_final
+			  , charge_comments
+			  , charge_src_record_id 		  
+UNION 
+            select
+			  null as snapshot_date
+              , rd_curr.res_id
+              , case when rel.guest_id is null then rel_seqn1.guest_id else rel.guest_id end as guest_id  
+			  , case when pd.package_id is null then pd_voy.package_id else pd.package_id end as package_id 
+			  , null as invoice_item_type
+			  , null as invoice_item_subtype
+			  , -1 invoice_item_type_id
+			  , sd.sail_id
+			  , sh.ship_id
+			  , -1 addon_id
+			  , -1 price_area_id 
+			  , null as booking_currency
+			  , null as booking_currency_rate 
+			  , -1 as promotion_id
+			  , -1 as ship_room_req_id
+			  , -1 as hotel_res_req_id 	
+              , ad.agency_id --Using agent & agency ids from reservation_dim 
+			  , agt.agent_id --Using agent & agency ids from reservation_dim 
+			,0 amount
+ 			,0 voyage_amount
+			,0 taxesandfees
+			,0 manual_adj
+			,0 insurance
+			,0 aon_insurace_payment
+			,0 voyage_commission_amt
+			,0 tax_commision_amt
+			,0 voyage_credit_card_fee
+			,0 insurance_credit_card_fee
+			,0 taxesandfees_credit_card_fee
+			,0 actual_gross_ticket_revenue
+			,0 actual_gross_other_revenue
+			,0 actual_gross_onboard_revenue
+			,0 actual_gross_total_revenue
+			,0 net_due
+			,0 amount_usd
+			,0 voyage_amount_usd
+			,0 taxesandfees_usd
+			,0 manual_adj_usd
+			,0 insurance_usd
+			,0 aon_insurace_payment_usd
+			,0 voyage_commission_amt_usd
+			,0 tax_commision_amt_usd
+			,0 voyage_credit_card_fee_usd
+			,0 insurance_credit_card_fee_usd
+			,0 taxesandfees_credit_card_fee_usd
+			,0 actual_gross_ticket_revenue_usd
+			,0 actual_gross_other_revenue_usd
+			,0 actual_gross_onboard_revenue_usd
+			,0 actual_gross_total_revenue_usd
+			,0 as hotel_fare
+			,0 as hotel_fare_usd
+			,0 as hotel_credit_card_fee
+			,0 AS hotel_credit_card_fee_usd 
+			,0 as shorethings_fare
+			,0 as shorethings_fare_usd 
+			,0 as PCDs
+			,0 as sail_days
+			,0 as actual_ticket_gpd
+			,0 as actual_ticket_gpd_usd
+			,0 as actual_onboard_gpd 
+			,0 as actual_onboard_gpd_usd 
+			,0 as actual_other_gpd 
+			,0 as actual_other_gpd_usd 
+			,0 as actual_total_gpd
+			,0 as actual_total_gpd_usd
+			,0 as APCDs
+			,0 as total_sail_days
+			, c.charge_id, c.charge_component_code, c.charge_state, c.action_type, c.explanation as charge_explanation, 
+c.change_area as charge_change_area, c.action_timestamp as charge_action_timestamp, c.is_added_manually as charge_is_added_manually, c.is_final as charge_is_final, c.comments as charge_comments,c.src_record_id as charge_src_record_id,
+c.amount as charge_amount  	
+from seaware.seaware_charge_evt c 
+left join hive_schema_stg.seaware_reservation_dim rd on c.res_id=rd.res_id 
+left join hive_schema_stg.seaware_reservation_dim rd_curr on rd.src_res_id=rd_curr.src_res_id and rd_curr.rec_end_dttm='9999-12-31' 
+left join hive_schema_stg.seaware_res_guest_rel rel on rd_curr.res_id=rel.res_id and c.guest_seqn = rel.guest_seqn 
+left join hive_schema_stg.seaware_package_dim pd on c.src_package_id=pd.src_package_id and pd.rec_end_dttm='9999-12-31' 
+left join hive_schema_stg.seaware_sail_dim sd on rd.src_sail_id = sd.src_sail_id and sd.rec_end_dttm ='9999-12-31' 
+left join hive_schema_stg.seaware_ship_dim sh on sd.ship_id = sh.ship_id 
+left join hive_schema_stg.seaware_package_dim pd_voy on rd_curr.src_sail_id = pd_voy.src_sail_id and pd_voy.package_class='VOYAGE'	and pd_voy.rec_end_dttm = '9999-12-31'
+left join hive_schema_stg.seaware_res_guest_rel rel_seqn1 on rel_seqn1.res_id = rd_curr.res_id and rel_seqn1.guest_seqn =1 
+--left join hive_schema_stg.crm_agency_master agc on rd_curr.seaware_agency_id = agc.seaware_agency_id__c and agc.rec_end_dttm ='9999-12-31' 
+left join hive_schema_stg.seaware_agency_dim ad on ad.src_agency_id = rd_curr.seaware_agency_id and ad.rec_end_dttm = '9999-12-31' 
+left join hive_schema_stg.crm_agent_master agt on rd_curr.seaware_agent_id = agt.seaware_agent_id__c and agt.rec_end_dttm = '9999-12-31' 
+where rd_curr.res_id is not null and (rel.guest_id is not null or rel_seqn1.guest_id is not null) 
+)*/seaware.seaware_revenue_commission_analysis_cube_temp revenue_charge  	
+        ) revenue_fact 
+	full join
+        (
+		select cf.snapshot_date, cf.res_id, cf.guest_id, cf.package_id, 
+		cf.addon_id, --Done in DEV, to be migrated to PROD.
+		cf.invoice_item_type_id, cf.ship_id, cf.agency_id, cf.agent_id, cf.sail_id, cf.currency_code, cf.currency_rate, cf.commission_type_skey, cf.commission_percent, cf.commission_amount, cf.commission_fare, cf.commission_payout_date,
+		cf.charge_id, cf.is_cancelled,--Uncomment once column is added in commission_fact. Done in DEV, to be migrated to PROD.
+		/* cf.base_commission_voyagefare_regular, cf.base_commission_voyagefare_protected, cf.base_commission_voyagefare_manual, cf.base_commission_voyagefare, cf.base_commission_taxesandfees_regular, cf.base_commission_taxesandfees_protected, cf.base_commission_taxesandfees_manual, cf.base_commission_taxesandfees, cf.base_commission_shorex_regular, cf.base_commission_shorex_protected, cf.base_commission_shorex_manual, cf.base_commission_shorex, cf.base_commission_sailorloot_regular, cf.base_commission_sailorloot_protected, cf.base_commission_sailorloot_manual, cf.base_commission_sailorloot, cf.base_commission_hotelfare_regular, cf.base_commission_hotelfare_protected, cf.base_commission_hotelfare_manual, cf.base_commission_hotelfare, cf.base_commission_insurance, cf.bonus_commission_voyagefare_regular, cf.bonus_commission_voyagefare_protected, cf.bonus_commission_voyagefare_manual, cf.bonus_commission, cf.voyagefare_commission, cf.gsa_commission_voyagefare, cf.gsa_commission_taxesandfees, cf.gsa_commission_insurance, cf.gsa_commission_shorex, cf.gsa_commission_sailorloot, cf.protected_commission, cf.base_protected_commission, cf.base_commission_other_bookable, cf.base_commission_voyagefare_regular_usd, cf.base_commission_voyagefare_protected_usd, cf.base_commission_voyagefare_manual_usd, cf.base_commission_voyagefare_usd, cf.base_commission_taxesandfees_regular_usd, cf.base_commission_taxesandfees_protected_usd, cf.base_commission_taxesandfees_manual_usd, cf.base_commission_taxesandfees_usd, cf.base_commission_shorex_regular_usd, cf.base_commission_shorex_protected_usd, cf.base_commission_shorex_manual_usd, cf.base_commission_shorex_usd, cf.base_commission_sailorloot_regular_usd, cf.base_commission_sailorloot_protected_usd, cf.base_commission_sailorloot_manual_usd, cf.base_commission_sailorloot_usd, cf.base_commission_hotelfare_regular_usd, cf.base_commission_hotelfare_protected_usd, cf.base_commission_hotelfare_manual_usd, cf.base_commission_hotelfare_usd, cf.base_commission_insurance_usd, cf.bonus_commission_voyagefare_regular_usd, cf.bonus_commission_voyagefare_protected_usd, cf.bonus_commission_voyagefare_manual_usd, cf.bonus_commission_usd, cf.voyagefare_commission_usd, cf.gsa_commission_voyagefare_usd, cf.gsa_commission_taxesandfees_usd, cf.gsa_commission_insurance_usd, cf.gsa_commission_shorex_usd, cf.gsa_commission_sailorloot_usd, cf.protected_commission_usd, cf.base_protected_commission_usd, cf.base_commission_other_bookable_usd,*/    
+		seaware_invoice_item_type_lkp.invoice_item_type invoice_item_type,
+		seaware_commission_type_lkp.commission_type_id commission_type_id,
+		seaware_commission_type_lkp.commission_code commission_code,
+		seaware_commission_type_lkp.commission_source commission_source 
+		from hive_schema_stg.seaware_commission_fact cf   
+		join s2 on s2.max_snap_date = cf.snapshot_date 
+		left join hive_schema_stg.seaware_invoice_item_type_lkp seaware_invoice_item_type_lkp on cf.invoice_item_type_id = seaware_invoice_item_type_lkp.invoice_item_type_id 
+		left join hive_schema_stg.seaware_commission_type_lkp seaware_commission_type_lkp on cf.commission_type_skey = seaware_commission_type_lkp.commission_type_id
+		) 
+		commission_fact 
+		on
+            revenue_fact.res_id                = commission_fact.res_id
+            and revenue_fact.guest_id          = commission_fact.guest_id
+            and revenue_fact.package_id        = commission_fact.package_id
+			/*and revenue_fact.invoice_item_type = commission_fact.invoice_item_type*/ 
+            and (case when revenue_fact.charge_id=-1 then revenue_fact.invoice_item_type = commission_fact.invoice_item_type else 1=1 end)  --Uncomment and Replace above join condition with this one once charge_id is added to commission_fact. Done in DEV, to be migrated to PROD. 
+			and revenue_fact.addon_id		   = commission_fact.addon_id --Part of Addon_id addition to commission_fact. Done in DEV, to be migrated to PROD.
+			and (case when revenue_fact.charge_id<>-1 then (revenue_fact.charge_id = commission_fact.charge_id and revenue_fact.row_num=1) else 1=1 end)--Uncomment once charge_id is added to commission_fact. Done in DEV, to be migrated to PROD. 
+	) revenue_comm 
+	full join (select * from hive_schema_stg.seaware_addon_fact where snapshot_date=(select max(snapshot_date) from hive_schema_stg.seaware_addon_fact)) seaware_addon_fact 
+	on (revenue_comm.revenue_comm_res_id = seaware_addon_fact.res_id and revenue_comm.revenue_comm_guest_id = seaware_addon_fact.guest_id and revenue_comm.revenue_comm_addon_id = seaware_addon_fact.addon_id) 
+	full join (select * from hive_schema_stg.seaware_promotion_dim where rec_end_dttm ='9999-12-31') as seaware_promotion_dim ON (revenue_comm.revenue_comm_res_id=seaware_promotion_dim.res_id and revenue_comm.revenue_comm_guest_id=seaware_promotion_dim.guest_id and revenue_comm.revenue_comm_package_id=seaware_promotion_dim.package_id and revenue_comm.revenue_comm_promotion_id=seaware_promotion_dim.promotion_id)--Per data in seaware_promotion_dim, it maintains all latest IDs. If not will have to replace this with alias 	
+	full join (select rd.res_id, gd.guest_id, pd.package_id, rp_rel.* from hive_schema_stg.seaware_res_package_rel rp_rel 
+	join hive_schema_stg.seaware_reservation_dim rd on rp_rel.src_res_id=rd.src_res_id and rd.rec_end_dttm ='9999-12-31' 
+	join hive_schema_stg.seaware_guest_dim gd on rp_rel.src_guest_id = gd.src_guest_id and gd.rec_end_dttm ='9999-12-31' 
+	join hive_schema_stg.seaware_package_dim pd on rp_rel.src_package_id = pd.src_package_id and pd.rec_end_dttm ='9999-12-31'
+	where rp_rel.rec_end_dttm ='9999-12-31') seaware_res_package_rel 
+	on (seaware_res_package_rel.res_id=revenue_comm.revenue_comm_res_id and seaware_res_package_rel.guest_id=revenue_comm.revenue_comm_guest_id and seaware_res_package_rel.package_id=revenue_comm.revenue_comm_package_id) 
+	) revenue_comm_etc 		
+    /*left join
+        hive_schema_stg.seaware_commission_type_lkp seaware_commission_type_lkp
+        on
+            revenue_comm_etc.commission_type_skey = seaware_commission_type_lkp.commission_type_id */
+	left join hive_schema_stg.seaware_price_area_lkp seaware_price_area_lkp 
+		on seaware_price_area_lkp.price_area_id = revenue_comm_etc.price_area_id
+	left join hive_schema_stg.seaware_promotion_lkp seaware_promotion_lkp 
+		on seaware_promotion_lkp.promotion_id = revenue_comm_etc.promotion_id 
+	full join (select res_id, guest_id from hive_schema_stg.seaware_res_guest_rel union all select distinct res_id, guest_id from hive_schema_stg.seaware_revenue_fact where snapshot_date = (select max(snapshot_date) from hive_schema_stg.seaware_revenue_fact)) seaware_res_guest_rel 
+		on 
+		revenue_comm_etc.res_id = seaware_res_guest_rel.res_id and revenue_comm_etc.guest_id = seaware_res_guest_rel.guest_id 	
+	full join
+        (select * from seaware.seaware_reservation_dim where rec_end_dttm='9999-12-31') seaware_reservation_dim 
+        on
+          seaware_res_guest_rel.res_id = seaware_reservation_dim.res_id  
+	full join 
+		(select * from hive_schema_stg.seaware_guest_dim where rec_end_dttm='9999-12-31') seaware_guest_dim  
+		on 
+		seaware_res_guest_rel.guest_id = seaware_guest_dim.guest_id	 
+	full join
+        (select * from hive_schema_stg.seaware_package_dim where rec_end_dttm='9999-12-31') seaware_package_dim
+        on
+            revenue_comm_etc.package_id = seaware_package_dim.package_id 
+	--full join for sail_dim is failing hence taking left join with reservation_dim and package_dim conditionally. This will list sailings as long as it has either reservations or has packages associated to it. 
+	left join
+        (select * from hive_schema_stg.seaware_sail_dim where rec_end_dttm='9999-12-31') seaware_sail_dim
+        on
+            --seaware_reservation_dim.sail_id = seaware_sail_dim.sail_id  		
+			case when seaware_reservation_dim.res_id is null then (seaware_sail_dim.src_sail_id = seaware_package_dim.src_sail_id) else (seaware_reservation_dim.src_sail_id = seaware_sail_dim.src_sail_id) end   
+	left join
+        seaware.seaware_ship_dim seaware_ship_dim
+        on
+            seaware_sail_dim.ship_id = seaware_ship_dim.ship_id
+	left join hive_schema_stg.seaware_package_dim p_voy on seaware_sail_dim.src_sail_id=p_voy.src_sail_id and  p_voy.package_class='VOYAGE'	and p_voy.rec_end_dttm = '9999-12-31'
+	left join seaware.seaware_group_dim seaware_group_dim  
+		on 
+		    seaware_reservation_dim.src_group_id = seaware_group_dim.src_group_id and seaware_group_dim.rec_end_dttm='9999-12-31 00:00:00'
+	LEFT JOIN 
+       (select f.*,rd.src_res_id, gd.src_guest_id from seaware.seaware_booked_cabin_reservation_dim f  
+       INNER JOIN seaware.seaware_reservation_dim rd ON (rd.res_id = f.res_id) 
+       INNER JOIN seaware.seaware_guest_dim gd ON (gd.guest_id = f.guest_id)  
+       where f.rec_end_dttm='9999-12-31 00:00:00' 
+       ) seaware_booked_cabin_reservation_dim   
+       on seaware_reservation_dim.src_res_id = seaware_booked_cabin_reservation_dim.src_res_id and seaware_guest_dim.src_guest_id=seaware_booked_cabin_reservation_dim.src_guest_id 
+	LEFT JOIN seaware.seaware_cabin_master_dim seaware_cabin_master ON (seaware_booked_cabin_reservation_dim.cabin_id = seaware_cabin_master.cabin_id) 
+	left join hive_schema_stg.seaware_addon_lkp seaware_addon_lkp on (revenue_comm_etc.addon_id=seaware_addon_lkp.addon_id)	
+	/*Agency & agent details from Seaware-Begin*/		
+	left join
+        hive_schema_stg.seaware_agency_dim seaware_agency_dim
+        on revenue_comm_etc.agency_id = seaware_agency_dim.agency_id 
+	left join crm.crm_agency_master seaware_crm_agency_master --replacing hive_schema_stg with crm for view level fields
+		on seaware_crm_agency_master.seaware_agency_id__c = seaware_agency_dim.src_agency_id and seaware_crm_agency_master.rec_end_dttm='9999-12-31 00:00:00' 
+	left join crm.crm_agent_master seaware_crm_agent_master
+        on
+            revenue_comm_etc.agent_id = seaware_crm_agent_master.agent_id --and seaware_crm_agent_master.rec_end_dttm='9999-12-31 00:00:00' 	
+	/*Agency & agent details from Seaware-End*/		
+	/*Agency & agent details from CRM-Begin*/		
+    left join
+        hive_schema_stg.crm_agency_master crm_agency_master 
+        on
+            seaware_reservation_dim.seaware_agency_id = crm_agency_master.seaware_agency_id__c and crm_agency_master.rec_end_dttm='9999-12-31 00:00:00'  
+	left join hive_schema_stg.crm_agency_master crm_parent_agency on crm_agency_master.seaware_parent_agency_id = crm_parent_agency.seaware_agency_id__c and crm_parent_agency.rec_end_dttm='9999-12-31' --Added as part of agency_link change. Done in DEV, to be migrated to PROD.
+    left join
+        hive_schema_stg.crm_agent_master crm_agent_master
+        on
+            seaware_reservation_dim.seaware_agent_id = crm_agent_master.seaware_agent_id__c and crm_agent_master.rec_end_dttm='9999-12-31 00:00:00' 
+	/*Agency & agent details from CRM-End*/					
+	left join seaware.seaware_hotel_res_req_dim seaware_hotel_res_req_dim ON (revenue_comm_etc.hotel_res_req_id = seaware_hotel_res_req_dim.hotel_res_req_id and seaware_hotel_res_req_dim.rec_end_dttm='9999-12-31 00:00:00') 
+	left join seaware.seaware_hotel_lkp seaware_hotel_lkp ON (seaware_hotel_res_req_dim.hotel_id = seaware_hotel_lkp.hotel_id)	
+	left join seaware.seaware_ship_room_request_dim seaware_ship_room_request_dim ON (revenue_comm_etc.ship_room_req_id = seaware_ship_room_request_dim.ship_room_req_id)
+	left join seaware.seaware_ship_room_dim seaware_ship_room_dim ON (seaware_ship_room_request_dim.ship_room_id = seaware_ship_room_dim.ship_room_id and seaware_ship_room_dim.rec_end_dttm='9999-12-31 00:00:00') 
+    left join seaware.seaware_ship_facility_lkp seaware_ship_facility_lkp ON (seaware_ship_room_dim.facility_id = seaware_ship_facility_lkp.facility_id) 
+	left join hive_schema_stg.hvtb_nbx_landing_sw_rpl_package_type pt on case when seaware_package_dim.package_id is null then p_voy.package_type else seaware_package_dim.package_type end = pt.package_type
+	left join hive_schema_stg.hvtb_nbx_landing_sw_rpl_package_itinerary pi on case when seaware_package_dim.package_id is null then p_voy.package_type else seaware_package_dim.package_type end = pi.package_type
+	left join hive_schema_stg.hvtb_nbx_landing_sw_rpl_package_type_vendor_link vl on case when seaware_package_dim.package_id is null then p_voy.package_type else seaware_package_dim.package_type end = vl.package_type
+	left join hive_schema_stg.hvtb_nbx_landing_sw_rpl_vendor v on vl.vendor_id = v.vendor_id
+    left join
+        (
+            select
+                a.res_id
+              , trans_time_stamp
+            from
+                hive_schema_stg.seaware_transaction_evt a
+            where
+                trans_id =
+                (
+                    select
+                        max(trans_id)
+                    from
+                        hive_schema_stg.seaware_transaction_evt b
+                    where
+                        a.res_id        =b.res_id
+                        and lower(b.trans_type)='pmnt'
+                        and lower(trans_status)='ok'
+                )
+        )
+        tran
+        on
+            tran.res_id = seaware_reservation_dim.res_id
+	left join seaware.Geo_Analysis geo_analysis 
+		on seaware_guest_dim.country = geo_analysis.country and seaware_guest_dim.state = geo_analysis.state and seaware_guest_dim.zip = geo_analysis.zip 
+	left join seaware.hbtb_nbx_sailor_tribes_vw	hbtb_nbx_sailor_tribes_vw 
+		on hbtb_nbx_sailor_tribes_vw.seaware_id = seaware_guest_dim.client_id and hbtb_nbx_sailor_tribes_vw.isactive = 'Y' 
+	) main
+;
+
+drop table if exists seaware.seaware_revenue_commission_analysis_cube_temp;
+
+END;

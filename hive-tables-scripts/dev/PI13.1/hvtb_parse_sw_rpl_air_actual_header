@@ -1,0 +1,42 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_parse_sw_rpl_air_actual_header`( 
+  `header_id` int, 
+  `air_booking_id` string, 
+  `is_independent` string, 
+  `status` string, 
+  `fare_kind` string, 
+  `ticket_by_date` timestamp, 
+  `est_penalty_amount` double,
+  `est_penalty_percent` double,
+  `payment_due_date` timestamp,
+  `payment_due_amount` double,
+  `search_params` string,
+  `external_data` string,
+  `created_at` timestamp,
+  `updated_at` timestamp,
+  `comments` string,
+  `option_code` string,
+  `guest_mask` boolean,
+  `effective_date` timestamp,
+  `provider` string,
+  `is_paid` string,
+  `hold_updates_to_air_system` string,
+  `tkt_auth_sent` string,
+  `is_bundled` string,
+  `version` double,
+  `is_external` string,
+  `stored_air_state` string,
+  `op` string, 
+  `ts_ms` timestamp, 
+  `shipcode` string, 
+  `voyageid` string, 
+  `batchtime` timestamp)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/parse/seaware/hvtb_parse_sw_rpl_air_actual_header'

@@ -1,0 +1,18 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.allergy_dim_tmp
+(allergy_skey bigint                               
+, voyage_id string                                                                             
+, source string                                                                                
+, allergy_id string                                                                            
+, parent_allergy_id string                                                                     
+, allergy_code string                                                                          
+, allergy_name string                                                                          
+, src_active_flg boolean                                                                            
+, load_dt timestamp                                                                                 
+, upd_dt timestamp                                                                                  
+, primaryhash string                                                                           
+, md5_hash string                                                                                   
+)                                                                                                   
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_allergy/*']
+);

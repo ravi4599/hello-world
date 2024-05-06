@@ -1,0 +1,3 @@
+create view shipdw.person_dim as
+SELECT *
+FROM hive_schema_stg.person_dim;

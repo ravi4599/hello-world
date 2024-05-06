@@ -1,0 +1,37 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_parse_mxp_person_schedules_lad`(
+  `row_counter` int, 
+  `person_schedule_id` int, 
+  `person_id` int, 
+  `person_schedule_type_id` string, 
+  `person_schedule_from` timestamp, 
+  `person_schedule_to` timestamp, 
+  `person_schedule_comment` string, 
+  `rec_deleted` boolean, 
+  `created_at_id` int, 
+  `created_by_id` int, 
+  `created` timestamp, 
+  `last_changed` timestamp, 
+  `changed` string, 
+  `guid` string, 
+  `person_schedule_category_id` int, 
+  `person_schedule_location_id` int, 
+  `org_unit_id` int, 
+  `person_schedule_sub_location_id` int, 
+  `person_schedule_template_id` int, 
+  `position_id` int, 
+  `last_change_log_id` bigint, 
+  `person_schedule_overnight` boolean, 
+  `op` string, 
+  `ts_ms` timestamp, 
+  `shipcode` string, 
+  `voyageid` string, 
+  `batchtime` timestamp, 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/mart/hvtb_parse_mxp_person_schedules_lad';

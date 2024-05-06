@@ -1,0 +1,9 @@
+spark.sql("""CREATE TABLE shipdw.hvtb_temp_fact_ship_overview_device_revenue_summary(voyage_id string, ship_code string, voyage_skey int, itinerary_skey int, revenue_type string, revenue_group string, revenue_type_skey int, voyage_start_date date, voyage_length int, itinerary_description string, day_of_voyage int, count_sailors_booked int, count_sailors_planned int, planned_load_factor_pct double, target_obr_gross_apd double, target_obr_net_apd double, count_bookings int, sum_booking_guests int, sum_listprice_plus_taxes double, sum_vat_taxes double, sum_list_prices double, sum_debit_amount double, sum_credit_amount double, sum_promotions_discounts double, sum_shared_manual_adjustments_comps double, sum_total_collected_sales double, sum_partner_gratuities double, sum_retail_retail_cogs double, sum_total_shared_revenue double, sum_partner_revenue double, vv_gross_onboard_revenue double, sum_prevoyage_commissions double, sum_vv_manual_adjustments_comps double, sum_vv_cost_of_goods double, sum_donations double, vv_net_onboard_revenue double, load_dt timestamp, upd_dt timestamp, source_type string)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION '/data/apps/nbx/mart/hvtb_temp_fact_ship_overview_device_revenue_summary'""")

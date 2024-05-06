@@ -1,0 +1,33 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_lnd_transfer_deets`(
+  `transfer_by` string, 
+  `sail_date_from` date, 
+  `sail_date_to` date, 
+  `pick_up_date` date, 
+  `virgin_voyages_res_number` bigint, 
+  `sailor_name` string, 
+  `contact_number` string, 
+  `number_of_passengers` int, 
+  `qty_of_luggage` int, 
+  `flight_number` string, 
+  `origin_city` string, 
+  `pick_up_time` string, 
+  `pick_up_location` string, 
+  `pickup_address` string, 
+  `pick_up_city` string, 
+  `pick_up_zip` string, 
+  `drop_off_location` string, 
+  `destination_address` string, 
+  `drop_off_city` string, 
+  `drop_off_zip` string, 
+  `filename` string, 
+  `batchtime` timestamp)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/mart/hvtb_lnd_transfer_deets';

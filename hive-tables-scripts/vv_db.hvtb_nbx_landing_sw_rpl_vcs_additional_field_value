@@ -1,0 +1,22 @@
+create external table vv_db.hvtb_nbx_landing_sw_rpl_vcs_additional_field_value(
+	id int,
+	row_type string,
+	field_name string,
+	record_id int,
+	number_value float,
+	date_value timestamp,
+	str_value string, 
+  load_data_timestamp timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='', 
+  'line.delim'='\n', 
+  'serialization.format'='') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION  's3://vv-prod-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_vcs_additional_field_value'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1592455045');

@@ -1,0 +1,1 @@
+CREATE VIEW shipdw.hvtb_parse_konami_vw_odbc_dailyptnrtg as SELECT * from shipdw.hvtb_lnd_konami_vw_odbc_dailyptnrtg

@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS crm.crm_userrole_hierarchy_rel
+(
+	userid VARCHAR(250)   ENCODE lzo
+	,userchildid VARCHAR(250)   ENCODE lzo
+	,contactid VARCHAR(250)   ENCODE lzo
+	,userchildcontactid VARCHAR(250)   ENCODE lzo
+	,userrole VARCHAR(250)   ENCODE lzo
+	,userchildrole VARCHAR(250)   ENCODE lzo
+	,"level" INTEGER   ENCODE lzo
+	,etl_ld_dt TIMESTAMP WITHOUT TIME ZONE   ENCODE lzo
+)
+DISTSTYLE AUTO
+;
+GRANT SELECT ON crm.crm_userrole_hierarchy_rel TO integuser;
+GRANT SELECT ON crm.crm_userrole_hierarchy_rel TO GROUP tableau_poweruser_group;
+GRANT SELECT ON crm.crm_userrole_hierarchy_rel TO GROUP integration_user_group;

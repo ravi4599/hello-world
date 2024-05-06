@@ -1,0 +1,11 @@
+CREATE  EXTERNAL TABLE hive_schema_stg.chat_queue_fact
+WITH PARTITION COLUMNS
+OPTIONS (
+  uris=['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_chat_queue/*'],
+  format=PARQUET,
+  hive_partition_uri_prefix='gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_chat_queue/'
+);
+
+
+
+CREATE OR REPLACE VIEW shipdw.chat_queue_fact as SELECT * FROM hive_schema_stg.chat_queue_fact;

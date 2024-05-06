@@ -1,0 +1,14 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_infegy_postinterests
+(
+
+brand string,
+name string,
+category string,
+subcategory string,
+score float,
+documents int,
+distribution float,
+IngestionDate string
+)
+STORED AS PARQUET  
+Location "s3://vv-qa-emr-cluster/data/core/social-media/infegy/post-interests/" ;  

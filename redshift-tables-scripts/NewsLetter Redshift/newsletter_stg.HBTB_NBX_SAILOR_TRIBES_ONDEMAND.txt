@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS newsletter_stg.HBTB_NBX_SAILOR_TRIBES_ONDEMAND
+(
+
+CLIENT_ID 		varchar,
+SAILOR_TRIBE 	varchar ,
+SAILOR_SUBTRIBE varchar,
+TIMESTAMP 		timestamp,
+PROCESSEDDATE 	date,
+src_sys_nm 		varchar(256) ,
+job_id          varchar(256),
+load_data_timestamp	timestamp,
+epoch			bigint,
+year  			integer,
+month           integer,
+day             integer 
+);

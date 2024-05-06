@@ -1,0 +1,24 @@
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_dining_reservation_detail(
+  dining_reservation_detail_skey bigint, 
+  voyage_id string, 
+  dining_reservation_id string, 
+  booking_link_id string, 
+  reservation_upcoming_source string, 
+  reservation_waitlist_source string, 
+  reservation_seated_source string, 
+  reservation_completed_source string, 
+  reservation_canceled_source string, 
+  reservation_status string,
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/mart/hvtb_mart_dim_dining_reservation_detail';

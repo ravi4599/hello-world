@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE `vv_db`.`hvtb_nbx_core_pricing_detail`(`src_sail_id` string, `sail_id` bigint, `price_code` string, `num_of_adults_passed` string, `max_available_capacity` string, `guestseq` bigint, `amount` bigint, `category` string, `currency` string, `price_totals` bigint, `sail_date_from` date, `sail_date_to` date, `load_dt` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/hivetables/vv_db/hvtb_nbx_core_pricing_detail'

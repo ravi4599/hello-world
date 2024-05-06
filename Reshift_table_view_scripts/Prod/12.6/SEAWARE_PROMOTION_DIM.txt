@@ -1,0 +1,33 @@
+#table needs to be created in prodnbx_mig schema#
+
+hive_schema_stg.SEAWARE_PROMOTION_DIM;
+
+CREATE EXTERNAL TABLE hive_schema_stg.SEAWARE_PROMOTION_DIM        
+(
+ res_promo_id integer,
+ res_id integer, 
+  guest_id integer, 
+  package_id integer, 
+  addon_id integer, 
+  carddeck_id integer, 
+  shorex_id integer, 
+  hotel_id integer, 
+  promotion_id integer, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  is_active Char(1), 
+  is_excluded Char(1), 
+  promo_mode Varchar(15),  
+  etl_ld_status varchar(30), 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash text, 
+  md5_hash text)
+STORED AS PARQUET
+LOCATION
+  's3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_promotion_dim'
+  
+   
+  create or replace view seaware.seaware_promotion_dim
+as select * from  hive_schema_stg.seaware_promotion_dim
+with no schema binding;

@@ -1,0 +1,63 @@
+insert into vv_metadata.job_info 
+(job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) 
+values ('jSWStgRPL_APIS_DOCUMENT','hvtb_nbx_landing_sw_rpl_apis_document','Hive','APIS_DOCUMENT','Postgresql','SPF_daily',now());
+
+insert into vv_metadata.job_info 
+(job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) 
+values ('jSWStgRPL_APIS_ID_DOCUMENT_TYPE','hvtb_nbx_landing_sw_rpl_apis_id_document_type','Hive','APIS_ID_DOCUMENT_TYPE','Postgresql','SPF_daily',now());
+
+insert into vv_metadata.job_info 
+(job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) 
+values ('jSWStgRPL_APIS_INFO','hvtb_nbx_landing_sw_rpl_apis_info','Hive','APIS_INFO','Postgresql','SPF_daily',now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWStgRPL_HOTEL', 'hvtb_nbx_landing_sw_rpl_hotel', 'Hive', 'RPL_HOTEL', 'Postgresql', 'SPF_daily', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWStgRPL_HOTEL_ADDRESS', 'hvtb_nbx_landing_sw_rpl_hotel_address', 'Hive', 'RPL_HOTEL_ADDRESS', 'Postgresql', 'SPF_daily', now());
+
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSPFHotelLkp', 'hvtb_nbx_core_spf_hotel_lkp', 'Hive', 'hvtb_nbx_landing_sw_rpl_hotel', 'Hive', 'SPF_daily', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_KonamiParseDailyPrntg', '', 'Hive', '', '', 'SailorReport_runtime', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSailorReporting_konamiParseDevice', '', 'Hive', '', '', 'SailorReport_runtime', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSailorReporting_KonamiParsePtncard', '', 'Hive', '', '', 'SailorReport_runtime', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_DailyPtSumParser', '', 'Hive', '', '', 'SailorReport_runtime',now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_KonamiRevenueFact', '', 'Hive', '', '', 'SailorReport_daily', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_konami_Device_Dim', '', 'Hive', '', '', 'SailorReport_daily', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type,load_frequency, created_on)
+VALUES( 'jSail_NA_OK_APICALL_PRICING', '', '', '', '', 'SW_DWH_daily',now());
+
+
+
+Check below entry is already present or not. If present don't insert and if not then insert into job info table.
+
+Select * from job_info
+where source_table_name like'DWH_GROUP_HOTEL_REQUEST'
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSWStgDWH_GROUP_HOTEL_REQUEST', 'hvtb_nbx_landing_sw_dwh_group_hotel_request', 'Hive', 'DWH_GROUP_HOTEL_REQUEST', 'Oracle', 'SW_DWH_daily_PI3', now());

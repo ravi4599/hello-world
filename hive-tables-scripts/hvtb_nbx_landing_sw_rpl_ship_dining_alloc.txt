@@ -1,0 +1,39 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_sw_rpl_ship_dining_alloc`(
+  `allocation_id` int, 
+  `allocation_owner_type` string, 
+  `allocation_owner_id` int, 
+  `operator_id` string, 
+  `inventory_request_type` string, 
+  `allocation_timestamp` timestamp, 
+  `priority` int, 
+  `inventory_result_type` string, 
+  `probability` int, 
+  `decline_reason` int, 
+  `release_timestamp` timestamp, 
+   `facility_id` int, 
+   `dining_date` timestamp, 
+   `dining_kind` string,
+   `dining_time_from` timestamp, 
+   `dining_time_to` timestamp, 
+   `dining_duration` int, 
+   `party_size` int, 
+   `assign_mode` string, 
+   `assigned_start_time` timestamp, 
+   `dlgt_res_id` int, 
+   `is_dlgt_obj` string, 
+   `allow_multiple_tables` string, 
+   `wtl_party_size` int, 
+   `load_data_timestamp` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n', 
+  'serialization.format'='\u0001') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_ship_dining_alloc'
+  

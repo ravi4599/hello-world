@@ -1,0 +1,1 @@
+CREATE OR REPLACE VIEW shipdw.hvtb_parse_mxp_sys_lookup_items AS SELECT * FROM shipdw.hvtb_lnd_mxp_sys_lookup_items ;

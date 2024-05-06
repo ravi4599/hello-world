@@ -1,0 +1,17 @@
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSFStgSurveyResponses', '', '', '', '', 'daily', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jCRMSurveyResponsesDim', 'hvtb_nbx_core_crm_surveyresponses_dim', 'Hive', 'hvtb_nbx_landing_surveyresponses_cdc', 'Hive', 'daily',now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jAcxiomAffinitywrapperExistingUser', '', '', '', '', 'realtime', now(); 
+
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jKafkaConsumerResAttribution','hvtb_nbx_landing_sw_dwh_attribute','Hive','DWH_ATTRIBUTE','Oracle','realtime',now()); 
+
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jSeaQScores','','','','','SeaQ_Daily',now()); 
+
+insert into vv_metadata.load_dt(load_start_dt, load_end_dt, load_exec_start_dt, load_status, load_ind, load_type, project_name, load_frequency) values ('1990-01-01 00:00:00', now(), now(), 'In Progress', 'P', 'Incremental', 'VV_NBX_ETL', 'SeaQ_Daily');

@@ -1,0 +1,19 @@
+
+CREATE TABLE hive_schema_stg.position_dim (
+	position_skey int8 NULL,
+	voyage_id text NULL,
+	position_id int4 NULL,
+	position_code text NULL,
+	position_name text NULL,
+	position_dept_id int4 NULL,
+	position_dept_name text NULL,
+	src_active_flag bool NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL
+);
+
+==================================
+
+create view shipdw.position_dim as select * from hive_schema_stg.position_dim

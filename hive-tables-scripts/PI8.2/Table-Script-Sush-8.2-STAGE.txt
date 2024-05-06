@@ -1,0 +1,56 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_venue(	
+venue_skey bigint, 	
+voyage_id string, 	
+venue_id string, 	
+venue_name string,
+venue_sector_name string,
+data_src string, 	
+load_dt timestamp, 	
+upd_dt timestamp, 	
+primaryhash string, 	
+md5_hash string)	
+ROW FORMAT SERDE 	
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 	
+STORED AS INPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 	
+OUTPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'	
+LOCATION	
+  's3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_venue'
+  
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_fact_teammember_schedule(
+voyage_id string,
+ship_code string,
+voyage_skey bigint,
+person_skey	bigint,
+venue_skey	bigint,
+schedule_date_skey bigint,
+schedule_date date,
+schedule_day_period string,
+team_member_role string,
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash string,
+md5_hash string)
+PARTITIONED BY (part_dt date)
+STORED AS PARQUET LOCATION 's3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_teammember_schedule'  
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_fact_teammember_schedule_err(
+voyage_id string,
+ship_code string,
+voyage_skey bigint,
+person_skey	bigint,
+venue_skey	bigint,
+schedule_date_skey bigint,
+schedule_date date,
+schedule_day_period string,
+team_member_role string,
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash string,
+md5_hash string )
+PARTITIONED BY (part_dt date)
+STORED AS PARQUET LOCATION 's3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_teammember_schedule_err'
+
+

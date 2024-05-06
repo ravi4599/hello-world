@@ -1,0 +1,39 @@
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jPMDWHLoader_amazon', 'hvtb_nbx_core_paidmedia_amazon', 'Hive', 'Amazon.csv', 'CSV file', 'paidmedia_monthly',now(), '', '');
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jPMDWHLoader_facebook', 'hvtb_nbx_core_paidmedia_facebook', 'Hive', 'Facebook.csv', 'CSV file', 'paidmedia_monthly', now(), '', '');
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jPMDWHLoader_outbrain', 'hvtb_nbx_core_paidmedia_outbrain', 'Hive', 'Outbrain.csv', 'CSV file', 'paidmedia_monthly',now(), '', '');
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jSWStgRPL_RES_CHARGE_DETAIL', 'hvtb_nbx_landing_sw_rpl_res_charge_detail', 'Hive', 'RPL_RES_CHARGE_DETAIL', 'Postgresql', 'SPF_daily',now(), NULL, NULL);
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jSWStgRPL_RES_CHARGE_SUBDETAIL', 'hvtb_nbx_landing_sw_rpl_res_charge_subdetail', 'Hive', 'RPL_RES_CHARGE_SUBDETAIL', 'Postgresql', 'SPF_daily', now(), NULL, NULL);
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jSWStgRPL_RES_CHARGEABLE_ACTION', 'hvtb_nbx_landing_sw_rpl_res_chargeable_action', 'Hive', 'RPL_RES_CHARGEABLE_ACTION', 'Postgresql', 'SPF_daily',now(), NULL, NULL);
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jSPFCharge_evt', 'hvtb_nbx_core_spf_charge_evt', 'Hive', 'hvtb_nbx_landing_sw_rpl_res_chargeable_action', 'Hive', 'SPF_daily', now(), NULL, NULL);
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jSWStgDWH_GROUP_DELEGATE_GUEST', 'hvtb_nbx_landing_sw_dwh_group_delegate_guest', 'Hive', 'DWH_GROUP_DELEGATE_GUEST', 'Oracle', 'SW_DWH_daily_PI3',now(), NULL, NULL);
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jGA360', NULL, NULL, NULL, NULL, 'GA360_runtime', now(), NULL, NULL);
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jGA360_Extract', NULL, NULL, NULL, NULL, 'GA360_runtime', now(), NULL, NULL);
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jGA360_Session_Dim', NULL, NULL, NULL, NULL, 'GA360_runtime', now(), NULL, NULL);
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jGA360_hit_dim', NULL, NULL, NULL, NULL, 'GA360_runtime', now(), NULL, NULL);
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jGA360_Session_fact', NULL, NULL, NULL, NULL, 'GA360_runtime', now(), NULL, NULL);

@@ -1,0 +1,25 @@
+
+-- Drop table
+
+-- DROP TABLE hive_schema_stg.incident_category_dim;
+
+CREATE TABLE hive_schema_stg.incident_category_dim (
+	voyage_id text NULL,
+	incident_category_skey int8 NULL,
+	incident_category_id text NULL,
+	incident_category_code text NULL,
+	incident_category_dept_code text NULL,
+	incident_category_name text NULL,
+	incident_category_due_interval int4 NULL,
+	incident_category_severity int4 NULL,
+	incident_parent_category_code text NULL,
+	incident_parent_category_name text NULL,
+	incident_category_priority int4 NULL,
+	incident_category_types text NULL,
+	src_active_flg bool NULL,
+	src_deleted_flg bool NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL
+);

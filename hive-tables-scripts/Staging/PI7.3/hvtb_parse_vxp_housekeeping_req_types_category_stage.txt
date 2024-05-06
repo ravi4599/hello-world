@@ -1,0 +1,1 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_vxp_housekeeping_req_types_category(id int,name string,time_sheet string,always_available boolean,VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) STORED AS parquet LOCATION 's3://vv-staging-emr-cluster/data/parse/hvtb_parse_vxp_housekeeping_req_types_category'

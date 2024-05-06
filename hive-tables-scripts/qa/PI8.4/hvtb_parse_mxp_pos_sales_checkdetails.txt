@@ -1,0 +1,13 @@
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_parse_mxp_pos_sales_checkdetails`(`checkdetailsid` bigint, `checkdetailsguid` string, `checkdetailspluid` bigint, `checkdetailsplunr` bigint, `checkdetailspludesc` string, `checkdetailsalesqty` double, `checkdetailunitprice` double, `checkdetailtaxamount` double, `sales_guid` string, `discount_amount` double, `discount_pluid` bigint, `discount_typeid` bigint, `discount_value` double, `voyageid` string, `batchtime` timestamp)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.mapred.TextInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_pos_sales_checkdetails'
+TBLPROPERTIES (
+  'transient_lastDdlTime' = '1597932954'
+)

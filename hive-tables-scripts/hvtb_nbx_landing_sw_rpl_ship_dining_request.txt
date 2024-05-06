@@ -1,0 +1,44 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_sw_rpl_ship_dining_request`(
+  `request_id` int, 
+  `owner_type` string, 
+  `owner_id` int, 
+  `facility_id` int, 
+  `dining_date` timestamp, 
+  `dining_kind` string, 
+  `dining_time_from` timestamp, 
+  `dining_time_to` timestamp, 
+  `dining_duration` int, 
+  `part_size` int,
+  `attachment_id` int, 
+  `inventory_request_type` string, 
+  `allocation_id` int, 
+  `comments` string, 
+  `external_guest_count` int, 
+  `effective_date` timestamp,   
+  `notes` string, 
+  `assign_mode` string, 
+  `responsible_guest` int, 
+  `requested_start_time` timestamp, 
+  `quantity` int, 
+  `ownership_mode` string, 
+  `sitting_code` string, 
+  `allow_multiple_tables` string, 
+  `no_show_count` int, 
+  `is_sail_canceled` string, 
+  `parent_addon_code string, 
+  `secret_code` string,
+  `secret_code_valid` string, 
+  `load_data_timestamp` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n', 
+  'serialization.format'='\u0001') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_ship_dining_request'
+  

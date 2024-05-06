@@ -1,0 +1,64 @@
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jOnboardSailorSurveyReviewAnswerParsing', NULL, NULL, NULL, NULL, 'OnboardSailsurvey', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jOnboardSailorSurveyReviewAskParsing', NULL, NULL, NULL, NULL, 'OnboardSailsurvey', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jOnboardSailorSurveyQuestionDim', NULL, NULL, NULL, NULL, 'OnboardSailsurvey', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jOnboardSailorSurveyResponseFact', NULL, NULL, NULL, NULL, 'OnboardSailsurvey', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSetSailLoadStartJob_OnboardSailsurvey_daily', NULL, NULL, NULL, NULL, 'OnboardSailsurvey', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSetSailLoadEndJob_OnboardSailsurvey', NULL, NULL, NULL, NULL, 'OnboardSailsurvey', now());
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_ChargeIntAcc_Dim', '', '', '', '', 'SailorReport_daily',now());
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPostVoyageSailorSurveyQuestionDim', '', '', '', '', 'PostVoyageSailsurvey',now());
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPostVoyageSailorSurveyResponseFact', '', '', '', '', 'PostVoyageSailsurvey',now());
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPostVoyageSailorSurveyResponsesParse', '', '', '', '', 'PostVoyageSailsurvey',now());
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPostVoyageSailorSurveyShellscript', '', '', '', '', 'PostVoyageSailsurvey',now());
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPostVoyageSailorSurveyShellscriptRemoved', '', '', '', '', 'PostVoyageSailsurvey',now());
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPostVoyageSailorSurveyShellscriptRemoved', '', '', '', '', 'PostVoyageSailsurvey',now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jPostVoyageSailorSurveyShellscriptRe', NULL, NULL, NULL, NULL, 'PostVoyageSailsurvey',now());
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSetSailLoadStartJob_PostVoyagesailorsurvey', '', '', '', '', 'PostVoyageSailsurvey',now());
+
+
+
+
+

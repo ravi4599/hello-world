@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_activity(activity_skey bigint, voyage_id string, activity_code string, activity_type string, activity_level string, activity_name string, activity_group_code string, load_dt timestamp, upd_dt timestamp, primaryhash string, md5_hash string)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION '/data/apps/nbx/hive/mart/hvtb_mart_dim_activity'

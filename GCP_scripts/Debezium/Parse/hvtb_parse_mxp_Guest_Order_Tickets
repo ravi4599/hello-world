@@ -1,0 +1,36 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_guest_order_tickets(
+  row_counter int, 
+  guest_order_ticket_id int, 
+  guest_order_ticket_status_id int, 
+  guest_order_ticket_completed timestamp, 
+  guest_order_ticket_comment string, 
+  created_at_id int, 
+  creayed_by_id int, 
+  created timestamp, 
+  last_changed timestamp, 
+  changed string, 
+  guid string, 
+  guest_order_ticket_notified timestamp, 
+  print_order_ticket timestamp, 
+  print_pickup_ticket timestamp, 
+  re_print_order_ticket boolean, 
+  re_print_pickup_ticket boolean, 
+  last_change_log_id bigint, 
+  meals_by_date_id int, 
+  waiter_station_no int, 
+  created_by_person_id int, 
+  ticket_type_id int, 
+  consolidate_dishes boolean, 
+  link_ticket_id int, 
+  printer_name string, 
+  printer_name_alternate string)
+PARTITIONED BY ( 
+  part_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/parse/mxp/hvtb_parse_mxp_Guest_Order_Tickets';

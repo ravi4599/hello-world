@@ -1,0 +1,39 @@
+Create external table  shipdw.hvtb_lnd_mxp_ship_cruise_mxp_cruise_roll( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/landing/hvtb_lnd_mxp_ship_cruise_mxp_cruise_roll'
+
+Create external table  shipdw.hvtb_lnd_mxp_ship_itinerary_mxp_itinerary( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/landing/hvtb_lnd_mxp_ship_itinerary_mxp_itinerary' 
+
+Create external table shipdw.hvtb_lnd_mxp_ship_guest_mxp_guest( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/landing/hvtb_lnd_mxp_ship_guest_mxp_guest' ;
+
+Create external table shipdw.hvtb_lnd_mxp_ship_pos_mxp_pos_items( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/landing/hvtb_lnd_mxp_ship_pos_mxp_pos_items' ;
+
+Create external table shipdw.hvtb_lnd_mxp_ship_pos_mxp_sales_stream_mxp( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/landing/hvtb_lnd_mxp_ship_pos_mxp_sales_stream_mxp';
+
+
+Create external table shipdw.hvtb_lnd_apollo_recipe_cost_by_voyage( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/landing/hvtb_lnd_apollo_recipe_cost_by_voyage';
+
+Create external table shipdw.hvtb_lnd_folio_vperson_account_detail( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/landing/hvtb_lnd_folio_vperson_account_detail';
+
+
+Create external table shipdw.hvtb_lnd_konami_vw_odbc_dailyptsum( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/nbx/hive/landing/hvtb_lnd_konami_vw_odbc_dailyptsum'
+
+Create external table shipdw.hvtb_lnd_konami_vw_odbc_ptncard( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/nbx/hive/landing/hvtb_lnd_konami_vw_odbc_ptncard'
+
+
+Create external table shipdw.hvtb_lnd_konami_vw_odbc_device( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/nbx/hive/landing/hvtb_lnd_konami_vw_odbc_device'
+
+Create external table shipdw.hvtb_lnd_konami_vw_odbc_dailyptnrtg( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/nbx/hive/landing/hvtb_lnd_konami_vw_odbc_dailyptnrtg'
+
+Create external table shipdw.hvtb_lnd_go_event( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/landing/hvtb_lnd_go_event';
+
+
+Create external table shipdw.hvtb_lnd_go_venue_availability( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/landing/hvtb_lnd_go_venue_availability';
+
+Create external table shipdw.hvtb_lnd_onboard_sailor_reviewanswer( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/landing/hvtb_lnd_onboard_sailor_reviewanswer';
+
+
+Create external table shipdw.hvtb_lnd_onboard_sailor_reviewask( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/landing/hvtb_lnd_onboard_sailor_reviewask';
+
+Create external table shipdw.hvtb_lnd_mxp_ship_ars_booking( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/landing/hvtb_lnd_mxp_ship_ars_booking';
+
+
+

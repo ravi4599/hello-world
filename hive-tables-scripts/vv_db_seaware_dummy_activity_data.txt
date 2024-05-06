@@ -1,0 +1,22 @@
+DROP TABLE IF EXISTS `vv_db.seaware_dummy_activity_data`;
+CREATE EXTERNAL TABLE `vv_db.seaware_dummy_activity_data`(
+  `activity_id` string, 
+  `activity_title` string, 
+  `short_description` string, 
+  `long_description` string, 
+  `activity_type` string, 
+  `price` string, 
+  `voyage_id` string, 
+  `package_type` string, 
+  `package_code` string, 
+  `destination_port` string, 
+  `status` string, 
+  `internal_comments` string, 
+  `tribe_categorization` string, 
+  `invitation_only_surprise_event_indicator` string, 
+  `signature_event` string
+  )
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'
+STORED AS PARQUET
+LOCATION 's3a://vv-dev-emr-cluster/data/core/calendar_rec_files/dummy_seaware_activity_data';
+SELECT * FROM `vv_db.seaware_dummy_activity_data`;

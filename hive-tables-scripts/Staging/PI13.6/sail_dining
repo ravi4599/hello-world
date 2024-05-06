@@ -1,0 +1,15 @@
+
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_sw_sail_dining`(
+  `shipcode` string, 
+  `date_from` date, 
+  `date_to` date, 
+  `response` string, 
+  `load_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-staging-emr-cluster/data/landing/hvtb_nbx_core_sw_sail_dining'

@@ -1,0 +1,19 @@
+
+CREATE EXTERNAL TABLE `shipdw.hvtb_parse_mxp_positems_salesgroup`(
+  `voyageid` string, 
+  `batchtime` timestamp, 
+  `salesgroup_number` bigint, 
+  `salesgroup_name` string, 
+  `salesgroup_guid` string, 
+  `salesgroup_enablecrewdiscounts` boolean, 
+  `generated_date` timestamp)
+PARTITIONED BY ( 
+  `partdate` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/parse/mxp/hvtb_parse_mxp_positems_salesgroup'

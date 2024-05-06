@@ -1,0 +1,21 @@
+ CREATE TABLE hive_schema_stg.preference_dim (
+	preference_skey int8 NOT NULL,
+	voyage_id text NULL,
+	preference_id int4 NULL,
+	person_id int4 NULL,
+	preference_category_code text NULL,
+	category text NULL,
+	description text NULL,
+	comment text NULL,
+	allergy text NULL,
+	allergy_code text NULL,
+	preference_upd_date timestamp NULL,
+	src_deleted_flag boolean,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL,
+	CONSTRAINT preference_dim_pkey PRIMARY KEY (preference_skey)
+);
+
+create view shipdw.preference_dim  as select * from hive_schema_stg.preference_dim  ;

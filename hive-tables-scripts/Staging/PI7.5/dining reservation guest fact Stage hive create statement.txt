@@ -1,0 +1,12 @@
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_mart_fact_dining_reservation_guest`(
+`voyage_id` string, 
+`voyage_skey` bigint, 
+`dining_reservation_detail_skey` bigint, 
+`venue_skey` bigint, 
+`person_skey` bigint, 
+`main_guest_flg` boolean, 
+`load_dt` timestamp, 
+`upd_dt` timestamp)
+PARTITIONED BY (`part_dt` date)
+STORED AS PARQUET
+LOCATION 's3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_dining_reservation_guest'

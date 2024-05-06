@@ -1,0 +1,45 @@
+
+CREATE EXTERNAL TABLE `shipdw.hvtb_lnd_mxp_pos_sales_outlets`(
+  `row_counter` bigint, 
+  `sales_outlet_id` bigint, 
+  `sales_outlet_name` string, 
+  `sales_group_id` bigint, 
+  `revenue_center_id` int, 
+  `cash_account_nr` bigint, 
+  `card_account_nr` bigint, 
+  `use_tables` int, 
+  `table_required` int, 
+  `active` int, 
+  `order_slip_format` bigint, 
+  `check_format` bigint, 
+  `location_code` string, 
+  `guid` string, 
+  `rec_created` timestamp, 
+  `rec_changed` timestamp, 
+  `rec_deleted` int, 
+  `created_by_id` bigint, 
+  `changed_by_id` bigint, 
+  `inventory_code` string, 
+  `business_unit_id` int, 
+  `fixed_discounts` int, 
+  `created_at_id` int, 
+  `changed` string, 
+  `service_charge_not_added` int, 
+  `merge_source_id` string, 
+  `last_change_log_id` bigint, 
+  `mapping_code` string, 
+  `price_override_code` bigint, 
+  `threshold_limit` decimal(18,2), 
+  `voyageid` string, 
+  `batchtime` timestamp)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_pos_sales_outlets'
+

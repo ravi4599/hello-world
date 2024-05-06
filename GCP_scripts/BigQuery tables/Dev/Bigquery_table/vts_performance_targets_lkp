@@ -1,0 +1,27 @@
+CREATE EXTERNAL TABLE hive_schema_stg.vts_performance_targets_lkp      
+(
+target_range_start_date date,
+target_range_end_date date,
+target_team_name string,
+target_queue_name string,
+target_pct_inbound_calls_handled int,
+target_avg_total_case_resolution_hrs int,
+target_pct_completed_chats int,
+target_pct_avg_loved_happy_response int,
+target_avg_value_duration_hrs int,
+target_pct_calls_handled_total int,
+target_pct_phone_bookings int,
+target_pct_phone_voyage_protection_bookings int,
+target_count_casino_bookings int,
+target_pct_cases_handled int,
+target_avg_handle_time_hrs int,
+target_phone_service_level int,
+target_pct_call_abandon int,
+target_count_outbound_calls int,
+etl_ld_dt timestamp,
+etl_upd_dt timestamp)
+OPTIONS (format = 'PARQUET',
+uris = ['gs://vv-dev-nbx-cluster/data/mart/vts/hvtb_mart_vts_performance_targets_lkp/*']
+);
+
+CREATE OR REPLACE VIEW seaware.vts_performance_targets_lkp AS SELECT * FROM hive_schema_stg.vts_performance_targets_lkp;

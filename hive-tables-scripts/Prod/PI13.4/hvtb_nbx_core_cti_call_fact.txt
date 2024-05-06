@@ -1,0 +1,6 @@
+drop table vv_db.hvtb_nbx_core_cti_call_fact;
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_cti_call_fact(src_contact_id bigint, src_master_contact_id bigint, point_of_contact_name string, cti_agent_skey bigint, cti_team_skey bigint, cti_skill_skey bigint, cti_campaign_skey bigint, start_date_skey bigint, start_time_skey bigint, prequeue_time_in_seconds bigint, inqueue_time_in_seconds bigint, postqueue_time_in_seconds bigint, total_duration_in_seconds bigint, abandon_time_in_seconds bigint, callback_time bigint, agent_seconds bigint, outbound_call_flg boolean, transferindicator_flg boolean, abandoned_flg boolean,after_call_work_in_seconds bigint,conference_call_in_seconds bigint,logged_flg boolean,short_abandon_flg boolean,takeover_flg boolean,call_release_in_seconds bigint,routing_time_in_seconds bigint,hold_count int,hold_time_in_seconds bigint, load_dt timestamp, upd_dt timestamp)
+PARTITIONED BY (part_dt date)
+STORED AS PARQUET
+LOCATION 's3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_cti_call_fact';

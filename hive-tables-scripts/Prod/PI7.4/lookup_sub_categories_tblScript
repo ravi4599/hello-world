@@ -1,0 +1,25 @@
+--Create TABLE shipdw.hvtb_lnd_mxp_Lookup_Sub_Categories
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_mxp_Lookup_Sub_Categories
+(LOOKUP_SUB_CATEGORY_ID int,LOOKUP_SUB_CATEGORY_NAME STRING,
+LOOKUP_MAIN_CATEGORY_ID int,SHOW_DISPLAY_CODE BOOLEAN,PAGE_INDEX int,
+LOOKUP_TYPE STRING,CREATED TIMESTAMP,LAST_CHANGED TIMESTAMP,
+CHANGED STRING,GUID STRING,CREATED_BY_ID int,SHOW_IMAGE BOOLEAN,
+CREATED_AT_ID int,LOOKUP_SUB_CATEGORY_ALIAS_NAME STRING,
+SHOW_ALIAS_NAME BOOLEAN,SHOW_LOOKUP_TEXT_1 BOOLEAN,SHOW_LOOKUP_TEXT_2 BOOLEAN,
+UPLOAD_TO_E_COMMERCE BOOLEAN,LAST_CHANGE_LOG_ID bigint,
+VoyageId STRING,BatchTime TIMESTAMP)partitioned by (Part_Date date)
+ROW FORMAT SERDE 	
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 	
+STORED AS INPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 	
+OUTPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'	
+LOCATION	
+  's3://vv-prod-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_Lookup_Sub_Categories';
+  
+  
+ -- View Creation 
+ CREATE VIEW shipdw.hvtb_parse_mxp_Lookup_Sub_Categories as select * from shipdw.hvtb_lnd_mxp_Lookup_Sub_Categories;
+  

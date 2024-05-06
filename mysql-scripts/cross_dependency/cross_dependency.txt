@@ -1,0 +1,177 @@
+Create table
+mysql
+-----
+
+CREATE TABLE `DependencyFlag` (
+  `SrcTriggeringTool` varchar(10) NOT NULL DEFAULT '',
+  `TgtTriggeredTool` varchar(10) NOT NULL DEFAULT '',
+  `JobName` varchar(255) NOT NULL DEFAULT '',
+  `JobIndicator` tinyint(1) DEFAULT NULL,
+  `SrcTriggeringToolUpdTime` timestamp NULL DEFAULT NULL,
+  `TgtTriggeredToolUpdTime` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`SrcTriggeringTool`,`TgtTriggeredTool`,`JobName`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `talend_spark_dependency` (
+  `Load_frequency` varchar(40) NOT NULL,
+  `Talend_Start` timestamp NULL DEFAULT NULL,
+  `Talend_End` timestamp NULL DEFAULT NULL,
+  `loadtime` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`Load_frequency`),
+) 
+hbase
+---------
+create table HBTB_NBX_TALEND_DEP(LOAD_FREQUENCY varchar primary key,TALEND_START TIMESTAMP,TALEND_END TIMESTAMP,LOADTIME TIMESTAMP);
+
+mysql scripts
+
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_AddonLkp', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_AllocationLkp', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_GroupDim', 0,current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_GuestDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_InvoiceitemtypeLkp', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_PaymentScheduleDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_PriceareaLkp', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_PromotionLkp', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_ReservationDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_ResGuestRel', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_SeawareAgencyDimLoad', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_SeawareCouponDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_SeawareFlightDimLoad', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_SeawareGroupFact', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_SeawareGuestFlightRelLoad', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_SeawareHotelGroupRequestDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_SeawareHotelResRequestDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_SeawarePackageDim', 0,current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_SeawarePromotionDimLoad', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_SeawareResAddonRel', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_SeawareRevenueSummaryFact', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_SeawareSailDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_TransactionEvt', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_AddonLkp', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_AllocationLkp', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_GroupDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_GuestDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_InvoiceitemtypeLkp', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_PaymentScheduleDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_PriceareaLkp', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_PromotionLkp', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_ReservationDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_ResGuestRel', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_SeawareAgencyDimLoad', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_SeawareCouponDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_SeawareGroupFact', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_SeawareHotelGroupRequestDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_SeawareHotelResRequestDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_SeawarePackageDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_SeawarePromotionDimLoad', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_SeawareResAddonRel', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_SeawareRevenueSummaryFact', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_SeawareSailDim', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_TransactionEvt', 0, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_SeawareRevenueFact', False, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_SeawareRevenueFact', False, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_BookCabResDim', False, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_BookCabResDim', False, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Talend', 'Airflow', 'TA_SeawareSailCabinFact', False, current_timestamp(), date_sub(current_timestamp(),interval 10 second));
+INSERT INTO JobDependency.DependencyFlag
+(SrcTriggeringTool, TgtTriggeredTool, JobName, JobIndicator, SrcTriggeringToolUpdTime, TgtTriggeredToolUpdTime)
+VALUES('Airflow', 'Talend', 'AT_SeawareSailCabinFact', False, current_timestamp(), date_sub(current_timestamp(),interval 10 second));

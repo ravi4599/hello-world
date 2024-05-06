@@ -1,0 +1,7 @@
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWRPLCoupon_Class_Dim', '', 'hive', '', '', 'SPF_daily',now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWStgRPL_ACC_COUPON_CLASS', '', 'hive', '', '', 'SPF_daily',now());

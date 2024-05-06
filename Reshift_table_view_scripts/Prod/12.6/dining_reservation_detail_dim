@@ -1,0 +1,19 @@
+CREATE EXTERNAL TABLE hive_schema_stg.dining_reservation_detail_dim(
+voyage_id varchar(100),
+dining_reservation_detail_skey bigint,
+dining_reservation_id varchar(100),
+booking_link_id varchar(100),
+reservation_upcoming_source varchar(100),
+reservation_waitlist_source varchar(100),
+reservation_seated_source varchar(100),
+reservation_completed_source varchar(100),
+reservation_canceled_source varchar(100),
+reservation_status varchar(100),
+load_dt	timestamp,
+upd_dt	timestamp,
+primaryhash varchar(100),
+md5_hash varchar(100),
+part_dt date)
+STORED AS PARQUET LOCATION 's3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_dining_reservation_detail';
+
+CREATE OR REPLACE VIEW shipdw.dining_reservation_detail_dim as select * from hive_schema_stg.dining_reservation_detail_dim;

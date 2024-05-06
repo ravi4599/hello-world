@@ -1,0 +1,13 @@
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_lnd_vxp_guestboardingnumber`(`guestboardingnumberid` string, `reservationguestid` string, `boardingnumber` int, `slotnumber` int, `isdeleted` boolean, `addedby` string, `addeddate` timestamp, `lastmodifiedby` string, `lastmodifieddate` timestamp, `shipcode` string, `embarkdate` date, `guestid` string, `reservationid` string, `purgedate` timestamp, `checkedinboardingnumber` int, `onboardedboardingnumber` int, `isboardingnumberpreassigned` boolean, `VoyageId` string, `BatchTime` timestamp)
+PARTITIONED BY (`Part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/landing/hvtb_lnd_vxp_guestboardingnumber'
+
+
+CREATE VIEW shipdw.hvtb_parse_vxp_guestboardingnumber as select * from shipdw.hvtb_lnd_vxp_guestboardingnumber

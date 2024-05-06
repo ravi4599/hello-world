@@ -1,0 +1,13 @@
+drop table vv_db.hvtb_nbx_core_sw_group_fact
+
+ errfs delete s3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_group_fact
+ emrfs sync s3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_group_fact
+
+
+CREATE EXTERNAL TABLE `vv_db`.`hvtb_nbx_core_sw_group_fact`(`snapshot_time` timestamp, `group_id` int, `guest_seqn` int, `package_id` int, `invoice_item_type_id` int, `price_area_id` int, `ship_id` int, `agent_id` int, `agency_id` int, `promotion_id` int, `addon_id` int, `cardeck_id` int, `shorex_id` int, `hotel_group_req_id` int, `sail_id` int, `amount` double, `commission_percent` double, `quantity` double, `currency` string, `currency_rate` double, `effective_date` timestamp, `cabin_category` string, `generic_category` string, `etl_ld_dt` timestamp, `etl_upd_dt` timestamp)
+PARTITIONED BY (`snapshot_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_group_fact'

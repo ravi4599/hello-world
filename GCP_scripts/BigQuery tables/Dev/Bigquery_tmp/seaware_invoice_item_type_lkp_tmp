@@ -1,0 +1,11 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.seaware_invoice_item_type_lkp_tmp(
+  invoice_item_type_id bigint, 
+  invoice_item_type string, 
+  invoice_item_subtype string, 
+  etl_ld_status string,
+  load_dt timestamp,
+  upd_dt timestamp)
+OPTIONS (
+format = 'PARQUET',
+uris = ['gs://vv-dev-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_invoice_item_type_lkp/*']
+);

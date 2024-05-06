@@ -1,0 +1,10 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_allocation_lkp(
+  allocation_id bigint, 
+  src_allocation_id bigint, 
+  allocation_inv_result string, 
+  etl_ld_status string, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  )OPTIONS (format = 'PARQUET',uris = ['gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_allocation_lkp/*']
+);
+ create view seaware.seaware_allocation_lkp as select * from hive_schema_stg.seaware_allocation_lkp

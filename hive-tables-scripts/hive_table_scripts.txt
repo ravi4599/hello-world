@@ -1,0 +1,835 @@
+create external table vv_db.hvtb_nbx_landing_sw_dwh_attribute (
+	rec_id double,
+	entity_type string,
+	entity_id double,
+	link_type string,
+	link_id double,
+	attribute_type string,
+	attribute_code string,
+	load_data_timestamp timestamp	
+) 
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_attribute"
+;
+
+create external table vv_db.hvtb_nbx_landing_sw_dwh_charge (
+	rec_charge_id double,
+	entity_type string,
+	entity_id double,
+	action_type string,
+	is_added_manually string ,
+	charge_component_code string,
+	original_amount double,
+	amount double,
+	change_area string,
+	explanation string,
+	action_timestamp timestamp,
+	charge_state string,
+	comments string,
+	load_data_timestamp timestamp	
+) 
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_charge"
+;
+
+create external table vv_db.hvtb_nbx_landing_sw_dwh_classification_link (
+	rec_id double,
+	entity_type string,
+	entity_id double,
+	classification_link_type string,
+	classification_link_id double,
+	classification_type string,
+	classification_code string,
+	load_data_timestamp timestamp	
+) 
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_classification_link"
+;
+
+create external table vv_db.hvtb_nbx_landing_sw_dwh_extract_load (
+	rec_id double,
+	entity_type string,
+	entity_id double,
+	entity_origin_id double,
+	load_date date,
+	is_invalid string,
+	load_data_timestamp timestamp	
+) 
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_extract_load"
+;
+
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_addon (
+	rec_addon_id double,
+	rec_res_id string,
+	rec_guest_id double,
+	res_addon_code double,
+	quantity double,
+	start_date date,
+	end_date date,
+	addon_category string,
+	addon_type string,
+	addon_name string,
+	load_data_timestamp timestamp	
+) 
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_addon"
+;
+
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_cabin (
+	rec_id double,
+	rec_res_id double,
+	rec_pkg_id double,
+	rec_guest_id double,
+	price_category string,
+	price_category_rank string,
+	berth_category string,
+	berth_category_rank string,
+	assigned_category string,
+	assigned_category_rank string,
+	reserve_type string,
+	is_from_allotment string,
+	allotment_agreement_id double,
+	allocation_id double,
+	generic_category string,
+	cabin_number double,
+	inv_result double,
+	load_data_timestamp timestamp	
+) 
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_cabin"
+;
+
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_commission (
+	rec_id double,
+	rec_res_id double,
+	rec_charge_id double,
+	rec_pkg_id double,
+	REC_GUEST_ID double,
+	rec_addon_id double,
+	rec_cardeck_id double,
+	rec_shorex_id double,
+	rec_hotel_id double,
+	commiss_code double,
+	commiss_fare double,
+	invoice_item_type string,
+	amount double,
+	load_data_timestamp timestamp	
+) 
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_commission"
+;
+
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_dynamic_attribute (
+	rec_id double,
+	rec_res_id double,
+	rec_pkg_id double,
+	rec_addon_id double,
+	rec_cardeck_id double,
+	rec_shorex_id double,
+	rec_hotel_id double, 
+	rule_code string,
+	rule_code_value double,
+	load_data_timestamp timestamp	
+) 
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_dynamic_attribute"
+;
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_guest (
+	rec_guest_id double,
+	rec_res_id double,
+	guest_id double,
+	guest_seqn double,
+	guest_type string,
+	client_id double,
+	age double,
+	age_category string,
+	gender string,
+	city string,
+	country string,
+	zip string,
+	state string,
+	citizenship string,
+	citizenship_name string,
+	residency string,
+	last_name string,
+	first_name string,
+	middle_name string,
+	sex string,
+	tier_level string,
+	birthday timestamp,
+	passport_number string,
+	passport_exp_date timestamp,
+	passport_issue_date timestamp,
+	passport_issue_place string,
+	id_doc_type string,
+	id_doc_number string,
+	id_doc_expiration_date timestamp,
+	id_doc_issue_date timestamp,
+	id_doc_issue_country string,
+	id_doc_issue_city string,
+	id2_doc_type string,
+	id2_doc_number string,
+	id2_doc_expiration_date timestamp,
+	id2_doc_issue_date timestamp,
+	id2_doc_issue_country string,
+	id2_doc_issue_city string,
+	email string,
+	phone_intl_code double,
+	phone_number string,
+load_data_timestamp timestamp
+)
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_guest"
+;
+
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_header (
+	rec_res_id double,
+	res_id double,
+	res_init_date timestamp,
+	res_guest_count double,
+	agency_id double,
+	agency_name string,
+	agency_code string,
+	is_internal string,
+	currency string,
+	currency_rate double,
+	res_status string,
+	res_mode string,
+	probability double,
+	is_prob_manual string,
+	source_code string,
+	office_code string,
+	ship string,
+	ship_brand string,
+	package_type string,
+	vacation_date_from timestamp,
+	vacation_date_to timestamp,
+	operator string,
+	changed_date timestamp,
+	res_type string,
+	group_id double,
+	group_name string,
+	referral_source string,
+	agency_market string,
+	agency_class string,
+	agency_sales_region string,
+	agency_sales_district string,
+	agency_country string,
+	agency_state string,
+	agency_zip string,
+	net_due double,
+	created_operator string,
+	created_operator_admin_office string,
+	cancellation_date timestamp,
+load_data_timestamp timestamp
+) 
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_header"
+;
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_hotel (
+	rec_hotel_id double,
+	rec_res_id double,
+	rec_guest_id double,
+	request_type string,
+	start_date timestamp,
+	end_date timestamp,
+	city_code string,
+	hotel_id double,
+	hotel_code string,
+	hotel_name string,
+	hotel_category string,
+	room_seq_number double,
+	room_category string,
+	room_type string,
+	occupancy double,
+	hotel_space_type string,
+	allocation_id double,
+	inv_result string,
+	is_land_component string,
+	package_id double,
+	package_type string,
+	package_code string,
+	package_name string,
+	product_type string,
+	pre_post_mode string,
+	comments string,
+load_data_timestamp timestamp) 
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_hotel"
+;
+
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_invoice (
+	rec_id double,
+	rec_res_id double,
+	rec_pkg_id double,
+	rec_guest_id double,
+	rec_addon_id double,
+	rec_cardeck_id double,
+	rec_shorex_id double,
+	rec_hotel_id double,
+	invoice_item_type string,
+	invoice_item_subtype string,
+	price_area string,
+	amount double,
+	commission_percent DOUBLE,
+	promo_code string,
+load_data_timestamp timestamp
+) 
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_invoice"
+;
+
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_package (
+	rec_pkg_id double,
+	rec_res_id double,
+	rec_guest_id double,
+	package_id double,
+	package_class string,
+	package_type string,
+	package_code string,
+	package_name string,
+	ship string,
+	ship_brand string,
+	sail_date_from timestamp,
+	sail_date_to timestamp,
+	effective_date timestamp,
+	is_no_show string ,
+	sail_id double,
+	sail_days double,
+	sail_route_code string,
+	sail_port_from string,
+	sail_port_to string,
+	sail_geog_area_code string,
+	dep_ref_id double,
+	arr_ref_id double,
+load_data_timestamp timestamp
+) 
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_package"
+;
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_payment_schedule (
+	rec_pay_sch_id double,
+	rec_res_id double,
+	rec_guest_id double,
+	payment_type string,
+	due_date timestamp,
+	expiration_date timestamp,
+	payment_code string,
+	amount double,
+	is_paid string,
+	load_data_timestamp timestamp
+	)
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_payment_schedule"
+;	
+	
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_promotion (
+	rec_id double,
+	rec_res_id double,
+	rec_guest_id double,
+	rec_pkg_id double,
+	rec_addon_id double,
+	rec_cardeck_id double,
+	rec_shorex_id double,
+	rec_hotel_id double,
+	promo_code string,
+	promo_group string,
+	promo_name string,
+	is_active string ,
+	is_excluded string ,
+	promo_mode string,
+load_data_timestamp timestamp) row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_promotion"
+;
+
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_shorex (
+	rec_shorex_id double,
+	rec_res_id double,
+	rec_guest_id double,
+	effective_date timestamp,
+	start_date timestamp,
+	end_date timestamp,
+	package_id double,
+	package_class string,
+	package_type string,
+	package_code string,
+	package_name string,
+	is_no_show string ,
+	location_from string,
+	location_to string,
+	geog_area_code string,
+	shorex_mode string,
+	shorex_timing string,	
+load_data_timestamp timestamp
+) row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_shorex"
+;
+
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_transaction (
+	rec_trans_id double,
+	rec_res_id double,	
+load_data_timestamp timestamp
+)
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_transaction"
+;
+create external table vv_db.hvtb_nbx_landing_sw_dwh_res_cardeck (
+	rec_cardeck_id double,
+	rec_res_id double,
+	rec_guest_id double,
+	ship string,
+	ship_brand string,
+	start_date timestamp,
+	end_date timestamp,
+	effective_date timestamp,
+	is_no_show string,
+	sail_id double,
+	sail_days double,
+	sail_route_code string,
+	sail_port_from string,
+	sail_port_to string,
+	sail_geog_area_code string,
+	dep_ref_id double,
+	arr_ref_id double,
+	load_data_timestamp timestamp
+	) 
+	row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_cardeck"
+;
+
+create external table vv_db.hvtb_nbx_landing_sw_dwh_transaction (
+	rec_trans_id double,
+	trans_id double,
+	trans_status string,
+	form_of_trans string,
+	trans_type string,
+	entity_type string,
+	entity_id double,
+	is_dest_entity string,
+	trans_time_stamp timestamp,
+	currency_trans string,
+	amount_full_trans double,
+	rate_transprice double,
+	currency_price string,
+	amount_full_price double,
+	rate_pricebase double,
+	operator string,
+	voided_time_stamp timestamp,
+	voided_by_operator string,
+	is_manual string,
+	load_data_timestamp timestamp) 
+	row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_transaction"
+;
+create external table vv_db.hvtb_nbx_core_sw_reservation_dim (
+	res_id int,
+	rec_start_dttm timestamp,
+	rec_end_dttm  timestamp,
+	src_res_id int,
+	res_init_date timestamp,
+	res_guest_count int,
+	res_mode string,
+	cancellation_date timestamp,	
+	res_status string,	
+	operator string,
+	res_type string,
+	is_internal string,
+	source_code string,
+	effective_date timestamp,
+etl_ld_status string,	
+	etl_ld_dt timestamp,
+	etl_upd_dt timestamp
+) 
+STORED AS PARQUET  
+Location "s3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_reservation_dim" ; 
+
+create external table vv_db.hvtb_nbx_staging_sw_reservation_dim (
+	res_id int,
+	rec_start_dttm timestamp,
+	rec_end_dttm  timestamp,
+	src_res_id int,
+	res_init_date timestamp,
+	res_guest_count int,
+	res_mode string,
+	cancellation_date timestamp,	
+	res_status string,	
+	operator string,
+	res_type string,	
+	is_internal string,
+	source_code string,
+	effective_date timestamp,
+	etl_ld_dt timestamp,
+	etl_upd_dt timestamp
+) 
+STORED AS PARQUET  
+Location "s3://vv-dev-emr-cluster/data/staging/seaware/hvtb_nbx_staging_sw_reservation_dim" ; 
+
+select d.package_id   as d_package_id,d.rec_start_dttm   as d_rec_start_dttm,d.rec_end_dttm   as d_rec_end_dttm,d.src_package_id   as d_src_package_id,d.package_class   as d_package_class,d.package_type   as d_package_type,d.package_code   as d_package_code,d.package_name   as d_package_name,t.load_date,t.package_id,t.package_class,t.package_type,t.package_code,t.package_name from  vv_db.hvtb_nbx_core_sw_package_dim d full join (select b.load_date,a.package_id,a.package_class,a.package_type,a.package_code,a.package_name from vv_db.hvtb_nbx_landing_sw_dwh_res_package a join vv_db.hvtb_nbx_landing_sw_dwh_extract_load b on a.rec_res_id = b.entity_id ) t on d.src_package_id = t.package_id limit 1
+
+create external table vv_db.hvtb_nbx_core_sw_package_dim (
+package_id int,
+rec_start_dttm timestamp,
+	rec_end_dttm  timestamp,
+	src_package_id double,
+	package_class string,
+	package_type string,
+	package_code string,
+	package_name string,
+	etl_ld_status string,
+	etl_ld_dt timestamp,
+	etl_upd_dt timestamp
+) 
+STORED AS PARQUET  
+Location "s3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_package_dim" ;
+
+create external table vv_db.hvtb_nbx_staging_sw_package_dim (
+package_id int,
+rec_start_dttm timestamp,
+	rec_end_dttm  timestamp,
+	src_package_id double,
+	package_class string,
+	package_type string,
+	package_code string,
+	package_name string,
+	etl_ld_status string,
+	etl_ld_dt timestamp,
+	etl_upd_dt timestamp
+) 
+STORED AS PARQUET  
+Location "s3://vv-dev-emr-cluster/data/staging/seaware/hvtb_nbx_staging_sw_package_dim" ;
+
+create external table vv_db.hvtb_nbx_core_sw_guest_dim (
+	guest_id int,
+	rec_start_dttm timestamp,
+	rec_end_dttm  timestamp,
+	src_guest_id int,
+	guest_seqn double,
+	guest_type string,
+	client_id double,
+	age double,
+	age_category string,
+	gender string,
+	city string,
+	country string,
+	zip string,
+	state string,
+	citizenship string,
+	citizenship_name string,
+	residency string,
+	last_name string,
+	first_name string,
+	middle_name string,
+	sex string,
+	tier_level string,
+	birthday timestamp,
+	passport_number string,
+	passport_exp_date timestamp,
+	passport_issue_date timestamp,
+	passport_issue_place string,
+	id_doc_type string,
+	id_doc_number string,
+	id_doc_expiration_date timestamp,
+	id_doc_issue_date timestamp,
+	id_doc_issue_country string,
+	id_doc_issue_city string,
+	id2_doc_type string,
+	id2_doc_number string,
+	id2_doc_expiration_date timestamp,
+	id2_doc_issue_date timestamp,
+	id2_doc_issue_country string,
+	id2_doc_issue_city string,
+	email string,
+	phone_intl_code double,
+	phone_number string,
+	etl_ld_status string,
+	etl_ld_dt timestamp,
+	etl_upd_dt timestamp
+) 
+STORED AS PARQUET  
+Location "s3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_guest_dim" ;
+
+create external table vv_db.hvtb_nbx_staging_sw_guest_dim (
+	guest_id int,
+	rec_start_dttm timestamp,
+	rec_end_dttm  timestamp,
+	src_guest_id int,
+	guest_seqn double,
+	guest_type string,
+	client_id double,
+	age double,
+	age_category string,
+	gender string,
+	city string,
+	country string,
+	zip string,
+	state string,
+	citizenship string,
+	citizenship_name string,
+	residency string,
+	last_name string,
+	first_name string,
+	middle_name string,
+	sex string,
+	tier_level string,
+	birthday timestamp,
+	passport_number string,
+	passport_exp_date timestamp,
+	passport_issue_date timestamp,
+	passport_issue_place string,
+	id_doc_type string,
+	id_doc_number string,
+	id_doc_expiration_date timestamp,
+	id_doc_issue_date timestamp,
+	id_doc_issue_country string,
+	id_doc_issue_city string,
+	id2_doc_type string,
+	id2_doc_number string,
+	id2_doc_expiration_date timestamp,
+	id2_doc_issue_date timestamp,
+	id2_doc_issue_country string,
+	id2_doc_issue_city string,
+	email string,
+	phone_intl_code double,
+	phone_number string,
+	etl_ld_status string,
+	etl_ld_dt timestamp,
+	etl_upd_dt timestamp
+) 
+STORED AS PARQUET  
+Location "s3://vv-dev-emr-cluster/data/staging/seaware/hvtb_nbx_staging_sw_guest_dim" ;
+
+select d.guest_id  as  d_guest_id,d.rec_start_dttm  as  d_rec_start_dttm,d.rec_end_dttm  as  d_rec_end_dttm,d.src_guest_id  as  d_src_guest_id,d.guest_seqn  as  d_guest_seqn,d.guest_type  as  d_guest_type,d.client_id  as  d_client_id,d.age  as  d_age,d.age_category  as  d_age_category,d.gender  as  d_gender,d.city  as  d_city,d.country  as  d_country,d.zip  as  d_zip,d.state  as  d_state,d.citizenship  as  d_citizenship,d.citizenship_name  as  d_citizenship_name,d.residency  as  d_residency,d.last_name  as  d_last_name,d.first_name  as  d_first_name,d.middle_name  as  d_middle_name,d.sex  as  d_sex,d.tier_level  as  d_tier_level,d.birthday  as  d_birthday,d.passport_number  as  d_passport_number,d.passport_exp_date  as  d_passport_exp_date,d.passport_issue_date  as  d_passport_issue_date,d.passport_issue_place  as  d_passport_issue_place,d.id_doc_type  as  d_id_doc_type,d.id_doc_number  as  d_id_doc_number,d.id_doc_expiration_date  as  d_id_doc_expiration_date,d.id_doc_issue_date  as  d_id_doc_issue_date,d.id_doc_issue_country  as  d_id_doc_issue_country,d.id_doc_issue_city  as  d_id_doc_issue_city,d.id2_doc_type  as  d_id2_doc_type,d.id2_doc_number  as  d_id2_doc_number,d.id2_doc_expiration_date  as  d_id2_doc_expiration_date,d.id2_doc_issue_date  as  d_id2_doc_issue_date,d.id2_doc_issue_country  as  d_id2_doc_issue_country,d.id2_doc_issue_city  as  d_id2_doc_issue_city,d.email  as  d_email,d.phone_intl_code  as  d_phone_intl_code,d.phone_number  as  d_phone_number,d.etl_ld_dt  as  d_etl_ld_dt,d.etl_upd_dt  as  d_etl_upd_dt,t.load_date,t.guest_id,t.guest_seqn,t.guest_type,t.client_id,t.age,t.age_category,t.gender,t.city,t.country,t.zip,t.state,t.citizenship,t.citizenship_name,t.residency,t.last_name,t.first_name,t.middle_name,t.sex,t.tier_level,t.birthday,t.passport_number,t.passport_exp_date,t.passport_issue_date,t.passport_issue_place,t.id_doc_type,t.id_doc_number,t.id_doc_expiration_date,t.id_doc_issue_date,t.id_doc_issue_country,t.id_doc_issue_city,t.id2_doc_type,t.id2_doc_number,t.id2_doc_expiration_date,t.id2_doc_issue_date,t.id2_doc_issue_country,t.id2_doc_issue_city,t.email,t.phone_intl_code,t.phone_number from vv_db.hvtb_nbx_core_sw_guest_dim d full join (select b.load_date,a.guest_id,a.guest_seqn,a.guest_type,a.client_id,a.age,a.age_category,a.gender,a.city,a.country,a.zip,a.state,a.citizenship,a.citizenship_name,a.residency,a.last_name,a.first_name,a.middle_name,a.sex,a.tier_level,a.birthday,a.passport_number,a.passport_exp_date,a.passport_issue_date,a.passport_issue_place,a.id_doc_type,a.id_doc_number,a.id_doc_expiration_date,a.id_doc_issue_date,a.id_doc_issue_country,a.id_doc_issue_city,a.id2_doc_type,a.id2_doc_number,a.id2_doc_expiration_date,a.id2_doc_issue_date,a.id2_doc_issue_country,a.id2_doc_issue_city,a.email,a.phone_intl_code,a.phone_number from vv_db.hvtb_nbx_landing_sw_dwh_res_guest a join vv_db.hvtb_nbx_landing_sw_dwh_extract_load b on a.rec_res_id = b.entity_id ) t on d.src_guest_id = t.guest_id
+
+create external table vv_db.hvtb_nbx_core_sw_revenue_fact (
+snapshot_date timestamp,
+res_id int,
+guest_id int,
+package_id int,
+invoice_item_type_id int,
+price_area_id int,
+ship_id int,
+agent_id int,
+agency_id int,
+promotion_id int,
+addon_id int,
+cardeck_id int,
+shorex_id int,
+hotel_id int,
+sail_id int,
+amount int,
+commission_percent int,
+etl_ld_dt timestamp,
+etl_upd_dt timestamp )
+STORED AS PARQUET  
+Location "s3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_revenue_fact" ;
+
+create external table vv_db.hvtb_nbx_core_sw_price_area_lkp (
+price_area_id int,
+price_area string,
+etl_ld_dt timestamp,
+etl_upd_dt timestamp )
+STORED AS PARQUET  
+Location "s3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_price_area_lkp" ;
+
+CREATE external TABLE vv_db.hvtb_nbx_core_sw_revenue_fact (
+	snapshot_date TIMESTAMP,
+	res_id INT,
+	guest_id INT,
+	package_id INT,
+	invoice_item_type_id INT,
+	price_area_id INT,
+	ship_id INT,
+	agent_id INT,
+	agency_id INT,
+	promotion_id INT,
+	addon_id INT,
+	cardeck_id INT,
+	shorex_id INT,
+	hotel_id INT,
+	sail_id INT,
+	amount DOUBLE,
+	commission_percent DOUBLE,
+	net_due DOUBLE,
+	addon_qty DOUBLE,
+	currency STRING,
+	currency_rate DOUBLE,
+	etl_ld_dt TIMESTAMP,
+	etl_upd_dt TIMESTAMP
+) 
+STORED AS PARQUET  
+Location "s3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_revenue_fact" ;
+
+create external table vv_db.hvtb_nbx_core_sw_invoice_item_type_lkp(
+        invoice_item_type_id int,
+	invoice_item_type string,
+	invoice_item_subtype string,
+	etl_ld_dt timestamp,
+	etl_upd_dt timestamp 
+)
+STORED AS PARQUET 
+Location "s3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_invoice_item_type_lkp" ;
+
+INSERT INTO vv_db.hvtb_nbx_core_sw_guest_dim
+(
+  guest_id,
+  rec_start_dttm,
+  rec_end_dttm,
+  src_guest_id,
+  guest_seqn,
+  guest_type,
+  client_id,
+  age,
+  age_category,
+  gender,
+  city,
+  country,
+  zip,
+  state,
+  citizenship,
+  citizenship_name,
+  residency,
+  last_name,
+  first_name,
+  middle_name,
+  sex,
+  email,
+  phone_intl_code,
+  phone_number  
+)
+VALUES
+(
+  -1,
+  '1900-10-31 00:00:00',
+  '9999-12-31 00:00:00',
+  -1,
+  null,
+  'NA',
+  null,
+  null,
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  'NA',
+  null,
+  'NA'
+);
+
+INSERT INTO vv_db.hvtb_nbx_core_sw_package_dim
+(
+  package_id,
+  rec_start_dttm,
+  rec_end_dttm,
+  src_package_id,
+  package_class,
+  package_type,
+  package_code,
+  package_name
+)
+VALUES
+(
+  -1,
+  '1900-10-31 00:00:00',
+  '9999-12-31 00:00:00',
+  null,
+  'NA',
+  'NA',
+  'NA',
+  'NA'
+ );
+ 
+ INSERT INTO vv_db.hvtb_nbx_core_sw_reservation_dim
+(
+  res_id,
+  rec_start_dttm,
+  rec_end_dttm,
+  src_res_id,
+  res_init_date,
+  res_guest_count,
+  res_mode,
+  cancellation_date,
+  res_status,
+  operator,
+  res_type
+)
+VALUES
+(
+  -1,
+  '1900-10-31 00:00:00',
+  '9999-12-31 00:00:00',
+  -1,
+  '1900-10-31 00:00:00',
+  -1,
+  'NA',
+  '1900-10-31 00:00:00',
+  'NA',
+  'NA',
+  'NA'
+);

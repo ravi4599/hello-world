@@ -1,0 +1,26 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_sw_rpl_res_chargeable_action`(
+  `action_id` int, 
+  `entity_type` string, 
+  `entity_id` int, 
+  `res_action_type` string, 
+  `action_timestamp` timestamp, 
+  `is_added_manually` string, 
+  `is_paid` string, 
+  paid_timestamp timestamp,
+  `final_timestamp` timestamp, 
+  `load_data_timestamp` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='', 
+  'line.delim'='\n', 
+  'serialization.format'='') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_res_chargeable_action'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1576738848');
+  

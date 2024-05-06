@@ -1,0 +1,1 @@
+spark.sql("""Create external table shipdw.hvtb_lnd_go_event( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/mxp/hvtb_lnd_go_event'""") 

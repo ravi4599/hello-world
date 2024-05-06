@@ -1,0 +1,182 @@
+CREATE OR REPLACE PROCEDURE seaware.commission_fact_rpt_sp()
+	LANGUAGE plpgsql
+AS $$ 	 	 	                    
+BEGIN
+delete from  seaware.commission_fact_rpt;
+INSERT INTO seaware.commission_fact_rpt
+with s2 as
+    (select max(snapshot_date) as max_snap_date from hive_schema_stg.seaware_commission_fact)
+select
+                seaware_agency_dim.src_agency_id as seaware_agency_id
+   ,crm_agency_master.id as crm_agency_id
+   ,seaware_agency_dim.agency_name as agency_name
+   ,crm_agency_master.billingcity as agency_city
+   ,crm_agency_master.Currency_Type__c as agency_currency
+   ,crm_agent_master.seaware_agent_id__c as seaware_agent_id
+   ,crm_agent_master.id as crm_agent_id
+   ,crm_agent_master.name as first_mate_name
+   ,crm_agent_master.agent_status__c as first_mate_status
+   ,seaware_reservation_dim.src_res_id as booking_number
+   ,seaware_reservation_dim.res_status as booking_status
+   ,seaware_guest_dim.first_name||' '||seaware_guest_dim.last_name AS sailor_1_name
+   ,seaware_ship_dim.ship_name as ship_name
+   ,seaware_sail_dim.sail_date_from as voyage_date
+   ,seaware_sail_dim.sail_days as voyage_length
+   ,p_voy.package_name as itinerary_name
+   ,seaware_package_dim.package_name as product_name
+   ,seaware_commission_type_lkp.commission_code as commission_code
+   ,seaware_invoice_item_type_lkp.invoice_item_type as invoice_item_type
+   ,seaware_commission_fact.currency_code as currency
+   ,seaware_commission_fact.base_commission_voyagefare as voyage_fare_commission
+   ,seaware_commission_fact.base_commission_voyagefare_usd as voyage_fare_commission_usd
+   ,seaware_commission_fact.base_commission_insurance as commission_on_insurance
+   ,seaware_commission_fact.base_commission_insurance_usd as commission_on_insurance_usd
+   ,seaware_commission_fact.protected_commission as base_protected_commission
+   ,seaware_commission_fact.protected_commission_usd as base_protected_commission_usd
+   ,seaware_commission_fact.base_commission_taxesandfees as taxes_commission
+   ,seaware_commission_fact.base_commission_taxesandfees_usd as taxes_commission_usd
+   ,case when  upper(seaware_invoice_item_type_lkp.invoice_item_type) in ('VOYAGE FARE','TAXES & FEES','INSURANCE') then 0 else   seaware_commission_fact.commission_amount end as bookable_commission
+   ,case when  upper(seaware_invoice_item_type_lkp.invoice_item_type) in ('VOYAGE FARE','TAXES & FEES','INSURANCE') then 0 else (seaware_commission_fact.commission_amount*seaware_commission_fact.currency_rate)  end as bookable_commission_usd
+   ,case when seaware_commission_type_lkp.commission_code = 'BONUS' then seaware_commission_fact.commission_amount else 0 end as bonus_commission
+   ,case when seaware_commission_type_lkp.commission_code = 'BONUS' then (seaware_commission_fact.commission_amount*seaware_commission_fact.currency_rate) else 0 end as bonus_commission_usd
+   ,seaware_commission_fact.commission_amount as total_commission
+   ,case when seaware_invoice_item_type_lkp.invoice_item_type = 'VOYAGE FARE' and  seaware_commission_type_lkp.commission_code = 'BONUS'then 0 else      revenue_fact.amount end as total_gross_revenue
+   ,revenue_fact.amount as item_commission_amount
+   ,seaware_commission_fact.commission_payout_date as commission_payout_date
+   , case
+        when (
+                revenue_fact.net_due=0
+                and datediff(day,seaware_commission_fact.snapshot_date,seaware_sail_dim.sail_date_from)<=120
+                and datediff(day,tran.trans_time_stamp,next_day(CURRENT_DATE,'Friday'))>2
+            )
+            then
+                (
+                    case
+                        when mod(date_part(w,tran.trans_time_stamp)::INT,2)=0
+                            then next_day(tran.trans_time_stamp,'Friday')
+                            else dateadd(day,7,next_day(tran.trans_time_stamp,'Friday'))
+                    end
+                )
+    end expected_payout_date
+   ,CURRENT_TIMESTAMP as etl_ld_dt
+   ,seaware_commission_fact.charge_id,
+   seaware_commission_fact.is_cancelled
+from
+    s2
+    inner join
+        hive_schema_stg.seaware_commission_fact seaware_commission_fact
+        on
+            s2.max_snap_date = seaware_commission_fact.snapshot_date
+    left join
+        hive_schema_stg.seaware_commission_type_lkp seaware_commission_type_lkp
+        on
+            seaware_commission_fact.commission_type_skey = seaware_commission_type_lkp.commission_type_id
+    left join
+        hive_schema_stg.seaware_invoice_item_type_lkp seaware_invoice_item_type_lkp
+        on
+            seaware_commission_fact.invoice_item_type_id = seaware_invoice_item_type_lkp.invoice_item_type_id
+    left join
+        hive_schema_stg.seaware_agency_dim seaware_agency_dim
+        on
+            seaware_commission_fact.agency_id = seaware_agency_dim.agency_id
+    left join
+        hive_schema_stg.crm_agency_master crm_agency_master
+        on
+            seaware_agency_dim.src_agency_id = crm_agency_master.seaware_agency_id__c and crm_agency_master.rec_end_dttm='9999-12-31 00:00:00' 
+    left join
+        hive_schema_stg.crm_agent_master crm_agent_master
+        on
+            seaware_commission_fact.agent_id = crm_agent_master.agent_id
+    left join
+        hive_schema_stg.seaware_reservation_dim seaware_reservation_dim
+        on
+            seaware_commission_fact.res_id = seaware_reservation_dim.res_id
+    left join
+        hive_schema_stg.seaware_sail_dim seaware_sail_dim
+        on
+            seaware_commission_fact.sail_id = seaware_sail_dim.sail_id
+    left join
+        hive_schema_stg.seaware_package_dim seaware_package_dim
+        on
+            seaware_package_dim.package_id = seaware_commission_fact.package_id
+    left join
+        seaware.seaware_ship_dim seaware_ship_dim
+        on
+            seaware_sail_dim.ship_id = seaware_ship_dim.ship_id
+                left join
+                                seaware.seaware_res_guest_rel seaware_res_guest_rel 
+                                on
+                                (seaware_commission_fact.res_id = seaware_res_guest_rel.res_id  and seaware_res_guest_rel.guest_seqn = 1 )
+    left join 
+                                hive_schema_stg.seaware_guest_dim seaware_guest_dim 
+                                on
+           seaware_res_guest_rel.guest_id = seaware_guest_dim.guest_id
+    left join 
+                    hive_schema_stg.seaware_package_dim p_voy
+                                on 
+                 seaware_sail_dim.src_sail_id = p_voy.src_sail_id and p_voy.package_class='VOYAGE' and p_voy.rec_end_dttm = '9999-12-31 00:00:00'                                      
+    left join
+        (
+            select
+                res_id
+              , trans_time_stamp
+            from
+                hive_schema_stg.seaware_transaction_evt a
+            where
+                trans_id =
+                (
+                    select
+                        max(trans_id)
+                    from
+                       hive_schema_stg.seaware_transaction_evt b
+                    where
+                        a.res_id        =b.res_id
+                        and lower(b.trans_type)='pmnt'
+                        and lower(trans_status)='ok'
+               )
+        )
+        tran
+        on
+            tran.res_id = seaware_reservation_dim.res_id
+    left join
+        (
+            select
+                res_id
+              , revn.guest_id
+              , revn.package_id
+              , max(revn.currency) currency
+              , sum(revn.amount)   amount
+              , max(revn.net_due)  net_due
+                                                  ,            revn.addon_id
+              , inv.invoice_item_type
+            from
+                hive_schema_stg.seaware_revenue_fact revn
+                left join
+                    hive_schema_stg.seaware_invoice_item_type_lkp inv
+                    on
+                        revn.invoice_item_type_id = inv.invoice_item_type_id
+            where
+                revn.snapshot_date =
+                (
+                    select
+                        max(snapshot_date)
+                    from
+                        hive_schema_stg.seaware_revenue_fact
+                )
+            group by
+                res_id
+              , revn.guest_id
+              , revn.package_id
+                                                  ,            revn.addon_id
+              , inv.invoice_item_type
+        )
+        revenue_fact
+        on
+            revenue_fact.res_id                = seaware_commission_fact.res_id
+           and revenue_fact.guest_id          = seaware_commission_fact.guest_id
+            and revenue_fact.package_id        = seaware_commission_fact.package_id
+                                                and revenue_fact.addon_id = seaware_commission_fact.addon_id 
+            and revenue_fact.invoice_item_type = seaware_invoice_item_type_lkp.invoice_item_type;     
+END;       
+     $$
+;

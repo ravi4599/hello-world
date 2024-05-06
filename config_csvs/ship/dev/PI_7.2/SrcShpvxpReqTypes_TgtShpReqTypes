@@ -1,0 +1,33 @@
+spark.src.con.format jdbc
+
+spark.src.con.url jdbc:postgresql://10.98.0.126:5432/housekeeping
+
+spark.src.user pgreadaccessuser
+
+spark.src.password TRk1JhJn1SstFUnCZ2Xx
+
+spark.src.table public.request_types
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVXPReqtypes
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVXPReqtypes
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_request_types
+spark.target.hive.table shipdw.hvtb_lnd_request_types
+spark.src.table.query (select * from request_types) as request_types
+spark.condition.column id
+spark.hive.table.maxid select max(id) from shipdw.hvtb_lnd_request_types
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl q-lab-hdp-adb1.virginvoyages.qa.dev:2181/hbase-secure:nbx.service@VIRGINVOYAGES.QA.DEV:/home/nbx.service/nbx.keytab
+spark.datasource.hive.warehouse.load.staging.dir /tmp
+spark.datasource.hive.warehouse.metastoreUri thrift://q-lab-hdp-adb3.virginvoyages.qa.dev:9083
+spark.hadoop.hive.llap.daemon.service.hosts @llap0
+spark.hadoop.hive.zookeeper.quorum q-lab-hdp-adb3.virginvoyages.qa.dev:2181,q-lab-hdp-adb2.virginvoyages.qa.dev:2181,q-lab-hdp-adb1.virginvoyages.qa.dev:2181
+spark.sql.hive.hiveserver2.jdbc.url jdbc:hive2://q-lab-hdp-adb3.virginvoyages.qa.dev:2181,q-lab-hdp-adb2.virginvoyages.qa.dev:2181,q-lab-hdp-adb1.virginvoyages.qa.dev:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2
+
+spark.sql.hive.hiveserver2.jdbc.url.principal hive/_HOST@VIRGINVOYAGES.QA.DEV
+spark.sql.hive.metastore.jars /usr/hdp/current/spark2-client/standalone-metastore/*
+spark.sql.hive.metastore.version 3.0
+spark.sql.warehouse.dir /apps/spark/warehouse

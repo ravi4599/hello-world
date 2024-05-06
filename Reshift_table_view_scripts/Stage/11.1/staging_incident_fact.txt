@@ -1,0 +1,6 @@
+CREATE EXTERNAL TABLE hive_schema_stg.incident_fact(    voyage_id text,    ship_code text,    voyage_skey int,    incident_detail_skey int,    reported_by_person_skey int,    assigned_to_person_skey int,    due_date_utc_skey int,    due_time_utc_skey int,    due_date_skey int,    due_time_skey int,    cabin_skey int,    venue_skey int,    duty_manager_person_skey int,    impacted_guest_person_skey int,    incident_created_datetime_utc timestamp,    incident_created_datetime timestamp,    incident_updated_datetime_utc timestamp,    incident_updated_datetime timestamp,    incident_category_code_skey int,    incident_category_parent_code_skey int,    resolution_time int,    incident_status text,    load_dt timestamp,      upd_dt timestamp,    primaryhash text,     md5_hash text ) PARTITIONED BY (part_dt date)STORED AS PARQUET LOCATION 's3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_incident';
+
+
+CREATE OR REPLACE VIEW shipdw.incident_fact
+AS 
+SELECT * FROM hive_schema_stg.incident_fact;

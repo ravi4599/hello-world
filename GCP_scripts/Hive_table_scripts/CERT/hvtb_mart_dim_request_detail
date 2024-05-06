@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_mart_dim_request_detail`(`request_detail_skey` bigint, `voyage_id` string, `request_id` string, `request_guid` string, `request_description` string, `request_priority` int, `request_category_id` int, `request_category_name` string, `request_type_id` int, `request_type_name` string, `request_type_priority` int, `load_dt` timestamp, `upd_dt` timestamp, `primaryhash` string, `md5_hash` string)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+  LOCATION 'gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_request_detail';

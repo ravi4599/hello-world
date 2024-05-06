@@ -1,0 +1,32 @@
+CREATE EXTERNAL TABLE bd_db.facebook_userinfo_data(birthday string,description string,edu_id string , email string,employer_name string,fav_id string,fav_name string,first_name string, gender string, id bigint,interested_in___ string, last_name string,link string, loc_name string,locale string,name string,position_name string, school_id string,school_name string, timezone float, type string,updated_time string, verified boolean,jobid string,epoch bigint,year int,month int,day int,timestamp string
+)
+STORED AS PARQUET 
+LOCATION 's3a://vv-dev-emr-cluster/data/hivetables/bd_db/facebook-userinfo-data/'
+
+s3a:// vv-dev-emr-cluster/ data/ hivetables/ bd_db/ facebook-userinfo-data
+
+
+jobid string,epoch bigint,year int,month int,day int,fbtimestamp timestamp
+
+===================================================================================================================================
+
+CREATE EXTERNAL TABLE bd_db.facebook_userinfo(birthday string,description string,edu_id string , email string,employer_name string,fav_id string,fav_name string,first_name string, gender string, id bigint,interested_in___ string, last_name string,link string, loc_name string,locale string,name string,position_name string, school_id string,school_name string, timezone float, type string,updated_time string, verified boolean)
+STORED AS PARQUET 
+LOCATION 's3a://vv-dev-emr-cluster/data/hivetables/bd_db/facebook-userinfo/'
+
+
+
+CREATE EXTERNAL TABLE facebook_userinfo(
+id string ,bithday string ,school_id string ,school_name string ,type string ,edu_id string ,email string ,fav_id string ,fav_name string ,first_name string ,gender string ,interestedin string ,last_name string ,link string ,name string ,locale string ,timesone string ,updated_time string ,verified string ,description string ,employee_name string ,position_name string ,loc_name string 
+)
+STORED AS PARQUET 
+LOCATION 'pqtdata'
+
+
+create external table testapppqt(id string,name string) stored as PARQUET Location '/user/cloudera/tmpdata'
+
+java -jar parquet-tools-1.6.0.jar schema /user/cloudera/tmpdata/*.parquet
+
+CREATE EXTERNAL TABLE bd_db.facebook_userinfo(birthday string,description string,edu_id string , email string,employer_name string,fav_id string,fav_name string,first_name string, gender string, id bigint,interested_in___ string, last_name string,link string, loc_name string,locale string,name string,position_name string, school_id string,school_name string, timezone float, type string,updated_time string, verified boolean)
+STORED AS PARQUET 
+LOCATION 's3a://vv-dev-emr-cluster/data/hivetables/bd_db/facebook-userinfo/'

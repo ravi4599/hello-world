@@ -1,0 +1,16 @@
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_lnd_batch_entity_hash`(`entityhashid` string, `entitycode` string, `uniquesourceid` string, `dxpid` string, `hashcode` string, `failedhashcode` string, `retryattempt` int, `lastmodifieddate` timestamp, `multimediaid` string,`multimediaitemid` string,`embarkdate` date,`debarkdate` date,`revisionnumber` string,`additionalinfo` string,`correlationid` string,`ackstatus` string,`shiptimemodifieddate` timestamp,`addeddate` timestamp,`dxpreservationstatus` string, `VoyageId` string, `BatchTime` timestamp, `ShipCode` string)
+PARTITIONED BY (`Part_Date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1',
+  'timestamp.formats' = 'yyyy-MM-dd HH:mm:ss'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/landing/vxp/hvtb_lnd_batch_entity_hash'
+  
+  
+CREATE VIEW shipdw.hvtb_parse_batch_entity_hash as select * from shipdw.hvtb_lnd_batch_entity_hash

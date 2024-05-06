@@ -1,0 +1,20 @@
+CREATE EXTERNAL TABLE hive_schema_stg.crew_activity_dim
+(crew_activity_skey bigint,
+voyage_id varchar,
+ activity_id int,
+ activity_name varchar,
+ activity_type varchar, 
+ is_active boolean,
+ is_deleted boolean, 
+ load_dt timestamp, 
+ upd_dt timestamp, 
+ primaryhash varchar, 
+ md5_hash varchar)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_crew_activity';

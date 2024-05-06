@@ -1,0 +1,18 @@
+CREATE TABLE hive_schema_stg.device_operation_fact (
+	voyage_id text NULL,
+	voyage_skey int8 NULL,
+	ship_code text NULL,
+	device_skey int8 NULL,
+game_skey int8 NULL,
+game_date_time timestamp,
+open_transaction_id int8 NULL,
+closed_transaction_id int8 NULL,
+device_start_dt timestamp null,
+device_closed_dt timestamp null,
+load_dt timestamp NULL,
+upd_dt timestamp NULL,
+part_dt date NULL
+);
+
+
+CREATE OR REPLACE VIEW shipdw.device_operation_fact AS SELECT * FROM hive_schema_stg.device_operation_fact;

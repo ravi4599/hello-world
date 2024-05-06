@@ -1,0 +1,25 @@
+spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_mart_fact_device_operation_err(
+  voyage_id string, 
+  ship_code string, 
+  voyage_skey bigint, 
+  device_skey bigint, 
+  game_skey bigint, 
+  game_date_time timestamp, 
+  open_transaction_id bigint, 
+  closed_transaction_id bigint, 
+  device_start_dt timestamp, 
+  device_closed_dt timestamp,  
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string)
+PARTITIONED BY ( 
+  part_dt date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/mart/hvtb_mart_fact_device_operation_err'""").show()

@@ -1,0 +1,1 @@
+Create external table shipdw.hvtb_lnd_vxp_dxp_incident( batchinstanceid String,voyageid String,batchtime Timestamp, message String,shipcode string) partitioned by (part_date Date) STORED AS parquet LOCATION 's3://vv-prod-emr-cluster/data/landing/hvtb_lnd_vxp_dxp_incident';

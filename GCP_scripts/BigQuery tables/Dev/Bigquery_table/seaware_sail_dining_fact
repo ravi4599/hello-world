@@ -1,0 +1,9 @@
+ CREATE  EXTERNAL TABLE hive_schema_stg.seaware_sail_dining_fact
+WITH PARTITION COLUMNS
+OPTIONS (
+  uris=['gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_sail_dining_fact/*'],
+  format=PARQUET,
+  hive_partition_uri_prefix='gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_sail_dining_fact/'
+);
+
+CREATE OR REPLACE VIEW seaware.seaware_sail_dining_fact as SELECT * FROM hive_schema_stg.seaware_sail_dining_fact;

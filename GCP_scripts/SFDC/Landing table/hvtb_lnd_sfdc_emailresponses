@@ -1,0 +1,30 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_lnd_sfdc_emailresponses`(
+  `id` string, 
+  `et4ae5__lead__c` string, 
+  `et4ae5__contact__c` string, 
+  `et4ae5__dateopened__c` timestamp, 
+  `et4ae5__numberofuniqueclicks__c` double, 
+  `et4ae5__dateunsubscribed__c` timestamp, 
+  `et4ae5__campaignmemberid__c` string, 
+  `et4ae5__email__c` string, 
+  `et4ae5__fromname__c` string, 
+  `et4ae5__senddefinition__c` string, 
+  `et4ae5__subjectline__c` string, 
+  `batchtime` timestamp, 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/landing/sfdc/hvtb_lnd_sfdc_emailresponses';
+  
+  drop table vv_db.hvtb_lnd_sfdc_emailresponses;
+  
+  create or replace view vv_db.hvtb_parse_sfdc_emailresponses as select * from vv_db.hvtb_lnd_sfdc_emailresponses; 
+  
+  spark.sql("""select * from vv_db.hvtb_parse_sfdc_emailresponses""").show(5,false)
+  spark.sql("""select * from vv_db.hvtb_lnd_sfdc_emailresponses""").show(5,false)
+  

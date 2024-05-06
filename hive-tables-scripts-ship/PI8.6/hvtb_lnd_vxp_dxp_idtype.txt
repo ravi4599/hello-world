@@ -1,0 +1,24 @@
+ 
+
+spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_dxp_idtype (
+
+idtypeid string,
+
+idname string,
+
+addeddate timestamp,
+
+addedby string,
+
+lastmodifieddate timestamp,
+
+lastmodifiedby string,
+
+code string,VoyageId string, BatchTime timestamp)
+
+PARTITIONED BY (Part_date date) STORED AS PARQUET
+
+LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_dxp_idtype' """)
+
+
+spark.sql("create view shipdw.hvtb_parse_vxp_dxp_idtype as select * from shipdw.hvtb_lnd_vxp_dxp_idtype ")

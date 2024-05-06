@@ -1,0 +1,7 @@
+Processname             variablename             value
+-------------------   ---------------------     -----------------------------------------------
+CDC_crm_emailresponses	main_table_query	select * from vv_db.hvtb_nbx_core_crm_emailresponses_dim
+CDC_crm_emailresponses	incr_table_query	select * from vv_db.hvtb_nbx_landing_crm_emailresponses_cdc
+CDC_crm_emailresponses	temp_file_path	s3://vv-dev-emr-cluster/data/staging/crm/hvtb_nbx_core_crm_emailresponses
+CDC_crm_emailresponses	original_file_path	s3://vv-dev-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_emailresponses_dim
+CDC_crm_emailresponses	subtract_query	select a.load_data_timestamp , a.createdbyid ,a.createddate ,a.et4ae5__campaignmemberid__c ,a.et4ae5__clicked__c ,a.et4ae5__contact_id__c ,a.et4ae5__contact__c ,a.et4ae5__dateBounced__c ,a.et4ae5__dateopened__c ,a.et4ae5__datesent__c ,a.et4ae5__dateunsubscribed__c ,a.et4ae5__email_asset_id__c ,a.et4ae5__email_id__c ,a.et4ae5__email__c ,  a.et4ae5__fromaddress__c ,a.et4ae5__fromname__c ,a.et4ae5__hardbounce__c ,a.et4ae5__lead_id__c ,a.et4ae5__lead__c ,   a.et4ae5__numberoftotalclicks__c ,a.et4ae5__numberofuniqueclicks__c , a.et4ae5__Opened__c  ,a.et4ae5__senddefinition__c , a.et4ae5__softbounce__c ,a.et4ae5__subjectline__c , a.et4ae5__tracking_as_of__c ,a.et4ae5__triggeredsenddefinitionname__c ,a.id ,a.isdeleted ,a.lastmodifiedbyid ,a.lastModifieddate ,a.name ,a.ownerid FROM vv_db.hvtb_nbx_core_crm_emailresponses_dim a left join vv_db.hvtb_nbx_landing_crm_emailresponses_cdc b on a.id=b.id where b.id is null

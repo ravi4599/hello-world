@@ -1,0 +1,181 @@
+
+                
+create external table vv_db.hvtb_nbx_core_sw_hotel_group_req_dim(
+hotel_group_req_id bigint,
+src_hotel_group_req_id int,
+rec_start_dttm timestamp,
+rec_end_dttm timestamp,
+effective_date timestamp,
+start_date timestamp,
+end_date timestamp ,
+request_type string,
+occupancy int,
+quantity int,
+n_of_guests int,
+city_code string,
+hotel_id int,
+hotel_category string,
+room_category string,
+room_type string,
+hotel_space_type string,
+is_land_component string,
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)
+stored as parquet location 'gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_sw_hotel_group_req_dim';
+
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.seaware_hotel_group_request_dim(
+hotel_group_req_id bigint,
+src_hotel_group_req_id int,
+rec_start_dttm timestamp,
+rec_end_dttm timestamp,
+effective_date timestamp,
+start_date timestamp,
+end_date timestamp ,
+request_type string,
+occupancy int,
+quantity int,
+n_of_guests int,
+city_code string,
+hotel_id int,
+hotel_category string,
+room_category string,
+room_type string,
+hotel_space_type string,
+is_land_component string,
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)                    
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_sw_hotel_group_req_dim/*']
+);
+
+CREATE OR REPLACE VIEW seaware.seaware_hotel_group_request_dim AS SELECT * FROM hive_schema_stg.seaware_hotel_group_request_dim;
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.seaware_hotel_group_request_dim_tmp(
+hotel_group_req_id bigint,
+src_hotel_group_req_id int,
+rec_start_dttm timestamp,
+rec_end_dttm timestamp,
+effective_date timestamp,
+start_date timestamp,
+end_date timestamp ,
+request_type string,
+occupancy int,
+quantity int,
+n_of_guests int,
+city_code string,
+hotel_id int,
+hotel_category string,
+room_category string,
+room_type string,
+hotel_space_type string,
+is_land_component string,
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_nbx_core_sw_hotel_group_req_dim/*']
+);
+
+
+
+
+
+======Jars
+
+gsutil cp gs://vv-dev-gcp-frmwrks/vv-nbx-datamart-hotelgroup-request-dim-0.0.1-SNAPSHOT-jar-with-dependencies.jar /home/ext_dileep_kumar_tulugu_capgemin/Dim_jars
+
+============config
+
+gsutil cp gs://vv-dev-nbx-cluster/data/Test_Jar/Dimension_configs/SrcHotelgroupReqDim_TgtHotelgroupReqDim /home/ext_dileep_kumar_tulugu_capgemin/dim_config
+
+INSERT=======>
+
+
+INSERT INTO shipdw.HBTB_INGESTION_METADATA (BATCH_INSTANCE_ID,BATCH_ID,PARENTBATCH,SRCCONFIGID,TGTCONFIGID,BATCHSTARTTIME,BATCHENDTIME,BATCH_EXECUTION_STARTTIME,BATCH_EXECUTION_ENDTIME,STATUS,ENVIRONMENT,VOYAGEID,TYPE) VALUES('SrcHotelgroupReqDim-TgtHotelgroupReqDim','SrcHotelgroupReqDim-TgtHotelgroupReqDim','null','SrcHotelgroupReqDim','TgtHotelgroupReqDim','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','Successful','DEV','SC2002269NCR','Dim');
+
+select * from shipdw.HBTB_INGESTION_METADATA where BATCH_ID like '%SrcHotelgroupReqDim-TgtHotelgroupReqDim%';
+delete from shipdw.HBTB_INGESTION_METADATA where BATCH_ID like '%SrcHotelgroupReqDim-TgtHotelgroupReqDim%';
+
+SPARK-SUBMIT====>HotelGroupRequestLoad
+
+
+spark-submit --name "HotelGroupRequestLoad" --class com.virginvoyages.dimension.HotelGroupRequestLoad --master yarn --deploy-mode cluster --properties-file /home/ext_dileep_kumar_tulugu_capgemin/dim_config/SrcHotelgroupReqDim_TgtHotelgroupReqDim --jars /home/ext_dileep_kumar_tulugu_capgemin/Dim_jars/shore-datamart-scd-0.0.1-SNAPSHOT.jar,/home/ext_dileep_kumar_tulugu_capgemin/Dim_jars/virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar, /home/ext_dileep_kumar_tulugu_capgemin/Dim_jars/vv-nbx-datamart-hotelgroup-request-dim-0.0.1-SNAPSHOT-jar-with-dependencies.jar 
+
+
+
+
+val srcDF = spark.read.format("parquet").option("header","true").load("gs://vv-dev-nbx-cluster/data/core/seaware/hvtb_nbx_core_sw_hotel_group_req_dim/*")
+srcDF.createOrReplaceTempView("temp")
+spark.sql("""select * from temp""").count
+
+
+
+
+:::::::::::::Query
+select count(*) from vv_db.hvtb_nbx_core_sw_hotel_group_req_dim;
+select * from vv_db.hvtb_nbx_core_sw_hotel_group_req_dim where rec_start_dttm<rec_end_dttm ;
+select * from vv_db.hvtb_nbx_core_sw_hotel_group_req_dim where HOTEL_GROUP_REQ_ID is null;
+
+
+
+select HOTEL_GROUP_REQ_ID,count(*) from vv_db.hvtb_nbx_core_sw_hotel_group_req_dim group by HOTEL_GROUP_REQ_ID having count(*)>1;
+select HOTEL_GROUP_REQ_ID,count(*) from vv_db.hvtb_nbx_core_sw_hotel_group_req_dim where rec_end_dttm='9999-12-31' group by HOTEL_GROUP_REQ_ID having count(*)>1
+
+************************************************************************************
+select count(*) from  hive_schema_stg.seaware_hotel_group_request_dim;
+select count(*) from  hive_schema_stg.seaware_hotel_group_request_dim_tmp;
+select * from  hive_schema_stg.seaware_hotel_group_request_dim where HOTEL_GROUP_REQ_ID is null;
+select count(*) from hive_schema_stg.seaware_hotel_group_request_dim where HOTEL_GROUP_REQ_ID is null;
+
+select * from hive_schema_stg.seaware_hotel_group_request_dim where rec_start_dttm<rec_end_dttm ;
+select count(*) from hive_schema_stg.seaware_hotel_group_request_dim where rec_start_dttm<rec_end_dttm ;
+select count(*) from hive_schema_stg.seaware_hotel_group_request_dim where rec_start_dttm>rec_end_dttm ;
+
+
+
+**************************************************************************************************************
+import org.apache.spark.sql.expressions.Window
+import org.apache.spark.sql.types.{ LongType };
+import spark.sqlContext.implicits._
+val srcPKCols ="HOTEL_GROUP_REQ_ID"
+val srcColsPKList = srcPKCols.split(",")
+val srcPKColSEQ = srcColsPKList.map(x => col(x)).toSeq
+val srcAllColList = "HOTEL_GROUP_REQ_ID,rec_start_dttm,rec_end_dttm,effective_date,start_date,end_date,request_type,occupancy,quantity,n_of_guests,city_code,hotel_id,hotel_category,room_category,room_type,hotel_space_type,is_land_component"
+val srcAllColArray = srcAllColList.split(",")
+val srcAllColSEQ = srcAllColArray.map(x => col(x)).toSeq
+val srcDF = spark.read.format("parquet").option("header","true").load("gs://vv-dev-nbx-cluster/data/core/seaware/hvtb_nbx_core_sw_hotel_group_req_dim/*")
+val HashedSrcDF = srcDF.withColumn("md5_hash", md5(concat_ws(",", srcDF.select(srcAllColSEQ: _*).columns.map(c => col(c)): _*))).as("srh")
+
+val HashedSrcPrimaryDF = HashedSrcDF.withColumn("primaryhash", md5(concat_ws(",", HashedSrcDF.select(srcPKColSEQ: _*).columns.map(c => col(c)): _*)))
+val fd = HashedSrcPrimaryDF.withColumn("rec_start_dttm",lit(current_timestamp)).withColumn("rec_end_dttm",lit("9999-12-31 00:00:00"))
+val w = Window.orderBy(monotonically_increasing_id())
+var tempDf = fd.withColumn("rowId", monotonically_increasing_id())
+tempDf = tempDf.withColumn("SRC_HOTEL_GROUP_REQ_ID", row_number().over(w) + 0).drop("rowId")
+tempDf.createOrReplaceTempView("temp")
+val finaldf = spark.sql("select cast(HOTEL_GROUP_REQ_ID as bigint ) as HOTEL_GROUP_REQ_ID,SRC_HOTEL_GROUP_REQ_ID,rec_start_dttm,cast(rec_end_dttm as timestamp) as rec_end_dttm,effective_date,start_date,end_date,request_type,occupancy,quantity,n_of_guests,city_code,hotel_id,hotel_category,room_category,room_type,hotel_space_type,is_land_component,etl_ld_dt as load_dt,etl_upd_dt as upd_dt,primaryhash,md5_hash from temp")
+finaldf.write.mode("Overwrite").parquet("gs://vv-dev-nbx-cluster/data/temp/hvtb_nbx_core_sw_hotel_group_req_dim/")
+finaldf.write.mode("Overwrite").parquet("gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_sw_hotel_group_req_dim/")
+finaldf.printSchema()
+spark.sql("""refresh table vv_db.hvtb_nbx_core_sw_hotel_group_req_dim""")
+spark.sql("""select * from vv_db.hvtb_nbx_core_sw_hotel_group_req_dim""").count
+spark.sql("""select * from vv_db.hvtb_nbx_core_sw_hotel_group_req_dim""").show(5,false)
+
+
+
+
+def hasColumn(df: DataFrame, path: String) = Try(df(path)).isSuccess
+var srcDF = spark.read.format("parquet").option("header","true").load("gs://vv-dev-nbx-cluster/data/core/seaware/hvtb_nbx_core_sw_hotel_group_req_dim/*")
+if (hasColumn(srcDF, "is_fake")) {
+srcDF = srcDF.withColumn("is_fake", when(srcDF.col("is_fake").isNotNull, srcDF.col("is_fake")).otherwise(lit(null)))}
+
+
+
+
+val srcDF = spark.read.format("parquet").option("header","true").load("gs://vv-dev-nbx-cluster/data/core/seaware/hvtb_nbx_core_sw_hotel_group_req_dim/*")
+srcDF.createOrReplaceTempView("temp")
+spark.sql("""select * from temp""").count

@@ -1,0 +1,17 @@
+create external table hive_schema_stg.seaware_cabin_master
+(
+cabin_id	int,
+cabin_number	varchar(10),
+ship	varchar(10),
+cabin_category	varchar(4),
+cabin_category_desc	varchar(50),
+cabin_category_rank	int,
+generic_category	varchar(30),
+occupancy	int,
+etl_ld_status varchar(20),	
+etl_ld_dt timestamp,
+etl_upd_dt timestamp
+) 
+stored as parquet  
+location 's3://vv-staging-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_cabin_master' ; 
+

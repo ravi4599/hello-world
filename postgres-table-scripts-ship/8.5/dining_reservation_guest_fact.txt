@@ -1,0 +1,29 @@
+CREATE TABLE hive_schema_stg.dining_reservation_guest_fact (
+	voyage_id text NULL,
+	voyage_skey int8 NULL,
+	dining_reservation_detail_skey int8 NULL,
+	venue_skey int8 NULL,
+	person_skey int8 NULL,
+	main_guest_flg bool NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text null,
+	md5_hash text null,
+	part_dt date NULL
+);
+
+CREATE TABLE hive_schema_stg.dining_reservation_guest_fact_err (
+	voyage_id text NULL,
+	voyage_skey int8 NULL,
+	dining_reservation_detail_skey int8 NULL,
+	venue_skey int8 NULL,
+	person_skey int8 NULL,
+	main_guest_flg bool NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text null,
+	md5_hash text null,
+	part_dt date NULL
+);
+
+create view shipdw.dining_reservation_guest_fact as select * from hive_schema_stg.dining_reservation_guest_fact

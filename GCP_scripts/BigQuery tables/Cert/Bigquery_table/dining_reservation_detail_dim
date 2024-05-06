@@ -1,0 +1,7 @@
+CREATE EXTERNAL TABLE hive_schema_stg.dining_reservation_detail_dim(dining_reservation_detail_skey bigint, voyage_id string, dining_reservation_id string, booking_link_id string, reservation_upcoming_source string, reservation_waitlist_source string, reservation_seated_source string, reservation_completed_source string, reservation_canceled_source string, reservation_status string, load_dt timestamp, upd_dt timestamp, primaryhash string, md5_hash string)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_dining_reservation_detail/*']
+);
+
+CREATE OR REPLACE VIEW shipdw.dining_reservation_detail_dim AS SELECT * FROM hive_schema_stg.dining_reservation_detail_dim;

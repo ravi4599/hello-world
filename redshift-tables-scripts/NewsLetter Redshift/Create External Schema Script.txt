@@ -1,0 +1,5 @@
+create external schema hive_schema_stg
+from data catalog
+database 'qanbx'
+iam_role 'arn:aws:iam::067921692262:role/NBX-Redshift-QA-S3-ReadOnly'
+create external database if not exists;

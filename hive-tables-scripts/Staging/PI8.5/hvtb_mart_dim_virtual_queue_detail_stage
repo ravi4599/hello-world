@@ -1,0 +1,3 @@
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_mart_dim_virtual_queue_detail`(`virtual_queue_detail_skey` bigint, `voyage_id` string,`virtual_queue_id` string, `virtual_queue_definition_id` string, `person_id` string,`queue_joined_datetime` timestamp,`queue_status` string,`status_changed_datetime` timestamp ,`queue_origin` string,`queue_no` decimal(8,4) ,`notified_count` int ,`last_notified_datetime` timestamp, `src_deleted_flg` boolean,`load_dt` timestamp, `upd_dt` timestamp, `primaryhash` string, `md5_hash` string)
+STORED as parquet
+LOCATION 's3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_virtual_queue_detail'

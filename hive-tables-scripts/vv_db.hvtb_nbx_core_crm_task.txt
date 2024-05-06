@@ -1,0 +1,75 @@
+
+
+Drop and recreate vv_db.hvtb_nbx_core_crm_task
+
+
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_crm_task`(
+  `id` string, 
+  `accountid` string, 
+  `ownerid` string, 
+  `subject` string, 
+  `priority` string, 
+  `type` string, 
+  `status` string, 
+  `recordtypeid` string, 
+  `createddate` timestamp, 
+  `task_type_grouping__c` string, 
+  `whatid` string, 
+  `calldurationinseconds` int, 
+  `calltype` string, 
+  `skillname__c` string, 
+  `callreason__c` string, 
+  `call_resolution__c` string, 
+  `complaint_type__c` string, 
+  `case_created__c` boolean, 
+  `abandoned__c` boolean, 
+  `abandonseconds__c` double, 
+  `activityaudience__c` string, 
+  `activitydate` date, 
+  `agentid__c` string, 
+  `calldisposition` string, 
+  `callobject` string, 
+  `callrecording__c` string, 
+  `call_sub_resolution__c` string, 
+  `complaint_details__c` string, 
+  `createdbyid` string, 
+  `ctidataprocessed__c` boolean, 
+  `db_activity_type__c` string, 
+  `description` string, 
+  `enddatetime__c` timestamp, 
+  `escalated__c` boolean, 
+  `fcr_phone__c` boolean, 
+  `holdseconds__c` double, 
+  `inqueueseconds__c` double, 
+  `isclosed` boolean, 
+  `isdeleted` boolean,
+  `ishighpriority` boolean, 
+  `lastmodifiedbyid` string, 
+  `lastmodifieddate` timestamp, 
+  `phone_ani__c` string, 
+  `prequeueseconds__c` double, 
+  `isreminderset` boolean, 
+  `reminderdatetime` timestamp, 
+  `routingtime__c` double, 
+  `startdatetime__c` timestamp, 
+  `systemmodstamp` timestamp, 
+  `tasknumber__c` string, 
+  `tasksubtype` string, 
+  `task_type__c` string, 
+  `whatcount` int, 
+  `whocount` int, 
+  `whoid` string, 
+  `job_id` string, 
+  `load_data_timestamp` timestamp, 
+  `epoc` bigint, 
+  `year` int, 
+  `month` int, 
+  `day` int)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/crm/hvtb_nbx_core_crm_task'

@@ -1,0 +1,170 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_spf_revenue_forecast_version`(
+  `record_id` int, 
+  `forecast_version` string, 
+  `is_plan` string, 
+  `comments` string, 
+  `load_data_timestamp` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='', 
+  'line.delim'='\n', 
+  'serialization.format'='') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/landing/spf/hvtb_nbx_landing_spf_revenue_forecast_version'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1570419718')
+  
+  
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_spf_revenue_target_header`(
+  `record_id` int, 
+  `ship_code` string, 
+  `package_type` string, 
+  `sail_date` timestamp, 
+  `sail_days` int, 
+  `cabin_ctg_generic` string, 
+  `forecast_version` string, 
+  `forecast_metric` string, 
+  `timestamp_created` timestamp, 
+  `timestamp_changed` timestamp, 
+  `user_created` string, 
+  `user_changed` string, 
+  `comments` string, 
+  `load_data_timestamp` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='', 
+  'line.delim'='\n', 
+  'serialization.format'='') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/landing/spf/hvtb_nbx_landing_spf_revenue_target_header'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1570594016')
+  
+  
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_spf_revenue_target_value`(
+  `record_id` int, 
+  `header_id` int, 
+  `value_index` int, 
+  `value` double, 
+  `timestamp_created` timestamp, 
+  `timestamp_changed` timestamp, 
+  `user_created` string, 
+  `user_changed` string, 
+  `load_data_timestamp` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='', 
+  'line.delim'='\n', 
+  'serialization.format'='') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/landing/spf/hvtb_nbx_landing_spf_revenue_target_value'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1570452271')
+
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_spf_forecastmetric_lkp`(
+  `forecast_metric_id` int, 
+  `forecast_metric_desc` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/core/spf/hvtb_nbx_core_spf_forecastmetric_lkp'
+TBLPROPERTIES (
+  'last_modified_by'='hadoop', 
+  'last_modified_time'='1563444597', 
+  'spark.sql.create.version'='2.2 or prior', 
+  'spark.sql.sources.schema.numParts'='1', 
+  'spark.sql.sources.schema.part.0'='{"type":"struct","fields":[{"name":"addon_id","type":"integer","nullable":true,"metadata":{}},{"name":"res_addon_code","type":"string","nullable":true,"metadata":{}},{"name":"addon_name","type":"string","nullable":true,"metadata":{}},{"name":"addon_category","type":"string","nullable":true,"metadata":{}},{"name":"addon_type","type":"string","nullable":true,"metadata":{}},{"name":"etl_ld_status","type":"string","nullable":true,"metadata":{}},{"name":"etl_ld_dt","type":"timestamp","nullable":true,"metadata":{}},{"name":"etl_upd_dt","type":"timestamp","nullable":true,"metadata":{}}]}', 
+  'transient_lastDdlTime'='1569839447')
+  
+  
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_spf_forecastversion_lkp`(
+  `forecast_version_id` int, 
+  `forecast_version_desc` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/core/spf/hvtb_nbx_core_spf_forecastversion_lkp'
+TBLPROPERTIES (
+  'last_modified_by'='hadoop', 
+  'last_modified_time'='1563444597', 
+  'spark.sql.create.version'='2.2 or prior', 
+  'spark.sql.sources.schema.numParts'='1', 
+  'spark.sql.sources.schema.part.0'='{"type":"struct","fields":[{"name":"addon_id","type":"integer","nullable":true,"metadata":{}},{"name":"res_addon_code","type":"string","nullable":true,"metadata":{}},{"name":"addon_name","type":"string","nullable":true,"metadata":{}},{"name":"addon_category","type":"string","nullable":true,"metadata":{}},{"name":"addon_type","type":"string","nullable":true,"metadata":{}},{"name":"etl_ld_status","type":"string","nullable":true,"metadata":{}},{"name":"etl_ld_dt","type":"timestamp","nullable":true,"metadata":{}},{"name":"etl_upd_dt","type":"timestamp","nullable":true,"metadata":{}}]}', 
+  'transient_lastDdlTime'='1569838748')
+
+
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_spf_plan_forecast_header_dim`(
+  `plan_forecast_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_header_id` int, 
+  `sail_id` int, 
+  `package_type` string, 
+  `cabin_ctg_generic` string, 
+  `forecast_version_id` int, 
+  `forecast_metric_id` int, 
+  `comments` string, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/core/spf/hvtb_nbx_core_spf_plan_forecast_header_dim'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1570697315')
+
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_spf_plan_forecast_value_dim`(
+  `plan_forecast_id` int, 
+  `week_index` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `value` double, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/core/spf/hvtb_nbx_core_spf_plan_forecast_value_dim'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1570182296')

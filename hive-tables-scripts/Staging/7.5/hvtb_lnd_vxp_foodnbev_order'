@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_lnd_vxp_foodnbev_order`(
+  `batchinstanceid` string, 
+  `voyageid` string, 
+  `batchtime` timestamp, 
+  `message` string)
+PARTITIONED BY ( 
+  `part_date` date)stored as parquet
+LOCATION
+  's3://vv-staging-emr-cluster/data/landing/hvtb_lnd_vxp_foodnbev_order'

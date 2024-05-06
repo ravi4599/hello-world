@@ -1,0 +1,23 @@
+CREATE EXTERNAL TABLE hive_schema_stg.cti_skill_dim(
+cti_skill_skey bigint,
+src_skill_id bigint,
+skill_name string,
+mediatypeid int,
+mediatypename string,
+cti_campaign_skey bigint,
+is_active_flg boolean,
+require_disposition_flg boolean,
+is_outbound_flg boolean,
+script_id bigint,
+script_name string,
+initial_priority bigint,
+max_priority bigint,
+service_level_threshold bigint,
+service_level_goal bigint,
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash string,
+md5_hash string) OPTIONS ( format = 'PARQUET',
+uris = ['gs://vv-dev-nbx-cluster/data/core/seaware/hvtb_nbx_core_cti_skill_dim/*'] );
+
+CREATE OR REPLACE VIEW seaware.cti_skill_dim AS SELECT * FROM hive_schema_stg.cti_skill_dim;

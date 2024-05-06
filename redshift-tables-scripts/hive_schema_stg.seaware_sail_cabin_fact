@@ -1,0 +1,81 @@
+drop table hive_schema_stg.seaware_sail_cabin_fact
+
+select * from hive_schema_stg.seaware_sail_cabin_fact
+
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_sail_cabin_fact(
+  snapshot_time timestamp, 
+  sail_id int, 
+  cabin_category varchar, 
+  cabin_category_rank int, 
+  generic_category varchar, 
+  max_capacity int, 
+  num_of_cabins int, 
+  ok_abs int, 
+  ok_wgt float, 
+  gty_abs int, 
+  gty_wgt float, 
+  wtl_abs int, 
+  wtl_wgt float, 
+  avail_cabins int, 
+  avail_abs int, 
+  avail_wgt float, 
+  avail_nested int, 
+  num_of_reserved int, 
+  in_allotments int, 
+  num_of_upgrade int, 
+  num_of_downgrade int, 
+  shared_abs int, 
+  shared_allotment_abs int, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp, 
+  na_abs int, 
+  ok_gtry_rstr_abs int, 
+  taxes_and_fees float, 
+  voyage_fare_guest1 float, 
+  voyage_fare_guest2 float, 
+  voyage_fare_guest3 float, 
+  voyage_fare_guest4 float,
+  DISCOUNT_GUEST1	float
+,DISCOUNT_GUEST2	float
+,DISCOUNT_GUEST3	float
+,DISCOUNT_GUEST4	float
+,VOYAGE_FARE_GUEST1_GBP	float
+,VOYAGE_FARE_GUEST2_GBP	float
+,VOYAGE_FARE_GUEST3_GBP	float
+,VOYAGE_FARE_GUEST4_GBP	float
+,DISCOUNT_GUEST1_GBP	float
+,DISCOUNT_GUEST2_GBP	float
+,DISCOUNT_GUEST3_GBP	float
+,DISCOUNT_GUEST4_GBP	float
+,TAXES_AND_FEES_GBP	float
+,VOYAGE_FARE_GUEST1_AUD	float
+,VOYAGE_FARE_GUEST2_AUD	float
+,VOYAGE_FARE_GUEST3_AUD	float
+,VOYAGE_FARE_GUEST4_AUD	float
+,DISCOUNT_GUEST1_AUD	float
+,DISCOUNT_GUEST2_AUD	float
+,DISCOUNT_GUEST3_AUD	float
+,DISCOUNT_GUEST4_AUD	float
+,TAXES_AND_FEES_AUD	float
+,VOYAGE_FARE_GUEST1_CAD	float
+,VOYAGE_FARE_GUEST2_CAD	float
+,VOYAGE_FARE_GUEST3_CAD	float
+,VOYAGE_FARE_GUEST4_CAD	float
+,DISCOUNT_GUEST1_CAD	float
+,DISCOUNT_GUEST2_CAD	float
+,DISCOUNT_GUEST3_CAD	float
+,DISCOUNT_GUEST4_CAD	float
+,TAXES_AND_FEES_CAD	float)
+PARTITIONED BY ( 
+  snapshot_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+WITH SERDEPROPERTIES ( 
+  'timestamp.formats'='yyyy-MM-dd HH:mm:ss') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_sail_cabin_fact'
+;

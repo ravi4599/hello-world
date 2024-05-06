@@ -1,0 +1,21 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_mart_postvoyage_survey_question_answer_dim`(
+  `question_answer_id` bigint, 
+  `src_question_id` string, 
+  `variable_id` string, 
+  `question_text` string, 
+  `type` string, 
+  `category` string, 
+  `answer_code` int, 
+  `answer_code_text` string, 
+  `load_dt` timestamp, 
+  `upd_dt` timestamp, 
+  `primaryhash` string, 
+  `md5_hash` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/core/seaware/hvtb_mart_postvoyage_survey_question_answer_dim';

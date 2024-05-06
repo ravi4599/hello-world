@@ -1,0 +1,23 @@
+DROP TABLE IF EXISTS hive_schema_stg.shipboard_survey_responses_fact;
+
+CREATE TABLE hive_schema_stg.shipboard_survey_responses_fact(
+voyage_id text,
+request_id varchar(100), 
+person_skey bigint, 
+org_unit_skey bigint, 
+voyage_skey bigint, 
+request_time timestamp, 
+response_time timestamp, 
+visit_time timestamp, 
+location varchar(100), 
+question_skey bigint, 
+answer_rating bigint, 
+answer_text varchar(1000), 
+load_dt timestamp, 
+upd_dt timestamp,
+primaryhash text,
+md5_hash text,
+part_dt date);
+
+CREATE OR REPLACE VIEW shipdw.shipboard_survey_responses_fact 
+AS SELECT * FROM hive_schema_stg.shipboard_survey_responses_fact;

@@ -1,0 +1,30 @@
+CREATE EXTERNAL TABLE hive_schema_stg.vts_chat_summary_fact      
+(
+team string,
+SOURCE string,
+origin string,
+queue string,
+reason string,
+resolution string,
+sub_resolution string,
+chat_date date,
+chat_hour int,
+completed_chats_cnt int,
+missed_chats_cnt int,
+missed_chats_greaterthan20sec_cnt int,
+in_progress_chats_cnt int,
+target_chats_handled_pct int,
+chat_duration float64,
+booking_flow_chats_cnt int,
+total_chat_wait_time float64,
+post_chat_survey_response string,
+survey_responses_cnt int,
+target_loved_it_response_pct int,
+etl_ld_dt timestamp,
+etl_upd_dt timestamp)
+OPTIONS (format = 'PARQUET',
+uris = ['gs://vv-dev-nbx-cluster/data/mart/vts/hvtb_mart_vts_chat_summary_fact/*']
+);
+
+
+CREATE OR REPLACE VIEW seaware.vts_chat_summary_fact AS SELECT * FROM hive_schema_stg.vts_chat_summary_fact;

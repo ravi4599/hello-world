@@ -1,0 +1,16 @@
+CREATE EXTERNAL TABLE hive_schema_stg.vendor_dim(
+vendor_skey int8 ,
+	voyage_id varchar(50),
+	vendor_id varchar(50) ,
+vendor_name varchar(50) ,
+src_active_flg boolean,
+src_deleted_flg boolean,
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash varchar(50), 
+  md5_hash varchar(50))
+STORED AS PARQUET  
+LOCATION
+  's3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_vendor' 
+  
+CREATE OR REPLACE VIEW shipdw.vendor_dim AS SELECT * FROM hive_schema_stg.vendor_dim with no schema binding;

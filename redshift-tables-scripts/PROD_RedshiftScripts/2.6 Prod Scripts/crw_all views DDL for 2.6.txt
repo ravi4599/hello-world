@@ -1,0 +1,28 @@
+create or replace view seaware.seaware_promotion_dim
+as select * from  hive_schema_stg.seaware_promotion_dim
+with no schema binding;
+
+create or replace view seaware.seaware_payment_schedule_dim
+as select * from  hive_schema_stg.seaware_payment_schedule_dim
+with no schema binding;
+
+create or replace view seaware.activity_dim
+as 
+SELECT   
+  CAST (activity_id as integer), 
+  activity_title, 
+  type, 
+  tribe, 
+  sub_tribe, 
+  activity_description 
+FROM hive_schema_stg.hvtb_nbx_core_calreco_shipactivities
+with no schema binding;
+
+create or replace view seaware.sailor_calendar_feedback
+as select * from seaware_stg.hbtb_nbx_sailor_calendar_feedback
+with no schema binding;
+
+create or replace view seaware.sailor_activity_mapping
+as select * from seaware_stg.hbtb_nbx_sailor_nbx_activity_mapping
+with no schema binding;
+

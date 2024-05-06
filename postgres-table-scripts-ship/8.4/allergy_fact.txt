@@ -1,0 +1,15 @@
+CREATE TABLE hive_schema_stg.allergy_fact (
+	voyage_id text NULL,
+	order_detail_skey int8 NULL,
+	menu_item_skey int8 NULL,
+	dining_reservation_detail_skey int8 NULL,
+	person_skey int8 NULL,
+	allergy_skey int8 NULL,
+	allergy_details_category text NULL,
+	src_deleted_flg bool NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	part_dt date NULL
+);
+
+CREATE VIEW shipdw.allergy_fact as select * from hive_schema_stg.allergy_fact

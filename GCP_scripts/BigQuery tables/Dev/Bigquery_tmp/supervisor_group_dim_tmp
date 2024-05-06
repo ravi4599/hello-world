@@ -1,0 +1,17 @@
+CREATE OR REPLACE EXTERNAL TABLE  hive_schema_stg.supervisor_group_dim_tmp(
+voyage_id string,                   
+ supervisor_group_skey bigint,                                                                      
+ supervisor_group_id bigint,                                                                       
+ supervisor_group_code string,                                                               
+ supervisor_group_name string,                                                                
+ src_active_flag boolean,                                                                           
+ src_deleted_flag boolean,                                                                         
+ load_dt timestamp,                                                                                 
+ upd_dt timestamp,                                                                                 
+ primaryhash string,                                                                          
+ md5_hash string,                                                                           
+)   
+OPTIONS (
+format = 'PARQUET',
+uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_dim_supervisor_group/*']
+);

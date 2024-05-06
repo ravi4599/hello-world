@@ -1,0 +1,31 @@
+
+
+
+CREATE EXTERNAL TABLE vv_db.hvtb_parse_sw_rpl_cabin_reserve_type(
+RECORD_ID int,
+RESERVE_TYPE string,
+DECREMENTS_INVENTORY string,
+ALLOWS_BOOKING string,
+IS_RESTRICTED string,
+IS_SAIL_RESERVE string,
+COMMENTS string,
+CAN_AUTO_ASSIGN string,
+op string, 
+ts_ms timestamp, 
+shipcode string, 
+voyageid string, 
+batchtime timestamp)
+PARTITIONED BY ( 
+  part_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 
+'gs://vv-dev-nbx-cluster/data/parse/seaware/hvtb_parse_sw_rpl_cabin_reserve_type';
+
+
+
+

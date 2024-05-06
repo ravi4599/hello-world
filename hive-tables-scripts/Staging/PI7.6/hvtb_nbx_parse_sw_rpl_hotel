@@ -1,0 +1,32 @@
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_parse_sw_rpl_hotel`(	
+  `hotel_id` int, 	
+  `hotel_code` string, 	
+  `hotel_name_typed` string, 	
+  `hotel_name` string, 	
+  `hotel_type` string, 	
+  `is_active` string, 	
+  `check_in_time` timestamp, 	
+  `check_out_time` timestamp, 	
+  `hotel_rating` int, 	
+  `contact` string, 	
+  `comments` string, 	
+  `vendor_id` int, 	
+  `internal_resort` string, 	
+  `hotel_bag_code` string, 	
+  `image_id` int, 	
+  `hotel_rank` int, 	
+  `extended_comment` string, 	
+  `op` string, 	
+  `ts_ms` timestamp, 	
+  `voyageid` string, 	
+  `batchtime` timestamp)	
+PARTITIONED BY ( 	
+  `part_date` date)	
+ROW FORMAT SERDE 	
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 	
+STORED AS INPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 	
+OUTPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'	
+LOCATION	
+  's3://vv-staging-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_hotel'	

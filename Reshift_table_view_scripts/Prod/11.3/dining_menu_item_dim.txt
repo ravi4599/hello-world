@@ -1,0 +1,7 @@
+drop table Hive_schema_stg.dining_menu_item_dim
+CREATE EXTERNAL TABLE shipdw.dining_menu_item_dim(voyage_id varchar(100), dining_menu_item_skey bigint, dining_menu_item_code varchar(100), dining_menu_item_name varchar(100), dining_menu_item_group varchar(100), dining_menu_item_category varchar(100), dining_menu_item_sub_category varchar(100), src_deleted_flag boolean, src_active_flag boolean, load_dt timestamp, upd_dt timestamp, primaryhash varchar(100), md5_hash varchar(100))
+STORED AS PARQUET
+LOCATION 's3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_dining_menu_item'
+
+CREATE or replace VIEW shipdw.dining_menu_item_dim  AS SELECT * FROM hive_schema_stg.dining_menu_item_dim with no schema binding;
+

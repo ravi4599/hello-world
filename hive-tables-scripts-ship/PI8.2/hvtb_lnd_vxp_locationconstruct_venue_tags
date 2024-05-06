@@ -1,0 +1,4 @@
+spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_locationconstruct_venue_tags (tag_id int,venue_id int,id int,VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_locationconstruct_venue_tags'""");
+
+
+spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_locationconstruct_venue_tags as select * from shipdw.hvtb_lnd_vxp_locationconstruct_venue_tags""");

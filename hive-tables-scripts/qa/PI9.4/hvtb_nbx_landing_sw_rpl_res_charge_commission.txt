@@ -1,0 +1,28 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_sw_rpl_res_charge_commission(
+  `record_id` int, 
+  `entity_type` string, 
+  `entity_id` int, 
+  `charge_id` int, 
+  `commiss_code` string, 
+  `amount` int, 
+  `commiss_fare` int,
+  `commiss_source` string,
+  `percent` int,
+  `is_manual_adjustment` string,  
+  `amount_in_hdr_curr` int,  
+  `agency_id` int,  
+  `payout_date` timestamp, 
+  `gl_prototype_id` int, 
+  `load_data_timestamp` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n', 
+  'serialization.format'='\u0001') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_res_charge_commission'

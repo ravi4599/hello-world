@@ -1,0 +1,15 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_menu_item(
+  menu_item_skey bigint, 
+  voyage_id string, 
+  menu_item_id string, 
+  menu_item_sku_number string, 
+  menu_item_name string, 
+  menu_item_small_description string, 
+  menu_item_long_description string, 
+  menu_item_type_name string, 
+  menu_item_type_description string, 
+  menu_item_plu_number string, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string) STORED AS PARQUET LOCATION 'gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_menu_item';

@@ -1,0 +1,7 @@
+CREATE EXTERNAL TABLE hive_schema_stg.quickcode_dim(quickcode_skey BIGINT, quick_code STRING, quick_code_name STRING, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_quickcode/*']
+);
+
+CREATE OR REPLACE VIEW shipdw.quickcode_dim AS SELECT * FROM hive_schema_stg.quickcode_dim;

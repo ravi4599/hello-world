@@ -1,0 +1,7 @@
+CREATE EXTERNAL TABLE hive_schema_stg.restriction_dim(voyage_id STRING, restriction_skey BIGINT, restriction_id INT, person_id INT, restriction_guid STRING, restriction_type STRING, restriction_categoryId INT, restriction_category_code STRING, restriction_category STRING, restriction_comment STRING, restriction_from_date TIMESTAMP, restriction_to_date TIMESTAMP, src_deleted_flag BOOLEAN, src_created_date TIMESTAMP, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_restriction/*']
+);
+
+CREATE OR REPLACE VIEW shipdw.restriction_dim AS SELECT * FROM hive_schema_stg.restriction_dim;

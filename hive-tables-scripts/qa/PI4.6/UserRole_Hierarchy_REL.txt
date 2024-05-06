@@ -1,0 +1,20 @@
+CREATE TABLE `vv_db.hvtb_nbx_core_crm_userrole_hierarchy_rel`(
+  `userid` string, 
+  `userchildid` string, 
+  `contactid` string, 
+  `userchildcontactid` string, 
+  `usrrole` string, 
+  `userchildrole` string, 
+  `lvl` int, 
+  `etl_ld_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://ip-10-3-100-75.office.virginvoyages.ad:8020/data/core/crm/hvtb_nbx_core_crm_userrole_hierarchy_rel'
+TBLPROPERTIES (
+  'STATS_GENERATED_VIA_STATS_TASK'='true', 
+  'transient_lastDdlTime'='1571787559')

@@ -1,0 +1,57 @@
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWStgRPL_RES_COMMISSION_DETAIL', 'hvtb_nbx_landing_sw_rpl_res_commission_detail', 'Hive', 'RPL_RES_COMMISSION_DETAIL', 'Postgresql', 'SPF_daily',now());
+
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWStgRPL_GROUP_COMMISSION_DETAIL', 'hvtb_nbx_landing_sw_rpl_group_commission_detail', 'Hive', 'RPL_GROUP_COMMISSION_DETAIL', 'Postgresql', 'SPF_daily',now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWStgRPL_RES_HEADER', 'hvtb_nbx_landing_sw_rpl_res_header', 'Hive', 'RPL_RES_HEADER', 'Postgresql', 'SPF_daily',now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWStgRPL_SAIL_HEADER', 'hvtb_nbx_landing_sw_rpl_sail_header', 'Hive', 'RPL_SAIL_HEADER', 'Postgresql', 'SPF_daily',now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWStgRPL_GROUP_SHIP_REQUEST', 'hvtb_nbx_landing_sw_rpl_group_ship_request', 'Hive', 'RPL_GROUP_SHIP_REQUEST', 'Postgresql', 'SPF_daily',now());
+
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWStgRPL_GROUP_BOOKING', 'hvtb_nbx_landing_sw_rpl_group_booking', 'Hive', 'RPL_GROUP_BOOKING', 'Postgresql', 'SPF_daily',now());
+
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWRPLCommissionType_Lkp', 'hvtb_nbx_core_swrpl_commission_type_lkp', 'Hive', 'hvtb_nbx_landing_sw_rpl_group_commission_detail', 'Hive', 'SPF_daily', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWRPLCommissionFact', 'hvtb_nbx_core_sw_commission_fact', 'Hive', 'hvtb_nbx_landing_sw_rpl_res_commission_detail', 'Hive', 'SPF_daily', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWRPLGrpCommissionFact', 'hvtb_nbx_core_sw_group_commission_fact', 'Hive', 'landing_sw_rpl_res_group_commission_detail', 'Hive', 'SPF_daily', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSFStgUserRole', 'hvtb_nbx_core_crm_userrole', 'Hive', 'User_Role', 'Saleforce', 'daily', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jGA360_hit_dim', NULL, NULL, NULL, NULL, 'GA360_runtime', now());
+
+INSERT INTO vv_metadata.job_info 
+(job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) 
+VALUES ('jKafkaConsumerCabinUpdates','hvtb_nbx_landing_sw_dwh_attribute','Hive','DWH_ATTRIBUTE','Oracle','realtime',now());
+
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jSFLandingLiveChatTranscript','','','','','daily',now());
+
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jSFLandingemailresponses','','','','','daily',now());
+
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jSFLiveChatTranscriptDim','','','','','daily',now());

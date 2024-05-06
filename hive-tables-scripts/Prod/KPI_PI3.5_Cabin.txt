@@ -1,0 +1,69 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_cabin_master(
+  cabin_id int, 
+  cabin_number string, 
+  ship string, 
+  occupancy int, 
+  etl_ld_status string, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp)
+stored as parquet
+location "s3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_cabin_master" ;
+
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_booked_cabin_reservation_dim(
+  res_id int, 
+  guest_id int, 
+  package_id int, 
+  price_category string, 
+  price_category_rank int, 
+  berth_category string, 
+  berth_category_rank int, 
+  assigned_category string, 
+  assigned_category_rank int, 
+  generic_category string, 
+  allocation_id int, 
+  cabin_id int, 
+  reserve_type string, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  md5_dim string, 
+  etl_ld_status string, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp)
+location "s3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_booked_cabin_reservation_dim"  ;
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_landing_sw_dwh_res_cabin(
+rec_id double, 
+rec_res_id double, 
+rec_pkg_id double, 
+rec_guest_id double, 
+price_category string, 
+price_category_rank string, 
+berth_category string, 
+berth_category_rank string, 
+assigned_category string, 
+assigned_category_rank string, 
+reserve_type string, 
+is_from_allotment string, 
+allotment_agreement_id double, 
+allocation_id double, 
+generic_category string, 
+cabin_number string, 
+inv_result string, 
+load_data_timestamp timestamp
+)
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-prod-emr-cluster/data/landing/seaware/hvtb_nbx_landing_seaware_dwh_res_cabin";
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_allocation_lkp(
+  allocation_id int, 
+  src_allocation_id int, 
+  allocation_inv_result string, 
+  etl_ld_status string, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp)
+ stored as parquet
+location "s3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_allocation_lkp" 

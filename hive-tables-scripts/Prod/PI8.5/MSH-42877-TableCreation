@@ -1,0 +1,8 @@
+###############Table creation####################
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_dxp_virtualqueue(BatchInstanceID string,VoyageId string,BatchTime timestamp,Message string) PARTITIONED BY (Part_Date date) Stored as Parquet LOCATION 's3://vv-prod-emr-cluster/data/landing/hvtb_lnd_vxp_dxp_virtualqueue'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_dxp_virtualqueuedefinition(BatchInstanceID string,VoyageId string,BatchTime timestamp,Message string) PARTITIONED BY (Part_Date date) Stored as Parquet LOCATION 's3://vv-prod-emr-cluster/data/landing/hvtb_lnd_vxp_dxp_virtualqueuedefinition'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_dxp_virtualqueuehistory(BatchInstanceID string,VoyageId string,BatchTime timestamp,Message string) PARTITIONED BY (Part_Date date) Stored as Parquet LOCATION 's3://vv-prod-emr-cluster/data/landing/hvtb_lnd_vxp_dxp_virtualqueuehistory'

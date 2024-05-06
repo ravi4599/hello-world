@@ -1,0 +1,26 @@
+CREATE EXTERNAL TABLE hive_schema_stg.SEAWARE_PACKAGE_DIM       
+(
+package_id int,
+rec_start_dttm timestamp,
+rec_end_dttm timestamp,
+src_package_id int,
+package_class varchar(15),
+product_type varchar(15),
+package_type Varchar(15),
+package_code Varchar(30),
+package_name Varchar(100),
+src_sail_id int,
+shorex_mode Varchar(15),
+vacation_date timestamp,
+shorex_timing Varchar(15),
+geog_area_code varchar(30),
+season_code varchar(15),
+is_active char(1),
+etl_ld_status Varchar(30), 
+load_dt timestamp, 
+upd_dt timestamp )
+STORED AS PARQUET
+LOCATION
+  's3://vv-qa-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_package_dim';
+  
+Create view seaware.seaware_package_dim as select * from hive_schema_stg.seaware_package_dim ;

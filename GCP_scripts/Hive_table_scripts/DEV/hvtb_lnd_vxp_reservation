@@ -1,0 +1,46 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_lnd_vxp_reservation`(
+  `reservationid` string, 
+  `reservationnumber` string, 
+  `bookedbyguestid` string, 
+  `shipcode` string, 
+  `sailingpackagecode` string, 
+  `fromdate` date, 
+  `odate` date, 
+  `bookeddate` timestamp, 
+  `currencycode` string, 
+  `faretypeid` string, 
+  `paymentmodecode` string, 
+  `paymentreferencetoken` string, 
+  `pmsid` string, 
+  `reservationstatusid` string, 
+  `guestcount` int, 
+  `stateroomcount` int, 
+  `accessiblestateroomcount` int, 
+  `paidamount` decimal(9,2), 
+  `totalamount` decimal(9,2), 
+  `cartdetail` string, 
+  `iscabincruisecontractoptin` boolean, 
+  `addeddate` timestamp, 
+  `addedby` string, 
+  `lastmodifieddate` timestamp, 
+  `lastmodifiedby` string, 
+  `expensetype` int, 
+  `expenselimit` decimal(10,2), 
+  `ispartyexpenselimitoptin` boolean, 
+  `voyagenumber` string, 
+  `faretypecode` string, 
+  `reservationstatuscode` string, 
+  `paymentstatuscode` string, 
+  `agencyemail` string, 
+  `voyageid` string, 
+  `batchtime` string)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/landing/VXP/hvtb_lnd_vxp_reservation';

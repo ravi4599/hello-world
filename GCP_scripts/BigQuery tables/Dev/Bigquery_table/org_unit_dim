@@ -1,0 +1,20 @@
+
+
+CREATE EXTERNAL TABLE hive_schema_stg.org_unit_dim(
+org_unit_skey bigint                             
+, voyage_id string                                                                             
+, org_unit_id int                                                                                   
+, org_unit_name string                                                                         
+, org_unit_abbreviation string                                                                 
+, load_dt timestamp                                                                                 
+, upd_dt timestamp                                                                                  
+, primaryhash string                                                                           
+, md5_hash string                                                                            
+)                                                                                                   
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_dim_org_unit/*']
+);
+  
+
+CREATE OR REPLACE VIEW shipdw.org_unit_dim AS SELECT * FROM hive_schema_stg.org_unit_dim;

@@ -1,0 +1,21 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_package_dim(
+  package_id int, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  src_package_id float, 
+  package_class varchar(15), 
+  package_type varchar(15), 
+  package_code varchar(30), 
+  package_name varchar(100), 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_package_dim'
+;
+

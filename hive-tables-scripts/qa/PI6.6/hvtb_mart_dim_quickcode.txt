@@ -1,0 +1,1 @@
+create external table shipdw.hvtb_mart_dim_quickcode (quickcode_skey bigint,quick_code string,quick_code_name string,load_dt timestamp,upd_dt timestamp, primaryhash string,md5_hash string) stored as parquet location 's3://vv-qa-emr-cluster/data/mart/hvtb_mart_dim_quickcode'

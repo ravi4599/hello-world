@@ -1,0 +1,32 @@
+select count(*) from vv_db.hvtb_parse_sw_rpl_air_amadeus_log;
+
+
+
+CREATE EXTERNAL TABLE `vv_db.hvtb_parse_sw_rpl_air_amadeus_log`(
+  `message_id` int, 
+  `res_id` int, 
+  `action` string, 
+  `success` string, 
+  `request` string, 
+  `response` string, 
+  `sent_at` timestamp, 
+  `responded_at` timestamp, 
+  `secs` decimal(10,2), 
+  `error_message` string, 
+  `has_acs_error_msgs` string, 
+  `request_id` int, 
+  `op` string, 
+  `ts_ms` timestamp, 
+  `shipcode` string, 
+  `voyageid` string, 
+  `batchtime` timestamp)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/parse/seaware/hvtb_parse_sw_rpl_air_amadeus_log';

@@ -1,0 +1,17 @@
+  
+	 CREATE EXTERNAL TABLE `shipdw.hvtb_mart_dim_venue_availability`(
+	venue_id string,
+	availability_duration_mins bigint,
+	availability_type string,
+	availability_starttime_hour bigint,
+	availability_starttime_minute bigint,
+	voyage_id string,
+	load_dt timestamp)
+	ROW FORMAT SERDE 
+	  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+	STORED AS INPUTFORMAT 
+	  'org.apache.hadoop.mapred.TextInputFormat' 
+	OUTPUTFORMAT 
+	  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+	LOCATION
+	  's3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_venue_availability'

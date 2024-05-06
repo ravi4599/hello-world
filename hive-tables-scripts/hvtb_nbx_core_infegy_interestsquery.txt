@@ -1,0 +1,11 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_infegy_interestsquery
+
+( 
+brand string,
+query_meta string,
+query_info string,
+IngestionDate string
+
+ ) 
+STORED AS PARQUET  
+Location "s3://vv-qa-emr-cluster/data/core/social-media/infegy/interestsquery/" ; 

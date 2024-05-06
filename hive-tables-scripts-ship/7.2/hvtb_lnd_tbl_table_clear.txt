@@ -1,0 +1,10 @@
+spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_lnd_tbl_table_clear(
+BatchInstanceID string,
+VoyageId string,
+BatchTime timestamp,
+Message string)
+PARTITIONED BY (
+Part_Date date) 
+STORED AS
+parquet Location  
+'/data/apps/nbx/hive/landing/mxp/hvtb_lnd_tbl_table_clear'""") 

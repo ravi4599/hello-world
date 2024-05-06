@@ -1,0 +1,102 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_crm_task_dim`(
+  `task_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_task_id` string, 
+  `accountid` string, 
+  `ownerid` string, 
+  `subject` string, 
+  `priority` string, 
+  `type` string, 
+  `status` string, 
+  `recordtypeid` string, 
+  `createddate` timestamp, 
+  `task_type_grouping__c` string, 
+  `whatid` string, 
+  `calldurationinseconds` int, 
+  `calltype` string, 
+  `skillname__c` string, 
+  `callreason__c` string, 
+  `call_resolution__c` string, 
+  `complaint_type__c` string, 
+  `case_created__c` boolean, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-staging-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_task_dim'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1567142134');
+=================================================================================================
+  CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_crm_taskwhorelation`(
+  `accountid` string, 
+  `createdbyid` string, 
+  `createddate` timestamp, 
+  `id` string, 
+  `isdeleted` boolean, 
+  `lastmodifiedbyid` string, 
+  `lastmodifieddate` timestamp, 
+  `relationid` string, 
+  `systemmodstamp` timestamp, 
+  `taskid` string, 
+  `type` string, 
+  `job_id` string, 
+  `load_data_timestamp` timestamp, 
+  `epoc` bigint, 
+  `year` int, 
+  `month` int, 
+  `day` int)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+WITH SERDEPROPERTIES ( 
+  'timestamp.formats'='yyyy-MM-dd\'T\'HH:mm:ss.SSSZ') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-staging-emr-cluster/data/core/crm/hvtb_nbx_core_crm_taskwhorelation'
+TBLPROPERTIES ('transient_lastDdlTime'='1567069890');
+===========================================================================================================
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_crm_taskwhorelation_cdc`(
+  `accountid` string, 
+  `createdbyid` string, 
+  `createddate` timestamp, 
+  `id` string, 
+  `isdeleted` boolean, 
+  `lastmodifiedbyid` string, 
+  `lastmodifieddate` timestamp, 
+  `relationid` string, 
+  `systemmodstamp` timestamp, 
+  `taskid` string, 
+  `type` string, 
+  `job_id` string, 
+  `load_data_timestamp` timestamp, 
+  `epoc` bigint, 
+  `year` int, 
+  `month` int, 
+  `day` int)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='', 
+  'line.delim'='\n', 
+  'serialization.format'='', 
+  'timestamp.formats'='yyyy-MM-dd\'T\'HH:mm:ss.SSSZ') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-staging-emr-cluster/data/landing/crm/hvtb_nbx_landing_crm_taskwhorelation_cdc'
+TBLPROPERTIES (
+  'last_modified_by'='admin', 
+  'last_modified_time'='1548770429', 
+  'transient_lastDdlTime'='1566889972');

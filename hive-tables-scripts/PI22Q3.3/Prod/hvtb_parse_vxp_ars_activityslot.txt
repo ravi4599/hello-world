@@ -1,0 +1,13 @@
+drop table shipdw.hvtb_parse_vxp_ars_activityslot
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_parse_vxp_ars_activityslot`(`activityslotid` string, `activityid` string, `activitydetailid` string, `startdatetime` timestamp, `enddatetime` timestamp, `status` string, `isbookingstopped` boolean, `iscancelled` boolean, `iswaitlistenable` boolean, `voyagenumber` string, `isdeleted` boolean, `addeddate` timestamp, `lastmodifieddate` timestamp, `addedby` string, `lastmodifiedby` string, `code` string, `activitycode` string, `capacityid` string, `activitylocationid` string, `name` string,`shipcode_src` string, `minpartysize` int, `maxpartysize` int, `type` string, `accesstype` string, `lastmodifieddatetime` timestamp, `datacreateddate` timestamp, `datalastmodifieddate` timestamp, `datalastmodifiedby` string, `crewonly` boolean, `VoyageId` string, `BatchTime` timestamp, `ShipCode` string)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/parse/hvtb_parse_vxp_ars_activityslot'

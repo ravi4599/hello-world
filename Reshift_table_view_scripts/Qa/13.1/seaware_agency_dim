@@ -1,0 +1,22 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_agency_dim(
+agency_id int, 
+rec_start_dttm timestamp, 
+rec_end_dttm timestamp, 
+src_agency_id int, 
+agency_name varchar(100), 
+agency_code varchar(30), 
+agency_market varchar(15), 
+agency_class varchar(15), 
+agency_sales_region varchar(15), 
+agency_sales_district varchar(15), 
+agency_country varchar(3), 
+agency_state varchar(3), 
+agency_zip varchar(10),  
+etl_ld_status Varchar(30), 
+load_dt timestamp, 
+upd_dt timestamp )
+STORED AS PARQUET
+LOCATION
+  's3://vv-qa-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_agency_dim';
+
+create or replace view seaware.seaware_agency_dim as select * from hive_schema_stg.seaware_agency_dim with no schema binding;

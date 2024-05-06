@@ -1,0 +1,28 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_postvoyage_survey_responses_fact`(
+  `request_id` varchar(100), 
+  `client_id` bigint, 
+  `ship_id` bigint, 
+  `sail_id` bigint, 
+  `guest_id` bigint, 
+  `request_time` timestamp, 
+  `response_time` timestamp, 
+  `itinerary_port` varchar(50), 
+  `activity_skey` bigint, 
+  `question_id` bigint, 
+  `answer_rating` decimal(6,3), 
+  `answer_text` varchar(1000), 
+  `question_answer_id` int, 
+  `load_dt` timestamp, 
+  `upd_dt` timestamp, 
+  `primaryhash` string, 
+  `md5_hash` string)
+PARTITIONED BY ( 
+  `part_dt` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/core/seaware/hvtb_nbx_core_postvoyage_survey_responses_fact';

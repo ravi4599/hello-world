@@ -1,0 +1,18 @@
+CREATE EXTERNAL TABLE hive_schema_stg.allergy_dim(
+allergy_skey int8, 
+voyage_id varchar(50), 
+source varchar(50), 
+allergy_id varchar(50), 
+parent_allergy_id varchar(50), 
+allergy_code varchar(50), 
+allergy_name varchar(50), 
+src_active_flg boolean, 
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash varchar(50), 
+md5_hash varchar(50))
+STORED AS PARQUET
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_allergy'
+
+CREATE OR REPLACE VIEW shipdw.allergy_dim AS SELECT * FROM hive_schema_stg.allergy_dim with no schema binding;

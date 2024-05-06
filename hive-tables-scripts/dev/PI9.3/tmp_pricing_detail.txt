@@ -1,0 +1,3 @@
+--Drop table `vv_db`.`tmp_pricing_detail`
+CREATE VIEW `vv_db`.`tmp_pricing_detail`(sail_id, price_code, guestseq, amount, category) AS
+Select src_sail_id as sail_id,price_code,guestseq,amount,category from vv_db.hvtb_nbx_core_pricing_detail where currency='USD'

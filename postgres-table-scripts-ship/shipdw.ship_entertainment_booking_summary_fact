@@ -1,0 +1,60 @@
+CREATE OR REPLACE VIEW shipdw.ship_entertainment_booking_summary_fact
+AS SELECT booking_fact.voyage_skey,
+    voyage_dim.ship_code,
+    date(voyage_dim.voyage_start_date) AS voyage_start_date,
+    voyage_dim.voyage_length,
+    itinerary_dim.itinerary_name AS itinerary_description,
+    itinerary_dim.itinerary_day AS day_of_voyage,
+    activity_dim.activity_group_code,
+    activity_dim.activity_name,
+    booking_fact.start_date_time,
+        CASE
+            WHEN person_dim.mega_rockstar_flag IS TRUE THEN 'Mega Rockstar'::text
+            WHEN person_dim.vip_flag IS TRUE THEN 'VIP'::text
+            ELSE NULL::text
+        END AS person_status,
+    person_dim.sailor_tribe AS tribe,
+    person_dim.sailor_subtribe AS subtribe,
+    ' '::text AS bain_segment,
+        CASE
+            WHEN person_dim.person_age >= 0 AND person_dim.person_age <= 10 THEN '0-18'::text
+            WHEN person_dim.person_age >= 18 AND person_dim.person_age <= 24 THEN '18-24'::text
+            WHEN person_dim.person_age >= 25 AND person_dim.person_age <= 31 THEN '25-31'::text
+            WHEN person_dim.person_age >= 32 AND person_dim.person_age <= 39 THEN '32-39'::text
+            WHEN person_dim.person_age >= 40 AND person_dim.person_age <= 48 THEN '40-48'::text
+            WHEN person_dim.person_age >= 49 AND person_dim.person_age <= 54 THEN '49-54'::text
+            WHEN person_dim.person_age >= 55 AND person_dim.person_age <= 64 THEN '55-64'::text
+            WHEN person_dim.person_age >= 65 AND person_dim.person_age <= 74 THEN '65-74'::text
+            WHEN person_dim.person_age >= 75 AND person_dim.person_age <= 84 THEN '75-84'::text
+            WHEN person_dim.person_age >= 85 THEN '85 or older'::text
+            ELSE 'Unknown'::text
+        END AS person_age_range,
+    person_dim.person_gender,
+    person_dim.person_country_of_residence,
+    activity_slot_dim.total_capacity,
+    count(*) AS count_activity_bookings
+   FROM shipdw.booking_fact booking_fact
+     JOIN shipdw.activity_dim activity_dim ON booking_fact.activity_skey = activity_dim.activity_skey AND (activity_dim.activity_group_code = ANY (ARRAY['ET'::text, 'IET'::text, 'NET'::text]))
+     JOIN shipdw.activity_slot_dim activity_slot_dim ON booking_fact.activity_slot_skey = activity_slot_dim.activity_slot_skey
+     JOIN shipdw.voyage_dim voyage_dim ON booking_fact.voyage_skey = voyage_dim.voyage_skey
+     JOIN shipdw.itinerary_dim itinerary_dim ON itinerary_dim.voyage_number = voyage_dim.voyage_number AND itinerary_dim.src_active_flag = true AND itinerary_dim.src_deleted_flag = false
+     JOIN shipdw.person_dim person_dim ON booking_fact.person_skey = person_dim.person_skey
+  GROUP BY booking_fact.voyage_skey, voyage_dim.ship_code, (date(voyage_dim.voyage_start_date)), voyage_dim.voyage_length, itinerary_dim.itinerary_name, itinerary_dim.itinerary_day, activity_dim.activity_group_code, activity_dim.activity_name, booking_fact.start_date_time, (
+        CASE
+            WHEN person_dim.mega_rockstar_flag IS TRUE THEN 'Mega Rockstar'::text
+            WHEN person_dim.vip_flag IS TRUE THEN 'VIP'::text
+            ELSE NULL::text
+        END), person_dim.sailor_tribe, person_dim.sailor_subtribe, ' '::text, (
+        CASE
+            WHEN person_dim.person_age >= 0 AND person_dim.person_age <= 10 THEN '0-18'::text
+            WHEN person_dim.person_age >= 18 AND person_dim.person_age <= 24 THEN '18-24'::text
+            WHEN person_dim.person_age >= 25 AND person_dim.person_age <= 31 THEN '25-31'::text
+            WHEN person_dim.person_age >= 32 AND person_dim.person_age <= 39 THEN '32-39'::text
+            WHEN person_dim.person_age >= 40 AND person_dim.person_age <= 48 THEN '40-48'::text
+            WHEN person_dim.person_age >= 49 AND person_dim.person_age <= 54 THEN '49-54'::text
+            WHEN person_dim.person_age >= 55 AND person_dim.person_age <= 64 THEN '55-64'::text
+            WHEN person_dim.person_age >= 65 AND person_dim.person_age <= 74 THEN '65-74'::text
+            WHEN person_dim.person_age >= 75 AND person_dim.person_age <= 84 THEN '75-84'::text
+            WHEN person_dim.person_age >= 85 THEN '85 or older'::text
+            ELSE 'Unknown'::text
+        END), person_dim.person_gender, person_dim.person_country_of_residence, activity_slot_dim.total_capacity;

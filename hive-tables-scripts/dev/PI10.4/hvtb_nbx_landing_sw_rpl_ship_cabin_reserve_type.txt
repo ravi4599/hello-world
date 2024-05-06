@@ -1,0 +1,22 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_sw_rpl_ship_cabin_reserve_type`(
+  `record_id` int, 
+  `RESERVE_TYPE` string, 
+  `DECREMENTS_INVENTORY` string, 
+  `ALLOWS_BOOKING` string, 
+  `IS_RESTRICTED` string, 
+  `IS_SAIL_RESERVE` string, 
+  `COMMENTS` string, 
+  `CAN_AUTO_ASSIGN` string,  
+  `load_data_timestamp` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n', 
+  'serialization.format'='\u0001') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_ship_cabin_reserve_type'

@@ -1,0 +1,19 @@
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_sw_guest_dim_client_id(
+client_id varchar(100),
+new_client_id varchar(100))
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_guest_dim_client_id'
+  
+
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_sw_guest_dim_guest_id(
+guest_id varchar(100),
+new_guest_id varchar(100))
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_guest_dim_guest_id'
+
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_sw_guest_dim_src_guest_id(
+src_guest_id varchar(100),
+new_src_guest_id varchar(100))
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_guest_dim_src_guest_id'
+

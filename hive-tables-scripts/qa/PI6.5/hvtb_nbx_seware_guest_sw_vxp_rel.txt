@@ -1,0 +1,22 @@
+CREATE EXTERNAL TABLE 
+vv_db.hvtb_nbx_seware_guest_sw_vxp_rel
+(
+sw_vxp_guest_rel_id int ,
+src_guest_id int ,
+client_id int,
+vxp_guest_id string,
+sail_date_from timestamp,
+sail_date_to timestamp,
+src_res_id int,
+vxp_res_id string,
+vxp_reservation_guest_id string,
+loadtimestamp timestamp
+)  
+ROW FORMAT SERDE 	
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 	
+STORED AS INPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 	
+OUTPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'	
+LOCATION	
+  's3://vv-dev-emr-cluster/data/hivetables/vv_db/hvtb_nbx_seware_guest_sw_vxp_rel'

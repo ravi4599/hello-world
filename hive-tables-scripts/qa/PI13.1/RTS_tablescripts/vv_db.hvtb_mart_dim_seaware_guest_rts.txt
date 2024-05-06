@@ -1,0 +1,56 @@
+
+CREATE EXTERNAL TABLE `vv_db.hvtb_mart_dim_seaware_guest_rts`(
+  `rts_id` bigint, 
+  `vxp_guest_id` string, 
+  `src_res_id` int, 
+  `src_guest_id` int, 
+  `client_id` double, 
+  `rts_transfer_response` string, 
+  `arrival_transportation_mode` string, 
+  `arrival_booking_source` string, 
+  `arrival_flight_number` string, 
+  `arrival_transportation_date` date, 
+  `arrival_transportation_time` string, 
+  `departure_transportation_mode` string, 
+  `departure_booking_source` string, 
+  `departure_flight_number` string, 
+  `departure_transportation_date` date, 
+  `departure_transportation_time` string, 
+  `parking_at_port_flg` char(1), 
+  `statuscode` varchar(20), 
+  `paymentstatuscode` varchar(20), 
+  `guestmoderationstatus` varchar(20), 
+  `guestoveralldocumentstatus` varchar(20), 
+  `isguestonboard` boolean, 
+  `isvalidated` boolean, 
+  `isassociatedflightbooking` boolean, 
+  `isitineraryrulesapplied` boolean, 
+  `security_photo_checkin_status` varchar(20), 
+  `health_questions_checkin_status` varchar(20), 
+  `emergency_contact_checkin_status` varchar(20), 
+  `travel_documents_checkin_status` varchar(20), 
+  `post_voyage_checkin_status` varchar(20), 
+  `embarkation_slot_checkin_status` varchar(20), 
+  `voyage_contract_checkin_status` varchar(20), 
+  `payment_method_checkin_status` varchar(20), 
+  `pregnency_checkin_status` varchar(20), 
+  `security_photo_checkin_percentage` int, 
+  `emergency_contact_checkin_percentage` int, 
+  `travel_documents_checkin_percentage` int, 
+  `embarkation_slot_checkin_percentage` int, 
+  `payment_method_checkin_percentage` int, 
+  `voyage_contract_checkin_percentage` int, 
+  `checkin_status_total_percentage` int, 
+  `voyageid` string, 
+  `load_dt` timestamp, 
+  `upd_dt` timestamp, 
+  `primaryhash` string, 
+  `md5_hash` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/mart/hvtb_mart_dim_seaware_guest_rts'

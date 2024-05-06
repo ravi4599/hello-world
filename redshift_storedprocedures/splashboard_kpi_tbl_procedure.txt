@@ -1,0 +1,113 @@
+CREATE OR REPLACE PROCEDURE crm.splashboard_kpi_tbl()
+	LANGUAGE plpgsql
+AS $$ 	 
+BEGIN
+  delete from crm.splashboard_kpi_tbl;
+INSERT
+      INTO
+      crm.splashboard_kpi_tbl       
+SELECT
+      seaware_reservation_dim.src_res_id AS booking_number,
+	  seaware_guest_dim1.first_name||' '||seaware_guest_dim1.last_name AS sailor_1_name,
+	  seaware_reservation_dim.res_init_date AS booked_date,
+	  seaware_reservation_dim.res_status AS booking_status,
+	  case when seaware_reservation_dim.res_status = 'OF' then 'On Hold'
+when seaware_reservation_dim.res_status = 'BK' then 'Booked'
+when seaware_reservation_dim.res_status = 'CL' or seaware_reservation_dim.res_status = 'TM' then 'Sailed'
+when seaware_reservation_dim.res_status = 'CX' or seaware_reservation_dim.res_status = 'CT' then 'Cancelled' end booking_status_desc,
+	  seaware_reservation_dim.cancellation_date booking_cancellation_date,
+	  seaware_reservation_dim.cancellation_case booking_cancellation_case,
+	  seaware_ship_dim.ship_name AS ship_name,
+	  seaware_sail_dim.sail_date_from AS voyage_date,
+	  seaware_sail_dim.sail_date_to AS sail_date_to,
+	  p_voy.package_name AS itinerary_name,
+	  seaware_cabin_master.cabin_number AS cabin_number,
+	  seaware_cabin_master.cabin_category AS cabin_category,
+		 seaware_cabin_master.cabin_category_desc,
+seaware_cabin_master.cabin_category_generic,									
+	  seaware_booked_cabin_reservation_dim.price_category AS price_category,
+	  seaware_package_dim.package_code AS package_code,
+      seaware_package_dim.package_name AS package_name,
+      seaware_reservation_dim.seaware_agency_id AS seaware_agency_id__c,
+	  crm_agency_master.id AS crm_agency_id,
+      crm_agency_master.name AS agency_name,
+	  crm_agency_master.billingcity AS agency_city,
+	  crm_agency_master.Currency_Type__c AS agency_currency,
+      seaware_reservation_dim.seaware_agent_id AS seaware_agent_id__c,
+      crm_agent_master.id AS agent_contact_id,
+      crm_agent_master.name AS first_mate_name,
+	  crm_agent_master.agent_status__c AS first_mate_status,
+      seaware_group_dim.src_group_id AS circle_number,
+	  count(distinct seaware_guest_dim.src_guest_id) AS res_guest_count,
+      sum(seaware_revenue_fact.actual_gross_ticket_revenue) AS actual_gross_ticket_revenue,
+      sum(seaware_revenue_fact.actual_gross_ticket_revenue_usd) AS actual_gross_ticket_revenue_usd,
+	  sum(seaware_revenue_fact.actual_gross_total_revenue) AS invoice_total,
+	  sum(seaware_revenue_fact.actual_gross_total_revenue_usd) AS invoice_total_usd,
+      seaware_revenue_fact.currency,
+      seaware_revenue_fact.currency_rate,
+      CURRENT_TIMESTAMP AS etl_ld_dt
+FROM
+      seaware.seaware_revenue_fact seaware_revenue_fact
+INNER JOIN seaware.seaware_reservation_dim seaware_reservation_dim ON
+      (seaware_revenue_fact.res_id = seaware_reservation_dim.res_id)
+INNER JOIN seaware.seaware_sail_dim seaware_sail_dim ON
+      (seaware_revenue_fact.sail_id = seaware_sail_dim.sail_id)
+INNER JOIN seaware.seaware_ship_dim seaware_ship_dim ON
+      (seaware_revenue_fact.ship_id = seaware_ship_dim.ship_id)
+INNER JOIN seaware.seaware_package_dim seaware_package_dim ON
+      (seaware_revenue_fact.package_id = seaware_package_dim.package_id) and seaware_package_dim.package_class='VOYAGE'
+INNER JOIN seaware.seaware_guest_dim seaware_guest_dim ON
+      (seaware_revenue_fact.guest_id = seaware_guest_dim.guest_id) 	  
+INNER JOIN seaware.seaware_booked_cabin_reservation_dim seaware_booked_cabin_reservation_dim ON
+      (seaware_reservation_dim.res_id = seaware_booked_cabin_reservation_dim.res_id and seaware_booked_cabin_reservation_dim.guest_id=seaware_guest_dim.guest_id and seaware_booked_cabin_reservation_dim.rec_end_dttm='9999-12-31 00:00:00') 
+INNER JOIN crm.crm_agent_master crm_agent_master ON
+      (seaware_revenue_fact.agent_id = crm_agent_master.agent_id) 
+INNER JOIN seaware.seaware_agency_dim seaware_agency_dim ON 
+		(seaware_revenue_fact.agency_id = seaware_agency_dim.agency_id)
+LEFT JOIN crm.crm_agency_master crm_agency_master ON
+      (seaware_agency_dim.src_agency_id = crm_agency_master.seaware_agency_id__c and crm_agency_master.rec_end_dttm='9999-12-31 00:00:00')
+/*LEFT JOIN seaware.seaware_group_res_dim seaware_group_res_dim ON
+      (seaware_reservation_dim.res_id = seaware_group_res_dim.res_id) */
+LEFT JOIN seaware.seaware_group_dim seaware_group_dim ON
+      (seaware_reservation_dim.src_group_id = seaware_group_dim.src_group_id) and seaware_group_dim.rec_end_dttm = '9999-12-31'
+LEFT JOIN seaware.seaware_cabin_master seaware_cabin_master ON
+      (seaware_booked_cabin_reservation_dim.cabin_id = seaware_cabin_master.cabin_id)
+LEFT JOIN seaware.seaware_res_guest_rel seaware_res_guest_rel ON
+      (seaware_revenue_fact.res_id = seaware_res_guest_rel.res_id  and seaware_res_guest_rel.guest_seqn = 1 )
+LEFT JOIN seaware.seaware_guest_dim seaware_guest_dim1 on 
+	  (seaware_res_guest_rel.guest_id = seaware_guest_dim1.guest_id )	  
+LEFT JOIN seaware.seaware_package_dim p_voy ON 
+	   (seaware_sail_dim.src_sail_id = p_voy.src_sail_id and p_voy.package_class='VOYAGE' and p_voy.rec_end_dttm = '9999-12-31 00:00:00')
+WHERE
+      (seaware_revenue_fact.snapshot_date = (select max(snapshot_date) FROM   seaware.seaware_revenue_fact))
+GROUP BY
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+	  14,
+	  15,
+	  16,
+	  17,
+      18,
+      19,
+	  20,
+	  21,
+	  22,
+      23,
+      24,
+      25,26,27,28,
+      34,
+	  35;
+END;
+          $$
+;

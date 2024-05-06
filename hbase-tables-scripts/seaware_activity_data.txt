@@ -1,0 +1,20 @@
+CREATE TABLE SEAWARE_ACTIVITY_DATA
+(
+   ACTIVITY_ID varchar(0) PRIMARY KEY,
+   ACTIVITY_TITLE varchar(0),
+   SHORT_DESC varchar(0),
+   START_DATETIME varchar(0),
+   END_DATETIME varchar(0),
+   ACTIVITY_TYPE varchar(0),
+   PRICE varchar(0),
+   VOYAGE_ID varchar(0),
+   PACKAGE_TYPE varchar(0),
+   PACKAGE_CODE varchar(0),
+   DESTINATION_PORT varchar(0),
+   STATUS varchar(0),
+   INTERNAL_COMMENTS varchar(0),
+   TRIBE_CATEGORIZATION varchar(0),
+   SURPRISE_EVENT varchar(0),
+   SIGNATURE_EVENT varchar(0)
+)
+;

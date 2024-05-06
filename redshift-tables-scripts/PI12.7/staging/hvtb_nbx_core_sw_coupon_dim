@@ -1,0 +1,42 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_coupon_dim(
+coupon_id int, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  src_coupon_id int, 
+  user_defined_coupon_id varchar(30), 
+  issue_date timestamp, 
+  valid_from timestamp, 
+  valid_to timestamp, 
+  effective_from timestamp, 
+  effective_to timestamp, 
+  coupon_category varchar(25), 
+  coupon_class varchar(25), 
+  coupon_class_code varchar(3), 
+  coupon_class_comments varchar(255), 
+  apply_as_payment char(1), 
+  apply_as_discount char(1), 
+  office_code varchar(15), 
+  res_id int, 
+  entity_type varchar(15), 
+  entity_id int, 
+  is_used char(1), 
+  is_active char(1), 
+  currency_code varchar(5), 
+  amount DOUBLE PRECISION, 
+  amount_left DOUBLE PRECISION, 
+  charge_code varchar(15), 
+  reason_code varchar(15), 
+  comments varchar(255), 
+  etl_ld_status varchar(30),
+  load_dt timestamp,
+  upd_dt timestamp,
+  primaryhash varchar(30),
+  md5_hash varchar(30),
+   scd_hash varchar(30))
+STORED AS PARQUET
+LOCATION
+'s3://vv-staging-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_coupon_dim'
+
+---------------------
+
+CREATE OR REPLACE VIEW seaware.seaware_coupon_dim AS SELECT * FROM hive_schema_stg.seaware_coupon_dim with no schema binding;

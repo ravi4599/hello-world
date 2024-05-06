@@ -1,0 +1,78 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_mxp_position(
+row_counter int,
+position_id int,
+department_id int,
+position_name varchar(40),
+position_valid_from timestamp,
+position_valid_to timestamp,
+position_comment string,
+active boolean,
+rec_deleted boolean,
+created_by_id int,
+created_at_id int,
+created timestamp,
+changed char(1),
+last_changed timestamp,
+guid string,
+reporting_category_id int,
+appraisal_template_id int,
+air_account_code_id int,
+position_job_description string,
+appraisal_template_boc_id int,
+appraisal_template_boc_days int,
+appraisal_template_eoc_id char(10),
+appraisal_template_eoc_days int,
+appraisal_template_annual_id int,
+appraisal_template_annual_date timestamp,
+enoad_position_id int,
+edcs_position_id int,
+position_code varchar(10),
+last_change_log_id bigint,
+on_line_application boolean,
+flexible_manning_per_position_count decimal(18,2),
+flexible_manning_per_position_count_type varchar(1),
+flexible_manning_country_navigation_time boolean,
+employee_agreement_group_id int,
+position_sequence int,
+mswse_position_id int,
+voyageid string, 	
+batchtime timestamp
+)
+PARTITIONED BY ( 
+ part_date date)
+STORED AS PARQUET
+LOCATION 's3://vv-prod-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_position'
+
+
+CREATE VIEW `shipdw`.`hvtb_parse_mxp_position` AS select `hvtb_lnd_mxp_position`.`row_counter`, `hvtb_lnd_mxp_position`.`position_id`, `hvtb_lnd_mxp_position`.`department_id`, `hvtb_lnd_mxp_position`.`position_name`, `hvtb_lnd_mxp_position`.`position_valid_from`, `hvtb_lnd_mxp_position`.`position_valid_to`, `hvtb_lnd_mxp_position`.`position_comment`, `hvtb_lnd_mxp_position`.`active`, `hvtb_lnd_mxp_position`.`rec_deleted`, `hvtb_lnd_mxp_position`.`created_by_id`, `hvtb_lnd_mxp_position`.`created_at_id`, `hvtb_lnd_mxp_position`.`created`, `hvtb_lnd_mxp_position`.`changed`, `hvtb_lnd_mxp_position`.`last_changed`, `hvtb_lnd_mxp_position`.`guid`, `hvtb_lnd_mxp_position`.`reporting_category_id`, `hvtb_lnd_mxp_position`.`appraisal_template_id`, `hvtb_lnd_mxp_position`.`air_account_code_id`, `hvtb_lnd_mxp_position`.`position_job_description`, `hvtb_lnd_mxp_position`.`appraisal_template_boc_id`, `hvtb_lnd_mxp_position`.`appraisal_template_boc_days`, `hvtb_lnd_mxp_position`.`appraisal_template_eoc_id`, `hvtb_lnd_mxp_position`.`appraisal_template_eoc_days`, `hvtb_lnd_mxp_position`.`appraisal_template_annual_id`, `hvtb_lnd_mxp_position`.`appraisal_template_annual_date`, `hvtb_lnd_mxp_position`.`enoad_position_id`, `hvtb_lnd_mxp_position`.`edcs_position_id`, `hvtb_lnd_mxp_position`.`position_code`, `hvtb_lnd_mxp_position`.`last_change_log_id`, `hvtb_lnd_mxp_position`.`on_line_application`, `hvtb_lnd_mxp_position`.`flexible_manning_per_position_count`, `hvtb_lnd_mxp_position`.`flexible_manning_per_position_count_type`, `hvtb_lnd_mxp_position`.`flexible_manning_country_navigation_time`, `hvtb_lnd_mxp_position`.`employee_agreement_group_id`, `hvtb_lnd_mxp_position`.`position_sequence`, `hvtb_lnd_mxp_position`.`mswse_position_id`, `hvtb_lnd_mxp_position`.`voyageid`, `hvtb_lnd_mxp_position`.`batchtime`, `hvtb_lnd_mxp_position`.`part_date` from `shipdw`.`hvtb_lnd_mxp_position`	
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_position(
+position_skey bigint,
+voyage_id varchar(100), 
+position_id int,
+position_name varchar(40),
+position_dept_id int,
+position_dept_name varchar(512),
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash string,
+md5_hash string
+)
+STORED AS PARQUET
+LOCATION 's3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_position'
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_fact_person_position(
+person_skey bigint,
+position_skey bigint,
+position_valid_from_timestamp timestamp,
+position_valid_to_timestamp timestamp,
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash string,
+md5_hash string
+)
+PARTITIONED BY ( 
+`part_dt` date)
+STORED AS PARQUET
+LOCATION 's3://vv-prod-emr-cluster/data/mart/hvtb_mart_fact_person_position'

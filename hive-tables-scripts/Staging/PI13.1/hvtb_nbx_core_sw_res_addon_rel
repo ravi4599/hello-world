@@ -1,0 +1,31 @@
+CREATE EXTERNAL TABLE vv_db_mig.hvtb_nbx_core_sw_res_addon_rel(
+src_res_addon_id bigint,
+res_addon_id int,
+res_id int,
+guest_id int,
+addon_id bigint,
+quantity int,
+rec_start_dttm timestamp,
+rec_end_dttm timestamp,
+effective_date timestamp,
+is_default string,
+is_auto string,
+promotion_id bigint,
+comments string,
+addon_status string,
+notes string,
+paid_date timestamp,
+etl_ld_status string,
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string,
+md5_hash string
+)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-staging-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_res_addon_rel';

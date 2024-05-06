@@ -1,0 +1,30 @@
+CREATE EXTERNAL TABLE hive_schema_stg.crm_agent_master
+(
+   agent_id             integer,
+   rec_start_dttm       timestamp,
+   rec_end_dttm         timestamp,
+   id                   varchar(500),
+   seaware_agent_id__c  varchar(100),
+   name                 varchar(100),
+   lastname             varchar(100),
+   firstname            varchar(100),
+   mailingcity          varchar(100),
+   mailingcountry       varchar(100),
+   mailingpostalcode    varchar(20),
+   mailingstate         varchar(100),
+   mailingstreet        varchar(100),
+   othercity            varchar(100),
+   othercountry         varchar(100),
+   otherphone           varchar(20),
+   otherpostalcode      varchar(20),
+   otherstate           varchar(100),
+   otherstreet          varchar(100),
+   md5_dim              varchar(500),
+   etl_ld_status        varchar(20),
+   etl_ld_dt            timestamp,
+   etl_upd_dt           timestamp
+)
+
+stored as parquet 
+LOCATION
+  's3://vv-prod-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_agent_master_dim';

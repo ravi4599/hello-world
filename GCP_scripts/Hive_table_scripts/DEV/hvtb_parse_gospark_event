@@ -1,0 +1,46 @@
+
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_gospark_event(ci string, cn string, n string, plt string, tg string, ts string, pl_action string, pl_date string, pl_displaytype string, pl_duration bigint, pl_hidden boolean, pl_id string, pl_inventoryid boolean, pl_inventory bigint, pl_location string, pl_name string, pl_sailing string, pl_template string, pl_venue string, pl_vip boolean, pl_starttime_hour bigint, pl_starttime_minute bigint, batchtime timestamp, voyageid string, shipcode string)
+PARTITIONED BY (part_date date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-dev-nbx-cluster/data/parse/mxp/hvtb_parse_gospark_event';
+
+gsutil cp gs://vv-dev-nbx-cluster/data/Test_Jar/LandingtoParse/SrcGosparkEvent_TgtGosparkEvent /home/ext_dileep_kumar_tulugu_capgemin/l2p_config
+
+
+
+gsutil cp gs://vv-dev-frmwrks-test/vv-nbx-data-parser-0.0.1-SNAPSHOT-jar-with-dependencies.jar /home/ext_dileep_kumar_tulugu_capgemin/jars
+
+
+
+UPSERT STATEMENT
+
+
+
+INSERT INTO SHIPDW.HBTB_INGESTION_METADATA(BATCH_INSTANCE_ID,BATCH_ID,PARENTBATCH,SRCCONFIGID,TGTCONFIGID,BATCHSTARTTIME,BATCHENDTIME,BATCH_EXECUTION_STARTTIME,BATCH_EXECUTION_ENDTIME,STATUS,ENVIRONMENT,VOYAGEID,TYPE) VALUES('SrcGoEventKafka-TgtGoEventHive','SrcGoEventKafka-TgtGoEventHive',null,'SrcGosparkEvent','TgtGosparkEvent','1900-01-01 00:00:00','1900-01-01 00:00:00','1900-01-01 00:00:00','1900-01-01 00:00:00','Successful','dev','SC2002269NCR','Ingestion');
+
+
+
+select * from shipdw.HBTB_INGESTION_METADATA where BATCH_ID like '%SrcGoEventKafka-TgtGoEventHive%';-
+
+
+delete from shipdw.HBTB_INGESTION_METADATA where BATCH_ID like '%SrcGoEventKafka-TgtGoEventHive%';
+
+
+
+spark submit
+
+
+
+spark-submit --name "GosparkEvent" --class com.virginvoyages.parse.ParseFramework --master yarn --deploy-mode cluster --properties-file /home/ext_dileep_kumar_tulugu_capgemin/l2p_config/SrcGosparkEvent_TgtGosparkEvent --jars /home/ext_dileep_kumar_tulugu_capgemin/jars/virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar /home/ext_dileep_kumar_tulugu_capgemin/jars/vv-nbx-data-parser-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+
+
+yarn application -kill application_1654264238969_0683

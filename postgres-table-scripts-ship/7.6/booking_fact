@@ -1,0 +1,32 @@
+DROP VIEW IF EXISTS shipdw.dining_reservation_fact;
+
+
+
+-- Drop table
+
+-- DROP TABLE hive_schema_stg.booking_fact;
+
+CREATE TABLE hive_schema_stg.booking_fact (
+	voyage_id text NULL,
+	booking_detail_skey int8 NOT NULL,
+	person_skey int8 NOT NULL,
+	voyage_skey int8 NOT NULL,
+	activity_skey int8 NOT NULL,
+	activity_slot_skey int8 NOT NULL,
+	vendor_skey int8 NOT NULL,
+	booked_by_person_skey int8 NOT NULL,
+	paid_by_person_skey int8 NOT NULL,
+	number_of_people int8 NOT NULL,
+	booking_paid_amount float8 NULL,
+	booking_remaining_amount float8 NULL,
+	refund_paid_amount float8 NULL,
+	refund_remaining_amount float8 NULL,
+	start_date_time timestamp NULL,
+	end_date_time timestamp NULL,
+	load_dt timestamp NOT NULL,
+	upd_dt timestamp NOT NULL,
+	part_dt date NOT NULL
+);
+
+
+CREATE OR REPLACE VIEW shipdw.dining_reservation_fact AS SELECT * FROM hive_schema_stg.dining_reservation_fact ;

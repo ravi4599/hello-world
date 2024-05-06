@@ -1,0 +1,32 @@
+drop table hive_schema_stg.seaware_res_addon_rel
+
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_res_addon_rel(
+res_addon_id integer,
+RES_ID	integer,
+GUEST_ID	integer,
+ADDON_ID	integer,
+QUANTITY	integer,
+REC_START_DTTM	timestamp,
+REC_END_DTTM	timestamp,
+EFFECTIVE_DATE	timestamp,
+IS_DEFAULT	char(1),
+IS_AUTO	char(1),
+PROMOTION_ID	integer,
+COMMENTS	varchar(255),
+ADDON_STATUS	varchar(15),
+NOTES	varchar(2000),
+PAID_DATE	timestamp,
+md5_dim varchar,
+etl_ld_status	varchar(30),
+etl_ld_dt	timestamp,
+etl_upd_dt 	timestamp )
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_res_addon_rel';
+  
+    CREATE OR REPLACE VIEW seaware.seaware_res_addon_rel as select * from hive_schema_stg.seaware_res_addon_rel with no schema binding;

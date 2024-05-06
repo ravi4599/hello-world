@@ -1,0 +1,18 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.seaware_res_package_rel_tmp(
+respackage_skey bigint,
+res_package_id int,
+src_res_id int,
+src_guest_id int,
+src_package_id int,
+effective_date timestamp,
+rec_start_dttm timestamp,
+rec_end_dttm timestamp,
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)                     
+                                                                                                                                  
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_nbx_core_sw_res_package_rel/*']
+);

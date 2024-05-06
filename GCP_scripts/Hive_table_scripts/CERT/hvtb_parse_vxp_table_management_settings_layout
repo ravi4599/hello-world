@@ -1,0 +1,1 @@
+create or replace view shipdw.hvtb_parse_vxp_table_management_settings_layout as select * from shipdw.hvtb_lnd_vxp_table_management_settings_layout; 

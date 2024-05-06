@@ -1,0 +1,18 @@
+-- hive_schema_stg.person_position_fact definition
+
+-- Drop table
+
+-- DROP TABLE hive_schema_stg.person_position_fact;
+
+CREATE TABLE hive_schema_stg.person_position_fact (
+	person_skey int8 NULL,
+	position_skey int8 NULL,
+	position_valid_from_timestamp timestamp NULL,
+	position_valid_to_timestamp timestamp NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL,
+	part_dt date NOT NULL
+);
+Create view  shipdw.person_position_fact as select * from  hive_schema_stg.person_position_fact;

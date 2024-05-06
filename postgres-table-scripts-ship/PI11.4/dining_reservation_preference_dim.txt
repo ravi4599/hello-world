@@ -1,0 +1,8 @@
+
+CREATE EXTERNAL TABLE hive_schema_stg.dining_reservation_preference_dim(
+    voyage_id text,dining_reservation_preference_skey bigint, type text,code text,description text,load_dt timestamp,  upd_dt timestamp,primaryhash text,md5_hash text);
+
+CREATE OR REPLACE VIEW shipdw.dining_reservation_preference_dim
+AS SELECT * FROM hive_schema_stg.dining_reservation_preference_dim;
+
+

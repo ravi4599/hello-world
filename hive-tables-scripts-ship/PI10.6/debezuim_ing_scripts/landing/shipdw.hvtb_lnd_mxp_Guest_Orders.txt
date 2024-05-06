@@ -1,0 +1,3 @@
+spark.sql("""Create external table shipdw.hvtb_lnd_mxp_Guest_Orders( batchinstanceid String,voyageid String,batchtime Timestamp, message String,shipcode string) 
+partitioned by (part_date Date) 
+STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/mxp/hvtb_lnd_mxp_Guest_Orders'""")

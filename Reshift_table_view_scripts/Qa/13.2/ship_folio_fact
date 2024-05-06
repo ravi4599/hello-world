@@ -1,0 +1,24 @@
+CREATE TABLE hive_schema_stg.ship_folio_fact(
+	voyage_id varchar(100),
+	folio_detail_skey bigint,
+	folio_item_skey bigint,
+	person_skey bigint,
+	ship_code varchar(10),
+	voyage_skey bigint,
+	itinerary_skey bigint,
+	sale_date_skey bigint,
+	sale_time_skey bigint,
+	booking_reference_number varchar(100),
+	sale_quantity int,
+	debit_amount float,
+	credit_amount float,
+	discount_amount float,
+	total_collected_sales_amount float,
+	load_dt timestamp,
+	upd_dt timestamp,
+	primaryhash varchar(50),  
+	md5_hash varchar(50),
+	part_dt date)
+	STORED AS PARQUET LOCATION 's3://vv-qa-emr-cluster/data/mart/hvtb_mart_fact_ship_folio';
+	
+CREATE OR REPLACE VIEW shipdw.ship_folio_fact AS SELECT * FROM hive_schema_stg.ship_folio_fact;

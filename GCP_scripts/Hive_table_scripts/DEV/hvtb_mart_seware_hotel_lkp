@@ -1,0 +1,31 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_mart_seware_hotel_lkp`(
+  `hotel_id` BIGINT,
+   REC_START_DTTM timestamp,
+  REC_END_DTTM timestamp,
+  `hotel_code` string, 
+  `hotel_name` string, 
+  `hotel_type` string, 
+  `is_active` string, 
+  `hotel_rating` integer, 
+  `address_type` string, 
+  `address_line1` string, 
+  `address_line2` string, 
+  `address_line3` string, 
+  `address_line4` string, 
+  `address_city` string, 
+  `state_code` string, 
+  `zip` string, 
+  `country_code` string, 
+   load_dt timestamp,
+   upd_dt timestamp,
+   primaryhash string,
+   md5_hash string
+   )
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_seware_hotel_lkp';

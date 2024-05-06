@@ -1,0 +1,19 @@
+
+CREATE EXTERNAL TABLE hive_schema_stg.location_optout_dim (
+	location_optout_skey int8 ,
+	voyage_id varchar(50) ,
+	location_optout_id varchar(50),
+	person_skey int8,
+	location_optout_flg boolean,
+	location_optout_datetime timestamp,
+	src_deleted_flg boolean,
+	load_dt timestamp ,
+	upd_dt timestamp ,
+	primaryhash varchar(50),
+	md5_hash varchar(50))STORED AS PARQUET
+LOCATION
+'s3://vv-dev-emr-cluster/data/mart/hvtb_mart_dim_location_optout'
+
+
+
+CREATE OR REPLACE VIEW shipdw.location_optout_dim AS SELECT * FROM hive_schema_stg.location_optout_dim with no schema binding;

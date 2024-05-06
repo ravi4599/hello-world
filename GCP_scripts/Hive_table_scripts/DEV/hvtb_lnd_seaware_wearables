@@ -1,0 +1,2 @@
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_lnd_seaware_wearables`(`batchinstanceid` STRING, `voyageid` STRING, `batchtime` TIMESTAMP, `message` STRING, `shipcode` STRING)
+PARTITIONED BY (`part_date` DATE) LOCATION 'gs://vv-cert-nbx-cluster/data/landing/vxp/hvtb_lnd_seaware_wearables'

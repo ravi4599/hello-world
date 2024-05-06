@@ -1,0 +1,52 @@
+CREATE EXTERNAL TABLE hive_schema_stg.crm_agency_master_dim_tmp(agency_id int                               
+, rec_start_dttm timestamp                                                                          
+, rec_end_dttm timestamp                                                                            
+, id string                                                                                   
+, seaware_agency_id__c string                                                                 
+, name string                                                                                 
+, lastname string                                                                             
+, firstname string                                                                            
+, billingcity string                                                                          
+, billingcountry string                                                                       
+, billingpostalcode string                                                                    
+, billingstate string                                                                         
+, billingstreet string                                                                        
+, createddate timestamp                                                                             
+, status__c string                                                                             
+, alternate_dba_name__c string                                                                
+, iata_number__c string                                                                       
+, clia_number__c string                                                                       
+, asta_number__c string                                                                       
+, abta_number__c string                                                                       
+, territorynametext__c string                                                                 
+, ownerid string                                                                              
+, primary_affiliation__c string                                                               
+, parentid string                                                                             
+, agency_classification__c string                                                             
+, agency_sub_type__c string                                                                   
+, is_touroperator__c boolean                                                                        
+, client_id__c string                                                                         
+, personemail string                                                                          
+, tgender__c string                                                                           
+, personmailingcity string                                                                    
+, personmailingstate string                                                                   
+, personmailingpostalcode string                                                              
+, personmailingcountry string                                                                 
+, createdbyid string                                                                          
+, lastmodifiedbyid string                                                                     
+, personhasoptedoutofemail boolean                                                                  
+, hand_raiser__c boolean                                                                            
+, vip_tier__c string                                                                          
+, webuser__c boolean                                                                                
+, currency_type__c string                                                                     
+, md5_dim string                                                                              
+, etl_ld_status string                                                                        
+, etl_ld_dt timestamp                                                                               
+, etl_upd_dt timestamp                                                                              
+, seaware_parent_agency_id int                                                                      
+, lastmodifieddate timestamp                                                                        
+)                                                                                                   
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_nbx_mart_crm_agency_master_dim/*']
+);           

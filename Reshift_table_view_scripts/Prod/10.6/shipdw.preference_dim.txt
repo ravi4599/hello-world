@@ -1,0 +1,1 @@
+CREATE or replace VIEW shipdw.preference_dim AS SELECT * FROM hive_schema_stg.preference_dim with no schema binding;

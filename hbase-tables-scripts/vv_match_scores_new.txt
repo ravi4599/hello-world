@@ -1,0 +1,12 @@
+CREATE TABLE VV_MATCH_SCORES_NEW
+(
+   SEAWARE_ID varchar(0) PRIMARY KEY,
+   ACTIVITY_SAILOR_SCORES varchar(0),
+   TIME_STAMP varchar(0),
+   DATE_UPDATED varchar(0),
+   PROBABILITY varchar(0),
+   REV_PER_ACT varchar(0),
+   REV_SCORES varchar(0),
+   AFF_REV_NEW_RANK varchar(0)
+)
+;

@@ -1,0 +1,16 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_zulip_zerver_supportqueue(
+batchinstanceid string,
+voyageid string,
+batchtime timestamp,
+message string,
+shipcode string)
+PARTITIONED BY (
+part_date date)
+ROW FORMAT SERDE
+'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'gs://vv-dev-nbx-cluster/data/landing/vxp/hvtb_lnd_zulip_zerver_supportqueue';

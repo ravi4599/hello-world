@@ -1,0 +1,9 @@
+spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_Position_Org_Units_lad(row_counter int, position_org_unit_id int, org_unit_id int, position_id int, default_position_number int, max_position_number int, allow_flexible_manning boolean, flexible_manning_comment string, rec_deleted boolean, active boolean, created_at_id int, created_by_id int, created timestamp, last_changed timestamp, changed string, guid string, budget_position_number decimal(18,2), budget_position_amount decimal(18,2), privilage_level_id int, default_contract_length decimal(18,2), appraisal_new_contract boolean, appraisal_end_of_contract boolean, appraisal_end_of_year boolean, position_job_description string, default_vacation_length decimal(18,2), position_flight_class_id int, user_role_id int, position_air_account_code_id int, person_account_max_amount decimal(18,2), min_experience_percentage_mix decimal(18,2), season_scheduling_exception_id int, settlement_quick_code_id int, last_change_log_id bigint, user_id int, exclude_compensation_days boolean, work_hour_duration_days decimal(18,2), parent_position_org_unit_id int, position_hierarchy_level bigint, op string, ts_ms timestamp, shipcode string, voyageid string, batchtime timestamp,part_date date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION '/data/apps/nbx/hive/parse/mxp/hvtb_parse_mxp_Position_Org_Units_lad'""")

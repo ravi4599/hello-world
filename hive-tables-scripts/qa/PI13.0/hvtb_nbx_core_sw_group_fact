@@ -1,0 +1,37 @@
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_group_fact`(
+  `snapshot_time` timestamp, 
+  `group_id` int, 
+  `guest_seqn` int, 
+  `package_id` int, 
+  `invoice_item_type_id` int, 
+  `price_area_id` int, 
+  `ship_id` int, 
+  `agent_id` int, 
+  `agency_id` int, 
+  `promotion_id` int, 
+  `addon_id` int, 
+  `cardeck_id` int, 
+  `shorex_id` int, 
+  `hotel_group_req_id` int, 
+  `sail_id` int, 
+  `amount` double, 
+  `commission_percent` double, 
+  `quantity` double, 
+  `currency` string, 
+  `currency_rate` double, 
+  `cabin_category` string, 
+  `generic_category` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+PARTITIONED BY ( 
+  `snapshot_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+WITH SERDEPROPERTIES ( 
+  'timestamp.formats'='yyyy-MM-dd HH:mm:ss') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_group_fact'

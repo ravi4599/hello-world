@@ -1,0 +1,20 @@
+CREATE or replace  EXTERNAL TABLE hive_schema_stg.seaware_ship_facility_lkp(
+facility_id int, 
+ship_facility_skey  bigint, 
+ship_code string, 
+facility_type string, 
+facility_code string, 
+facility_name string, 
+deck_number int, 
+facility_size string, 
+max_occupancy int, 
+assign_mode string, 
+facility_rank int, 
+facility_subtype string,
+load_dt timestamp,                                   
+upd_dt timestamp,                                   
+primaryhash string,                                      
+md5_hash  string) OPTIONS (format = 'PARQUET',uris = ['gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_spf_ship_facility_lkp/*']);
+
+
+CREATE OR REPLACE VIEW seaware.seaware_ship_facility_lkp AS SELECT * FROM hive_schema_stg.seaware_ship_facility_lkp;

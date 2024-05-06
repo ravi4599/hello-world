@@ -1,0 +1,23 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_fact_request(
+voyage_id string, 
+ship_code string, 
+voyage_skey bigint, 
+request_detail_skey bigint, 
+venue_skey bigint, 
+request_assigned_person_skey bigint, 
+request_created_datetime timestamp, 
+request_started_datetime timestamp, 
+request_completed_datetime timestamp, 
+request_cancelled_datetime timestamp, 
+request_assigned_datetime timestamp, 
+request_at_risk_datetime timestamp, 
+request_overdue_datetime timestamp, 
+request_time_taken_seconds int, 
+request_type_sla_duration int, 
+request_type_duration int, 
+request_type_at_risk_duration int,
+load_dt timestamp, 
+upd_dt timestamp,
+primaryhash string, 
+md5_hash string) 
+PARTITIONED BY (part_dt date) STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_request';

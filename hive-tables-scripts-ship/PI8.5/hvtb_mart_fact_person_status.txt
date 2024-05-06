@@ -1,0 +1,13 @@
+spark.sql(s"""CREATE EXTERNAL TABLE `shipdw`.`hvtb_mart_fact_person_status`(`voyage_id` string, `person_skey` bigint, `voyage_skey` bigint, `ship_code` string, `moderation_status` string, `moderation_addeddate` timestamp, `verificationstatuscode` string, `verificationstatuschangedate` timestamp, `moci_prevalidstatuscode` string, `rts_done_status` boolean, `boarding_status` string, `terminal_checkin_status` string, `terminal_checkin_status_color` string, `aci_status_color` string, `load_dt` timestamp, `upd_dt` timestamp, `primaryhash` string, `md5_hash` string)
+PARTITIONED BY (`part_dt` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION '/data/apps/nbx/mart/hvtb_mart_fact_person_status' """)
+
+
+

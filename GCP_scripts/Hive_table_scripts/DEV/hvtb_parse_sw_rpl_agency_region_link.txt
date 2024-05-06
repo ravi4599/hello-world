@@ -1,0 +1,22 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_parse_sw_rpl_agency_region_link(
+  ag_region_link_id int, 
+  agency_id int, 
+  date_from timestamp, 
+  date_to timestamp, 
+  comments string, 
+  region_id int, 
+  op string, 
+  ts_ms timestamp, 
+  shipcode string, 
+  voyageid string, 
+  batchtime timestamp)
+PARTITIONED BY ( 
+  part_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/parse/seaware/hvtb_parse_sw_rpl_agency_region_link';

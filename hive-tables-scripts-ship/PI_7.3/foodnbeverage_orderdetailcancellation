@@ -1,0 +1,6 @@
+Orderdetailcancellation :-
+
+spark.sql("create external table shipdw.hvtb_lnd_vxp_foodnbev_orderdetailcancellation(orderdetailcancellationid string,ordercancellationid  string,orderdetailid string,         cancelledquantity int,isdeleted boolean,addeddate  timestamp,addedby  string,lastmodifieddate  timestamp,lastmodifiedby  string,voidcount  int,compcount int,VoyageId string,BatchTime timestamp)partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_foodnbev_orderdetailcancellation'")    
+
+
+spark.sql("create view shipdw.hvtb_parse_vxp_foodnbev_orderdetailcancel as select * from shipdw.hvtb_lnd_vxp_foodnbev_orderdetailcancellation")

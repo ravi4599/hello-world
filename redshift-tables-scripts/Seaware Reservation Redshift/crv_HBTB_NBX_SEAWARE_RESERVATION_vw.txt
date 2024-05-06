@@ -1,0 +1,2 @@
+create or replace view seaware.HBTB_NBX_SEAWARE_RESERVATION_vw as select * from seaware_stg.HBTB_NBX_SEAWARE_RESERVATION
+with no schema binding;

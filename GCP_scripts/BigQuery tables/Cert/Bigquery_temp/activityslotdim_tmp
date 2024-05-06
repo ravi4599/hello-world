@@ -1,0 +1,29 @@
+CREATE EXTERNAL TABLE hive_schema_stg.activityslotdim_tmp(voyage_id string                         
+, activity_slot_skey bigint                                                                         
+, activity_slot_id string                                                                      
+, activity_id string                                                                           
+, activity_slot_code string                                                                    
+, slot_start_timestamp timestamp                                                                    
+, slot_end_timestamp timestamp                                                                      
+, total_capacity int                                                                                
+, available_capacity bigint                                                                         
+, minimum_party_size int                                                                            
+, maximum_party_size int                                                                            
+, activity_slot_status string                                                                  
+, type string                                                                                
+, waitlist_enable_flg boolean                                                                       
+, cancelled_flg boolean                                                                             
+, src_deleted_flg boolean                                                                           
+, meeting_location_deck_code string                                                            
+, meeting_location_direction_code string                                                       
+, meeting_location_section_code string
+, selling_price int64                                                         
+, load_dt timestamp                                                                                 
+, upd_dt timestamp                                                                                  
+, primaryhash string                                                                           
+, md5_hash string                                                                              
+)                                                                                                   
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_activity_slot/*']
+);

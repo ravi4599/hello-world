@@ -1,0 +1,5 @@
+create external schema hive_schema_stg
+from data catalog
+database 'prodnbxpub'
+iam_role 'arn:aws:iam::546550617309:role/NBX-Redshift-PROD-S3-ReadOnly'
+create external database if not exists;

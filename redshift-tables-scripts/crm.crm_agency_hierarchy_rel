@@ -1,0 +1,11 @@
+  create  table crm.crm_agency_hierarchy_rel(
+agencyid	varchar,
+childagencyid	varchar,
+agencyname	varchar,
+childagencyname	varchar,
+seawareagencyid	varchar,
+childseawareagencyid	varchar,
+immediate_parentagencyid	varchar,
+level	integer,
+etl_ld_dt timestamp
+)

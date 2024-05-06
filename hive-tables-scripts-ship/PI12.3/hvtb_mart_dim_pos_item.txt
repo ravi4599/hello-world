@@ -1,0 +1,13 @@
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_mart_dim_pos_item`(`item_skey` bigint, `voyage_id` string, `item_plu_number` string, `item_name` string, `item_plu_group_number` string, `item_plu_group_name` string, `item_plu_category_number` string, `item_plu_category_name` string, `ship_code` string, `src_updated_datetime` timestamp, `src_deleted_flag` boolean, `src_active_flag` boolean, `load_dt` timestamp, `upd_dt` timestamp, `primaryhash` string, `md5_hash` string)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION '/data/apps/nbx/hive/hvtb_mart_dim_pos_item'
+TBLPROPERTIES (
+  'bucketing_version' = '2',
+  'transient_lastDdlTime' = '1628599867'
+)

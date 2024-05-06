@@ -1,0 +1,36 @@
+
+CREATE TABLE `vv_db.hvtb_nbx_landing_sw_rpl_ship_room_alloc`(
+  `allocation_id` int, 
+  `allocation_owner_type` string, 
+  `allocation_owner_id` int, 
+  `operator_id` string, 
+  `inventory_request_type` string, 
+  `allocation_timestamp` timestamp, 
+  `priority` int, 
+  `inventory_result_type` string, 
+  `probability` decimal(10,0), 
+  `decline_reason` int, 
+  `release_timestamp` timestamp, 
+  `ship_code` string, 
+  `facility_type` string, 
+  `usage_start` timestamp, 
+  `usage_duration` int, 
+  `party_size` int, 
+  `assigned_room_id` int, 
+  `layout_code` string, 
+  `dlgt_res_id` int, 
+  `is_dlgt_obj` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n', 
+  'serialization.format'='\u0001') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_ship_room_alloc'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1586772725')

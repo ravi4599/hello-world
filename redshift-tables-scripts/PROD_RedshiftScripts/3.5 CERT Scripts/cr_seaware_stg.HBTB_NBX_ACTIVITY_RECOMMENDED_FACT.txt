@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS seaware_stg.HBTB_NBX_ACTIVITY_RECOMMENDED_FACT
+(
+   NBXUNIQUEKEY                          varchar(100) SORTKEY DISTKEY,
+   SAILORID                              int,
+   ACTIVITY_ID                           varchar(100),
+   DATE_RECOMMENDED                      timestamp,
+   ACTIVITY_START_DT			 timestamp,
+   ACTIVITY_END_DT			 timestamp,
+   IsActive				 char(1),
+   IsRecommended		         char(1),
+   VoyageId	 			 varchar(20),
+   REQUEST_SOURCE 			 varchar(50),
+   etl_ld_dt 				 timestamp,
+   etl_upd_dt 				 timestamp
+)

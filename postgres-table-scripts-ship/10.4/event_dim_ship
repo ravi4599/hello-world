@@ -1,0 +1,28 @@
+Drop table hive_schema_stg.event_dim cascade
+
+Drop view shipdw.event_dim
+
+CREATE TABLE hive_schema_stg.event_dim (
+	event_skey int8 NULL,
+	voyage_id text NULL,
+	event_id text NULL,
+	template_id text NULL,
+	event_name text NULL,
+	event_start_time text NULL,
+	event_duration_minutes int NULL,
+	event_date text NULL,
+	venue_skey int8 NULL,
+	event_location text NULL,
+	event_capacity int NULL,
+	event_inventoried_flg bool NULL,
+	event_hidden_flg bool NULL,
+	event_vip_flg bool NULL,
+	event_deleted_flg text NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL
+);
+
+
+create view shipdw.event_dim as select * from hive_schema_stg.event_dim

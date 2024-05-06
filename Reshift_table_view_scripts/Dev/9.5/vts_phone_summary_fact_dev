@@ -1,0 +1,45 @@
+
+DROP TABLE IF EXISTS hive_schema_stg.vts_phone_summary_fact;
+
+CREATE EXTERNAL TABLE hive_schema_stg.vts_phone_summary_fact
+(
+team	varchar(100),
+source	varchar(20),
+origin	varchar(20),
+queue	varchar(100),
+campaign	varchar(500),
+skill_name	varchar(500),
+reason	varchar(100),
+resolution	varchar(255),
+sub_resolution	varchar(255),
+phone_date	date,
+phone_hour	int,
+incoming_calls_cnt	int,
+queued_calls_cnt	int,
+total_call_queued_time	float,
+total_call_hold_time	float,
+held_calls_cnt	int,
+transfers_cnt	int,
+inbound_calls_cnt	int,
+inbound_handled_calls_cnt	int,
+outbound_handled_calls_cnt	int,
+total_handled_calls	int,
+target_handled_pct	int,
+handle_time	float,
+target_inbound_calls_handled_pct	float,
+abandoned_calls_cnt	int,
+target_avg_handle_time_hrs	int,
+target_phone_service_level	int,
+target_pct_call_abandon	int,
+target_count_outbound_calls	int,
+count_total_tasks int,
+etl_ld_dt	timestamp,
+etl_upd_dt 	timestamp
+)
+STORED AS PARQUET  
+LOCATION 's3://vv-dev-emr-cluster/data/mart/vts/hvtb_mart_vts_phone_summary_fact';
+
+
+CREATE OR REPLACE VIEW shipdw.vts_phone_summary_fact AS SELECT * FROM hive_schema_stg.vts_phone_summary_fact with no schema binding;
+
+

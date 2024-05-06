@@ -1,0 +1,81 @@
+INSERT INTO vv_metadata.load_dt
+( load_start_dt, load_end_dt, load_exec_start_dt, load_exec_end_dt, load_status, load_ind, error_details, load_type, project_name, load_frequency)
+VALUES( '1990-09-04 02:00:00.000', '2021-06-20 04:30:00.000', now(), now(), 'In Progress', 'P', '', 'Incremental', 'VV_NBX_ETL', 'SW_rpl_daily');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRSailDim', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRAgencyDim', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRHotelResReqDim', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRPromotionDim', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRPaymentSchedule', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRReservationDim', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+--
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRRevenueFact', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRAddonFact', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRRPLProtectedCommissionDetailFact', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRRevenueSummaryFact', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRGroupDim', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRCouponDim', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+--
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRSailCabinFact', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRHotelgroupReqDim', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRGroupFact', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRTransactions_evt', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSRBookedCabinReservationDim', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSWResGuestRel', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSWBookedCabinReservationDim', 'hvtb_nbx_core_sw_revenue_fact', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_invoice', 'Hive', 'SW_rpl_daily', '2019-06-06 11:09:04.000');

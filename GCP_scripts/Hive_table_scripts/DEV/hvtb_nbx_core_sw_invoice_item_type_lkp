@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_invoice_item_type_lkp(
+  invoice_item_type_id bigint, 
+  invoice_item_type string, 
+  invoice_item_subtype string, 
+  etl_ld_status string,
+  load_dt timestamp,
+  upd_dt timestamp,
+  primaryhash string,
+  md5_hash string) STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_invoice_item_type_lkp';

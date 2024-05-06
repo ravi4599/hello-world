@@ -1,0 +1,21 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.specialrequest_dim_tmp(voyage_id string                    
+, specialrequest_skey bigint                                                                        
+, specialrequest_id bigint                                                                          
+, person_id int                                                                                     
+, specialrequest_guid string                                                                 
+, specialrequest_type string                                                                 
+, specialrequest_type_code string                                                            
+, specialrequest_date timestamp                                                                     
+, specialrequest_description string                                                           
+, specialrequest_comment string                                                            
+, specialrequest_upd_date timestamp                                                                 
+, src_deleted_flag boolean                                                                          
+, load_dt timestamp                                                                                 
+, upd_dt timestamp                                                                                  
+, primaryhash string                                                                          
+, md5_hash string                                                                           
+)                          
+OPTIONS (
+format = 'PARQUET',
+uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_dim_specialrequest/*']
+);

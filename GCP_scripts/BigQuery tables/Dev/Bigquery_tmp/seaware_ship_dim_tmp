@@ -1,0 +1,13 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.seaware_ship_dim_tmp(
+ship_id bigint,
+ship string ,
+ship_name string,
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)                     
+
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_nbx_core_sw_ship_dim/*']
+);

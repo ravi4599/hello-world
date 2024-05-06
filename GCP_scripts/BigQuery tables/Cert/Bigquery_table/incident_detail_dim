@@ -1,0 +1,30 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.incident_detail_dim(voyage_id string,                   
+ incident_detail_skey bigint,                                                                       
+ incident_id string,                                                                        
+ incident_description string,                                                                
+ incident_comment string,                                                                    
+ incident_reference_id string,                                                              
+ incident_external_reference_id string,                                                     
+ incident_resolution_amount bigint,                                                       
+ incident_resolution_amount_currency string,                                                 
+ incident_reporter_type string,                                                              
+ incident_resolution_description string,                                                     
+ incident_notify_flg boolean,                                                                       
+ incident_raised_by_notes string,                                                            
+ incident_attended_by_notes string,                                                          
+ incident_priority string,                                                                   
+ incident_severity string,                                                                   
+ incident_score bigint,                                                                   
+ incident_status_changed_datetime_utc timestamp,                                                    
+ incident_status_changed_datetime timestamp,                                                        
+ load_dt timestamp,                                                                                 
+ upd_dt timestamp,                                                                                  
+ primaryhash string,                                                                         
+ md5_hash string,                                                                            
+) 
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_incident_detail/*']
+);
+
+CREATE OR REPLACE VIEW shipdw.incident_detail_dim AS SELECT * FROM hive_schema_stg.incident_detail_dim;

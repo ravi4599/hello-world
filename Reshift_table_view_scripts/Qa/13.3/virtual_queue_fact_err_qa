@@ -1,0 +1,22 @@
+CREATE EXTERNAL TABLE hive_schema_stg.virtual_queue_fact_err (
+	voyage_id varchar(100),
+	ship_code varchar(100),
+	voyage_skey bigint,
+	virtual_queue_detail_skey bigint,
+	virtual_queue_definition_skey bigint,
+	person_skey  bigint,
+	queue_joined_datetime timestamp,
+	queue_canceled_datetime timestamp,
+	queue_notified_datetime timestamp,
+	queue_completed_datetime timestamp,
+	queue_total_wait_time_seconds int,
+	load_dt timestamp,
+	upd_dt timestamp,
+	primaryhash varchar(50),
+	md5_hash varchar(50),
+	part_dt date
+)
+STORED AS PARQUET LOCATION 's3://vv-qa-emr-cluster/data/mart/hvtb_mart_fact_virtual_queue_err';
+
+
+CREATE VIEW shipdw.virtual_queue_fact_err as select * from hive_schema_stg.virtual_queue_fact_err ;

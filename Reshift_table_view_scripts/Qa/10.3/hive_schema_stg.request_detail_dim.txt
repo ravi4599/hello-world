@@ -1,0 +1,26 @@
+--drop table if exists hive_schema_stg.request_detail_dim;
+
+CREATE EXTERNAL TABLE hive_schema_stg.request_detail_dim
+(
+   `request_detail_skey` int not null, 
+  `voyage_id` varchar(100) not null, 
+  `request_id` varchar(100), 
+  `request_guid` varchar(100), 
+  `request_description` varchar(100), 
+  `request_priority` int, 
+  `request_category_id` int, 
+  `request_category_name` varchar(100), 
+  `request_type_id` int, 
+  `request_type_name` varchar(100), 
+  `request_type_priority` int, 
+  `load_dt` timestamp, 
+  `upd_dt` timestamp, 
+  `primaryhash` varchar(100) not null, 
+  `md5_hash` varchar(100) not null
+)
+STORED AS PARQUET 
+LOCATION
+  's3://vv-qa-emr-cluster/data/mart/hvtb_mart_dim_request_detail'
+  
+;
+create or replace view shipdw.request_detail_dim as select * from hive_schema_stg.request_detail_dim

@@ -1,0 +1,30 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_lnd_vxp_guest_folio(
+  guestfolioid string, 
+  reservationguestid string, 
+  folionumber string, 
+  foliotype string, 
+  foliostatus string, 
+  accesscardnumber string, 
+  linkedcardid string, 
+  isatrisk boolean, 
+  isgangwayallowed boolean, 
+  isdeleted boolean, 
+  addeddate timestamp, 
+  addedby string, 
+  lastmodifieddate timestamp, 
+  lastmodifiedby string, 
+  paymentdepartmentnumber string, 
+  debitbalance decimal(10,2), 
+  creditbalance decimal(10,2), 
+  routedtoaccountnumber string, 
+  voyageid string, 
+  batchtime timestamp,
+  shipcode string)
+PARTITIONED BY ( 
+  part_date date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS 
+INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-cert-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_guest_folio';
+

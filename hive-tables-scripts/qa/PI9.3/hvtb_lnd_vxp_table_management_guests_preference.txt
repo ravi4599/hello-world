@@ -1,0 +1,4 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_table_management_guests_preference(addeddate timestamp, public_id string, code string, dxp_id string, name string, active boolean, type_id string, addedby string, lastmodifiedby string, lastmodifieddate timestamp, VoyageId string, BatchTime timestamp)
+PARTITIONED BY (Part_Date date)
+STORED AS PARQUET
+LOCATION 's3://vv-qa-emr-cluster/data/landing/VXP/hvtb_lnd_vxp_table_management_guests_preference'

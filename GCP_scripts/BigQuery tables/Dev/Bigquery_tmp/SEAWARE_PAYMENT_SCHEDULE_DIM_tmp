@@ -1,0 +1,18 @@
+CREATE or replace EXTERNAL TABLE hive_schema_stg.SEAWARE_PAYMENT_SCHEDULE_DIM_tmp(
+  res_payment_due_item_id bigint,
+  src_res_payment_due_item_id int,
+  res_id int, 
+  guest_id int, 
+  payment_type string, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  due_date date, 
+  amount bigint, 
+  etl_ld_status string,
+  load_dt timestamp,
+  upd_dt timestamp,
+  primaryhash string,
+  md5_hash string,
+   scd_hash string)
+OPTIONS (format = 'PARQUET',uris = ['gs://vv-dev-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_payment_schedule_dim/*'
+]);

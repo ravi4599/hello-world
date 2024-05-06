@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS `vv_db.processdriver_external`;
+CREATE EXTERNAL TABLE `vv_db.processdriver_external`(
+  `processname` string, 
+  `variablename` string, 
+  `value` string
+  )
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'
+STORED AS TEXTFILE
+LOCATION 's3a://vv-dev-emr-cluster/data/core/calendar_rec_files/processdriver';
+SELECT * FROM `vv_db.processdriver_external`;

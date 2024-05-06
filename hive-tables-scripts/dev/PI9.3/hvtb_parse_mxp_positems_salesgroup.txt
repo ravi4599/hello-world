@@ -1,0 +1,26 @@
+
+CREATE EXTERNAL TABLE `shipdw.hvtb_parse_mxp_positems_salesgroup`(
+  `voyageid` string, 
+  `batchtime` timestamp, 
+  `salesgroup_number` bigint, 
+  `salesgroup_name` string, 
+  `salesgroup_guid` string, 
+  `salesgroup_enablecrewdiscounts` boolean, 
+  `generated_date` timestamp)
+PARTITIONED BY ( 
+  `partdate` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/parse/mxp/hvtb_parse_mxp_positems_salesgroup'
+TBLPROPERTIES (
+  'spark.sql.create.version'='2.2 or prior', 
+  'spark.sql.sources.schema.numPartCols'='1', 
+  'spark.sql.sources.schema.numParts'='1', 
+  'spark.sql.sources.schema.part.0'='{"type":"struct","fields":[{"name":"voyageid","type":"string","nullable":true,"metadata":{}},{"name":"batchtime","type":"timestamp","nullable":true,"metadata":{}},{"name":"salesgroup_number","type":"long","nullable":true,"metadata":{}},{"name":"salesgroup_name","type":"string","nullable":true,"metadata":{}},{"name":"salesgroup_guid","type":"string","nullable":true,"metadata":{}},{"name":"salesgroup_enablecrewdiscounts","type":"boolean","nullable":true,"metadata":{}},{"name":"generated_date","type":"timestamp","nullable":true,"metadata":{}},{"name":"partdate","type":"date","nullable":true,"metadata":{}}]}', 
+  'spark.sql.sources.schema.partCol.0'='partdate', 
+  'transient_lastDdlTime'='1604901996')

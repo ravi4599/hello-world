@@ -1,0 +1,41 @@
+drop table hive_schema_stg.activity_dim
+
+
+CREATE EXTERNAL TABLE hive_schema_stg.activity_dim(
+activity_skey int8  ,
+	voyage_id text ,
+	activity_id text ,
+	activity_cms_id text ,
+	activity_code text ,
+	activity_type text ,
+	activity_level text ,
+	activity_name text ,
+	activity_group_code text ,
+	activity_port_code text ,
+	activity_description text ,
+	currency_code text ,
+	multiple_booking_allowed_flg bool ,
+	price_type text ,
+	vip_flg bool ,
+	giftable_flg bool ,
+	packageable_flg bool ,
+	bookable_flg bool ,
+	ada_accessible_flg bool ,
+	minimum_age int4 ,
+	maximum_age int4 ,
+	access_type text ,
+	waitlist_enable_flg bool ,
+	booking_closed_duration int4 ,
+	activity_setup_duration int4 ,
+	activity_duration int4 ,
+	activity_location_type text ,
+	enabled_flg bool ,
+	src_deleted_flg bool ,
+	load_dt timestamp ,
+	upd_dt timestamp ,
+	primaryhash text ,
+	md5_hash text  )
+STORED AS PARQUET
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_activity'
+

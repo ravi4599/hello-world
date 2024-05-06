@@ -1,0 +1,34 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_charge_evt(
+  charge_detail_id int, 
+  src_record_id int, 
+  res_id int, 
+  action_type varchar, 
+  charge_id int, 
+  charge_component_code varchar, 
+  charge_state varchar, 
+  guest_seqn int, 
+  amount float, 
+  amount_in_hdr_curr float, 
+  explanation varchar, 
+  change_area varchar, 
+  src_package_id int, 
+  action_timestamp timestamp, 
+  is_added_manually varchar, 
+  is_paid varchar, 
+  paid_timestamp timestamp,
+  comments varchar, 
+  etl_ld_status varchar, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  md5_dim varchar)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/core/spf/hvtb_nbx_core_spf_charge_evt'
+;

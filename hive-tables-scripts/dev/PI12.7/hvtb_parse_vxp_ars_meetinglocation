@@ -1,0 +1,30 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_vxp_ars_meetinglocation(
+  meetinglocationid string, 
+  activityid string, 
+  activityslotid string, 
+  deckcode string, 
+  directioncode string, 
+  endtime int, 
+  locationtype string, 
+  sectioncode string, 
+  starttime int, 
+  venueid string,  
+  isdeleted boolean, 
+  addeddate timestamp, 
+  lastmodifieddate timestamp, 
+  addedby string, 
+  lastmodifiedby string, 
+  arsvenueid string,   
+  voyageid string, 
+  batchtime timestamp,
+  shipcode string)
+PARTITIONED BY ( 
+  part_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/parse/vxp/hvtb_parse_vxp_ars_meetinglocation'

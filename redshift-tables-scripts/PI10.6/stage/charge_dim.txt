@@ -1,0 +1,19 @@
+drop table if exists hive_schema_stg.charge_dim;
+
+CREATE EXTERNAL TABLE hive_schema_stg.charge_dim
+(
+	voyage_id	varchar(100)
+	,ship_code varchar(50)
+	,charge_skey	int8
+	,charge_id	int8
+	,person_id	int8
+	,person_skey	int8
+	,booking_id	int8
+	,src_deleted_flag boolean
+	,load_dt	timestamp
+	,upd_dt	timestamp
+	,primaryhash varchar(500)
+	,md5_hash varchar(500)
+)
+STORED AS PARQUET 
+LOCATION 's3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_charge';

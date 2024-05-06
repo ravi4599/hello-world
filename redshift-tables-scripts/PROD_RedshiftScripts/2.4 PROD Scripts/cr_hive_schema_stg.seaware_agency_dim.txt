@@ -1,0 +1,19 @@
+create external table hive_schema_stg.seaware_agency_dim (
+ AGENCY_ID int,
+ REC_START_DTTM timestamp,
+ REC_END_DTTM timestamp,
+ SRC_AGENCY_ID int,
+ AGENCY_NAME varchar(100),
+ AGENCY_CODE varchar(30),
+ AGENCY_MARKET varchar(15),
+ AGENCY_CLASS varchar(15),
+ AGENCY_SALES_REGION varchar(15),
+ AGENCY_SALES_DISTRICT varchar(15),
+ AGENCY_COUNTRY varchar(3),
+ AGENCY_STATE varchar(3),
+ AGENCY_ZIP varchar(10),
+ etl_ld_dt timestamp,
+ etl_upd_dt timestamp
+) 
+STORED AS PARQUET  
+Location 's3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_agency_dim' ;

@@ -1,0 +1,19 @@
+drop table hive_schema_stg.Sw_Protected_Commission_Detail_Fact_tmp;
+CREATE EXTERNAL TABLE hive_schema_stg.Sw_Protected_Commission_Detail_Fact_tmp(
+  record_id int, 
+  res_id int, 
+  commission_type_skey int, 
+  commission_percent float64, 
+  commission_amount float64, 
+  commission_fare float64, 
+  commission_payout_date timestamp, 
+  is_manual_adjustment string, 
+  load_dt timestamp,
+   upd_dt timestamp,
+   snapshot_date date)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_nbx_core_sw_protected_commission_detail_fact/*']);
+  
+  
+  

@@ -1,0 +1,16 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_plan_forecast_value_dim(
+plan_forecast_value_id bigint,
+  plan_forecast_id int,
+week_index int,
+rec_start_dttm timestamp,
+rec_end_dttm timestamp,
+value DOUBLE PRECISION,
+load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash varchar(255), 
+  md5_hash varchar(255))
+STORED AS PARQUET
+LOCATION
+'s3://vv-staging-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_plan_forecast_value_dim'	
+
+CREATE OR REPLACE VIEW seaware.seaware_plan_forecast_value_dim AS SELECT * FROM hive_schema_stg.seaware_plan_forecast_value_dim with no schema binding;

@@ -1,0 +1,69 @@
+CREATE EXTERNAL TABLE hive_schema_stg.person_dim (
+	person_skey int8
+	,voyage_id VARCHAR(50)
+	,person_id VARCHAR(50)
+	,person_guid VARCHAR(50)
+	,person_charge_id VARCHAR(50)
+	,person_external_id VARCHAR(50)
+	,seaware_id VARCHAR(50)
+	,account_number VARCHAR(50)
+	,person_type VARCHAR(50)
+	,person_gender VARCHAR(50)
+	,person_title VARCHAR(50)
+	,person_first_name VARCHAR(50)
+	,person_middle_name VARCHAR(50)
+	,person_last_name VARCHAR(50)
+	,person_suffix VARCHAR(50)
+	,person_marital_status VARCHAR(50)
+	,person_primary_email VARCHAR(50)
+	,person_dob DATE
+	,person_age int4
+	,person_place_of_birth VARCHAR(50)
+	,person_country_of_birth VARCHAR(50)
+	,person_country_of_residence VARCHAR(50)
+	,person_nationality VARCHAR(50)
+	,voyage_skey int8
+	,booking_arrival_date TIMESTAMP
+	,booking_departure_date TIMESTAMP
+	,booking_reference VARCHAR(50)
+	,booking_cruise_number VARCHAR(50)
+	,cabin_number VARCHAR(50)
+	,mega_rockstar_flag boolean
+	,vip_flag boolean
+	,booking_arrival_status VARCHAR(50)
+	,booking_status VARCHAR(50)
+	,booking_embarkation_city VARCHAR(50)
+	,booking_debarkation_city VARCHAR(50)
+	,booking_id int4
+	,reservationguest_guid VARCHAR(50)
+	,reservation_guid VARCHAR(50)
+	,sailor_tribe VARCHAR(50)
+	,sailor_subtribe VARCHAR(50)
+	,bain_segmentation_predicted_label VARCHAR(50)
+	,estimated_household_income DOUBLE PRECISION
+	,contract_signed_version VARCHAR(50)
+	,voyage_well_accepted_version VARCHAR(50)
+	,pre_voyage_health_contract_version VARCHAR(50)
+	,person_booking_charge_id VARCHAR(50)
+	,person_pin_code VARCHAR(50)
+	,person_booking_ship_code VARCHAR(10)
+	,crew_manning_agent VARCHAR(100)
+	,crew_hire_date TIMESTAMP
+	,person_type_name VARCHAR(100)
+	,booking_vip_status VARCHAR(100)
+	,booking_vip_tier TEXT
+	,booking_manifest_type VARCHAR(1)
+	,emergency_contact_person_name varchar(150)
+    ,emergency_contact_person_relationship varchar(100)
+    ,emergency_contact_person_phone_number varchar(50)
+    ,emergency_contact_person_email varchar(150)
+	,load_dt TIMESTAMP
+	,upd_dt TIMESTAMP
+	,primaryhash VARCHAR(50)
+	,md5_hash VARCHAR(50)
+	) STORED AS PARQUET LOCATION 's3://vv-dev-emr-cluster/data/mart/hvtb_mart_dim_person'
+
+CREATE
+	OR REPLACE VIEW shipdw.person_dim AS
+SELECT *
+FROM hive_schema_stg.person_dim WITH no SCHEMA binding;

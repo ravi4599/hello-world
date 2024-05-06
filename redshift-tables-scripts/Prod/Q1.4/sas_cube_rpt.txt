@@ -1,0 +1,540 @@
+
+------------------------------------------------------------------
+
+
+CREATE External table hive_schema_stg.sas_cube_rpt
+(
+  invoice_item_type VARCHAR(256) 
+ , invoice_item_subtype VARCHAR(256) 
+ , booking_currency VARCHAR(256) 
+ , booking_currency_rate DOUBLE PRECISION 
+ , amount DOUBLE PRECISION 
+ , voyage_fare_amount_excl_discounts DOUBLE PRECISION 
+ , discount DOUBLE PRECISION 
+ , total_voyage_fare_amount_incl_discounts DOUBLE PRECISION 
+ , taxesandfees DOUBLE PRECISION 
+ , manual_adj DOUBLE PRECISION 
+ , insurance DOUBLE PRECISION 
+ , aon_insurace_payment DOUBLE PRECISION 
+ , voyage_commission_amt DOUBLE PRECISION 
+ , tax_commision_amt DOUBLE PRECISION 
+ , voyage_credit_card_fee DOUBLE PRECISION 
+ , insurance_credit_card_fee DOUBLE PRECISION 
+ , taxesandfees_credit_card_fee DOUBLE PRECISION 
+ , actual_gross_ticket_revenue DOUBLE PRECISION 
+ , actual_gross_other_revenue DOUBLE PRECISION 
+ , actual_gross_onboard_revenue DOUBLE PRECISION 
+ , actual_gross_total_revenue DOUBLE PRECISION 
+ , net_due DOUBLE PRECISION 
+ , amount_usd DOUBLE PRECISION 
+ , voyage_fare_amount_excl_discounts_usd DOUBLE PRECISION 
+ , discount_usd DOUBLE PRECISION 
+ , total_voyage_fare_amount_incl_discounts_usd DOUBLE PRECISION 
+ , taxesandfees_usd DOUBLE PRECISION 
+ , manual_adj_usd DOUBLE PRECISION 
+ , insurance_usd DOUBLE PRECISION 
+ , aon_insurace_payment_usd DOUBLE PRECISION 
+ , voyage_commission_amt_usd DOUBLE PRECISION 
+ , tax_commision_amt_usd DOUBLE PRECISION 
+ , voyage_credit_card_fee_usd DOUBLE PRECISION 
+ , insurance_credit_card_fee_usd DOUBLE PRECISION 
+ , taxesandfees_credit_card_fee_usd DOUBLE PRECISION 
+ , actual_gross_ticket_revenue_usd DOUBLE PRECISION 
+ , actual_gross_other_revenue_usd DOUBLE PRECISION 
+ , actual_gross_onboard_revenue_usd DOUBLE PRECISION 
+ , actual_gross_total_revenue_usd DOUBLE PRECISION 
+ , hotel_fare DOUBLE PRECISION 
+ , hotel_fare_usd DOUBLE PRECISION 
+ , hotel_credit_card_fee DOUBLE PRECISION 
+ , hotel_credit_card_fee_usd DOUBLE PRECISION 
+ , shorethings_fare DOUBLE PRECISION 
+ , shorethings_fare_usd DOUBLE PRECISION 
+ , pcds integer 
+ , actual_ticket_gpd DOUBLE PRECISION 
+ , actual_ticket_gpd_usd DOUBLE PRECISION 
+ , actual_onboard_gpd DOUBLE PRECISION 
+ , actual_onboard_gpd_usd DOUBLE PRECISION 
+ , actual_other_gpd DOUBLE PRECISION 
+ , actual_other_gpd_usd DOUBLE PRECISION 
+ , actual_total_gpd DOUBLE PRECISION 
+ , actual_total_gpd_usd DOUBLE PRECISION 
+ , apcds integer 
+ , total_sail_days BIGINT 
+ , load_factor DOUBLE PRECISION 
+ , price_area_id integer 
+ , price_area VARCHAR(256) 
+ , commission_currency_code VARCHAR(256) 
+ , commission_currency_rate DOUBLE PRECISION 
+ , commission_percent DOUBLE PRECISION 
+ , commission_amount DOUBLE PRECISION 
+ , commission_fare DOUBLE PRECISION 
+ , commission_payout_date timestamp 
+ , expected_payout_date timestamp 
+ , net_onboard_revenue integer 
+ , net_other_revenue integer 
+ , net_net_ticket_revenue integer 
+ , commission_type_id integer 
+ , commission_code VARCHAR(256) 
+ , commission_source VARCHAR(256) 
+ , is_cancelled_comm VARCHAR(256) 
+ , charge_id integer 
+ , charge_component_code VARCHAR(256) 
+ , charge_state VARCHAR(256) 
+ , action_type VARCHAR(256) 
+ , charge_explanation VARCHAR(256) 
+ , charge_change_area VARCHAR(256) 
+ , charge_action_timestamp timestamp 
+ , charge_is_added_manually VARCHAR(256) 
+ , charge_is_final VARCHAR(256) 
+ , charge_comments VARCHAR(256) 
+ , charge_src_record_id integer 
+ , charge_amount DOUBLE PRECISION 
+ , geo_analysis_source VARCHAR(256) 
+ , country VARCHAR(256) 
+ , state VARCHAR(256) 
+ , zip VARCHAR(256) 
+ , lat_sailor DOUBLE PRECISION 
+ , long_sailor DOUBLE PRECISION 
+ , lat_miami DOUBLE PRECISION 
+ , long_miami DOUBLE PRECISION 
+ , distance_miles DOUBLE PRECISION 
+ , distance_group DOUBLE PRECISION 
+ , msa VARCHAR(256) 
+ , mapped_msa VARCHAR(256) 
+ , msa_personal_income DOUBLE PRECISION 
+ , target_population_quantity DOUBLE PRECISION 
+ , total_population_quantity DOUBLE PRECISION 
+ , is_active_promotion VARCHAR(256) 
+ , is_excluded_promotion VARCHAR(256) 
+ , promo_mode VARCHAR(256) 
+ , promotion_id integer 
+ , promo_code VARCHAR(256) 
+ , promo_name VARCHAR(256) 
+ , promo_group VARCHAR(256) 
+ , res_id integer 
+ , src_res_id VARCHAR(256)  
+ , res_init_date timestamp 
+ , res_guest_count integer 
+ , res_mode VARCHAR(256) 
+ , res_cancellation_date timestamp 
+ , res_status VARCHAR(256) 
+ , res_operator VARCHAR(256) 
+ , res_type VARCHAR(256) 
+ , res_is_internal VARCHAR(256) 
+ , res_source_code VARCHAR(256) 
+ , res_effective_date timestamp 
+ , res_booking_source VARCHAR(256) 
+ , res_sales_channel VARCHAR(256) 
+ , res_sub_sales_channel VARCHAR(256) 
+ , res_sub_sub_sales_channel VARCHAR(256) 
+ , vip_status VARCHAR(256) 
+ , res_stage VARCHAR(256) 
+ , booking_source_erp VARCHAR(256) 
+ , res_last_modifiedby_id VARCHAR(256) 
+ , res_hotel_flag VARCHAR(256) 
+ , res_opted_fvc VARCHAR(256) 
+ , reservation_currency VARCHAR(256) 
+ , reservation_currency_rate DOUBLE PRECISION 
+ , opportunity_access_key VARCHAR(256) 
+ , opportunity_promo_code VARCHAR(256) 
+ , guest_id integer 
+ , src_guest_id VARCHAR(256)
+, guest_seqn DOUBLE PRECISION 
+ , guest_type VARCHAR(256) 
+ , client_id VARCHAR(256) 
+ , guest_age DOUBLE PRECISION 
+ , guest_age_category VARCHAR(256) 
+ , guest_gender VARCHAR(256) 
+ , guest_address_line1 VARCHAR(256) 
+ , guest_address_line2 VARCHAR(256) 
+ , guest_city VARCHAR(256) 
+ , guest_country VARCHAR(256) 
+ , guest_zip VARCHAR(256) 
+ , guest_state VARCHAR(256) 
+ , guest_citizenship VARCHAR(256) 
+ , guest_citizenship_name VARCHAR(256) 
+ , guest_last_name VARCHAR(256) 
+ , guest_first_name VARCHAR(256) 
+ , guest_sex VARCHAR(256) 
+ , guest_tier_level VARCHAR(256) 
+ , guest_birthday timestamp 
+ , guest_email VARCHAR(256) 
+ , guest_phone_intl_code DOUBLE PRECISION 
+ , guest_phone_number VARCHAR(256) 
+ , group_id integer 
+ , src_group_id VARCHAR(256) 
+ , group_init_date timestamp 
+ , group_status VARCHAR(256) 
+ , group_type VARCHAR(256) 
+ , group_name VARCHAR(256) 
+ , group_mode VARCHAR(256) 
+ , group_is_internal VARCHAR(256) 
+ , group_source_code VARCHAR(256) 
+ , group_office_code VARCHAR(256) 
+ , group_operator VARCHAR(256) 
+ , group_n_of_guests integer 
+ , group_cancellation_date timestamp 
+ , group_sales_channel VARCHAR(256) 
+ , group_sub_sales_channel VARCHAR(256) 
+ , group_sub_sub_sales_channel VARCHAR(256) 
+ , price_category VARCHAR(256) 
+ , price_category_rank integer 
+ , berth_category VARCHAR(256) 
+ , berth_category_rank integer 
+ , assigned_category VARCHAR(256) 
+ , assigned_category_rank integer 
+ , generic_category VARCHAR(256) 
+ , cabin_allocation_id integer 
+ , cabin_allocation_inv_result VARCHAR(256) 
+ , cabin_id integer 
+ , cabin_number VARCHAR(256) 
+ , cabin_ship VARCHAR(256) 
+ , cabin_deck_number integer 
+ , cabin_name VARCHAR(256) 
+ , cabin_rank integer 
+ , cabin_category VARCHAR(256) 
+ , cabin_category_desc VARCHAR(256) 
+ , cabin_category_rank integer 
+ , cabin_category_generic VARCHAR(256) 
+ , cabin_category_generic_rank integer 
+ , cabin_capacity integer 
+ , cabin_reserve_type VARCHAR(256) 
+ , cabin_reserve_comments VARCHAR(256) 
+ , cabin_is_reserve_allows_booking VARCHAR(256) 
+ , cabin_is_reserve_restricted VARCHAR(256) 
+ , is_sail_reserve VARCHAR(256) 
+ , cabin_reserve_type_comments VARCHAR(256) 
+ , addon_quantity BIGINT 
+ , addon_id integer 
+ , res_addon_code VARCHAR(256) 
+ , addon_name VARCHAR(256) 
+ , addon_category VARCHAR(256) 
+ , addon_type VARCHAR(256) 
+ , src_coupon_id integer 
+ , coupon_issue_date timestamp 
+ , coupon_valid_from timestamp 
+ , coupon_valid_to timestamp 
+ , coupon_effective_from timestamp 
+ , coupon_effective_to timestamp 
+ , coupon_category VARCHAR(256) 
+ , coupon_class_coupon_dim VARCHAR(256) 
+ , coupon_class_code VARCHAR(256) 
+ , coupon_class_comments VARCHAR(256) 
+ , apply_as_payment_coupon_dim VARCHAR(256) 
+ , apply_as_discount_coupon_dim VARCHAR(256) 
+ , entity_type_coupon_dim VARCHAR(256) 
+ , entity_id_coupon_dim integer 
+ , coupon_is_used VARCHAR(256) 
+ , coupon_is_active VARCHAR(256) 
+ , coupon_currency_code VARCHAR(256) 
+ , coupon_amount DOUBLE PRECISION 
+ , coupon_amount_left DOUBLE PRECISION 
+ , coupon_charge_code VARCHAR(256) 
+ , coupon_reason_code VARCHAR(256) 
+ , coupon_comments VARCHAR(256) 
+ , sail_id integer 
+ , src_sail_id integer 
+ , sail_days integer 
+ , sail_route_code VARCHAR(256) 
+ , sail_port_from VARCHAR(256) 
+ , sail_port_to VARCHAR(256) 
+ , sail_geog_area_code VARCHAR(256) 
+ , sail_date_from timestamp 
+ , sail_date_to timestamp 
+ , ship_id integer 
+ , ship VARCHAR(256) 
+ , ship_name VARCHAR(256) 
+ , package_id integer 
+ , src_package_id integer 
+ , package_class VARCHAR(256) 
+ , product_type VARCHAR(256) 
+ , package_type VARCHAR(256) 
+ , package_code VARCHAR(256) 
+ , package_name VARCHAR(256) 
+ , shorex_mode VARCHAR(256) 
+ , vacation_date timestamp 
+ , shorex_timing VARCHAR(256) 
+ , geog_area_code VARCHAR(256) 
+ , season_code VARCHAR(256) 
+ , pkg_is_active VARCHAR(256) 
+ , product_name VARCHAR(256) 
+ , seaware_ad_agency_id integer 
+ , seaware_ad_src_agency_id VARCHAR(256) 
+ , seaware_ad_agency_name VARCHAR(256) 
+ , seaware_ad_agency_code VARCHAR(256) 
+ , seaware_ad_agency_sales_district VARCHAR(256) 
+ , seaware_ad_agency_country VARCHAR(256) 
+ , seaware_ad_agency_state VARCHAR(256) 
+ , seaware_ad_agency_zip VARCHAR(256) 
+ , seaware_crm_agency_id VARCHAR(256) 
+ , seaware_agency_id VARCHAR(256) 
+ , seaware_crm_agency_name VARCHAR(256) 
+ , seaware_agency_lastname VARCHAR(256) 
+ , seaware_agency_firstname VARCHAR(256) 
+ , seaware_agecny_billingcity VARCHAR(256) 
+ , seaware_agency_billingcountry VARCHAR(256) 
+ , seaware_agency_billingpostalcode VARCHAR(256) 
+ , seaware_agency_billingstate VARCHAR(256) 
+ , seaware_agency_billingstreet VARCHAR(256) 
+ , seaware_agecny_createddate timestamp 
+ , seaware_agecny_status VARCHAR(256) 
+ , seaware_agency_territorynametext VARCHAR(256) 
+ , seaware_agecny_ownerid VARCHAR(256) 
+ , seaware_agency_primary_affiliation VARCHAR(256) 
+ , seaware_agency_parentid VARCHAR(256) 
+ , seaware_agency_classification VARCHAR(256) 
+ , seaware_agency_sub_type VARCHAR(256) 
+ , seaware_agency_is_touroperator boolean 
+ , seaware_agency_client_id VARCHAR(256) 
+ , seaware_agency_createdbyid VARCHAR(256) 
+ , seaware_agency_lastmodifiedbyid VARCHAR(256) 
+ , seaware_agency_personhasoptedoutofemail boolean 
+ , seaware_agency_hand_raiser boolean 
+ , seaware_agency_vip_tier VARCHAR(256) 
+ , seaware_agency_webuser boolean 
+ , seaware_agency_currency_type VARCHAR(256) 
+ , crm_agency_id integer 
+ , crm_seaware_agency_id VARCHAR(256) 
+ , crm_seaware_parent_agency_id  VARCHAR(256)  
+ , crm_seaware_parent_agency_name VARCHAR(256) 
+ , crm_seaware_parent_agency_firstname VARCHAR(256) 
+ , crm_seaware_parent_agency_lastname VARCHAR(256) 
+ , crm_agency_name VARCHAR(256) 
+ , crm_agency_lastname VARCHAR(256) 
+ , crm_agency_firstname VARCHAR(256) 
+ , crm_agecny_billingcity VARCHAR(256) 
+ , crm_agency_billingcountry VARCHAR(256) 
+ , crm_agency_billingpostalcode VARCHAR(256) 
+ , crm_agency_billingstate VARCHAR(256) 
+ , crm_agency_billingstreet VARCHAR(256) 
+ , crm_agecny_createddate timestamp 
+ , crm_agecny_status VARCHAR(256) 
+ , crm_agency_territorynametext VARCHAR(256) 
+ , crm_agecny_ownerid VARCHAR(256) 
+ , crm_agency_primary_affiliation VARCHAR(256) 
+ , crm_agency_parentid VARCHAR(256) 
+ , crm_agency_classification VARCHAR(256) 
+ , crm_agency_sub_type VARCHAR(256) 
+ , crm_agency_is_touroperator boolean 
+ , crm_agency_client_id VARCHAR(256) 
+ , crm_agency_createdbyid VARCHAR(256) 
+ , crm_agency_lastmodifiedbyid VARCHAR(256) 
+ , crm_agency_personhasoptedoutofemail boolean 
+ , crm_agency_hand_raiser boolean 
+ , crm_agency_vip_tier VARCHAR(256) 
+ , crm_agency_webuser boolean 
+ , crm_agency_currency_type VARCHAR(256) 
+ , seaware_agent_id VARCHAR(256) 
+ , seaware_src_agent_id VARCHAR(256) 
+ , seaware_agent_name VARCHAR(256) 
+ , seaware_agent_lastname VARCHAR(256) 
+ , seaware_agent_firstname VARCHAR(256) 
+ , seaware_agent_mailingcity VARCHAR(256) 
+ , seaware_agent_mailingcountry VARCHAR(256) 
+ , seaware_agent_mailingpostalcode VARCHAR(256) 
+ , seaware_agent_mailingstate VARCHAR(256) 
+ , seaware_agent_mailingstreet VARCHAR(256) 
+ , seaware_agent_seaware_agencyid VARCHAR(256) 
+ , seaware_agent_createddate timestamp 
+ , seaware_agent_status VARCHAR(256) 
+ , seaware_agent_type VARCHAR(256) 
+ , seaware_agent_email VARCHAR(256) 
+ , seaware_agent_ownerid VARCHAR(256) 
+ , seaware_agent_role VARCHAR(256) 
+ , seaware_agent_fmdc_approver VARCHAR(256) 
+ , seaware_agent_preferred_phone_number VARCHAR(256) 
+ , seaware_contact_owner_name VARCHAR(256) 
+ , crm_agent_id integer 
+ , crm_seaware_src_agent_id VARCHAR(256) 
+ , crm_agent_name VARCHAR(256) 
+ , crm_agent_lastname VARCHAR(256) 
+ , crm_agent_firstname VARCHAR(256) 
+ , crm_agent_mailingcity VARCHAR(256) 
+ , crm_agent_mailingcountry VARCHAR(256) 
+ , crm_agent_mailingpostalcode VARCHAR(256) 
+ , crm_agent_mailingstate VARCHAR(256) 
+ , crm_agent_mailingstreet VARCHAR(256) 
+ , crm_agent_seaware_agencyid VARCHAR(256) 
+ , crm_agent_createddate timestamp 
+ , crm_agent_status VARCHAR(256) 
+ , crm_agent_type VARCHAR(256) 
+ , crm_agent_email VARCHAR(256) 
+ , crm_agent_ownerid VARCHAR(256) 
+ , crm_agent_role VARCHAR(256) 
+ , crm_agent_fmdc_approver VARCHAR(256) 
+ , crm_agent_preferred_phone_number VARCHAR(256) 
+ , crm_contact_owner_name VARCHAR(256) 
+ , hotel_res_req_id_seaware_hotel_res_req_dim VARCHAR(256) 
+ , request_type_seaware_hotel_res_req_dim VARCHAR(256) 
+ , start_date_seaware_hotel_res_req_dim timestamp 
+ , end_date_seaware_hotel_res_req_dim timestamp 
+ , city_code_seaware_hotel_res_req_dim VARCHAR(256) 
+ , hotel_id_seaware_hotel_res_req_dim integer 
+ , hotel_category_seaware_hotel_res_req_dim VARCHAR(256) 
+ , room_seq_number_seaware_hotel_res_req_dim integer 
+ , room_category_seaware_hotel_res_req_dim VARCHAR(256) 
+ , room_type_seaware_hotel_res_req_dim VARCHAR(256) 
+ , occupancy_seaware_hotel_res_req_dim integer 
+ , hotel_space_type_seaware_hotel_res_req_dim VARCHAR(256) 
+ , allocation_id_seaware_hotel_res_req_dim integer 
+ , inv_result_seaware_hotel_res_req_dim VARCHAR(256) 
+ , is_land_component_seaware_hotel_res_req_dim VARCHAR(256) 
+ , hotel_bed_type_seaware_hotel_res_req_dim VARCHAR(256) 
+ , hotel_code_seaware_hotel_lkp VARCHAR(256) 
+ , hotel_name_seaware_hotel_lkp VARCHAR(256) 
+ , hotel_type_seaware_hotel_lkp VARCHAR(256) 
+ , is_active_seaware_hotel_lkp VARCHAR(256) 
+ , hotel_rating_seaware_hotel_lkp integer 
+ , address_type_seaware_hotel_lkp VARCHAR(256) 
+ , address_line1_seaware_hotel_lkp VARCHAR(256) 
+ , address_line2_seaware_hotel_lkp VARCHAR(256) 
+ , address_line3_seaware_hotel_lkp VARCHAR(256) 
+ , address_line4_seaware_hotel_lkp VARCHAR(256) 
+ , address_city_seaware_hotel_lkp VARCHAR(256) 
+ , state_code_seaware_hotel_lkp VARCHAR(256) 
+ , zip_seaware_hotel_lkp VARCHAR(256) 
+ , country_code_seaware_hotel_lkp VARCHAR(256) 
+ , ship_room_req_id_seaware_ship_room_request_dim integer 
+ , src_request_id_seaware_ship_room_request_dim integer 
+ , effective_date_seaware_ship_room_request_dim timestamp 
+ , inventory_request_type VARCHAR(256) 
+ , usage_start timestamp 
+ , usage_duration integer 
+ , party_size_seaware_ship_room_request_dim integer 
+ , quantity integer 
+ , allocation_id_seaware_ship_room_request_dim integer 
+ , ship_room_id integer 
+ , src_ship_room_id integer 
+ , facility_id_seaware_ship_room_dim integer 
+ , room_number integer 
+ , room_name VARCHAR(256) 
+ , room_size integer 
+ , max_occupancy_seaware_ship_room_dim integer 
+ , ship_code_seaware_ship_facility_lkp VARCHAR(256) 
+ , facility_type_seaware_ship_facility_lkp VARCHAR(256) 
+ , facility_code_seaware_ship_facility_lkp VARCHAR(256) 
+ , facility_name_seaware_ship_facility_lkp VARCHAR(256) 
+ , deck_number_seaware_ship_facility_lkp integer 
+ , facility_size_seaware_ship_facility_lkp integer 
+ , assign_mode_seaware_ship_facility_lkp VARCHAR(256) 
+ , facility_rank_seaware_ship_facility_lkp integer 
+ , facility_subtype_seaware_ship_facility_lkp VARCHAR(256) 
+ , guest_flight_id BIGINT 
+ , flight_ticket_no VARCHAR(256) 
+ , flight_is_booking_independent VARCHAR(256) 
+ , flight_booking_status VARCHAR(256) 
+ , flight_fare_kind VARCHAR(256) 
+ , flight_seaware_fare_base DOUBLE PRECISION 
+ , flight_seaware_total_tax DOUBLE PRECISION 
+ , flight_amadeus_fare_base DOUBLE PRECISION 
+ , flight_amadeus_total_tax DOUBLE PRECISION 
+ , flight_is_paid VARCHAR(256) 
+ , flight_segment_kind VARCHAR(256) 
+ , flight_segment_seqn integer 
+ , leg1_flight_no VARCHAR(256) 
+ , leg1_airline VARCHAR(256) 
+ , leg1_departure_airport_name VARCHAR(256) 
+ , leg1_flight_origin VARCHAR(256) 
+ , leg1_flight_departure_date date 
+ , leg1_flight_departure_time timestamp 
+ , leg1_arrival_airport_name VARCHAR(256) 
+ , leg1_flight_destination VARCHAR(256) 
+ , leg1_flight_arrival_date date 
+ , leg1_flight_arrival_time timestamp 
+ , leg1_flight_operated_by VARCHAR(256) 
+ , leg1_airline_rloc VARCHAR(256) 
+ , leg2_flight_no VARCHAR(256) 
+ , leg2_airline VARCHAR(256) 
+ , leg2_departure_airport_name VARCHAR(256) 
+ , leg2_flight_origin VARCHAR(256) 
+ , leg2_flight_departure_date date 
+ , leg2_flight_departure_time timestamp 
+ , leg2_arrival_airport_name VARCHAR(256) 
+ , leg2_flight_destination VARCHAR(256) 
+ , leg2_flight_arrival_date date 
+ , leg2_flight_arrival_time timestamp 
+ , leg2_flight_operated_by VARCHAR(256) 
+ , leg2_airline_rloc VARCHAR(256) 
+ , leg3_flight_no VARCHAR(256) 
+ , leg3_airline VARCHAR(256) 
+ , leg3_departure_airport_name VARCHAR(256) 
+ , leg3_flight_origin VARCHAR(256) 
+ , leg3_flight_departure_date date 
+ , leg3_flight_departure_time timestamp 
+ , leg3_arrival_airport_name VARCHAR(256) 
+ , leg3_flight_destination VARCHAR(256) 
+ , leg3_flight_arrival_date date 
+ , leg3_flight_arrival_time timestamp 
+ , leg3_flight_operated_by VARCHAR(256) 
+ , leg3_airline_rloc VARCHAR(256) 
+ , leg4_flight_no VARCHAR(256) 
+ , leg4_airline VARCHAR(256) 
+ , leg4_departure_airport_name VARCHAR(256) 
+ , leg4_flight_origin VARCHAR(256) 
+ , leg4_flight_departure_date date 
+ , leg4_flight_departure_time timestamp 
+ , leg4_arrival_airport_name VARCHAR(256) 
+ , leg4_flight_destination VARCHAR(256) 
+ , leg4_flight_arrival_date date 
+ , leg4_flight_arrival_time timestamp 
+ , leg4_flight_operated_by VARCHAR(256) 
+ , leg4_airline_rloc VARCHAR(256) 
+ , coupon_class VARCHAR(256) 
+ , coupon_class_desc VARCHAR(256) 
+ , coupon_gen_per_client VARCHAR(256) 
+ , apply_as_payment VARCHAR(256) 
+ , apply_per_client VARCHAR(256) 
+ , cancel_with_res VARCHAR(256) 
+ , apply_as_discount VARCHAR(256) 
+ , pkg_itinerary_package_type VARCHAR(256) 
+ , pkg_itinerary_location_type_from VARCHAR(256) 
+ , pkg_itinerary_location_type_to VARCHAR(256) 
+ , pkg_itinerary_location_code_from VARCHAR(256) 
+ , pkg_itinerary_location_code_to VARCHAR(256) 
+ , pkg_itinerary_component_type VARCHAR(256) 
+ , pkg_itinerary_component_code VARCHAR(256) 
+ , pkg_itinerary_can_be_excluded VARCHAR(256) 
+ , pkg_itinerary_is_optional VARCHAR(256) 
+ , pkg_itinerary_package_links_inclusive VARCHAR(256) 
+ , pkg_itinerary_description VARCHAR(256) 
+ , pkg_itinerary_seq_num integer 
+ , pkg_itinerary_city_from VARCHAR(256) 
+ , pkg_itinerary_city_to VARCHAR(256) 
+ , pkg_itinerary_option_group integer 
+ , vendor_link_date_from timestamp 
+ , vendor_link_date_to timestamp 
+ , vendor_id integer 
+ , vendor_name VARCHAR(256) 
+ , vendor_code VARCHAR(256) 
+ , vendor_name_typed VARCHAR(256) 
+ , vendor_contact VARCHAR(256) 
+ , vendor_is_active VARCHAR(256) 
+ , vendor_email VARCHAR(256) 
+ , package_type_id integer 
+ , pt_package_type VARCHAR(256) 
+ , land_days integer 
+ , pt_sail_days integer 
+ , tour_name VARCHAR(256) 
+ , pt_product_type VARCHAR(256) 
+ , land_days_post integer 
+ , is_land_only VARCHAR(256) 
+ , is_multi_sail VARCHAR(256) 
+ , is_shorex VARCHAR(256) 
+ , is_secondary VARCHAR(256) 
+ , pt_is_active VARCHAR(256) 
+ , pt_shorex_timing VARCHAR(256) 
+ , extra_seat_question VARCHAR(256) 
+ , pre_post_mode VARCHAR(256) 
+ , pt_package_class VARCHAR(256) 
+ , sail_segments VARCHAR(256) 
+ , pt_capacity integer 
+ , allow_segments VARCHAR(256) 
+ , package_type_name VARCHAR(256) 
+ , credit_card_fees DOUBLE PRECISION 
+ , credit_card_fees_usd DOUBLE PRECISION 
+ , credit_card_fees_other_revenue_items DOUBLE PRECISION 
+ , credit_card_fees_other_revenue_items_usd DOUBLE PRECISION 
+ , etl_ld_dt timestamp 
+)
+STORED AS PARQUET LOCATION 's3://vv-prod-emr-cluster/data/core/sas/sas_feeds_cube_rpt/';
+

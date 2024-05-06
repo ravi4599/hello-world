@@ -1,0 +1,189 @@
+•	MSH-18144 Cases - Ad-hoc Reporting & KPIs (Dimension modification) Salesforce - Case – Salesforce
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jCRMCaseDim',’hvtb_nbx_core_sw_case_dim’, 'hive', 'hvtb_nbx_core_sw_case_dim ', 'hive', 'daily', now(), '', '');
+
+•	MSH-17891 - Ingest Seaware Plan, Forecast, & Target Data into Data Warehouse for Ad-hoc Reporting
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jSPFForecastVersionLkp',’hvtb_nbx_core_spf_forecastversion_lkp’, 'hive', ' ', 'hive', 'SPF_daily', now(), '', '');
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jSPFForecastMetricLkp',’hvtb_nbx_core_sw_forecastmetric_lkp’, 'hive', ' ', 'hive', 'SPF_daily', now(), '', '');
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jSPFPlanForecastValueDim',’hvtb_nbx_core_spf_plan_forecast_header_dim’, 'hive', '', 'hive', 'SPF_daily', now(), '', '');
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jSPFPlanForecastHeaderDim',’hvtb_nbx_core_spf_plan_forecast_header_dim’, 'hive', hvtb_nbx_landing_spf_revenue_target_header ', 'hive', 'SPF_daily', now(), '', '');
+
+
+•	MSH-19587 - FMDC Splashboard 2.0 - Display Splashboard using the new iFrame(MSH-23649 -Role Heirarchy (Splashboard) - Ingestion/Dimension)
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jCRMUserHierarchyRel',’CRM_USERROLE_HIERARCHY_REL’, '', 'hvtb_nbx_core_CRM_USERROLE_HIERARCHY_REL ', '', 'daily', now(), '', '');
+
+•	MSH-19586 - FMDC Splashboard 2.0 - Understand the current logic and process for displaying Splashboard
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jSBKpiTbl',’’, 'redshift', ' ', 'redshift', 'SW_DWH_daily', now(), '', '');
+
+•	Opportunity(MSH-18006( Ingestion Modification - Opportunity table (Pre-Voyage))
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jSFStgOpportunity',’hvtb_nbx_core_crm_opportunity ’, 'hive', 'Opportunity ', 'salesforce object', 'daily', now(), '', '');
+
+•	PaidMedia(MSH-18358  -OutBrain,Facebbok,Amazon)
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jPMDWHLoader_amazon', 'hvtb_nbx_core_paidmedia_amazon', 'Hive', 'Amazon.csv', 'CSV file', 'paidmedia_monthly', now(), '', '');
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jPMDWHLoader_facebook', 'hvtb_nbx_core_paidmedia_facebook', 'Hive', 'Facebook.csv', 'CSV file', 'paidmedia_monthly', now(), '', '');
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jPMDWHLoader_outbrain', 'hvtb_nbx_core_paidmedia_outbrain', 'Hive', 'Outbrain.csv', 'CSV file', 'paidmedia_monthly', now(), '', '');
+
+•	MSH-6053  - Ingest Google Analytics data into Data Warehouse for Ad-hoc Reporting
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(488, 'jGA360_hit_dim', NULL, NULL, NULL, NULL, 'GA360_runtime', '2019-12-04 19:52:00.000');
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(468, 'jGA360_Session_Dim', NULL, NULL, NULL, NULL, 'GA360_runtime', '2019-11-19 17:00:43.000');
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(467, 'jGA360_Extract', NULL, NULL, NULL, NULL, 'GA360_runtime', '2019-11-19 17:00:39.000');
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(470, 'jGA360_Session_fact', NULL, NULL, NULL, NULL, 'GA360_runtime', '2019-11-19 17:00:49.000');
+
+•	Commission (MSH-23602): 
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(482, 'jSWRPLCommissionType_Lkp', 'hvtb_nbx_core_swrpl_commission_type_lkp', 'Hive', 'hvtb_nbx_landing_sw_rpl_group_commission_detail', 'Hive', 'SPF_daily', '2019-12-04 18:48:25.000');
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(483, 'jSWRPLCommissionFact', 'hvtb_nbx_core_sw_commission_fact', 'Hive', 'hvtb_nbx_landing_sw_rpl_res_commission_detail', 'Hive', 'SPF_daily', '2019-12-04 18:48:34.000');
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(484, 'jSWRPLGrpCommissionFact', 'hvtb_nbx_core_sw_group_commission_fact', 'Hive', 'landing_sw_rpl_res_group_commission_detail', 'Hive', 'SPF_daily', '2019-12-04 18:48:42.000');
+
+•	EmailDim: 
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jCRMEmailDim',’hvtb_nbx_core_crm_emailresponses_dim’, 'hive', ' hvtb_nbx_core_crm_emailresponses
+', 'hive', 'daily_email', now(), '', '');
+
+•	Planforecast
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jSWPlanForecastActuals', '', '', '', '', 'SPF_daily', now(), '', '');
+
+•	Priority 0 Spa Services Metrics
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(452, 'jSailorReporting_Voyage_Parse', '', '', '', '', 'SailorReport_runtime', '2019-12-16 16:14:34.000', NULL, NULL);
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(455, 'jSailorReporting_Itinerary_Parse', '', '', '', '', 'SailorReport_runtime', '2019-12-16 16:20:32.000', NULL, NULL);
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(456, 'jSailorReporting_Vouage_guestParser', '', '', '', '', 'SailorReport_runtime', '2019-12-16 18:37:50.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(457, 'jSailorReporting_Vouage_POSParser', '', '', '', '', 'SailorReport_runtime', '2019-12-16 18:38:10.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(458, 'jSailorReporting_Vouage_SalesParser', '', '', '', '', 'SailorReport_runtime', '2019-12-16 18:38:26.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(459, 'Jsailorreport_EnablerFrameworkcruise', '', '', '', '', 'SailorReport_runtime', '2019-12-16 19:12:21.000', NULL, NULL);
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(460, 'Jsailorreport_EnablerFrameworkiti', '', '', '', '', 'SailorReport_runtime', '2019-12-16 19:12:43.000', NULL, NULL);
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(461, 'Jsailorreport_EnablerFrameworkguest', '', '', '', '', 'SailorReport_runtime', '2019-12-16 19:12:56.000', NULL, NULL);
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(462, 'Jsailorreport_EnablerFrameworkitems', '', '', '', '', 'SailorReport_runtime', '2019-12-16 19:13:14.000', NULL, NULL);
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(463, 'Jsailorreport_EnablerFrameworksales', '', '', '', '', 'SailorReport_runtime', '2019-12-16 19:13:30.000', NULL, NULL);
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(465, 'jSailorReporting_Item_Dim', '', '', '', '', 'SailorReport_daily', '2019-12-17 12:46:11.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(466, 'jSailorReporting_Person_Dim', '', '', '', '', 'SailorReport_daily', '2019-12-17 12:47:01.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(467, 'jSailorReporting_Voyage_Dim', '', '', '', '', 'SailorReport_daily', '2019-12-17 12:47:38.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(468, 'jSailorReporting_Itinerary_Dim', '', '', '', '', 'SailorReport_daily', '2019-12-17 12:48:04.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(469, 'jSailorReporting_Outlet_Dim', '', '', '', '', 'SailorReport_daily', '2019-12-17 12:48:28.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(470, 'jSailorReporting_Voyage_Revenue_Fact', '', '', '', '', 'SailorReport_daily', '2019-12-17 14:26:05.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(471, 'jSailorReportMaster', '', '', '', '', 'SailorReport_daily', '2019-12-17 14:49:53.000', '', '');
+
+
+•             Ingest Salesforce FirstMates.com Login Data into Data Warehouse for Ad-hoc Reporting Frist Mate Login
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(98, 'jSFStgUser', 'hvtb_nbx_core_crm_user', 'Hive', 'User', 'Salesforce Object', 'daily', '2018-10-08 13:34:19.000');
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(426, 'jSFStgLoginHistory', '', '', '', '', 'daily', '2019-08-27 19:44:44.000');
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(428, 'jSFStgNetwork', '', '', '', '', 'daily', '2019-08-27 19:44:50.000');
+
+
+•             MSH-18148 Ingest Salesforce Case Feedback Data into Data Warehouse for Ad-hoc Reporting - Case Feedback
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(436, 'jSFStgSurveyResponses', '', '', '', '', 'daily', '2019-09-24 18:52:30.000');
+
+
+•             MSH-18844 Ingest SeaQ Data into Data Warehouse for Ad-hoc Reporting - SeaQ (Ingress Postgress)
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(439, 'jSeaQScores', '', '', '', '', 'SeaQ_Daily', '2019-09-24 18:53:34.000');
+
+
+
+
+
+
+
+
+

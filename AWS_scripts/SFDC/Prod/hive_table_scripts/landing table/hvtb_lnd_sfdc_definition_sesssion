@@ -1,0 +1,31 @@
+spark.sql("""CREATE EXTERNAL TABLE vv_db.hvtb_lnd_sfdc_definition_sesssion(
+  ChannelType string,
+  ConversationDefinitionId string,
+  CreatedById string,
+  CreatedDate timestamp,
+  HasErrorLogs boolean,
+  Id string,
+  IntegrationName string,
+  IntegrationType string,
+  IsDeleted boolean,
+  Language string,
+  LastModifiedById string,
+  LastModifiedDate timestamp,
+  SessionDuration int,
+  SessionEndType string,
+  SessionStartTime timestamp,
+  SessionStatus string,
+  SessionTransferResult string,
+  SessionTransferTargetType string,
+  SessionTransferType string,
+  SystemModstamp timestamp,
+  batchtime timestamp,
+  part_date date)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/landing/crm/hvtb_lnd_sfdc_definition_sesssion'""")

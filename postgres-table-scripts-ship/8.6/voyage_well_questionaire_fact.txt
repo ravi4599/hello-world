@@ -1,0 +1,11 @@
+create table hive_schema_stg.voyage_well_questionaire_fact(
+voyage_id text NULL,
+ship_code text NULL,
+voyage_skey int8 NULL,
+person_skey int8 NULL,
+voyage_well_question_skey int8 NULL,
+voyage_well_answer text, 
+load_dt timestamp NOT NULL,
+upd_dt timestamp NOT NULL,
+part_dt date NOT NULL
+)

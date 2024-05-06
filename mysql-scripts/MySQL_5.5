@@ -1,0 +1,28 @@
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(479, 'jSailorReporting_Folio_Item_Dim', '', '', '', '', 'SailorReport_daily', '2019-12-26 12:01:52.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(481, 'jSailorReporting_Sale_Detail_Dim_folio', '', '', '', '', 'SailorReport_daily', '2019-12-26 12:03:52.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(480, 'jSailorReporting_Sale_Detail_Dim_pos', '', '', '', '', 'SailorReport_daily', '2019-12-26 12:02:49.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(484, 'jSailorReporting_Voyage_RevenFactFolio', '', '', '', '', 'SailorReport_daily', '2019-12-26 12:35:57.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(482, 'jSailorReporting_Apollo_Parse', '', '', '', '', 'SailorReport_runtime', '2019-12-26 12:06:57.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(483, 'jSailorReporting_PersonAccntDetail', '', '', '', '', 'SailorReport_runtime', '2019-12-26 12:34:25.000', '', '');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(466, 'jSailorReporting_Person_Dim', '', '', '', '', 'SailorReport_daily', '2019-12-17 12:47:01.000', '', ''); 
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jSWstgRPL_PACKAGE_TYPE','hvtb_nbx_landing_sw_rpl_package_type','Hive','PACKAGE_TYPE','Postgres','SPF_daily',now());
+
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jSWstgRPL_PACKAGE_DEFINITION','hvtb_nbx_landing_sw_rpl_package_definition','Hive','PACKAGE_DEFINITION','Postgres','SPF_daily',now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSWCommissionFact_rpt', 'commission_fact_rpt', 'Redshift', 'seaware_commission_fact', 'Redshift', 'SPF_daily', now());

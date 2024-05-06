@@ -1,0 +1,19 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_mart_lkp_partner_share_lkup`(
+  `partner_share_skey` bigint, 
+  `revenue_type` string, 
+  `item_plu_group_num` string, 
+  `partner_share_pct` string, 
+  `vv_share_pct` string, 
+  `share_type` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n ', 
+  'serialization.format'='') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-staging-emr-cluster/data/PartnerShareLkup'

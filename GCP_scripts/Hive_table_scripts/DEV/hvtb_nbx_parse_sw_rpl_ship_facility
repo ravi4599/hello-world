@@ -1,0 +1,30 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_parse_sw_rpl_ship_facility`(
+  `facility_id` int, 
+  `ship_code` string, 
+  `facility_type` string, 
+  `facility_code` string, 
+  `facility_name` string, 
+  `deck_number` int, 
+  `facility_size` int, 
+  `max_occupancy` int, 
+  `image_id` int, 
+  `eff_date_from` timestamp, 
+  `eff_date_to` timestamp, 
+  `comments` string, 
+  `assign_mode` string, 
+  `facility_rank` int, 
+  `facility_subtype` string, 
+  `op` string, 
+  `ts_ms` timestamp, 
+  `voyageid` string, 
+  `batchtime` timestamp)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_ship_facility';

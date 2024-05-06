@@ -1,0 +1,11 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_group_dim(
+`group_id` BIGINT, `rec_start_dttm` TIMESTAMP, `rec_end_dttm` TIMESTAMP, `src_group_id` INT, `group_init_date` TIMESTAMP, `group_status` STRING, `group_type` STRING, `group_name` STRING, `group_mode` STRING, `is_internal` STRING, `source_code` STRING, `office_code` STRING, `operator` STRING, `n_of_guests` INT, `cancellation_date` TIMESTAMP,comments string,agency_id int64,agent_id int64,sail_date_from timestamp,sail_date_to timestamp,ship_id int64,is_active boolean,is_valid boolean,currency_code string,sec_agency_id int64,is_charter boolean,currency_rate float64,first_full_payment_processed timestamp,sec_agent_id int64,client_id int64,package_id int64, `etl_ld_status` STRING, `load_dt` TIMESTAMP, `upd_dt` TIMESTAMP, `primaryhash` STRING, `md5_hash` STRING, `scd_hash` STRING)
+OPTIONS (format = 'PARQUET',uris = ['gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_group_dim/*']
+);
+
+
+CREATE OR REPLACE VIEW seaware.seaware_group_dim AS SELECT * FROM hive_schema_stg.seaware_group_dim;
+  
+  CREATE EXTERNAL TABLE hive_schema_stg.seaware_group_dim_tmp(`group_id` BIGINT, `rec_start_dttm` TIMESTAMP, `rec_end_dttm` TIMESTAMP, `src_group_id` INT, `group_init_date` TIMESTAMP, `group_status` STRING, `group_type` STRING, `group_name` STRING, `group_mode` STRING, `is_internal` STRING, `source_code` STRING, `office_code` STRING, `operator` STRING, `n_of_guests` INT, `cancellation_date` TIMESTAMP,comments string,agency_id int64,agent_id int64,sail_date_from timestamp,sail_date_to timestamp,ship_id int64,is_active boolean,is_valid boolean,currency_code string,sec_agency_id int64,is_charter boolean,currency_rate float64,first_full_payment_processed timestamp,sec_agent_id int64,client_id int64,package_id int64, `etl_ld_status` STRING, `load_dt` TIMESTAMP, `upd_dt` TIMESTAMP, `primaryhash` STRING, `md5_hash` STRING, `scd_hash` STRING)
+OPTIONS (format = 'PARQUET',uris = ['gs://vv-prod-nbx-cluster/data/temp/hvtb_nbx_core_sw_group_dim/*']
+);

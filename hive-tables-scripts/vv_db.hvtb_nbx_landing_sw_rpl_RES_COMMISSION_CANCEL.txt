@@ -1,0 +1,28 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_landing_sw_rpl_RES_COMMISSION_CANCEL (
+	RES_COMMISS_DETAIL_ID integer ,
+	RES_PACKAGE_ID integer ,
+	GUEST_ID integer ,
+	RES_ID integer ,
+	COMMISS_SOURCE varchar(50) ,
+	COMMISS_CODE string,
+	percentage double,
+	AMOUNT double ,
+	INVOICE_ITEM_TYPE varchar(15) ,
+	COMMISS_FARE double ,
+	IS_MANUAL_ADJUSTMENT varchar(1) ,
+	RES_PRODUCT_ID integer ,
+	INVOICE_HDR_ID double ,
+	CLIENT_ID integer ,
+	GUEST_SEQN integer ,
+	AMOUNT_IN_HDR_CURR double ,
+	AGENCY_ID integer ,
+	PAYOUT_DATE timestamp ,
+	GL_PROTOTYPE_ID integer,
+  load_data_timestamp timestamp
+ )
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "s3://vv-dev-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_res_commission_cancel"
+;

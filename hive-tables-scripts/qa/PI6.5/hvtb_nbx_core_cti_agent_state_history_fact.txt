@@ -1,0 +1,23 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_cti_agent_state_history_fact`(	
+  `cti_agent_skey` bigint, 	
+  `agent_state_index` bigint, 	
+  `agent_session_id` bigint, 	
+  `agent_state_name` string, 	
+  `state_start_timestamp` timestamp, 	
+  `cti_skill_skey` bigint, 	
+  `from_address` string, 	
+  `to_address` string, 	
+  `out_state_description` string, 	
+  `duration_in_seconds` int, 	
+  `etl_load_dt` timestamp, 	
+  `batch_time` timestamp)	
+PARTITIONED BY ( 	
+  `part_date` date)	
+ROW FORMAT SERDE 	
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 	
+STORED AS INPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 	
+OUTPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'	
+LOCATION	
+  's3://vv-qa-emr-cluster/data/core/seaware/hvtb_nbx_core_cti_agent_state_history_fact'	

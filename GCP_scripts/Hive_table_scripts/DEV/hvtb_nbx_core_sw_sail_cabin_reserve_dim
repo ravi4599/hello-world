@@ -1,0 +1,18 @@
+spark.sql("""CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_sail_cabin_reserve_dim(
+  sail_cabin_reserve_id bigint, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  cabin_number string, 
+  src_sail_id int, 
+  reserve_type string, 
+  reserve_comments string, 
+  is_reserve_allows_booking string, 
+  is_reserve_restricted string, 
+  is_sail_reserve string, 
+  reserve_type_comments string, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string)
+  STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_sw_sail_cabin_reserve_dim'""");
+  

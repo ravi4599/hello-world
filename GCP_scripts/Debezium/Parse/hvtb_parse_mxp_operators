@@ -1,0 +1,45 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_operators(
+  row_counter bigint, 
+  operator_id bigint, 
+  business_unit_id int, 
+  operator_nr int, 
+  operator_name string, 
+  sales_group_id bigint, 
+  sign_in_method int, 
+  pin_code int, 
+  bar_code int, 
+  active boolean, 
+  signed_in boolean, 
+  mxp_user_id int, 
+  operator_sign_in timestamp, 
+  operator_sign_in_terminal bigint, 
+  operator_sign_out timestamp, 
+  override boolean, 
+  guid string, 
+  rec_created timestamp, 
+  rec_changed timestamp, 
+  rec_deleted boolean, 
+  created_by_id bigint, 
+  changed_by_id bigint, 
+  fingerprint_data string, 
+  additional_info string, 
+  created_at_id int, 
+  changed string, 
+  employee_rank_id bigint, 
+  last_change_log_id bigint, 
+  boardcard_number string, 
+  op string, 
+  ts_ms timestamp, 
+  shipcode string, 
+  voyageid string, 
+  batchtime timestamp)
+PARTITIONED BY ( 
+  part_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/parse/mxp/hvtb_parse_mxp_operators';

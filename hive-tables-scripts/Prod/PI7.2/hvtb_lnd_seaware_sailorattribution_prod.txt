@@ -1,0 +1,1 @@
+Create external table  vv_db.hvtb_lnd_seaware_sailorattribution( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-prod-emr-cluster/data/landing/hvtb_lnd_seaware_sailorattribution'

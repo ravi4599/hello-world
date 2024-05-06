@@ -1,0 +1,53 @@
+[
+    {
+      "Classification": "hive-site",
+      "Properties": 
+		{
+        "javax.jdo.option.ConnectionURL": "jdbc:mysql://emr-dev-hive-metastore.cbduemg5i5w8.us-east-1.rds.amazonaws.com:3306/setsaildb",
+        "javax.jdo.option.ConnectionUserName": "admin",
+        "javax.jdo.option.ConnectionPassword": "Adm1n!2017"
+		}
+    },
+	{
+	"Classification": "hue-ini",
+	"Properties": {},
+	"Configurations": [
+		{
+		"Classification": "desktop",
+		"Properties": {},
+		"Configurations": [
+			{
+			"Classification": "database",
+			"Properties": 
+				{
+				"name": "devemrhuemetastore",
+				"user": "admin",
+				"password": "Adm1n!2017",
+				"host": "emr-dev-hue-metastore.cbduemg5i5w8.us-east-1.rds.amazonaws.com",
+				"port": "3306",
+				"engine": "mysql"
+				},
+			"Configurations": []
+			}]
+		}]
+	},
+	{
+    "Classification": "zeppelin-env",
+    "Properties": {},
+    "Configurations": [
+      {
+        "Classification": "export",
+        "Properties": 
+			{
+			"ZEPPELIN_NOTEBOOK_STORAGE": "org.apache.zeppelin.notebook.repo.S3NotebookRepo",
+			"ZEPPELIN_NOTEBOOK_S3_BUCKET": "dev-setsail-zepl",
+			"ZEPPELIN_NOTEBOOK_USER": "dev-setsail-zepl",
+			"PYSPARK_PYTHON": "/home/hadoop/anaconda/bin/python",
+			"PYSPARK_DRIVER_PYTHON": "/home/hadoop/anaconda/bin/python"
+			},
+        "Configurations": []
+      }]
+	}
+]
+
+

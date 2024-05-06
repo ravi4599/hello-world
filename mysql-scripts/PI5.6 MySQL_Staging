@@ -1,0 +1,17 @@
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+ VALUES('jSailorReporting_SpecialRequest_Dim', '', 'hive', '', '',          'SailorReport_daily', now());
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_Restriction_Dim', '', 'hive', '', '', 'SailorReport_daily', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSailorReporting_Preference_Dim', '', 'hive', '', '', 'SailorReport_daily', now());
+
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type,    load_frequency, created_on)
+VALUES( 'jSWStgRPL_RES_PACKAGE', 'hvtb_nbx_landing_sw_rpl_res_package', 'Hive', 'RPL_RES_PACKAGE', 'Postgresql', 'SPF_daily', now());
+

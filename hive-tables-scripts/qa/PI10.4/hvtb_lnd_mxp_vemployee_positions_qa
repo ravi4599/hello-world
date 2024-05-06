@@ -1,0 +1,16 @@
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_lnd_mxp_vemployee_positions`(`POSITION_ID` int, `DEPARTMENT_ID` int, `POSITION_NAME` string, `DepartmentName` string, `ReportingCategory` string, `POSITION_VALID_FROM` timestamp, `POSITION_VALID_TO` timestamp, `ACTIVE` boolean, `REC_DELETED` boolean, `VoyageId` string, `BatchTime` timestamp, `ShipCode` string)
+PARTITIONED BY (`Part_Date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1',
+  'timestamp.formats' = 'yyyy-MM-dd HH:mm:ss'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_vemployee_positions'
+
+CREATE VIEW shipdw.hvtb_parse_mxp_vemployee_positions as select * from shipdw.hvtb_lnd_mxp_vemployee_positions
+

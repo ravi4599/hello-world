@@ -1,0 +1,37 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_iam_users(
+  username string, 
+  password string, 
+  companyid string, 
+  useremail string, 
+  usertype string, 
+  accountnonexpired boolean, 
+  accountnonlocked boolean, 
+  credentialsnonexpired boolean, 
+  enabled boolean, 
+  pin string, 
+  usercontactnumber string, 
+  addeddate timestamp, 
+  addedby string, 
+  lastmodifieddate timestamp, 
+  lastmodifiedby string, 
+  ispasswordresetrequired boolean, 
+  userguid string, 
+  passwordresetexpirytime timestamp, 
+  passwordresetid string, 
+  emailverificationid string, 
+  emailverificationexpirytime timestamp, 
+  emailverificationstatus string, 
+  voyageid string, 
+  batchtime timestamp, 
+  shipcode string)
+PARTITIONED BY ( 
+  part_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-cert-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_iam_users';
+  

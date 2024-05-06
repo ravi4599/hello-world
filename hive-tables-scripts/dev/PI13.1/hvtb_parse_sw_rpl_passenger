@@ -1,0 +1,34 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_parse_sw_rpl_passenger( 
+ PAX_ID int,
+	RES_ID int ,
+	GUEST_ID int ,
+	CLIENT_ID int ,
+	LAST_NAME string ,
+	FIRST_NAME string ,
+	MIDDLE_NAME string ,
+	BIRTH_DATE timestamp ,
+	ORIGIN_INFO string ,
+	CREATED_AT timestamp,
+	COMMENTS string ,
+	TITLE string ,
+	SUFFIX string ,
+	GENDER string ,
+	BASE_PAX_ID int ,
+        op string,
+   ts_ms timestamp,
+  shipcode string,
+  voyageid string,
+  batchtime timestamp)
+PARTITIONED BY (
+  part_date date)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/parse/seaware/hvtb_parse_sw_rpl_passenger'
+
+
+

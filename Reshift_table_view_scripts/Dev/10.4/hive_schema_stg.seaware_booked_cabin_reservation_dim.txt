@@ -1,0 +1,27 @@
+ drop table if exists hive_schema_stg.seaware_booked_cabin_reservation_dim; 
+  CREATE EXTERNAL TABLE hive_schema_stg.seaware_booked_cabin_reservation_dim
+(
+  res_id int, 
+  guest_id int, 
+  package_id int, 
+  price_category varchar(4), 
+  price_category_rank int, 
+  berth_category varchar(4), 
+  berth_category_rank int, 
+  assigned_category varchar(4), 
+  assigned_category_rank int, 
+  generic_category varchar(15), 
+  allocation_id int, 
+  cabin_id int, 
+  sail_cabin_reserve_id int, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  md5_dim varchar(100), 
+  etl_ld_status varchar(20), 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp
+)
+STORED AS PARQUET 
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_booked_cabin_reservation_dim'
+;

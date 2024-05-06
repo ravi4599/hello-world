@@ -1,0 +1,16 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_sw_plan_forecast_header_dim`(
+  plan_forecast_id bigint,
+rec_start_dttm timestamp,
+rec_end_dttm timestamp,
+src_header_id int,
+sail_id int,
+package_type string,
+cabin_ctg_generic string,
+forecast_version_id int,
+forecast_metric_id int,
+comments string,
+load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string)
+ STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_sw_plan_forecast_header_dim';

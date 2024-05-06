@@ -1,0 +1,29 @@
+drop table hive_schema_stg.specialrequest_dim
+
+CREATE EXTERNAL TABLE hive_schema_stg.specialrequest_dim         
+(voyage_id	varchar(100),
+specialrequest_skey	bigint,
+specialrequest_id	bigint,
+person_id	integer,
+specialrequest_guid	varchar(100),
+specialrequest_type	varchar(100),
+specialrequest_type_code varchar(100),
+specialrequest_date	timestamp,
+specialrequest_description	varchar(500),
+specialrequest_comment	varchar(500),
+specialrequest_upd_date	timestamp,
+src_deleted_flag boolean,
+load_dt	timestamp,
+upd_dt	timestamp,
+primaryhash varchar,
+md5_hash varchar)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/hvtb_mart_dim_specialrequest' 
+
+CREATE or replace VIEW shipdw.specialrequest_dim  AS SELECT * FROM hive_schema_stg.specialrequest_dim with no schema binding;

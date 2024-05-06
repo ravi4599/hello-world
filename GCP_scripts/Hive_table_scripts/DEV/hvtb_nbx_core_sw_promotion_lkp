@@ -1,0 +1,10 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_promotion_lkp(
+  promotion_id bigint, 
+  promo_code string, 
+  promo_group string, 
+  promo_name string, 
+  etl_ld_status string, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string) STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_promotion_lkp';

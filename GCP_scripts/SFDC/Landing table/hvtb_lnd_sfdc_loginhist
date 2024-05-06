@@ -1,0 +1,34 @@
+drop table vv_db.hvtb_lnd_sfdc_loginhist;
+
+
+CREATE EXTERNAL TABLE `vv_db.hvtb_lnd_sfdc_loginhist`(
+  `apitype` string, 
+  `apiversion` string, 
+  `application` string, 
+  `authenticationserviceid` string, 
+  `browser` string, 
+  `ciphersuite` string, 
+  `clientversion` string, 
+  `id` string, 
+  `logingeoid` string, 
+  `logintime` timestamp, 
+  `logintype` string, 
+  `loginurl` string, 
+  `networkid` string, 
+  `platform` string, 
+  `sourceip` string, 
+  `status` string, 
+  `tlsprotocol` string, 
+  `userid` string, 
+  `batchtime` timestamp, 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/landing/sfdc/hvtb_lnd_sfdc_loginhist';
+  
+   create or replace view vv_db.hvtb_parse_sfdc_loginhist as select * from vv_db.hvtb_lnd_sfdc_loginhist; 

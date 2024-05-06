@@ -1,0 +1,20 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_parse_sw_rpl_group_delegate_header (
+  `delegate_header_id` int,
+  `group_id` int,
+  `res_id` int,
+  `is_valid` string,
+  `op` string, 
+  `ts_ms` timestamp, 
+  `shipcode` string, 
+  `voyageid` string, 
+  `batchtime` timestamp)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-staging-emr-cluster/data/parse/seaware/hvtb_parse_sw_rpl_group_delegate_header'

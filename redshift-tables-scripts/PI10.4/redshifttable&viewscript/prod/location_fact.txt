@@ -1,0 +1,35 @@
+drop table if exists hive_schema_stg.location_fact;
+
+CREATE EXTERNAL TABLE hive_schema_stg.location_fact(
+voyage_id text
+,ship_code text
+,voyage_skey int
+,person_skey bigint
+,venue_skey bigint
+,event_skey bigint
+,enter_date_utc_skey bigint
+,enter_time_utc_skey bigint
+,enter_datetime_utc timestamp
+,enter_date_local_skey bigint
+,enter_time_local_skey bigint
+,enter_datetime timestamp
+,exit_date_utc_skey bigint
+,exit_time_utc_skey bigint
+,exit_datetime_utc timestamp
+,exit_date_local_skey bigint
+,exit_time_local_skey bigint
+,exit_datetime timestamp
+,duration_of_stay_seconds int
+,load_dt timestamp
+,upd_dt timestamp
+,primaryhash text
+,md5_hash text
+,part_dt date)
+STORED AS PARQUET   
+LOCATION 's3://vv-prod-emr-cluster/data/mart/hvtb_mart_fact_location';
+
+create or replace view shipdw.location_fact as select * from hive_schema_stg.location_fact with no schema binding;
+
+GRANT USAGE ON SCHEMA crm TO  group Tableau_poweruser_group;
+
+grant select on all tables in schema crm to group Tableau_poweruser_group ;

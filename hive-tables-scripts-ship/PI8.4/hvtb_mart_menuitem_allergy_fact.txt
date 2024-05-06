@@ -1,0 +1,1 @@
+spark.sql("""CREATE EXTERNAL TABLE  shipdw.hvtb_mart_menuitem_allergy_fact(voyage_id string,menu_item_skey  bigint,allergy_skey  bigint,src_deleted_flg  boolean,load_dt  timestamp,upd_dt  timestamp) PARTITIONED BY (part_date date) STORED AS PARQUET LOCATION 'hdfs://DEV/data/apps/nbx/mart/hvtb_mart_menuitem_allergy_fact'""")

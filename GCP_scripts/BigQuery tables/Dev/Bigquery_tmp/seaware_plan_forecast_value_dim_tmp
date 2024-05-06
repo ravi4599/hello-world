@@ -1,0 +1,15 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_plan_forecast_value_dim_tmp(
+  `plan_forecast_value_id` bigint, 
+  `plan_forecast_id` int, 
+  `week_index` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `value` int, 
+  `load_dt` timestamp, 
+  `upd_dt` timestamp, 
+  `primaryhash` string, 
+  `md5_hash` string)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_nbx_core_spf_plan_forecast_value_dim/*']
+);

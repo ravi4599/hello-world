@@ -1,0 +1,20 @@
+DROP TABLE hive_schema_stg.folio_item_dim;
+
+CREATE TABLE hive_schema_stg.folio_item_dim (
+	voyage_id text NULL,
+	folio_item_skey int8 NULL,
+	folio_item_quickcode text NULL,
+	ship_code text NULL,
+	quickcode_name text NULL,
+	product_code_name text NULL,
+	src_deleted_flag bool NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL
+);
+
+
+CREATE OR REPLACE VIEW shipdw.folio_item_dim
+AS 
+SELECT * FROM hive_schema_stg.folio_item_dim;

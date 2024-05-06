@@ -1,0 +1,205 @@
+ Seaware_guest_dim
+Create table and views(hive tables in vv_db_mig schema and redshift tables and views in prodnbx_mig db)
+https://bitbucket.org/VirginVoyages/bigdata-scripts/src/feature/Reshift_table_view_scripts/prod/11.5/SEAWARE_GUEST_DIM.txt
+https://bitbucket.org/VirginVoyages/bigdata-scripts/src/feature/Reshift_table_view_scripts/prod/11.5/seaware.seaware_guest_dim.txt
+https://bitbucket.org/VirginVoyages/bigdata-scripts/src/feature/hive-tables-scripts/prod/PI11.5/hvtb_nbx_core_sw_guest_dim.txt
+
+Metadata entry
+select * from HBTB_INGESTION_METADATA where BATCH_ID like '%SrcSeawareGuestDim-TgtSeawareGuestDim%';
+UPSERT INTO HBTB_INGESTION_METADATA (BATCH_INSTANCE_ID,BATCH_ID,PARENTBATCH,SRCCONFIGID,TGTCONFIGID,BATCHSTARTTIME,BATCHENDTIME,BATCH_EXECUTION_STARTTIME,BATCH_EXECUTION_ENDTIME,STATUS,ENVIRONMENT,VOYAGEID,TYPE) VALUES('SrcSeawareGuestDim-TgtSeawareGuestDim','SrcSeawareGuestDim-TgtSeawareGuestDim',null,'SrcSeawareGuestDim','TgtSeawareGuestDim','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','Successful','prod','SC2002269NCR','Dim');
+
+Run the below commands in sparkshell for initial load
+val srcPKCols ="src_guest_id"
+val srcColsPKList = srcPKCols.split(",")
+val srcPKColSEQ = srcColsPKList.map(x => col(x)).toSeq
+val srcAllColList = "src_guest_id,guest_seqn,guest_type,client_id,age,age_category,gender,address_line1,address_line2,city,country,zip,state,citizenship,citizenship_name,residency,last_name,first_name,middle_name,sex,tier_level,birthday,passport_number,passport_exp_date,passport_issue_date,passport_issue_place,id_doc_type,id_doc_number,id_doc_expiration_date,id_doc_issue_date,id_doc_issue_country,id_doc_issue_city,id2_doc_type,id2_doc_number,id2_doc_expiration_date,id2_doc_issue_date,id2_doc_issue_country,id2_doc_issue_city,email,phone_intl_code,phone_number"
+val srcAllColArray = srcAllColList.split(",")
+val srcAllColSEQ = srcAllColArray.map(x => col(x)).toSeq
+val srcSCDCol ="guest_seqn,guest_type,client_id,age,age_category,gender,address_line1,address_line2,city,country,zip,state,citizenship,citizenship_name,residency,last_name,first_name,middle_name,sex,tier_level,birthday,passport_number,passport_exp_date,passport_issue_date,passport_issue_place,id_doc_type,id_doc_number,id_doc_expiration_date,id_doc_issue_date,id_doc_issue_country,id_doc_issue_city,id2_doc_type,id2_doc_number,id2_doc_expiration_date,id2_doc_issue_date,id2_doc_issue_country,id2_doc_issue_city,email,phone_intl_code,phone_number"
+val srcSCDColSeq=srcSCDCol.split(",").map(x => col(x)).toSeq
+val srcDF = spark.read.format("parquet").option("header","true").load("s3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_guest_dim/*")
+
+val HashedSrcDF = srcDF.withColumn("md5_hash", md5(concat_ws(",", srcDF.select(srcAllColSEQ: _*).columns.map(c => col(c)): _*))).as("srh")
+val HashedSrcPrimaryDF = HashedSrcDF.withColumn("primaryhash", md5(concat_ws(",", HashedSrcDF.select(srcPKColSEQ: _*).columns.map(c => col(c)): _*)))
+val srcSCDHashed=HashedSrcPrimaryDF.withColumn("scd_hash",md5(concat_ws(",",HashedSrcPrimaryDF.select(srcSCDColSeq:_*).columns.map( x=> col(x)):_*)))
+srcSCDHashed.createOrReplaceTempView("temp")
+val finaldf = spark.sql("select guest_id,rec_start_dttm,rec_end_dttm,src_guest_id,cast(guest_seqn as int) as guest_seqn,guest_type,cast(client_id as int ) as client_id,cast(age as int) as age,age_category,gender,address_line1,address_line2,city,country,zip,state,citizenship,citizenship_name,residency,last_name,first_name,middle_name,sex,tier_level,birthday,passport_number,cast(passport_exp_date as date) as passport_exp_date,cast(passport_issue_date as date) as passport_issue_date,passport_issue_place,id_doc_type,id_doc_number,cast(id_doc_expiration_date as date) as id_doc_expiration_date,cast(id_doc_issue_date as date) as id_doc_issue_date,id_doc_issue_country,id_doc_issue_city,id2_doc_type,id2_doc_number,cast(id2_doc_expiration_date as date) as id2_doc_expiration_date,cast(id2_doc_issue_date as date) as id2_doc_issue_date,id2_doc_issue_country,id2_doc_issue_city,email,cast(phone_intl_code as int) as phone_intl_code,phone_number,etl_ld_status,etl_ld_dt as load_dt ,etl_upd_dt as upd_dt, primaryhash, md5_hash,scd_hash from temp")
+finaldf.write.mode("Overwrite").parquet("s3://vv-prod-emr-cluster/data/mart/temp/sw_rpl/hvtb_nbx_core_sw_guest_dim/")
+finaldf.write.mode("Overwrite").parquet("s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_guest_dim")
+finaldf.printSchema()
+
+spark-submit --name "SeawareGuestDimLoad" --class com.virginvoyages.dimension.SeawareGuestDimLoad --jars /data/apps/talend/shared/scripts/lib/RedshiftJDBC42-no-awssdk-1.2.37.1061.jar,/data/apps/talend/shared/scripts/nbx/SCD/shore-datamart-scd-0.0.1-SNAPSHOT-jar-with-dependencies.jar,/data/apps/talend/shared/scripts/nbx/Metadata/virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar --properties-file /data/apps/talend/shared/scripts/nbx/Dim/config/SrcSeawareGuestDim_TgtSeawareGuestDim --master yarn --deploy-mode cluster --num-executors 10 --driver-memory 6g --executor-memory 6g --executor-cores 10 /data/apps/talend/shared/scripts/nbx/Dim/vv-nbx-datamart-seaware-guest-dim-0.0.1-SNAPSHOT-jar-with-dependencies.jar 
+
+
+hdfs dfs -ls s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_guest_dim/*
+hdfs dfs -rmr s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_guest_dim/*
+emrfs delete s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_guest_dim/*
+emrfs sync s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_guest_dim/*
+
+
+
+###########################################
+
+##################################################################################################################
+Seaware_Reservation Dim
+Create the following table in shore Hive :-
+https://bitbucket.org/VirginVoyages/bigdata-scripts/src/feature/hive-tables-scripts/prod/PI11.6/hvtb_nbx_core_sw_reservation_dim_prod
+Create the following table and view in Shore Redshift :- 
+https://bitbucket.org/VirginVoyages/bigdata-scripts/src/feature/Reshift_table_view_scripts/prod/11.6/seaware_reservation_dim_prod
+Make sure the view is available to the reporting team .
+Run the following cmds in spark-shell on shore side:- 
+val srcPKCols ="src_res_id"
+val srcColsPKList = srcPKCols.split(",")
+val srcPKColSEQ = srcColsPKList.map(x => col(x)).toSeq
+val srcAllColList = "src_res_id,res_init_date,res_guest_count,res_mode,cancellation_date,res_status,operator,res_type,is_internal,source_code,effective_date,vip_status,stage,booking_source,last_modifiedby_id,hotel_flag,src_sail_id,seaware_agency_id,seaware_agent_id,agency_id,agent_id,sec_agency_id,sec_agent_id,opted_fvc,cancellation_case,src_group_id,currency,currency_rate"
+val srcAllColArray = srcAllColList.split(",")
+val srcAllColSEQ = srcAllColArray.map(x => col(x)).toSeq
+val srcSCDCol ="res_init_date,res_guest_count,cancellation_date,res_status,operator,is_internal,effective_date,vip_status,stage,booking_source,last_modifiedby_id,src_sail_id,seaware_agency_id,seaware_agent_id,opted_fvc,cancellation_case,src_group_id,currency,currency_rate"
+val srcSCDColSeq=srcSCDCol.split(",").map(x => col(x)).toSeq
+val srcDF = spark.read.format("parquet").option("header","true").load("s3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_reservation_dim/*")
+val HashedSrcDF = srcDF.withColumn("md5_hash", md5(concat_ws(",", srcDF.select(srcAllColSEQ: _*).columns.map(c => col(c)): _*))).as("srh")
+val HashedSrcPrimaryDF = HashedSrcDF.withColumn("primaryhash", md5(concat_ws(",", HashedSrcDF.select(srcPKColSEQ: _*).columns.map(c => col(c)): _*)))
+val srcSCDHashed=HashedSrcPrimaryDF.withColumn("scd_hash",md5(concat_ws(",",HashedSrcPrimaryDF.select(srcSCDColSeq:_*).columns.map( x=> col(x)):_*)))
+srcSCDHashed.createOrReplaceTempView("temp")
+val finaldf = spark.sql("select res_id,rec_start_dttm,rec_end_dttm,src_res_id,res_init_date,res_guest_count,res_mode,cancellation_date,res_status,operator,res_type,is_internal,source_code,effective_date,vip_status,stage,booking_source,last_modifiedby_id,hotel_flag,src_sail_id,seaware_agency_id,seaware_agent_id,opted_fvc,cancellation_case,src_group_id,currency,currency_rate,etl_ld_status,etl_ld_dt as load_dt,etl_upd_dt as upd_dt,primaryhash,md5_hash,scd_hash from temp")
+finaldf.write.mode("Overwrite").parquet("s3://vv-prod-emr-cluster/data/temp/seaware_rpl_mig/hvtb_nbx_core_sw_reservation_dim/")
+finaldf.write.mode("Overwrite").parquet("s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_reservation_dim/")
+
+
+hdfs dfs -ls s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_reservation_dim/*
+hdfs dfs -rmr s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_reservation_dim/*
+emrfs delete s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_reservation_dim/*
+emrfs sync s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_reservation_dim/*
+
+spark-submit --name "SeawareReservationDimLoad" --class com.virginvoyages.dimension.ReservationDimLoad --jars /data/apps/talend/shared/scripts/lib/RedshiftJDBC42-no-awssdk-1.2.37.1061.jar,/data/apps/talend/shared/scripts/nbx/SCD/shore-datamart-scd-0.0.1-SNAPSHOT-jar-with-dependencies.jar,/data/apps/talend/shared/scripts/nbx/Metadata/virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar --properties-file /data/apps/talend/shared/scripts/nbx/Dim/config/SrcReservationDim_TgtReservationDim --master yarn --deploy-mode cluster --num-executors 10 --driver-memory 6g --executor-memory 6g --executor-cores 10 /data/apps/talend/shared/scripts/nbx/Dim/vv-nbx-datamart-reservation-dim-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+
+spark.src.config.id   SrcReservationDim
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   prod
+spark.target.config.id   TgtReservationDim
+
+
+select * from HBTB_INGESTION_METADATA where BATCH_ID like '%SrcReservationDim-TgtReservationDim%';
+delete from HBTB_INGESTION_METADATA where BATCH_ID like '%SrcReservationDim-TgtReservationDim%';
+
+UPSERT INTO HBTB_INGESTION_METADATA (BATCH_INSTANCE_ID,BATCH_ID,PARENTBATCH,SRCCONFIGID,TGTCONFIGID,BATCHSTARTTIME,BATCHENDTIME,BATCH_EXECUTION_STARTTIME,BATCH_EXECUTION_ENDTIME,STATUS,ENVIRONMENT,VOYAGEID,TYPE) VALUES ('SrcReservationDim-TgtReservationDim','SrcReservationDim-TgtReservationDim',null,'SrcReservationDim','TgtReservationDim','2000-01-01 00:00:00.0','2000-01-01 00:00:00.0','2000-01-01 00:00:00.0','2000-01-01 00:00:00.0','Successful','prod','SC2002269NCR','Dim');
+
+
+
+###################################################
+Seaware_res_guest_rel
+
+Create table and views(hive tables in vv_db_mig schema and redshift tables and views in prodnbx_mig db)
+https://bitbucket.org/VirginVoyages/bigdata-scripts/src/feature/hive-tables-scripts/prod/PI11.5/hvtb_nbx_core_sw_res_guest_rel.txt
+https://bitbucket.org/VirginVoyages/bigdata-scripts/src/feature/Reshift_table_view_scripts/prod/11.5/SEAWARE_RES_GUEST_REL.txt
+https://bitbucket.org/VirginVoyages/bigdata-scripts/src/feature/Reshift_table_view_scripts/prod/11.5/seaware.seaware_res_guest_rel.txt
+
+Metadata entry
+delete from HBTB_INGESTION_METADATA where BATCH_ID like '%SrcSeawareResGuestRel-TgtSeawareResGuestRel%';
+UPSERT INTO HBTB_INGESTION_METADATA (BATCH_INSTANCE_ID,BATCH_ID,PARENTBATCH,SRCCONFIGID,TGTCONFIGID,BATCHSTARTTIME,BATCHENDTIME,BATCH_EXECUTION_STARTTIME,BATCH_EXECUTION_ENDTIME,STATUS,ENVIRONMENT,VOYAGEID,TYPE) VALUES('SrcSeawareResGuestRel-TgtSeawareResGuestRel','SrcSeawareResGuestRel-TgtSeawareResGuestRel',null,'SrcSeawareResGuestRel','TgtSeawareResGuestRel','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','Successful','prod','SC2002269NCR','Dim');
+
+Run the below commands in sparkshell for initial load
+import org.apache.spark.sql.expressions.Window
+import org.apache.spark.sql.types.{ LongType };
+import spark.sqlContext.implicits._
+val srcPKCols ="res_id,guest_id"
+val srcColsPKList = srcPKCols.split(",")
+val srcPKColSEQ = srcColsPKList.map(x => col(x)).toSeq
+val srcAllColList = "res_id,guest_id,guest_seqn"
+val srcAllColArray = srcAllColList.split(",")
+val srcAllColSEQ = srcAllColArray.map(x => col(x)).toSeq
+val srcDF = spark.read.format("parquet").option("header","true").load("s3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_res_guest_rel/*")
+val HashedSrcDF = srcDF.withColumn("md5_hash", md5(concat_ws(",", srcDF.select(srcAllColSEQ: _*).columns.map(c => col(c)): _*))).as("srh")
+val HashedSrcPrimaryDF = HashedSrcDF.withColumn("primaryhash", md5(concat_ws(",", HashedSrcDF.select(srcPKColSEQ: _*).columns.map(c => col(c)): _*)))
+val fd = HashedSrcPrimaryDF.withColumn("rec_start_dttm",lit(current_timestamp)).withColumn("rec_end_dttm",lit("9999-12-31 00:00:00"))
+val w = Window.orderBy(monotonically_increasing_id())
+var tempDf = fd.withColumn("rowId", monotonically_increasing_id())
+tempDf = tempDf.withColumn("res_guest_id", row_number().over(w) + 0).drop("rowId")
+tempDf.createOrReplaceTempView("temp")
+val finaldf = spark.sql("select cast(res_guest_id as bigint) as res_guest_id,res_id,guest_id,cast(guest_seqn as int) as guest_seqn,cast(rec_start_dttm as timestamp) as rec_start_dttm,cast(rec_end_dttm as timestamp) as rec_end_dttm,etl_ld_status,etl_ld_dt as load_dt ,etl_upd_dt as upd_dt, primaryhash, md5_hash from temp")
+finaldf.write.mode("Overwrite").parquet("s3://vv-prod-emr-cluster/data/mart/temp/sw_rpl/hvtb_nbx_core_sw_res_guest_rel/")
+finaldf.write.mode("Overwrite").parquet("s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_res_guest_rel/")
+finaldf.printSchema()
+
+
+hdfs dfs -ls s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_res_guest_rel/*
+hdfs dfs -rmr s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_res_guest_rel/*
+emrfs delete s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_res_guest_rel/*
+emrfs sync s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_res_guest_rel/*
+
+###########INITIAL LOAD##################
+
+Groupdim
+
+val srcPKCols ="src_group_id"
+val srcColsPKList = srcPKCols.split(",")
+val srcPKColSEQ = srcColsPKList.map(x => col(x)).toSeq
+
+val srcAllColList = "src_group_id,group_init_date,group_status,group_type,group_name,group_mode,is_internal,source_code,office_code,operator,n_of_guests,cancellation_date"
+val srcAllColArray = srcAllColList.split(",")
+val srcAllColSEQ = srcAllColArray.map(x => col(x)).toSeq
+
+val srcSCDCol ="group_init_date,group_status,group_type,group_name,group_mode,is_internal,source_code,office_code,operator,n_of_guests,cancellation_date"
+val srcSCDColSeq=srcSCDCol.split(",").map(x => col(x)).toSeq
+
+
+val srcDF = spark.read.format("parquet").option("header","true").load("s3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_group_dim/*")
+
+val HashedSrcDF = srcDF.withColumn("md5_hash", md5(concat_ws(",", srcDF.select(srcAllColSEQ: _*).columns.map(c => col(c)): _*))).as("srh")
+val HashedSrcPrimaryDF = HashedSrcDF.withColumn("primaryhash", md5(concat_ws(",", HashedSrcDF.select(srcPKColSEQ: _*).columns.map(c => col(c)): _*)))
+val srcSCDHashed=HashedSrcPrimaryDF.withColumn("scd_hash",md5(concat_ws(",",HashedSrcPrimaryDF.select(srcSCDColSeq:_*).columns.map( x=> col(x)):_*)))
+ 
+srcSCDHashed.createOrReplaceTempView("temp")
+val finaldf = spark.sql("select group_id,rec_start_dttm,rec_end_dttm,src_group_id,group_init_date,group_status,group_type,group_name,group_mode,is_internal,source_code,office_code,operator,n_of_guests,cancellation_date,etl_ld_status,etl_ld_dt as load_dt ,etl_upd_dt as upd_dt, primaryhash, md5_hash,scd_hash from temp")
+finaldf.write.mode("Overwrite").parquet("s3://vv-prod-emr-cluster/data/mart/temp/sw_rpl/hvtb_nbx_core_sw_group_dim/")
+finaldf.write.mode("Overwrite").parquet("s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_group_dim")
+finaldf.printSchema() 
+
+spark-submit --name "SeawareGroupDimLoad" --class com.virginvoyages.dimension.SeawareGroupDimLoad --jars /data/apps/talend/shared/scripts/lib/RedshiftJDBC42-no-awssdk-1.2.37.1061.jar,/data/apps/talend/shared/scripts/nbx/SCD/shore-datamart-scd-0.0.1-SNAPSHOT-jar-with-dependencies.jar,/data/apps/talend/shared/scripts/nbx/Metadata/virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar --properties-file /data/apps/talend/shared/scripts/nbx/Dim/config/SrcSeawareGroupDim_TgtSeawareGroupDim --master yarn --deploy-mode cluster --num-executors 10 --driver-memory 6g --executor-memory 6g --executor-cores 10 /data/apps/talend/shared/scripts/nbx/Dim/vv-nbx-datamart-seaware-group-dim-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+
+delete from HBTB_INGESTION_METADATA where BATCH_ID like '%SrcSeawareGroupDim-TgtSeawareGroupDim%';
+UPSERT INTO HBTB_INGESTION_METADATA (BATCH_INSTANCE_ID,BATCH_ID,PARENTBATCH,SRCCONFIGID,TGTCONFIGID,BATCHSTARTTIME,BATCHENDTIME,BATCH_EXECUTION_STARTTIME,BATCH_EXECUTION_ENDTIME,STATUS,ENVIRONMENT,VOYAGEID,TYPE) VALUES('SrcSeawareGroupDim-TgtSeawareGroupDim','SrcSeawareGroupDim-TgtSeawareGroupDim',null,'SrcSeawareGroupDim','TgtSeawareGroupDim','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','Successful','prod','SC2002269NCR','Dim');
+
+delete from HBTB_INGESTION_METADATA where BATCH_ID like '%SrcSeawareGroupDim-TgtSeawareGroupDim%';
+select * from HBTB_INGESTION_METADATA where BATCH_ID like '%SrcSeawareGroupDim-TgtSeawareGroupDim%';
+
+
+hdfs dfs -ls s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_group_dim/*
+hdfs dfs -rmr s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_group_dim/*
+emrfs delete s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_group_dim/*
+emrfs sync s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_group_dim/*
+
+####################
+Promotion dimension
+
+delete from HBTB_INGESTION_METADATA where BATCH_ID like '%SrcSeawarePromotionDim-TgtSeawarePromotionDim%';
+UPSERT INTO HBTB_INGESTION_METADATA (BATCH_INSTANCE_ID,BATCH_ID,PARENTBATCH,SRCCONFIGID,TGTCONFIGID,BATCHSTARTTIME,BATCHENDTIME,BATCH_EXECUTION_STARTTIME,BATCH_EXECUTION_ENDTIME,STATUS,ENVIRONMENT,VOYAGEID,TYPE) VALUES('SrcSeawarePromotionDim-TgtSeawarePromotionDim','SrcSeawarePromotionDim-TgtSeawarePromotionDim',null,'SrcSeawarePromotionDim','TgtSeawarePromotionDim','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','1900-01-01 00:00:00.0','Successful','qa','SC2002269NCR','Dim');
+
+
+
+spark-submit --name "SeawarePromotionDimLoad" --class com.virginvoyages.dimension.PromotionDimLoad --jars /data/apps/talend/shared/scripts/lib/RedshiftJDBC42-no-awssdk-1.2.37.1061.jar,/data/apps/talend/shared/scripts/nbx/SCD/shore-datamart-scd-0.0.1-SNAPSHOT-jar-with-dependencies.jar,/data/apps/talend/shared/scripts/nbx/Metadata/virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar --properties-file /data/apps/talend/shared/scripts/nbx/Dim/config/SrcSeawarePromotionDim_TgtSeawarePromotionDim --master yarn --deploy-mode cluster --num-executors 4 --driver-memory 4g --executor-memory 4g --executor-cores 4 /data/apps/talend/shared/scripts/nbx/Dim/vv-nbx-datamart-seaware-promotion-dim-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+import org.apache.spark.sql.expressions.Window
+import org.apache.spark.sql.types.{ LongType };
+import spark.sqlContext.implicits._
+val srcPKCols ="res_promo_id"
+val srcColsPKList = srcPKCols.split(",")
+val srcPKColSEQ = srcColsPKList.map(x => col(x)).toSeq
+val srcAllColList = "res_promo_id,res_id,guest_id,package_id,addon_id,carddeck_id,shorex_id,hotel_id,promotion_id,rec_start_dttm,rec_end_dttm,is_active,is_excluded,promo_mode"
+val srcAllColArray = srcAllColList.split(",")
+val srcAllColSEQ = srcAllColArray.map(x => col(x)).toSeq
+val srcDF = spark.sql("""select res_promo_id,res_id,guest_id,package_id,addon_id,cardeck_id as carddeck_id,shorex_id,hotel_id,promotion_id,rec_start_dttm,rec_end_dttm,is_active,is_excluded,promo_mode,etl_ld_status,etl_ld_dt,etl_upd_dt from (select rp.res_promo_id as res_promo_id,rp.res_id as res_id,rp.guest_id as guest_id,pk.package_id as package_id,rp.promo_code as promo_code from vv_db.hvtb_parse_sw_rpl_res_promotion rp left join vv_db.hvtb_parse_sw_rpl_res_package pk on rp.res_package_id = pk.res_package_id and rp.guest_id = pk.guest_id) srcq join (select pd.addon_id,pd.cardeck_id,pd.shorex_id,pd.hotel_id,pd.promotion_id,pd.rec_start_dttm,pd.rec_end_dttm,pd.is_active,pd.is_excluded,pd.promo_mode,pd.etl_ld_status,pd.etl_ld_dt,pd.etl_upd_dt,rd.src_res_id, gd.src_guest_id, pk.src_package_id, pl.promo_code from vv_db.hvtb_nbx_core_sw_promotion_dim pd left join vv_db.hvtb_nbx_core_sw_reservation_dim rd on pd.res_id=rd.res_id left join vv_db.hvtb_nbx_core_sw_guest_dim gd on pd.guest_id=gd.guest_id left join vv_db.hvtb_nbx_core_sw_package_dim pk on pk.package_id=pd.package_id left join vv_db.hvtb_nbx_core_sw_promotion_lkp pl on pd.promotion_id=pl.promotion_id) tgtq on srcq.res_id = tgtq.src_res_id and srcq.guest_id = tgtq.src_guest_id and srcq.package_id = tgtq.src_package_id and srcq.promo_code = tgtq.promo_code""")
+val HashedSrcDF = srcDF.withColumn("md5_hash", md5(concat_ws(",", srcDF.select(srcAllColSEQ: _*).columns.map(c => col(c)): _*))).as("srh")
+val HashedSrcPrimaryDF = HashedSrcDF.withColumn("primaryhash", md5(concat_ws(",", HashedSrcDF.select(srcPKColSEQ: _*).columns.map(c => col(c)): _*)))
+//val fd = HashedSrcPrimaryDF.withColumn("rec_start_dttm",lit(current_timestamp)).withColumn("rec_end_dttm",lit("9999-12-31 00:00:00"))
+val w = Window.orderBy(monotonically_increasing_id())
+var tempDf = HashedSrcPrimaryDF.withColumn("rowId", monotonically_increasing_id())
+tempDf = tempDf.withColumn("promo_skey", row_number().over(w) + 0).drop("rowId")
+tempDf.createOrReplaceTempView("temp")
+val finaldf = spark.sql("select cast(promo_skey as bigint) as promo_skey,res_promo_id,res_id,guest_id,package_id,addon_id,carddeck_id,shorex_id,hotel_id,promotion_id,rec_start_dttm,rec_end_dttm,is_active,is_excluded,promo_mode,etl_ld_status,etl_ld_dt as load_dt ,etl_upd_dt as upd_dt, primaryhash, md5_hash from temp")
+finaldf.write.mode("Overwrite").parquet("s3://vv-qa-emr-cluster/data/mart/temp/sw_rpl/hvtb_nbx_core_sw_promotion_dim/")
+
+finaldf.write.mode("Overwrite").parquet("s3://vv-qa-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_promotion_dim/")
+finaldf.printSchema()

@@ -1,0 +1,30 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_parse_sw_rpl_acc_coupon_class`(
+  `coupon_class` string, 
+  `record_id` int, 
+  `comments` string, 
+  `external_code` string, 
+  `is_gen_per_client` string, 
+  `apply_as_payment` string, 
+  `is_apply_per_client` string, 
+  `dflt_qty_valid_days` int, 
+  `frequent_pgm_code` string, 
+  `cancel_with_res` string, 
+  `apply_as_discount` string, 
+  `validate_for_owner` string, 
+  `pre_printed` string, 
+  `coupon_class_code` string, 
+  `op` string, 
+  `ts_ms` timestamp, 
+  `shipcode` string, 
+  `voyageid` string, 
+  `batchtime` timestamp)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/parse/seaware/hvtb_parse_sw_rpl_acc_coupon_class';

@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_mart_dim_order_detail`(`order_detail_skey` bigint, `voyage_id` string, `order_id` string, `order_venue_name` string, `order_type_id` string, `order_type_name` string, `order_category` string, `order_status_num` int, `order_status_desc` string, `order_number` int, `load_dt` timestamp, `upd_dt` timestamp, `primaryhash` string, `md5_hash` string)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/mart/hvtb_mart_dim_order_detail'

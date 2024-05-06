@@ -1,0 +1,18 @@
+CREATE TABLE HBTB_NBX_SHORETOSHIP_SYNC_VOYAGECONFIG
+(
+   CONFIGID varchar PRIMARY KEY,
+   VOYAGEID varchar,
+   OBJECTNAME varchar,
+   TABLEREFRESHTYPE varchar,
+   CONNECTION varchar,
+   USERNAME varchar,
+   PASSWORD varchar,
+   TABLESCHEMA varchar,
+   JKSLOCATION varchar,
+   SSLBROKERS varchar,
+   S3APIKEY varchar,
+   S3APISECRET varchar,
+   KAFKAPASSWORD varchar,
+   STORAGELOCATION varchar
+)
+;

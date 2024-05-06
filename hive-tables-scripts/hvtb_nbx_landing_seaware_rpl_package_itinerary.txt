@@ -1,0 +1,44 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_sw_rpl_package_itinerary`(
+  `itin_record_id` int, 
+  `package_type` string, 
+  `day_num_from` int, 
+  `time_from` timestamp, 
+  `day_num_to` int, 
+  `time_to` timestamp, 
+  `location_type_from` string, 
+  `location_code_from` string, 
+  `location_type_to` string, 
+  `location_code_to` string, 
+  `component_type` string, 
+  `component_code` string, 
+  `component_subcode1` string, 
+  `component_subcode2` string, 
+  `component_subcode3` string,
+  `can_be_excluded` string,
+  `is_optional` string,
+  `package_links_inclusive` string,
+  `comments` string,
+  `description` string,
+  `seq_num` int,
+  `city_from` string,
+  `city_to` string,
+  `option_group` int,
+  `load_data_timestamp` timestamp 
+)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n', 
+  'serialization.format'='\u0001') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_package_itinerary'
+
+
+
+/*MSH-34089_Greeshma_12march2020*/
+

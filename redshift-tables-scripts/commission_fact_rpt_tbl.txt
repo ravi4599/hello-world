@@ -1,0 +1,46 @@
+CREATE TABLE IF NOT EXISTS seaware.commission_fact_rpt
+(
+	seaware_agency_id INTEGER   ENCODE lzo
+	,crm_agency_id VARCHAR(100)   ENCODE lzo
+	,agency_name VARCHAR(100)   ENCODE lzo
+	,agency_city VARCHAR(100)   ENCODE lzo
+	,agency_currency VARCHAR(100)   ENCODE lzo
+	,seaware_agent_id VARCHAR(100)   ENCODE lzo
+	,crm_agent_id VARCHAR(100)   ENCODE lzo
+	,first_mate_name VARCHAR(100)   ENCODE lzo
+	,first_mate_status VARCHAR(100)   ENCODE lzo
+	,booking_number INTEGER   ENCODE lzo
+	,booking_status CHAR(2)   ENCODE lzo
+	,sailor_1_name VARCHAR(120)   ENCODE lzo
+	,ship_name VARCHAR(50)   ENCODE lzo
+	,voyage_date TIMESTAMP WITHOUT TIME ZONE   ENCODE lzo
+	,voyage_length INTEGER   ENCODE lzo
+	,itinerary_name VARCHAR(100)   ENCODE lzo
+	,product_name VARCHAR(100)   ENCODE lzo
+	,commission_code VARCHAR(15)   ENCODE lzo
+	,invoice_item_type VARCHAR(50)   ENCODE lzo
+	,currency VARCHAR(5)   ENCODE lzo
+	,voyage_fare_commission DOUBLE PRECISION   ENCODE RAW
+	,voyage_fare_commission_usd DOUBLE PRECISION   ENCODE RAW
+	,commission_on_insurance DOUBLE PRECISION   ENCODE RAW
+	,commission_on_insurance_usd DOUBLE PRECISION   ENCODE RAW
+	,base_protected_commission DOUBLE PRECISION   ENCODE RAW
+	,base_protected_commission_usd DOUBLE PRECISION   ENCODE RAW
+	,taxes_commission DOUBLE PRECISION   ENCODE RAW
+	,taxes_commission_usd DOUBLE PRECISION   ENCODE RAW
+	,bookable_commission DOUBLE PRECISION   ENCODE RAW
+	,bookable_commission_usd DOUBLE PRECISION   ENCODE RAW
+	,bonus_commission DOUBLE PRECISION   ENCODE RAW
+	,bonus_commission_usd DOUBLE PRECISION   ENCODE RAW
+	,total_commission DOUBLE PRECISION   ENCODE RAW
+	,total_gross_revenue DOUBLE PRECISION   ENCODE RAW
+	,item_commission_amount DOUBLE PRECISION   ENCODE RAW
+	,commission_payout_date TIMESTAMP WITHOUT TIME ZONE   ENCODE lzo
+	,expected_payout_date TIMESTAMP WITHOUT TIME ZONE   ENCODE lzo
+	,etl_ld_dt TIMESTAMP WITHOUT TIME ZONE   ENCODE lzo
+	, charge_id int
+ ,is_cancelled VARCHAR
+)
+
+Grant usage on schema crm to group integration_user_group;
+GRANT SELECT ON seaware.commission_fact_rpt to group integration_user_group;

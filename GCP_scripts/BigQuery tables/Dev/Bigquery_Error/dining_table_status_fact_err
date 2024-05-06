@@ -1,0 +1,10 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.dining_table_status_fact_err
+(voyage_id string, voyage_skey bigint,dining_reservation_detail_skey int,
+dining_table_skey bigint, venue_skey bigint,table_status string,
+table_status_datetime_utc timestamp,load_dt timestamp, upd_dt timestamp,
+primaryhash string, md5_hash string,part_dt date
+)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_dining_table_status_err/*']
+ );

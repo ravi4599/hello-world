@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE hive_schema_stg.address_dim(voyage_id text, address_skey bigint, address_id int, address_country text, address_type text, address_mailing_flg boolean, address_line1 text, address_line2 text, address_line3 text, address_city text, address_state text, address_postal_code text, phone_number text, mobile_phone_number text, fax_number text, email_address text, address_comment text, home_airport text, load_dt timestamp, upd_dt timestamp, primaryhash text, md5_hash text)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/mart/hvtb_mart_dim_address'

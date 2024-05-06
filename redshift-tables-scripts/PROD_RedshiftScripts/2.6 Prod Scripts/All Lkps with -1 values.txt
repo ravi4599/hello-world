@@ -1,0 +1,78 @@
+create or replace view seaware.seaware_promotion_lkp
+as 
+select * from hive_schema_stg.seaware_promotion_lkp
+UNION
+SELECT 
+-1,
+'NA',
+'NA',
+'NA',
+'NA',
+'1900-01-01 00:00:00',
+'1900-01-01 00:00:00'
+from hive_schema_stg.seaware_promotion_lkp
+with no schema binding;
+
+
+create or replace view seaware.seaware_addon_lkp
+as 
+select * from hive_schema_stg.seaware_addon_lkp
+UNION
+SELECT 
+-1,
+'NA',
+'NA',
+'NA',
+'NA',
+'NA',
+'1900-01-01 00:00:00',
+'1900-01-01 00:00:00'
+FROM  hive_schema_stg.seaware_addon_lkp
+
+with no schema binding;
+
+
+
+create or replace view seaware.seaware_invoice_item_type_lkp
+as 
+select * from hive_schema_stg.seaware_invoice_item_type_lkp
+UNION
+SELECT 
+-1,
+'NA',
+'NA',
+'1900-01-01 00:00:00',
+'1900-01-01 00:00:00'
+FROM hive_schema_stg.seaware_invoice_item_type_lkp
+
+with no schema binding;
+
+
+create or replace view seaware.seaware_price_area_lkp
+as 
+select * from hive_schema_stg.seaware_price_area_lkp
+UNION
+SELECT 
+-1,
+'NA',
+'1900-01-01 00:00:00',
+'1900-01-01 00:00:00'
+FROM hive_schema_stg.seaware_price_area_lkp
+
+with no schema binding;
+
+
+create or replace view seaware.seaware_ship_dim
+as 
+select * from hive_schema_stg.seaware_ship_dim
+UNION
+SELECT
+-1,
+'NA',
+'NA',
+'1900-01-01 00:00:00',
+'1900-01-01 00:00:00'
+
+FROM  hive_schema_stg.seaware_ship_dim
+
+with no schema binding;

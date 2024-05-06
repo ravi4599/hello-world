@@ -1,0 +1,12 @@
+
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_parse_vxp_dxp_incident`(`incidentid` string, `reportedbypersonid` string, `description` string, `assignedtoteammemberid` string, `comment` string, `duedate` timestamp, `propertyid` string, `reportedbypersontypecode` string, `voyagenumber` string, `incidentcategorycode` string, `status` string, `parentincidentcategorycode` string, `incidentreferenceid` string, `externalreferenceid` string, `resolutionamount` decimal(10,2), `currencycode` string, `reportertype` string, `resolutiondescription` string, `stateroom` string, `globalvenueid` string, `isnotify` boolean, `dutymanagerid` string, `statuschangeddate` timestamp, `statuschangedby` string, `raisedbynotes` string, `attendedbynotes` string, `impactedguest` string, `priority` int, `severity` int, `resolutiontime` int, `isdeleted` boolean, `addeddate` timestamp, `addedby` string, `lastmodifieddate` timestamp, `lastmodifiedby` string, `devicetype` string, `score` decimal(6,2), `statuschangedbypersontypecode` string, `addeddateoffset` int, `lastmodifieddateoffset` int, `statuschangeddateoffset` int, `duedateoffset` int, `voyageid` string, `batchtime` timestamp, `shipcode` string)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-dev-nbx-cluster/data/parse/vxp/hvtb_parse_vxp_dxp_incident';

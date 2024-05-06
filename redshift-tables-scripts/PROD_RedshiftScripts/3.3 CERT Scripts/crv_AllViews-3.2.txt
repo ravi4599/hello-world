@@ -1,0 +1,15 @@
+create or replace view seaware.seaware_group_dim
+as 
+select * from hive_schema_stg.seaware_group_dim
+with no schema binding;
+
+create or replace view seaware.seaware_group_res_dim
+as 
+select * from hive_schema_stg.seaware_group_res_dim
+with no schema binding;
+
+
+create or replace view seaware.seaware_group_fact
+as 
+select * from hive_schema_stg.seaware_group_fact
+with no schema binding;

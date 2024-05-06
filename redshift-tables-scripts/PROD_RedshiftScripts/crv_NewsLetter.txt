@@ -1,0 +1,7 @@
+create or replace view news_letter.acxiom_newsletter_vw as select * from newsletter_stg.HBTB_NBX_ACXIOM_ONDEMAND
+with no schema binding;
+
+
+create or replace view news_letter.sailor_tribes_newsletter_vw as select * from newsletter_stg.HBTB_NBX_SAILOR_TRIBES_ONDEMAND
+with no schema binding;
+

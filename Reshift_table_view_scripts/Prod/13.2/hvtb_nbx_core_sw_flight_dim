@@ -1,0 +1,27 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seware_flight_dim(
+flight_id bigint,
+flight_no varchar(10),
+rec_start_dttm timestamp,
+rec_end_dttm timestamp,
+airline varchar(40),
+departure_airport_name varchar(40),
+origin varchar(30),
+departure_date date,
+departure_time timestamp,
+arrival_airport_name varchar(40),
+destination varchar(30),
+arrival_date date,
+arrival_time timestamp,
+operated_by varchar(40),
+airline_rloc varchar(8),
+n_of_stops int,
+load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash varchar(40), 
+  md5_hash varchar(40))
+STORED AS PARQUET
+LOCATION
+'s3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_flight_dim'	
+
+
+CREATE OR REPLACE VIEW seaware.seware_flight_dim AS SELECT * FROM hive_schema_stg.seware_flight_dim with no schema binding;

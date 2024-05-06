@@ -1,0 +1,17 @@
+
+CREATE OR REPLACE VIEW shipdw.sailor_lovelist_fact
+AS SELECT sailor_lovelist_fact.voyage_id,
+    sailor_lovelist_fact.src_favouriteid,
+    sailor_lovelist_fact.ship_code,
+    sailor_lovelist_fact.voyage_skey,
+    sailor_lovelist_fact.person_skey,
+    sailor_lovelist_fact.activity_skey,
+    sailor_lovelist_fact.lovelisted_datetime_utc,
+    sailor_lovelist_fact.src_deleted_flag,
+    sailor_lovelist_fact.src_lastmodified_datetime_utc,
+    sailor_lovelist_fact.load_dt,
+    sailor_lovelist_fact.upd_dt,
+    sailor_lovelist_fact.primaryhash,
+    sailor_lovelist_fact.md5_hash,
+    sailor_lovelist_fact.part_dt
+   FROM hive_schema_stg.sailor_lovelist_fact;

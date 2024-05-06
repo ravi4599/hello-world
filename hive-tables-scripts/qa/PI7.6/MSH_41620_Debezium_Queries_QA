@@ -1,0 +1,243 @@
+ACC_COUPON_CLASS:
+
+Ingestion Table:
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_acc_coupon_class( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-qa-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_acc_coupon_class'
+
+Parse Table:
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_acc_coupon_class(
+COUPON_CLASS String,
+RECORD_ID int,
+COMMENTS String,
+EXTERNAL_CODE String,
+IS_GEN_PER_CLIENT String,
+APPLY_AS_PAYMENT String,
+IS_APPLY_PER_CLIENT String,
+DFLT_QTY_VALID_DAYS int,
+FREQUENT_PGM_CODE String,
+CANCEL_WITH_RES String,
+APPLY_AS_DISCOUNT String,
+VALIDATE_FOR_OWNER String,
+PRE_PRINTED String,
+COUPON_CLASS_CODE String,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-qa-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_acc_coupon_class'
+
+
+spark-submit --name Debezium_acc_coupon_class --class com.virginvoyages.kafka.ingestion.Debezium --properties-file /data/apps/talend/shared/scripts/nbx/Ship-to-shore/seaware_config/SrcSeawareAccCouponClass_TgtSeawareAccCouponClass --master yarn --deploy-mode cluster --num-executors 2 --driver-memory 2g --executor-memory 2g --executor-cores 2 --jars /data/apps/talend/shared/scripts/nbx/Metadata/virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar /data/apps/talend/shared/scripts/nbx/Ship-to-shore/kafka_to_hive_sync-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse0','qa-shore-dbz.SEAWARE.ACC_COUPON_CLASS',0,0,0);
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse1','qa-shore-dbz.SEAWARE.ACC_COUPON_CLASS',1,0,0);
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse2','qa-shore-dbz.SEAWARE.ACC_COUPON_CLASS',2,0,0);
+
+
+ACC_COUPON:
+
+Ingestion Table:
+
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_acc_coupon( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-qa-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_acc_coupon'
+
+Parse Table:
+
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_acc_coupon(
+COUPON_ID int,
+VALID_FROM timestamp,
+VALID_TO timestamp,
+AMOUNT decimal(15,2),
+AMOUNT_LEFT decimal(15,2),
+IS_ACTIVE String,
+COMMENTS String,
+COUPON_CLASS String,
+OFFICE_CODE String,
+RES_ID int,
+GEN_LINK_ID int,
+ENTITY_TYPE String,
+ENTITY_ID int,
+IS_USED String,
+TEMP_RES_ID int,
+PAP_CODE String,
+GRANTED_TO_CLIENT_ID int,
+CURRENCY_CODE String,
+FREQUENT_PGM_POINTS decimal(10,2),
+REASON_CODE String,
+EFFECTIVE_FROM timestamp,
+EFFECTIVE_TO timestamp,
+RES_ADDON_ID int,
+DAYS_AFTER_FIRST_USE_EFF int,
+NO_SHOW_DEP_REF_ID int,
+GL_EXPIRATION_DATE timestamp,
+GL_EXPIRATION_ERROR String,
+GL_CREATION_DATE timestamp,
+GL_CREATION_ERROR String,
+LINKED_TRANS_ID int,
+USER_DEFINED_COUPON_ID String,
+COUPON_CATEGORY String,
+CHARGE_CODE String,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-qa-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_acc_coupon' 
+
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse0','qa-shore-dbz.SEAWARE.ACC_COUPON',0,0,0);
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse1','qa-shore-dbz.SEAWARE.ACC_COUPON',1,0,0);
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse2','qa-shore-dbz.SEAWARE.ACC_COUPON',2,0,0);
+
+spark-submit --name Debezium_acc_coupon --class com.virginvoyages.kafka.ingestion.Debezium --properties-file /data/apps/talend/shared/scripts/nbx/Ship-to-shore/seaware_config/SrcSeawareAccCoupon_TgtSeawareAccCoupon --master yarn --deploy-mode cluster --num-executors 2 --driver-memory 2g --executor-memory 2g --executor-cores 2 --jars /data/apps/talend/shared/scripts/nbx/Metadata/virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar /data/apps/talend/shared/scripts/nbx/Ship-to-shore/kafka_to_hive_sync-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+HOTEL_INV_ALLOCATION
+
+Ingestion Table:
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_hotel_inv_allocation( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-qa-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_hotel_inv_allocation'
+
+
+Parse Table:
+
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_hotel_inv_allocation(
+ALLOCATION_ID int,
+ALLOCATION_OWNER_TYPE String,
+ALLOCATION_OWNER_ID int,
+ALLOCATION_TIMESTAMP timestamp,
+OPERATOR_ID String,
+INVENTORY_REQUEST_TYPE String,
+DEPENDS_ON_ID int,
+SEQ_NUMBER int,
+PROBABILITY decimal(7,4),
+INVENTORY_RESULT_TYPE String,
+HOTEL_ROOM_CATEGORY String,
+HOTEL_CATEGORY String,
+HOTEL_ID int,
+CHECK_IN_DATE timestamp,
+CHECK_OUT_DATE timestamp,
+HOTEL_ROOM_TYPE String,
+PRIORITY int,
+OCCUPANCY int,
+DECLINE_REASON int,
+RELEASE_TIMESTAMP timestamp,
+SHIP_CODE String,
+CITY_CODE String,
+WTL_OWNER_FLAG String,
+DLGT_RES_ID int,
+IS_DLGT_OBJ String,
+HOTEL_SPACE_TYPE String,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-qa-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_hotel_inv_allocation'
+
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse0','qa-shore-dbz.SEAWARE.HOTEL_INV_ALLOCATION',0,0,0);
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse1','qa-shore-dbz.SEAWARE.HOTEL_INV_ALLOCATION',1,0,0);
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse2','qa-shore-dbz.SEAWARE.HOTEL_INV_ALLOCATION',2,0,0);
+
+spark-submit --name Debezium_acc_coupon --class com.virginvoyages.kafka.ingestion.Debezium --properties-file /data/apps/talend/shared/scripts/nbx/Ship-to-shore/seaware_config/SrcSeawareaHotelInvAllocation_TgtSeawareaHotelInvAllocation --master yarn --deploy-mode cluster --num-executors 2 --driver-memory 2g --executor-memory 2g --executor-cores 2 --jars /data/apps/talend/shared/scripts/nbx/Metadata/virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar /data/apps/talend/shared/scripts/nbx/Ship-to-shore/kafka_to_hive_sync-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+
+
+RES_ROOM_REQUEST
+
+Ingestion Table:
+
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_res_room_request( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-qa-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_res_room_request'
+
+
+
+Parse Table:
+
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_res_room_request(
+ROOM_REQUEST_ID  int,
+RES_ID int,
+ROOM_SEQ_NUMBER int,
+EFFECTIVE_DATE timestamp,
+DATE_FROM timestamp,
+DATE_TO timestamp,
+HOTEL_CATEGORY String,
+HOTEL_ROOM_CATEGORY String,
+HOTEL_ID int,
+HOTEL_ROOM_TYPE String,
+OCCUPANCY int,
+CITY_CODE String,
+IS_INDEPENDENT String,
+EXTRA_ROOM_MODE String,
+COMMENTS String,
+CHANGED_MANUALLY String,
+HOTEL_BED_TYPE String,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-qa-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_res_room_request'
+
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse0','qa-shore-dbz.SEAWARE.RES_ROOM_REQUEST',0,0,0);
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse1','qa-shore-dbz.SEAWARE.RES_ROOM_REQUEST',1,0,0);
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse2','qa-shore-dbz.SEAWARE.RES_ROOM_REQUEST',2,0,0);
+
+
+spark-submit --name Debezium_RES_ROOM_REQUEST --class com.virginvoyages.kafka.ingestion.Debezium --properties-file /data/apps/talend/shared/scripts/nbx/Ship-to-shore/seaware_config/SrcSeawareaResRoomRequest_TgtSeawareaResRoomRequest --master yarn --deploy-mode cluster --num-executors 2 --driver-memory 2g --executor-memory 2g --executor-cores 2 --jars /data/apps/talend/shared/scripts/nbx/Metadata/virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar /data/apps/talend/shared/scripts/nbx/Ship-to-shore/kafka_to_hive_sync-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+
+RES_GUEST_IN_ROOM
+
+Ingestion Table:
+
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_res_guest_in_room( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-qa-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_res_guest_in_room'
+
+
+Parse Table:
+
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_res_guest_in_room(
+RECORD_ID int,
+RES_ID int,
+ROOM_SEQ_NUMBER int,
+GUEST_ID int,
+DATE_FROM timestamp,
+DATE_TO timestamp,
+HAS_PRE_AIR_NIGHT String,
+HAS_POST_AIR_NIGHT String,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-qa-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_res_guest_in_room'
+
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse0','qa-shore-dbz.SEAWARE.RES_GUEST_IN_ROOM',0,0,0);
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse1','qa-shore-dbz.SEAWARE.RES_GUEST_IN_ROOM',1,0,0);
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse2','qa-shore-dbz.SEAWARE.RES_GUEST_IN_ROOM',2,0,0);
+
+
+spark-submit --name Debezium_RES_ROOM_REQUEST --class com.virginvoyages.kafka.ingestion.Debezium --properties-file /data/apps/talend/shared/scripts/nbx/Ship-to-shore/seaware_config/SrcSeawarearesGuestInRoom_TgtSeawarearesGuestInRoom --master yarn --deploy-mode cluster --num-executors 2 --driver-memory 2g --executor-memory 2g --executor-cores 2 --jars /data/apps/talend/shared/scripts/nbx/Metadata/virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar /data/apps/talend/shared/scripts/nbx/Ship-to-shore/kafka_to_hive_sync-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+
+GROUP_HISTORY_HEADER
+
+Ingestion Table:
+Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_group_history_header( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-qa-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_group_history_header'
+
+
+Parse Table:
+create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_group_history_header(
+GROUP_ID int,
+GROUP_UPDATE_ID int,
+OPERATOR_ID String,
+TIME_STAMP timestamp,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-qa-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_group_history_header'
+
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse0','qa-shore-dbz.SEAWARE.GROUP_HISTORY_HEADER',0,0,0);
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse1','qa-shore-dbz.SEAWARE.GROUP_HISTORY_HEADER',1,0,0);
+upsert into HBTB_STREAMING_INGESTION_OFFSET(BATCH_INSTANCE_ID ,TOPIC ,PARTITION , OFFSET_START,OFFSET_END) values ('resse2','qa-shore-dbz.SEAWARE.GROUP_HISTORY_HEADER',2,0,0);
+
+spark-submit --name Debezium_GROUP_HISTORY_HEADER --class com.virginvoyages.kafka.ingestion.Debezium --properties-file /data/apps/talend/shared/scripts/nbx/Ship-to-shore/seaware_config/SrcSeawareaGroupHistoryHeader_TgtSeawareaGroupHistoryHeader --master yarn --deploy-mode cluster --num-executors 2 --driver-memory 2g --executor-memory 2g --executor-cores 2 --jars /data/apps/talend/shared/scripts/nbx/Metadata/virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar /data/apps/talend/shared/scripts/nbx/Ship-to-shore/kafka_to_hive_sync-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+

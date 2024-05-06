@@ -1,0 +1,21 @@
+CREATE EXTERNAL TABLE hive_schema_stg.booking_detail_dim(
+  booking_detail_skey int8,  
+  voyage_id varchar(50), 
+  booking_id varchar(50), 
+  booking_link_id varchar(50), 
+  status varchar(50), 
+  cancellation_reason varchar(50), 
+  waiver_code varchar(50), 
+  waiver_status varchar(50), 
+  payment_status varchar(50), 
+    reservation_number varchar(50),
+		src_deleted_flag boolean,
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash varchar(50), 
+  md5_hash varchar(50))
+STORED AS PARQUET  
+LOCATION
+  's3://vv-qa-emr-cluster/data/mart/hvtb_mart_dim_booking_detail' 
+  
+ CREATE OR REPLACE VIEW shipdw.booking_detail_dim AS SELECT * FROM hive_schema_stg.booking_detail_dim with no schema binding;

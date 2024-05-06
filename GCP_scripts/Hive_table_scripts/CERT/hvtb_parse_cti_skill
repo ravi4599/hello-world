@@ -1,0 +1,13 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_parse_cti_skill(skillid BIGINT, skillname STRING, mediatypeid BIGINT, mediatypename STRING, campaignid BIGINT, isactive BOOLEAN, requiredisposition BOOLEAN, isoutbound BOOLEAN, scriptid BIGINT, scriptname STRING, initialpriority BIGINT, maxpriority BIGINT, servicelevelthreshold BIGINT, servicelevelgoal BIGINT, etl_load_dt TIMESTAMP, batchtime TIMESTAMP)
+PARTITIONED BY (part_date DATE)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-cert-cluster/data/apps/nbx/hive/parsing/cti_skill/hvtb_parse_cti_skill'
+TBLPROPERTIES (
+  'transient_lastDdlTime' = '1659630332'
+);

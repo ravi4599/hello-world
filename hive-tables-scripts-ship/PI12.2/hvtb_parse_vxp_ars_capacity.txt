@@ -1,0 +1,2 @@
+spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_ars_capacity(addedby,addeddate,capacityid,holdcapacity,isdeleted,lastmodifiedby,lastmodifieddate,maximumwaitlistcount,minimumselling,totalcapacity,VoyageId,BatchTime, ShipCode, Part_Date) AS
+select * from shipdw.hvtb_lnd_vxp_ars_capacity """)

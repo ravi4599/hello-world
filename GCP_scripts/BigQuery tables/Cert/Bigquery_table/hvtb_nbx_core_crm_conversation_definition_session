@@ -1,0 +1,35 @@
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_crm_conversation_definition_session      
+(
+convdefinition_session_skey bigint,
+id string,
+ChannelType string,
+ConversationDefinitionId string,
+src_livechattranscript_id string,
+src_case_id string,
+versionnumber int,
+HasErrorLogs boolean,
+IntegrationName string,
+IntegrationType string,
+Language string,
+SessionDuration int,
+SessionEndType string,
+SessionStartTime timestamp,
+SessionStatus string,
+SessionTransferResult string,
+SessionTransferTargetType string,
+SessionTransferType string,
+createddate timestamp,
+lastmodifieddate timestamp,
+isdeleted boolean,
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash string,
+md5_hash string)
+OPTIONS (format = 'PARQUET',
+uris = ['gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_conversation_definition_session/*']
+);
+
+ 
+
+
+CREATE OR REPLACE VIEW crm.core_crm_conversation_definition_session AS SELECT * FROM hive_schema_stg.hvtb_nbx_core_crm_conversation_definition_session;

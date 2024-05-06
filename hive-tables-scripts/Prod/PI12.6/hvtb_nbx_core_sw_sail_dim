@@ -1,0 +1,31 @@
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_sail_dim`(
+  `sail_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_sail_id` int, 
+  `sail_days` int, 
+  `sail_route_code` string, 
+  `sail_port_from` string, 
+  `sail_port_to` string, 
+  `sail_geog_area_code` string, 
+  `dep_ref_id` int, 
+  `arr_ref_id` int, 
+  `sail_date_from` timestamp, 
+  `sail_date_to` timestamp, 
+  `is_active` string, 
+  `ship_id` int, 
+  `is_fake` string, 
+  `etl_ld_status` string, 
+  `load_dt` timestamp, 
+  `upd_dt` timestamp, 
+  `primaryhash` string, 
+  `md5_hash` string, 
+  `scd_hash` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_sail_dim'

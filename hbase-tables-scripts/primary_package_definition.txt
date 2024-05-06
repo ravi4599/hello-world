@@ -1,0 +1,21 @@
+CREATE TABLE PRIMARY_PACKAGE_DEFINATION
+(
+   CODE varchar(0) PRIMARY KEY,
+   VACATION_DATE varchar(0),
+   TYPE varchar(0),
+   SAIL_ID varchar(0),
+   SEASON varchar(0),
+   DESTINATION varchar(0),
+   ACTIVE_FLAG varchar(0),
+   SORT_SEQ varchar(0),
+   COMMENTS varchar(0),
+   CANC_SESSION_ID varchar(0),
+   CANCELED_AT varchar(0),
+   PACKAGE_ID varchar(0),
+   PACKAGE_NAME varchar(0),
+   ROUTE_CODE varchar(0),
+   SAIL_DAYS varchar(0),
+   SAIL_INFO varchar(0),
+   SAIL_SEGMENTS varchar(0)
+)
+;

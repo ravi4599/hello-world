@@ -1,0 +1,5 @@
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jActivitySynonym','HVTB_NBX_CORE_CALRECO_activity','HIVE','HVTB_NBX_CORE_CALRECO_shipactivities_with_topics','HIVE','realtime',now())
+
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jSailorSynonym','HVTB_NBX_CORE_CALRECO_sailor','HIVE','hvtb_nbx_core_sailorattributes_infegy','HIVE','realtime',now())
+
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jMatchScore','HBTB_NBX_SEAWARE_RESERVATION','HIVE','HVTB_NBX_CORE_CALRECO_sailor','HIVE','realtime',now()); 

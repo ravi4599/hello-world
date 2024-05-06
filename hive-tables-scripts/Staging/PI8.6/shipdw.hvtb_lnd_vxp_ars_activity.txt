@@ -1,0 +1,10 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_ars_activity(activityid string,activitydetailid string ,activitylocationid string,bookingcloseduration int,isenable boolean,iswaitlistenable boolean,ispackageable boolean,isbookable boolean ,activitygroupid string,portcode string,code string,currencycode string  ,ismultiplebookingallowed boolean ,pricetype string ,level string,isdeleted boolean,addeddate timestamp,lastmodifieddate timestamp,addedby string,lastmodifiedby string,activitygroupcode string,isvip boolean,isgiftable boolean,capacityid string,name string,accesstype string,decsription string,additionalinfo string ,description string,cmgv  sid string,maxage int,isadaaccessible boolean,minage int, `VoyageId` string, `BatchTime` timestamp)
+PARTITIONED BY (`Part_Date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-staging-emr-cluster/data/landing/hvtb_lnd_vxp_ars_activity'

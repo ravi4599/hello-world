@@ -1,0 +1,25 @@
+DROP TABLE IF EXISTS hive_schema_stg.vts_case_summary_fact;
+
+CREATE EXTERNAL TABLE hive_schema_stg.vts_case_summary_fact
+(
+team	varchar(100),
+source	varchar(20),
+origin	varchar(20),
+queue	varchar(100),
+reason	varchar(100),
+resolution	varchar(255),
+sub_resolution	varchar(255),
+date	date,
+hour	varchar(10),
+total_cases_cnt	int,
+handled_cases_cnt	int,
+target_case_productivity_pct	int,
+target_cases_sla	int,
+cases_per_team_queue_cnt	int,
+total_value_duration	float,
+target_avg_value_duration_hrs	int,
+etl_ld_dt	timestamp,
+etl_upd_dt 	timestamp)
+STORED AS PARQUET  
+LOCATION 's3://vv-dev-emr-cluster/data/mart/vts/hvtb_mart_vts_case_summary_fact';
+

@@ -1,0 +1,6 @@
+
+create or replace view seaware.geography_dim as
+select
+*
+from hive_schema_stg.geography_dim  
+;

@@ -1,0 +1,17 @@
+spark.sql("""CREATE EXTERNAL TABLE vv_db.hvtb_parse_sw_package_init_package_link(
+   ITIN_RECORD_ID int ,
+    PACKAGE_ID int ,
+   `op` string, 
+  `ts_ms` timestamp, 
+  `voyageid` string, 
+  `batchtime` timestamp)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/parsing/seaware/hvtb_parse_sw_cabin_category'""")

@@ -1,0 +1,1 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_vendor(vendor_skey bigint, voyage_id string, vendor_id string, vendor_name string, src_active_flg boolean, src_deleted_flg boolean, load_dt timestamp, upd_dt timestamp, primaryhash string, md5_hash string) STORED AS PARQUET LOCATION 'gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_vendor';

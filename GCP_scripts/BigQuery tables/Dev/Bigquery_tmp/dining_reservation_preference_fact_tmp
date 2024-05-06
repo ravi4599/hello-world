@@ -1,0 +1,18 @@
+CREATE EXTERNAL TABLE TABLE hive_schema_stg.dining_reservation_preference_fact_tmp(
+  voyage_id string, 
+  person_skey int, 
+  voyage_skey int, 
+  ship_code string, 
+  dining_reservation_detail_skey int, 
+  dining_reservation_preference_skey int, 
+  preference_value string, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string)
+PARTITIONED BY ( 
+  part_dt date)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_fact_dining_reservation_preference/*']
+);

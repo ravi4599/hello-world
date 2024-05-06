@@ -1,0 +1,23 @@
+CREATE EXTERNAL TABLE hive_schema_stg.dining_reservation_item_fact_err(voyage_id string           
+, voyage_skey bigint                                                                                
+, ship_code string                                                                            
+, dining_reservation_detail_skey bigint                                                             
+, dining_menu_skey int                                                                              
+, dining_menu_item_skey int                                                                         
+, sale_detail_dim_skey bigint                                                                       
+, pos_item_skey bigint                                                                              
+, dining_item_ordered_datetime timestamp                                                            
+, dining_item_served_datetime timestamp                                                             
+, dining_item_fulfillment_time_in_seconds int                                                       
+, meal_period_name string                                                                     
+, dining_guest_order_status string                                                            
+, load_dt timestamp                                                                                 
+, upd_dt timestamp                                                                                  
+, primaryhash string                                                                           
+, md5_hash string                                                                              
+, part_dt date                                                                                      
+)                                                                                                   
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_dining_reservation_item_err/*']
+);

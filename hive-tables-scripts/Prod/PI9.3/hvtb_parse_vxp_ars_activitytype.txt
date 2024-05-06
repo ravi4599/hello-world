@@ -1,0 +1,10 @@
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_parse_vxp_ars_activitytype`(`activitytypeid` string, `code` string, `description` string, `activity_name` string, `isdeleted` boolean, `addeddate` timestamp, `lastmodifieddate` timestamp, `addedby` string, `lastmodifiedby` string, `VoyageId` string, `BatchTime` timestamp)
+PARTITIONED BY (`Part_Date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/parse/hvtb_parse_vxp_ars_activitytype'

@@ -1,0 +1,107 @@
+CREATE EXTERNAL TABLE hive_schema_stg.restriction_dim (
+voyage_id varchar(100)
+,restriction_skey int8
+,restriction_id	int
+,person_id int
+,restriction_guid varchar(100)
+,restriction_type varchar(10)
+,restriction_categoryId	int
+,restriction_category_code varchar(20)
+,restriction_category varchar(512)
+,restriction_comment varchar(512)
+,restriction_from_date timestamp
+,restriction_to_date timestamp
+,src_deleted_flag boolean
+,src_created_date timestamp
+,load_dt timestamp
+,upd_dt timestamp
+,primaryhash text
+,md5_hash text) ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/hvtb_mart_dim_restriction'
+  
+CREATE EXTERNAL TABLE hive_schema_stg.restriction_dim (
+voyage_id varchar(100)
+,restriction_skey int8
+,restriction_id	int
+,person_id int
+,restriction_guid varchar(100)
+,restriction_type varchar(10)
+,restriction_categoryId	int
+,restriction_category_code varchar(20)
+,restriction_category varchar(512)
+,restriction_comment varchar(512)
+,restriction_from_date timestamp
+,restriction_to_date timestamp
+,src_deleted_flag boolean
+,src_created_date timestamp
+,load_dt timestamp
+,upd_dt timestamp
+,primaryhash text
+,md5_hash text) ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_restriction'
+
+CREATE EXTERNAL TABLE hive_schema_stg.restriction_dim (
+voyage_id varchar(100)
+,restriction_skey int8
+,restriction_id	int
+,person_id int
+,restriction_guid varchar(100)
+,restriction_type varchar(10)
+,restriction_categoryId	int
+,restriction_category_code varchar(20)
+,restriction_category varchar(512)
+,restriction_comment varchar(512)
+,restriction_from_date timestamp
+,restriction_to_date timestamp
+,src_deleted_flag boolean
+,src_created_date timestamp
+,load_dt timestamp
+,upd_dt timestamp
+,primaryhash text
+,md5_hash text) ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/mart/hvtb_mart_dim_restriction'
+
+CREATE EXTERNAL TABLE hive_schema_stg.restriction_dim (
+voyage_id varchar(100)
+,restriction_skey int8
+,restriction_id	int
+,person_id int
+,restriction_guid varchar(100)
+,restriction_type varchar(10)
+,restriction_categoryId	int
+,restriction_category_code varchar(20)
+,restriction_category varchar(512)
+,restriction_comment varchar(512)
+,restriction_from_date timestamp
+,restriction_to_date timestamp
+,src_deleted_flag boolean
+,src_created_date timestamp
+,load_dt timestamp
+,upd_dt timestamp
+,primaryhash text
+,md5_hash text) ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-staging-cluster/data/mart/hvtb_mart_dim_restriction'  

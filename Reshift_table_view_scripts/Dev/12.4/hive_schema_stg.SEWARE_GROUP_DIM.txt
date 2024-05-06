@@ -1,0 +1,23 @@
+CREATE EXTERNAL TABLE hive_schema_stg.SEWARE_GROUP_DIM         
+(
+GROUP_ID int,
+REC_START_DTTM timestamp,
+REC_END_DTTM timestamp,
+SRC_GROUP_ID int,
+GROUP_INIT_DATE timestamp,
+GROUP_STATUS char(2),
+GROUP_TYPE Varchar(15),
+GROUP_NAME Varchar(255),
+GROUP_MODE Varchar(15),
+IS_INTERNAL Char(1),
+SOURCE_CODE Varchar(15),
+OFFICE_CODE Varchar(15),
+OPERATOR Varchar(30),
+N_OF_GUESTS int,
+CANCELLATION_DATE timestamp,
+etl_ld_status Varchar(30), 
+load_dt timestamp, 
+upd_dt timestamp )
+STORED AS PARQUET
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_group_dim';

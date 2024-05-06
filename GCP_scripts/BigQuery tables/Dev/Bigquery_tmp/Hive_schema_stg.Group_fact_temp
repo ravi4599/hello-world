@@ -1,0 +1,32 @@
+
+CREATE EXTERNAL TABLE `hive_schema_stg.seaware_Group_fact_tmp`(
+  `snapshot_time` timestamp, 
+  `group_id` int, 
+  `guest_seqn` int, 
+  `package_id` int, 
+  `invoice_item_type_id` int, 
+  `price_area_id` int, 
+  `ship_id` int, 
+  `agent_id` int, 
+  `agency_id` int, 
+  `promotion_id` int, 
+  `addon_id` int, 
+  `cardeck_id` int, 
+  `shorex_id` int, 
+  `hotel_group_req_id` int, 
+  `sail_id` int, 
+  `amount` Numeric, 
+  `commission_percent` Numeric, 
+  `quantity` Numeric, 
+  `currency` string, 
+  `currency_rate` Numeric, 
+  `cabin_category` string, 
+  `generic_category` string, 
+   load_dt timestamp,
+   upd_dt timestamp,
+   part_date date
+   )
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_nbx_core_sw_group_fact/*']);
+  

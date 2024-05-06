@@ -1,0 +1,14 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_fact_voyage_well_err(voyage_id string,ship_code string,voyage_skey int,person_skey int,cruise_contract_signed_datetime timestamp,voyage_well_contract_signed_datetime timestamp,is_health_contract_signed boolean,health_contract_signed_datetime timestamp,is_fit_to_travel boolean,is_thermal_check_passed boolean,thermal_check_datetime timestamp,is_covid_test_passed boolean,covid_test_datetime timestamp,covid_vaccination_status string,covid_last_vaccination_datetime date,covid_vaccination_type_name string,is_booster_dose_received boolean,booster_dose_received_datetime date,load_dt timestamp,upd_dt timestamp,primaryhash string,md5_hash string)
+PARTITIONED BY (part_dt date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_voyage_well_err'
+TBLPROPERTIES (
+  'bucketing_version' = '2',
+  'transient_lastDdlTime' = '1600817424'
+);

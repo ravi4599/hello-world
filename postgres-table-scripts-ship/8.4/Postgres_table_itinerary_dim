@@ -1,0 +1,4 @@
+drop table hive_schema_stg.itinerary_dim cascade
+
+
+Create table hive_schema_stg.itinerary_dim(itinerary_skey int8, voyage_id text, voyage_number text, itinerary_id text, voyage_itinerary_guid text, itinerary_name text, itinerary_day int, itinerary_embark_dt timestamp, itinerary_debark_dt timestamp, itinerary_embark_port_code text, itinerary_debark_port_code text, gangway_open_time timestamp, gangway_close_time timestamp, itinerary_departure_time timestamp, itinerary_arrival_time timestamp, itinerary_isseaDay boolean, itinerary_day_date timestamp,src_active_flag boolean,src_deleted_flag boolean ,load_dt timestamp, upd_dt timestamp, primaryhash text, md5_hash text)

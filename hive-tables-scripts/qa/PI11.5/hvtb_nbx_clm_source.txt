@@ -1,0 +1,21 @@
+drop table vv_db.hvtb_nbx_clm_source;
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_clm_source(
+fullvisitorId string,
+ga_lead_id string,
+SessionDate timestamp,
+calc_client_id integer,
+crm_lead_id string,
+crmChangedTime timestamp,
+clientStartDate timestamp,
+OFCXcnt bigint,
+BKCLTMCnt bigint,
+BKCnt bigint,
+CLBKCnt bigint,
+TMCnt bigint,
+resBooked string,
+resCurrent string,
+resPast string,
+Segment string) 
+STORED AS PARQUET
+LOCATION
+  's3://vv-qa-emr-cluster/data/mart/hvtb_nbx_clm_source';

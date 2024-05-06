@@ -1,0 +1,7 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_mart_lkp_partner_share_lkup`(
+  `partner_share_skey` bigint, 
+  `revenue_type` string, 
+  `item_plu_group_num` string, 
+  `partner_share_pct` string, 
+  `vv_share_pct` string, 
+  `share_type` string) STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_lkp_partner_share_lkup';

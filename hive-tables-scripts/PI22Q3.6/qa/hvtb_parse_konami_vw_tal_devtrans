@@ -1,0 +1,60 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_parse_konami_vw_tal_devtrans`(
+  `gameid` decimal(10,0), 
+  `dttypid` decimal(5,0), 
+  `curid` decimal(4,0), 
+  `varianceamt` decimal(14,2), 
+  `compexpire` timestamp, 
+  `creditpoint` decimal(14,2), 
+  `proderrcode` string, 
+  `pprlineno` decimal(4,0), 
+  `transid` decimal(16,0), 
+  `priority` decimal(1,0), 
+  `devid` decimal(10,0), 
+  `playid` decimal(10,0), 
+  `jackpotname` string, 
+  `seatnum` decimal(2,0), 
+  `ptnid` decimal(10,0), 
+  `acctid` decimal(10,0), 
+  `cardid` decimal(10,0), 
+  `paperrefnum` string, 
+  `checknum` string, 
+  `controlnum` decimal(16,0), 
+  `evtid` decimal(10,0), 
+  `denom` decimal(17,5), 
+  `debitamt` decimal(14,2), 
+  `creditamt` decimal(14,2), 
+  `balanceamt` decimal(14,2), 
+  `compid` decimal(10,0), 
+  `voucherid` decimal(16,0), 
+  `pcalcid` decimal(2,0), 
+  `pointratio` decimal(10,6), 
+  `comppointratio` decimal(10,6), 
+  `debitpoint` decimal(14,2), 
+  `debitcomppoint` decimal(14,2), 
+  `creditcomppoint` decimal(14,2), 
+  `debitbonuspoint` decimal(14,2), 
+  `creditbonuspoint` decimal(14,2), 
+  `gstid` decimal(5,0), 
+  `shiftid` decimal(1,0), 
+  `yyyyinserted` decimal(4,0), 
+  `mminserted` decimal(2,0), 
+  `ddinserted` decimal(2,0), 
+  `dateinserted` timestamp, 
+  `lastmoddate` timestamp, 
+  `lastmodby` string, 
+  `creditbonuscomppoint` decimal(14,2), 
+  `debittierpoint` decimal(14,2), 
+  `credittierpoint` decimal(14,2), 
+  `voyageid` string, 
+  `batchtime` timestamp, 
+  `shipcode` string)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/parse/hvtb_parse_konami_vw_tal_devtrans'

@@ -1,0 +1,46 @@
+
+
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.device_revenue_fact_tmp (
+  voyage_id string, 	
+  ship_code string, 	
+  voyage_skey bigint, 	
+  device_skey bigint,
+  game_skey bigint,  
+  game_date_time timestamp, 	
+  opener_amount bigint, 	
+  opener_adj_amount bigint, 	
+  closer_amount bigint, 	
+  closer_adj_amount bigint, 	
+  fill_amount bigint, 	
+  fill_adj_amount bigint, 	
+  credit_amount bigint, 	
+  credit_adj_amount bigint, 	
+  need_amount bigint, 	
+  estimated_drop_amount bigint, 	
+  unposted_drop_amount bigint, 	
+  posted_drop_amount bigint, 	
+  posted_drop_other_amount bigint, 	
+  posted_drop_other_adj_amount bigint, 	
+  marker_amount bigint, 	
+  marker_adj_amount bigint, 	
+  table_jackpot_amount bigint, 	
+  table_jackpot_adjustment_amount bigint, 	
+  posted_drop_promochip_amount bigint, 	
+  posted_drop_promo_adj_amount bigint, 	
+  cash_drop_amount bigint, 	
+  total_drop_amount bigint, 	
+  table_win_amount bigint, 	
+  hold_pct bigint, 	
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string,
+  part_dt date
+)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_device_revenue/*']
+ 
+);
+
+

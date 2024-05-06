@@ -1,0 +1,11 @@
+CREATE  EXTERNAL TABLE hive_schema_stg.order_fact
+WITH PARTITION COLUMNS
+OPTIONS (
+  uris=['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_order/*'],
+  format=PARQUET,
+  hive_partition_uri_prefix='gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_order/'
+);
+
+
+
+CREATE OR REPLACE VIEW shipdw.order_fact as SELECT * FROM hive_schema_stg.order_fact;

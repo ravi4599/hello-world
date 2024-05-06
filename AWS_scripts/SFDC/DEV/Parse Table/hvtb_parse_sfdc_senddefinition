@@ -1,0 +1,1 @@
+create or replace view vv_db.hvtb_parse_sfdc_senddefinition as select * from vv_db.hvtb_lnd_sfdc_senddefinition;

@@ -1,0 +1,22 @@
+
+
+CREATE TABLE hive_schema_stg.cabin_dim (
+	voyage_id text NULL,
+	cabin_skey int8 NULL,
+	cabin_id int Null,
+	cabin_number text NULL,
+	ship_code text NULL,
+	cabin_floor_name text NULL,
+	cabin_category text NULL,
+	cabin_type text NULL,
+	cabin_view text NULL,
+	cabin_category_generic text NULL,
+	src_deleted_flag boolean NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL
+);
+
+
+Create view shipdw.cabin_dim as select * from hive_schema_stg.cabin_dim

@@ -1,0 +1,23 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_table_management_guests_preferencetype(
+  addeddate timestamp, 
+  public_id string, 
+  code string, 
+  dxp_id string, 
+  name string, 
+  active boolean, 
+  addedby string, 
+  lastmodifiedby string, 
+  lastmodifieddate timestamp, 
+  voyageid string, 
+  batchtime timestamp, 
+  shipcode string)
+PARTITIONED BY ( 
+  part_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-cert-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_table_management_guests_preferencetype';

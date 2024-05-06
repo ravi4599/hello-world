@@ -1,0 +1,5 @@
+CREATE EXTERNAL TABLE hive_schema_stg.itinerary_dim_tmp(itinerary_skey BIGINT, voyage_id STRING, voyage_number STRING, itinerary_id STRING, voyage_itinerary_guid STRING, itinerary_name STRING, itinerary_day INT, itinerary_embark_dt TIMESTAMP, itinerary_debark_dt TIMESTAMP, itinerary_embark_port_code STRING, itinerary_debark_port_code STRING, gangway_open_time TIMESTAMP, gangway_close_time TIMESTAMP, itinerary_departure_time TIMESTAMP, itinerary_arrival_time TIMESTAMP, itinerary_isSeaDay BOOLEAN, itinerary_day_date TIMESTAMP, src_active_flag BOOLEAN, src_deleted_flag BOOLEAN, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_itinerary/*']
+);

@@ -1,0 +1,11 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_table_management_reservations_reservationtable (auto_assigned boolean,addeddate TIMESTAMP,public_id STRING,reservation_id STRING,table_id STRING,addedby STRING,lastmodifiedby STRING,lastmodifieddate TIMESTAMP,VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date)
+ROW FORMAT SERDE 	
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 	
+STORED AS INPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 	
+OUTPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'	
+LOCATION	
+  's3://vv-prod-emr-cluster/data/landing/hvtb_lnd_vxp_table_management_reservations_reservationtable'
+  
+CREATE VIEW shipdw.hvtb_parse_vxp_table_management_reservations_reservationtable as select * from shipdw.hvtb_lnd_vxp_table_management_reservations_reservationtable

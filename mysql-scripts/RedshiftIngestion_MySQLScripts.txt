@@ -1,0 +1,42 @@
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name, source_table_type, load_frequency ,created_on) 
+values('jNewsLetterSailorTribeOnDemand','HBTB_NBX_SAILOR_TRIBES_ONDEMAND','Redshift','HBTB_NBX_SAILOR_TRIBES_ONDEMAND','Hbase','realtime',now());
+
+
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name, source_table_type, load_frequency ,created_on) 
+values('jNewsLetterAcxiomOnDemand','HBTB_NBX_ACXIOM_ONDEMAND','Redshift','HBTB_NBX_ACXIOM_ONDEMAND','Hbase','realtime',now());
+
+
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name, source_table_type, load_frequency ,created_on) 
+values('jNewsLetterTribeSubTribe','','','','Hbase','realtime',now());
+
+
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name, source_table_type, load_frequency ,created_on) 
+values('jNewsLetterSeawareReservation','HBTB_NBX_SEAWARE_RESERVATION','Redshift','HBTB_NBX_SEAWARE_RESERVATION','Hbase','realtime',now());
+
+
+
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name, source_table_type, load_frequency ,created_on) 
+values('jNewsLetterSailorTribes','HBTB_NBX_SAILOR_TRIBES','Redshift','HBTB_NBX_SAILOR_TRIBES','Hbase','realtime',now());
+
+
+
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jActivityMapping','HBTB_NBX_SAILOR_NBX_ACTIVITY_MAPPING','Redshift','HBTB_NBX_SAILOR_NBX_ACTIVITY_MAPPING','Hbase','realtime',now()); 
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jCalendarFeedback','HBTB_NBX_SAILOR_CALENDAR_FEEDBACK','Redshift','HBTB_NBX_SAILOR_CALENDAR_FEEDBACK','Hbase','realtime',now()); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,19 @@
+create external table hive_schema_stg.seaware_sail_dim (
+ SAIL_ID int,
+ REC_START_DTTM timestamp,
+ REC_END_DTTM timestamp,
+ SRC_SAIL_ID int,
+ SAIL_DAYS int, 
+ SAIL_ROUTE_CODE varchar(30),
+ SAIL_PORT_FROM varchar(5),
+ SAIL_PORT_TO varchar(5),
+ SAIL_GEOG_AREA_CODE varchar(15),
+ DEP_REF_ID int,
+ ARR_REF_ID int,
+ SAIL_DATE_FROM timestamp,
+ SAIL_DATE_TO timestamp,
+ etl_ld_dt timestamp,
+ etl_upd_dt timestamp
+) 
+STORED AS PARQUET  
+Location 's3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_sail_dim' ;

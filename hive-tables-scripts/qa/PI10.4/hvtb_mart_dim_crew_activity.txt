@@ -1,0 +1,20 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_mart_dim_crew_activity`(
+  `crew_activity_skey` int, 
+  `voyage_id` string, 
+  `activity_id` int, 
+  `activity_name` string, 
+  `activity_type` string, 
+  `is_active` boolean, 
+  `is_deleted` boolean, 
+  `load_dt` timestamp, 
+  `upd_dt` timestamp, 
+  `primaryhash` string, 
+  `md5_hash` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/mart/hvtb_mart_dim_crew_activity'

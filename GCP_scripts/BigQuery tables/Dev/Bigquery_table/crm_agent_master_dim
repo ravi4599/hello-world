@@ -1,0 +1,46 @@
+CREATE EXTERNAL TABLE `hive_schema_stg.crm_agent_master_dim`(
+    `agent_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `id` string, 
+  `seaware_agent_id__c` string, 
+  `name` string, 
+  `lastname` string, 
+  `firstname` string, 
+  `mailingcity` string, 
+  `mailingcountry` string, 
+  `mailingpostalcode` string, 
+  `mailingstate` string, 
+  `mailingstreet` string, 
+  `othercity` string, 
+  `othercountry` string, 
+  `otherphone` string, 
+  `otherpostalcode` string, 
+  `otherstate` string, 
+  `otherstreet` string, 
+  `seaware_agencyid__c` string, 
+  `createddate` timestamp, 
+  `agent_status__c` string, 
+  `agent_type_c` string, 
+  `preferred_contact_phone_number__c` string, 
+  `email` string, 
+  `ownerid` string, 
+  `role__c` string, 
+  `fmdc_approver__c` string, 
+  `seacity_access_key__c` string, 
+  `md5_dim` string, 
+   etl_ld_status string,
+   load_dt timestamp,
+   upd_dt timestamp,
+   primaryhash string,
+   md5_hash string,
+   scd_hash string
+)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_mart_crm_agent_master_dim/*']);
+
+
+create or replace view crm.crm_agent_master_dim  as select * from hive_schema_stg.crm_agent_master_dim;
+
+

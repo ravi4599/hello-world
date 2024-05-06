@@ -1,0 +1,41 @@
+drop table hive_schema_stg.order_fact
+
+CREATE EXTERNAL TABLE hive_schema_stg.order_fact         
+(voyage_id text ,
+	ship_code text  ,
+	voyage_skey int8  ,
+	order_detail_skey int8  ,
+	venue_skey int8 ,
+	order_placed_by_person_skey int8 ,
+	order_delivered_to_person_skey int8 ,
+	order_delivered_by_person_skey int8 ,
+	sale_detail_skey int8 ,
+	order_placed_datetime timestamp ,
+	order_modified_datetime timestamp ,
+	order_min_wait_time int4 ,
+	order_max_wait_time int4 ,
+	order_delivery_time_taken_mins int4 ,
+	order_delayed_flg boolean ,
+	order_delivered_datetime timestamp ,
+	order_amount float8 ,
+	order_cancellation_date timestamp ,
+	order_cancellation_refund_amount float8 ,
+	order_cancellation_reason text ,
+	order_total_number_items int4 ,
+	order_origin_venue_skey int8 ,
+	order_delivered_at_venue_skey int8 ,
+	load_dt timestamp ,
+	upd_dt timestamp ,
+	primaryhash text ,
+	md5_hash text ,
+	part_dt text )
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/hvtb_mart_fact_order' 
+
+CREATE or replace VIEW shipdw.order_fact  AS SELECT * FROM hive_schema_stg.order_fact with no schema binding;

@@ -1,0 +1,17 @@
+
+spark.sql("""CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_payment_schedule_dim(
+  res_payment_due_item_id bigint,
+  src_res_payment_due_item_id int,
+  res_id int, 
+  guest_id int, 
+  payment_type string, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  due_date date, 
+  amount double, 
+  etl_ld_status string, 
+  load_dt timestamp, 
+  upd_dt timestamp,
+  primaryhash string, 
+  md5_hash string)
+  STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_payment_schedule_dim'""")

@@ -1,0 +1,27 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_mart_fact_booking`(
+  `voyage_id` string, 
+  `booking_detail_skey` bigint, 
+  `person_skey` bigint, 
+  `activity_skey` bigint, 
+  `activity_slot_skey` bigint, 
+  `vendor_skey` bigint, 
+  `booked_by_person_skey` bigint, 
+  `paid_by_person_skey` bigint, 
+  `number_of_people` int, 
+  `booking_paid_amount` double, 
+  `booking_remaining_amount` double, 
+  `refund_paid_amount` double, 
+  `refund_remaining_amount` double, 
+  `load_dt` timestamp, 
+  `upd_dt` timestamp)
+PARTITIONED BY ( 
+  `part_dt` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/hvtb_mart_fact_booking'
+

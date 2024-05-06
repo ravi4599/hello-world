@@ -1,0 +1,4 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_mxp_pos_vvirgin_items_ordered(CrewID int,POSSaleID bigint,PLUNr bigint,ItemName STRING,ItemGroup STRING,ItemCategory STRING,ItemOrderedAtTime TIMESTAMP,ItemServedAtTime TIMESTAMP,LocationCode STRING,CheckStatus STRING,TableID int,VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) STORED AS parquet LOCATION 's3://vv-prod-emr-cluster/data/landing/hvtb_lnd_mxp_pos_vvirgin_items_ordered'
+
+
+CREATE VIEW shipdw.hvtb_parse_mxp_pos_vvirgin_items_ordered as select * from shipdw.hvtb_lnd_mxp_pos_vvirgin_items_ordered

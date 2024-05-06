@@ -1,0 +1,35 @@
+CREATE EXTERNAL TABLE hive_schema_stg.core_crm_convdefdialog_daily_metric_dim_tmp(
+convdefdialogdailymetric_skey bigint,
+Id string,
+Article string,
+ArticleName string,
+BotDefinitionName string,
+ChannelType string,
+ConversationDefinitionId string,
+DialogDefinitionId string,
+DialogDefinitionName string,
+IntegrationType string,
+IntegrationName string,
+IsSuccessful boolean,
+Language string,
+MetricDateTime date,
+MetricType string,
+name string,
+sessionendtype string,
+sessiontransfertype string,
+staticchoicevalue string,
+value int,
+createddate timestamp,
+lastmodifieddate timestamp,
+isdeleted boolean,
+  load_dt timestamp,
+  upd_dt timestamp,
+  primaryhash string,
+  md5_hash string
+  )
+  OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/temp/hvtb_nbx_mart_crm_convdefdialog_daily_metric/*']
+);
+  
+

@@ -1,0 +1,20 @@
+CREATE TABLE hive_schema_stg.person_loyalty_dim
+(
+	voyage_id varchar(100),
+	person_loyalty_skey int8,
+	person_loyalty_id varchar(100),
+	person_id varchar(100),
+	person_card_type varchar(100),
+	person_card_status varchar(100),
+	person_card_level int,
+	person_card_color int,
+	person_card_color_value varchar(100),
+	load_dt timestamp,
+	upd_dt timestamp,
+	primaryhash text,
+	md5_hash text
+);
+
+CREATE OR REPLACE VIEW shipdw.person_loyalty_dim
+AS 
+SELECT * FROM hive_schema_stg.person_loyalty_dim;

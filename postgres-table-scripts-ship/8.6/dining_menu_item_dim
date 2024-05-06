@@ -1,0 +1,14 @@
+CREATE TABLE hive_schema_stg.dining_menu_item_dim (
+	dining_menu_item_skey int8 NOT NULL,
+	voyage_id text NULL,
+	dining_menu_item_code text NULL,
+	dining_menu_item_name text NULL,
+	dining_menu_item_group text NULL,
+	dining_menu_item_category text NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL
+); 
+
+create view shipdw.dining_menu_item_dim as select * from hive_schema_stg.dining_menu_item_dim;

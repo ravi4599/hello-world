@@ -1,0 +1,19 @@
+CREATE EXTERNAL TABLE hive_schema_stg.teammember_schedule_fact_tmp(voyage_id string               
+, ship_code string                                                                            
+, voyage_skey bigint                                                                                
+, person_skey bigint                                                                                
+, venue_skey bigint                                                                                 
+, schedule_date_skey bigint                                                                         
+, schedule_date date                                                                                
+, schedule_day_period string                                                                  
+, team_member_role string                                                                     
+, load_dt timestamp                                                                                 
+, upd_dt timestamp                                                                                  
+, primaryhash string                                                                          
+, md5_hash string
+, part_dt date
+)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_fact_teammember_schedule/*']                
+);

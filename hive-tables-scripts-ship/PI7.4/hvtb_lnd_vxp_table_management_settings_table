@@ -1,0 +1,6 @@
+--------Table_management.settings_table
+
+
+spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_table_management_settings_table (id int,created_utc TIMESTAMP,public_id STRING,origin_public_id STRING,name STRING,size int,shape STRING,reservation_type STRING,x int,y int,is_multiparty boolean,is_blocked boolean,is_accessible boolean,is_vip boolean,is_turned boolean,is_high_chair boolean,group_id int,layout_id int,VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_table_management_settings_table'""");
+
+spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_table_management_settings_table as select * from shipdw.hvtb_lnd_vxp_table_management_settings_table""");

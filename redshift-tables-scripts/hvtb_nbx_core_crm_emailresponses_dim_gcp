@@ -1,0 +1,27 @@
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_crm_emailresponses_dim_gcp(
+  Emailresponses_skey bigint, 
+  id varchar(255), 
+  Lead_ID varchar(255)
+  contact_id varchar(255), 
+  email_opens timestamp, 
+  email_uniqueclicks double precision, 
+  email_unsubscribes timestamp, 
+  campaign_member_id varchar(255), 
+  emailid varchar(255), 
+  email_from_name varchar(255), 
+  email_senddefinition varchar(255), 
+  email_subjectline varchar(255), 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash varchar(255), 
+  md5_hash varchar(255))
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/hvtb_nbx_mart_dim_crm_emailresponses';
+  
+  Create or replace view shipdw.hvtb_nbx_core_crm_emailresponses_dim as select * from hive_schema_stg.hvtb_nbx_core_crm_emailresponses_dim_gcp with no schema binding;

@@ -1,0 +1,5 @@
+drop table vv_db.hvtb_parse_cti_call;
+CREATE EXTERNAL TABLE vv_db.hvtb_parse_cti_call(contactid bigint, mastercontactid bigint, pointofcontactname string, agentid bigint, teamid bigint, skillid bigint, campaignid bigint, contactstart timestamp, prequeueseconds bigint, inqueueseconds bigint, postqueueseconds bigint, totaldurationseconds bigint, abandonseconds bigint, callbacktime bigint, agentseconds bigint, isoutbound boolean, transferindicatorid boolean, abandoned boolean,acwseconds bigint,confseconds bigint,islogged boolean,isshortabandon boolean,istakeover boolean,releaseseconds bigint,routingtime bigint,holdcount int,holdseconds bigint, etl_load_dt timestamp, batch_time timestamp)
+PARTITIONED BY (part_date date)
+STORED AS PARQUET
+LOCATION 's3://vv-qa-emr-cluster/data/apps/nbx/hive/parsing/cti_call/hvtb_parse_cti_call';

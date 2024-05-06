@@ -1,0 +1,1 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_vxp_locationconstruct_venue_tags (tag_id int,venue_id int,id int,VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) STORED AS parquet LOCATION 's3://vv-staging-emr-cluster/data/parse/hvtb_parse_vxp_locationconstruct_venue_tags'

@@ -1,0 +1,28 @@
+CREATE TABLE hive_schema_stg.location_fact (
+	voyage_id text NULL,
+	ship_code text NOT NULL,
+	voyage_skey int8 NOT NULL,
+	person_skey int8 NOT NULL,
+	venue_skey int8 NULL,
+	event_skey int8 NULL,
+	enter_date_utc_skey int8 NULL,
+	enter_time_utc_skey int8 NULL,
+	enter_datetime_utc timestamp NULL,
+	enter_date_local_skey int8 NULL,
+	enter_time_local_skey int8 NULL,
+	enter_datetime timestamp NULL,
+	exit_date_utc_skey int8 NULL,
+	exit_time_utc_skey int8 NULL,
+	exit_datetime_utc timestamp NULL,
+	exit_date_local_skey int8 NULL,
+	exit_time_local_skey int8 NULL,
+	exit_datetime timestamp NULL,
+	duration_of_stay_seconds int4 NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text, 
+	md5_hash text,
+	part_dt date NULL
+);
+
+create or replace view shipdw.location_fact as select * from hive_schema_stg.location_fact;

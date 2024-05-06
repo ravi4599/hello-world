@@ -1,0 +1,37 @@
+spark.target.sslkafkabrokers q-lab-kfk-app1.nls.virginvoyages.com:9097,q-lab-kfk-app2.nls.virginvoyages.com:9097,q-lab-kfk-app3.nls.virginvoyages.com:9097
+#spark.target.sslkafkabrokers  10.9.100.157:9092,10.9.100.142:9092,10.9.100.37:9092
+#spark.target.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+#spark.target.passvalue SetS@!l2o2o
+spark.target.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+
+spark.target.truststore /etc/script_keystore/kafka.server.0925.truststore.jks
+#spark.target.truststore /etc/script_keystore/dxp.kafka.client.truststore.jks
+spark.target.passvalue SetSail2020
+#spark.ship.keystore  /data/apps/talend/shared/scripts/cap-bigdata-scripts-dev/config/dxp.kafka.client.keystore.jks
+spark.target.keystore  /etc/script_keystore/kafka.server.0925.keystore.jks
+spark.target.kafka.batch.size 16384
+spark.target.kafka.topic dev-ship-vxp-foodbeverage.order
+spark.datasource.hive.warehouse.load.staging.dir /tmp
+spark.datasource.hive.warehouse.metastoreUri thrift://q-lab-hdp-adb3.virginvoyages.qa.dev:9083
+spark.hadoop.hive.llap.daemon.service.hosts @llap0
+spark.hadoop.hive.zookeeper.quorum q-lab-hdp-adb3.virginvoyages.qa.dev:2181,q-lab-hdp-adb2.virginvoyages.qa.dev:2181,q-lab-hdp-adb1.virginvoyages.qa.dev:2181
+spark.sql.hive.hiveserver2.jdbc.url jdbc:hive2://q-lab-hdp-adb3.virginvoyages.qa.dev:2181,q-lab-hdp-adb2.virginvoyages.qa.dev:2181,q-lab-hdp-adb1.virginvoyages.qa.dev:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2
+spark.sql.hive.hiveserver2.jdbc.url.principal hive/_HOST@VIRGINVOYAGES.QA.DEV
+spark.sql.hive.metastore.jars /usr/hdp/current/spark2-client/standalone-metastore/*
+spark.sql.hive.metastore.version 3.0
+spark.sql.warehouse.dir /apps/spark/warehouse
+spark.src.table shipdw.hvtb_lnd_order
+spark.target.coalesce.value 10
+spark.src.config.id SrcShpvxpfoodbevorder
+spark.voyage.id SC2002269NCR
+spark.target.config.id Tgtkfkfoodbevorder
+spark.parent.id SrcVXPRequest-TgtVXPRequest-SC2002269NCR
+spark.isfullrefresh yes
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.isfullrefresh yes
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl q-lab-hdp-adb1.virginvoyages.qa.dev:2181/hbase-secure:nbx.service@VIRGINVOYAGES.QA.DEV:/home/nbx.service/nbx.keytab
+# Operational Config
+spark.oper.metadata.table.mode overwrite
+spark.oper.metadata.table HBTB_NBX_SHORETOSHIP_SYNC_VOYAGEOPS

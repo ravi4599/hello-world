@@ -1,0 +1,11 @@
+-- DROP TABLE hive_schema_stg.menuitem_allergy_fact;
+
+create table hive_schema_stg.menuitem_allergy_fact(
+voyage_id text NULL,
+menu_item_skey int8 NULL,
+allergy_skey int8 NULL,
+src_deleted_flg boolean NULL,
+load_dt timestamp NOT NULL,
+upd_dt timestamp NOT NULL,
+part_date date NOT NULL
+)

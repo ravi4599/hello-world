@@ -1,0 +1,16 @@
+drop table shipdw.hvtb_nbx_landing_xref_reference_type;
+drop table shipdw.hvtb_nbx_parse_xref_reference_type;
+
+CREATE TABLE shipdw.hvtb_nbx_landing_xref_reference_type (
+reference_type_id string ,
+reference_source_id string ,
+reference_type string ,
+op string, 
+ts_ms timestamp, 
+voyageid string, 
+batchtime timestamp, 
+part_date date)
+STORED AS PARQUET
+LOCATION 's3://vv-qa-emr-cluster/data/landing/xref/hvtb_nbx_landing_xref_reference_type';
+
+CREATE VIEW shipdw.hvtb_nbx_parse_xref_reference_type  as select * from shipdw.hvtb_nbx_landing_xref_reference_type ;

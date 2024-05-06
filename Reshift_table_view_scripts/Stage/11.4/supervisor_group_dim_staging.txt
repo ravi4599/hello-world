@@ -1,0 +1,7 @@
+CREATE EXTERNAL TABLE hive_schema_stg.supervisor_group_dim ( voyage_id text, supervisor_group_skey bigint, supervisor_group_id bigint, supervisor_group_code text, supervisor_group_name text, src_active_flag boolean, src_deleted_flag boolean, load_dt timestamp,
+upd_dt timestamp, primaryhash text, md5_hash text ) STORED AS PARQUET LOCATION 's3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_supervisor_group';
+
+
+create or replace shipdw.supervisor_group_dim as  
+select * from hive_schema_stg.supervisor_group_dim  
+with no schema binding;

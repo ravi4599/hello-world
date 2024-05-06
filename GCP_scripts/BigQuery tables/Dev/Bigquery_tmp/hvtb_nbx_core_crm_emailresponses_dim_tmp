@@ -1,0 +1,24 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_crm_emailresponses_dim_tmp(
+Emailresponses_skey bigint,
+  id string,
+  Lead_ID string,
+  contact_id string,
+  email_opens timestamp,
+  email_uniqueclicks double,
+  email_unsubscribes timestamp,
+  campaign_member_id string,
+  emailid string,
+  email_from_name string,
+  email_senddefinition string,
+  email_subjectline string,
+  load_dt timestamp,
+  upd_dt timestamp,
+  primaryhash string,
+  md5_hash string)                                                                      
+)                                                                                                   
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_nbx_mart_dim_crm_emailresponses/*']
+);
+    
+                                                                                       

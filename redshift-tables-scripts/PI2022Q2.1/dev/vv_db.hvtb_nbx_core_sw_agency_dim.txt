@@ -1,0 +1,12 @@
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_sw_agency_dim_src_agency_id(
+src_agency_id varchar(100),
+new_src_agency_id varchar(100))
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_agency_dim_src_agency_id'
+
+
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_sw_agency_dim_agency_id(
+agency_id__c varchar(100),
+new_agency_id__c varchar(100))
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_agency_dim_agency_id'

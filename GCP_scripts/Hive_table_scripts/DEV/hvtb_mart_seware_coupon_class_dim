@@ -1,0 +1,25 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_mart_seware_coupon_class_dim(
+  `coupon_class_id` BIGINT, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `coupon_class` string, 
+  `coupon_class_desc` string, 
+  `coupon_class_code` string, 
+  `gen_per_client` string, 
+  `apply_as_payment` string, 
+  `apply_per_client` string, 
+  `cancel_with_res` string, 
+  `apply_as_discount` string, 
+   load_dt timestamp,
+   upd_dt timestamp,
+   primaryhash string,
+   md5_hash string
+   )
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_seware_coupon_class_dim';

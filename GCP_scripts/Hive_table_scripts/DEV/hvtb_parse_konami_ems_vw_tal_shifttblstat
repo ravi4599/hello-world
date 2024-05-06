@@ -1,0 +1,47 @@
+
+
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_konami_ems_vw_tal_shifttblstat(shiftid decimal(1,0), dateinserted timestamp, devid decimal(10,0), gameid decimal(10,0), gstid decimal(5,0), assetnum string, opentransid decimal(16,0), closetransid decimal(16,0), year decimal(4,0), quarter decimal(1,0), month decimal(2,0), week decimal(2,0), day decimal(2,0), fyear decimal(4,0), fquarter decimal(1,0), fmonth decimal(2,0), opener decimal(14,2), opener_adj decimal(14,2), closer decimal(14,2), closer_adj decimal(14,2), fill decimal(14,2), fill_adj decimal(14,2), credit decimal(14,2), credit_adj decimal(14,2), estdrop decimal(14,2), unposteddrop decimal(14,2), posteddrop decimal(14,2), marker decimal(14,2), marker_adj decimal(14,2), tbl_audit_adj decimal(14,2), cpv decimal(14,2), fod decimal(14,2), voucher decimal(14,2), varianceamt decimal(14,2), lastmoddate timestamp, lastmodby string, tblnetwin decimal(14,2), cpv_adj decimal(14,2), tbljp decimal(14,2), tbljp_adj decimal(14,2), posteddrop_promochip decimal(14,2), posteddrop_other decimal(14,2), posteddrop_promo_adj decimal(14,2), posteddrop_other_adj decimal(14,2), voyageid string, batchtime timestamp, shipcode string)
+PARTITIONED BY (part_date date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-dev-nbx-cluster/data/parse/hvtb_parse_konami_ems_vw_tal_shifttblstat';
+
+gsutil cp gs://vv-dev-nbx-cluster/data/Test_Jar/LandingtoParse/Srchivecasinoshifttblstat_Tgtshifttblstat /home/ext_dileep_kumar_tulugu_capgemin/l2p_config
+
+
+
+gsutil cp gs://vv-dev-frmwrks-test/vv-nbx-data-parser-0.0.1-SNAPSHOT-jar-with-dependencies.jar /home/ext_dileep_kumar_tulugu_capgemin/jars
+
+
+
+UPSERT STATEMENT
+
+
+
+INSERT INTO SHIPDW.HBTB_INGESTION_METADATA(BATCH_INSTANCE_ID,BATCH_ID,PARENTBATCH,SRCCONFIGID,TGTCONFIGID,BATCHSTARTTIME,BATCHENDTIME,BATCH_EXECUTION_STARTTIME,BATCH_EXECUTION_ENDTIME,STATUS,ENVIRONMENT,VOYAGEID,TYPE) VALUES('SrcKfkcasinoshfttblstat-TgtHivecasinoshfttblstat','SrcKfkcasinoshfttblstat-TgtHivecasinoshfttblstat',null,'Srcshifttblstat','Tgtshifttblstat','1900-01-01 00:00:00','1900-01-01 00:00:00','1900-01-01 00:00:00','1900-01-01 00:00:00','Successful','dev','SC2002269NCR','Ingestion');
+
+
+
+select * from shipdw.HBTB_INGESTION_METADATA where BATCH_ID like '%SrcKfkcasinoshfttblstat-TgtHivecasinoshfttblstat%';-
+
+
+delete from shipdw.HBTB_INGESTION_METADATA where BATCH_ID like '%SrcKfkcasinoshfttblstat-TgtHivecasinoshfttblstat%';
+
+
+
+spark submit
+
+
+
+spark-submit --name "casinoshfttblstat" --class com.virginvoyages.parse.ParseFramework --master yarn --deploy-mode cluster --properties-file /home/ext_dileep_kumar_tulugu_capgemin/l2p_config/Srchivecasinoshifttblstat_Tgtshifttblstat --jars /home/ext_dileep_kumar_tulugu_capgemin/jars/virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar /home/ext_dileep_kumar_tulugu_capgemin/jars/vv-nbx-data-parser-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+
+
+yarn application -kill application_1654264238969_0683

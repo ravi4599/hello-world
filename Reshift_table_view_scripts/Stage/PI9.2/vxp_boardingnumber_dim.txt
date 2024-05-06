@@ -1,0 +1,23 @@
+CREATE EXTERNAL TABLE hive_schema_stg.vxp_boardingnumber_dim(
+  voyage_id varchar(50), 
+  boardingnumber_skey int8, 
+  boardingnumber_id varchar(50), 
+  boarding_number int8, 
+  boarding_ship_code varchar(50), 
+  boarding_voyage_number varchar(50), 
+  boarding_slot_number int8, 
+  boarding_slot_start_datetime varchar(50), 
+  boarding_slot_end_datetime varchar(50), 
+  boarding_slot_expected_guest_count int8, 
+  boarding_number_is_active_flg boolean, 
+  boarding_number_added_datetime timestamp, 
+  boarding_last_modified_datetime timestamp, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash varchar(50), 
+  md5_hash varchar(50))
+STORED AS PARQUET 
+LOCATION
+  's3://vv-staging-emr-cluster/data/mart/hvtb_mart_vxp_boardingnumber_dim'
+
+CREATE OR REPLACE VIEW shipdw.vxp_boardingnumber_dim AS SELECT * FROM hive_schema_stg.vxp_boardingnumber_dim with no schema binding;

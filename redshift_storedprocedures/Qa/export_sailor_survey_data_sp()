@@ -1,0 +1,20 @@
+CREATE OR REPLACE PROCEDURE shipdw.export_sailor_survey_data_sp()
+	LANGUAGE plpgsql
+AS $$
+						
+    DECLARE
+       sql varchar(1000);
+       s3_path varchar(1000);
+       iamrole varchar(100);
+       delimiter varchar(10);
+       unload_query varchar(1000);
+
+    BEGIN
+       unload ('SELECT * from shipdw.postvoyage_sailor_survey_rpt where part_dt = (select max(part_dt) from shipdw.postvoyage_sailor_survey_rpt)')
+	to 's3://vv-qa-emr-cluster/data/core/sas/seaware/postvoyage_sailor_survey_rpt/'
+iam_role 'arn:aws:iam::067921692262:role/NBX-Redshift-QA-S3-ReadOnly' PARQUET ALLOWOVERWRITE ;
+    
+    END
+
+$$
+;

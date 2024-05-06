@@ -1,0 +1,18 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.venue_dim_tmp
+(
+ voyage_id string,                                                                             
+ venue_id string,                                                                              
+ venue_name string,                                                                           
+ venue_sector_name string,                                                                     
+ data_src string,                                                                              
+ density_threshold_1 int,                                                                         
+ density_threshold_2 int,                                                                           
+ load_dt timestamp,                                                                                 
+ upd_dt timestamp,                                                                                  
+ primaryhash string,                                                                           
+ md5_hash string,       
+)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_venue/*']
+);

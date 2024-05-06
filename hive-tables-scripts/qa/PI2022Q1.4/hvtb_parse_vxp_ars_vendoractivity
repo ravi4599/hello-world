@@ -1,0 +1,24 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_vxp_ars_vendoractivity(
+	vendoractivityid string,
+	vendorid string,
+	isdeleted boolean,
+	addeddate timestamp,
+	addedby string,
+	lastmodifieddate timestamp,
+	lastmodifiedby string,
+	referencecode string, 
+	VoyageId string, 
+	BatchTime timestamp, 
+	ShipCode string)
+PARTITIONED BY (Part_date date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/data/parse/hvtb_parse_vxp_ars_vendoractivity'
+TBLPROPERTIES (
+  'bucketing_version' = '2'  
+);

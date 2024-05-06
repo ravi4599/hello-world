@@ -1,0 +1,21 @@
+CREATE TABLE hive_schema_stg.booking_detail_dim (
+	booking_detail_skey int8 NOT NULL,
+	voyage_id text NULL,
+	booking_id text NULL,
+	booking_link_id text NULL,
+	status text NULL,
+	cancellation_reason text NULL,
+	waiver_code text NULL,
+	waiver_status text NULL,
+	payment_status text NULL,
+	reservation_number text NULL,
+	src_deleted_flag boolean,
+	booking_location_name string NULL, 
+	booking_source_name string NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL
+);
+
+create view shipdw.booking_detail_dim as select * from hive_schema_stg.booking_detail_dim;

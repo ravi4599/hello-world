@@ -1,0 +1,22 @@
+
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_sw_voyage_with_rel`(
+  `voyage_with_rel_id` int, 
+  `vw_header_id` int, 
+  `src_res_id` int, 
+  `vw_type` string, 
+  `header_is_matched` string, 
+  `res_is_matched` string, 
+  `is_main` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_voyage_with_rel'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1590475151')

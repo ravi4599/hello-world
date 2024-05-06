@@ -1,0 +1,19 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_guest_dim_client_id(
+client_id string,
+new_client_id string)
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_guest_dim_client_id'
+  
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_guest_dim_guest_id(
+guest_id string,
+new_guest_id string)
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_guest_dim_guest_id'
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_guest_dim_src_guest_id(
+src_guest_id string,
+new_src_guest_id string)
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_guest_dim_src_guest_id'
+

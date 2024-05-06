@@ -1,0 +1,35 @@
+Drop table hive_schema_stg.seaware_wearable_fulfillment_fact cascade;
+
+Drop view seaware.seaware_wearable_fulfillment_fact;
+
+CREATE External TABLE hive_schema_stg.seaware_wearable_fulfillment_fact (
+res_id integer,
+sail_id	integer,
+guest_id integer,
+src_res_id integer,
+client_id integer,
+sw_generated_by_flg	boolean,
+sw_wearable_type varchar(100),
+sw_listener_success_flg	boolean,
+sw_listener_error_flg	boolean,
+sw_listener_error_details	varchar(100),
+seaware_to_vxp_success_flg boolean,
+seaware_to_vxp_status varchar(100),
+vxp_to_rrd_success_flg	boolean,
+vxp_to_rrd_status varchar(100),
+vxp_wearable_color varchar(100),
+vxp_rrd_file_received_flg boolean,
+rrd_to_vxp_ingestion_success_flg boolean,
+rrd_to_vxp_ingestion_status	varchar(100),
+load_dt	timestamp,
+upd_dt	timestamp,
+primaryhash varchar(100),
+md5_hash varchar(100))
+PARTITIONED BY ( 
+part_dt date)
+STORED AS PARQUET
+LOCATION
+'s3://vv-dev-emr-cluster/data/mart/hvtb_mart_fact_seaware_wearable_fulfillment';
+
+
+CREATE OR REPLACE VIEW seaware.seaware_wearable_fulfillment_fact AS SELECT * FROM hive_schema_stg.seaware_wearable_fulfillment_fact with no schema binding;

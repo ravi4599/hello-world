@@ -1,0 +1,5 @@
+spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_lnd_request_types(id int,name string,priority int,is_cleaning boolean,at_risk_duration int,sla_duration int,request_duration int,category_id int,VoyageId STRING,BatchTime TIMESTAMP)partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_request_types'""")
+
+
+
+spark.sql("create view shipdw.hvtb_parse_vxp_housekeeping_request_types as select * from shipdw.hvtb_lnd_request_types")

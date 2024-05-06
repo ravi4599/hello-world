@@ -1,0 +1,12 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.seaware_price_area_lkp(
+  price_area_id bigint, 
+  price_area string, 
+  etl_ld_status string,
+  load_dt timestamp,
+  upd_dt timestamp)
+OPTIONS (
+format = 'PARQUET',
+uris = ['gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_price_area_lkp/*']
+);
+
+CREATE OR REPLACE VIEW seaware.seaware_price_area_lkp AS SELECT * FROM hive_schema_stg.seaware_price_area_lkp;

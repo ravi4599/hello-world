@@ -1,0 +1,18 @@
+CREATE EXTERNAL TABLE hive_schema_stg.orderitem_fact_tmp(voyage_id string                         
+, ship_code string                                                                             
+, voyage_skey bigint                                                                                
+, order_detail_skey bigint                                                                          
+, menu_item_skey int                                                                                
+, order_item_sequence int                                                                           
+, order_item_quantity int                                                                           
+, order_item_cancelled_quantity int                                                                 
+, orderitem_price double precision                                                                  
+, load_dt timestamp                                                                                 
+, upd_dt timestamp                                                                                  
+, primaryhash string                                                                          
+, md5_hash string
+)                                                                                                   
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_fact_order']                   
+);  

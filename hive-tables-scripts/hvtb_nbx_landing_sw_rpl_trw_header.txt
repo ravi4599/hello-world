@@ -1,0 +1,21 @@
+ 
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_sw_rpl_trw_header`(
+  `trw_header_id` int, 
+  `trw_type` string, 
+  `start_date` timestamp, 
+  `end_date` timestamp, 
+  `is_matched` string, 
+  `comments` string, 
+  `load_data_timestamp` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n', 
+  'serialization.format'='\u0001') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_trw_header'

@@ -1,0 +1,120 @@
+CREATE OR REPLACE PROCEDURE marketing.marketing_revenue_commission_analysis_cube_rpt()
+	LANGUAGE plpgsql
+AS $$
+	
+	
+BEGIN
+	DROP TABLE IF EXISTS marketing.marketing_revenue_commission_analysis_cube_rpt_tmp;
+	CREATE TABLE marketing.marketing_revenue_commission_analysis_cube_rpt_tmp as
+		WITH mkt_sw_rev_temp AS (
+		    SELECT 
+		        src_res_id, 
+		        MAX(res_id) AS res_id, 
+		        MAX(first_status) AS first_status, 
+		        MAX(int_status) AS int_status,
+		        MAX(final_status) AS final_status,
+		        MAX(built_revenue_cabins) AS built_revenue_cabins
+		    FROM marketing.marketing_seaware_revenue_tbl
+		    Where res_init_date > '2021-01-01'
+		    GROUP BY src_res_id
+		)
+		SELECT 
+		    srcacr.invoice_item_type,
+			srcacr.invoice_item_subtype,
+			srcacr.amount,
+			srcacr.discount,
+			srcacr.total_voyage_fare_amount_incl_discounts,
+			srcacr.actual_gross_onboard_revenue,
+			srcacr.actual_gross_total_revenue,
+			srcacr.amount_usd,
+			srcacr.voyage_fare_amount_excl_discounts_usd,
+			srcacr.discount_usd,
+			srcacr.total_voyage_fare_amount_incl_discounts_usd,
+			srcacr.actual_gross_onboard_revenue_usd,
+			srcacr.actual_gross_total_revenue_usd,
+			srcacr.shorethings_fare,
+			srcacr.shorethings_fare_usd,
+			srcacr.net_onboard_revenue,
+			srcacr.country,
+			srcacr.promotion_id,
+			srcacr.promo_code,
+			srcacr.promo_name,
+			srcacr.promo_group,
+			srcacr.res_id,
+			srcacr.src_res_id,
+			srcacr.res_init_date,
+			srcacr.res_guest_count,
+			srcacr.res_cancellation_date,
+			srcacr.res_status,
+			srcacr.res_effective_date,
+			srcacr.res_sales_channel,
+			srcacr.res_sub_sales_channel,
+			srcacr.res_sub_sub_sales_channel,
+			srcacr.guest_id,
+			srcacr.src_guest_id,
+			srcacr.guest_type,
+			srcacr.client_id,
+			srcacr.guest_age,
+			srcacr.guest_address_line1,
+			srcacr.guest_address_line2,
+			srcacr.guest_city,
+			srcacr.guest_country,
+			srcacr.guest_zip,
+			srcacr.guest_state,
+			srcacr.guest_last_name,
+			srcacr.guest_first_name,
+			srcacr.guest_email,
+			srcacr.guest_phone_intl_code,
+			srcacr.group_n_of_guests,
+			srcacr.price_category,
+			srcacr.cabin_id,
+			srcacr.cabin_number,
+			srcacr.cabin_category,
+			srcacr.cabin_category_generic,
+			srcacr.cabin_capacity,
+			srcacr.addon_id,
+			srcacr.addon_name,
+			srcacr.addon_category,
+			srcacr.addon_type,
+			srcacr.sail_id,
+			srcacr.sail_days,
+			srcacr.sail_date_from,
+			srcacr.sail_date_to,
+			srcacr.ship,
+			srcacr.ship_name,
+			srcacr.package_id,
+			srcacr.package_class,
+			srcacr.package_type,
+			srcacr.package_code,
+			replace(srcacr.package_name, '?', '') as package_name,
+			srcacr.seaware_agecny_billingcity,
+			srcacr.seaware_agency_billingcountry,
+			srcacr.seaware_agency_billingpostalcode,
+			srcacr.seaware_agency_billingstate,
+			srcacr.seaware_agency_billingstreet,
+			srcacr."party_size (seaware_ship_room_request_dim)",
+			srcacr.package_type_name,
+			srcacr.etl_ld_dt,
+		    mkt_sw_rev_temp.first_status,
+		    mkt_sw_rev_temp.int_status,
+		    mkt_sw_rev_temp.final_status,
+		    mkt_sw_rev_temp.built_revenue_cabins
+		FROM seaware.seaware_revenue_commission_analysis_cube_rpt AS srcacr 
+		INNER JOIN mkt_sw_rev_temp
+		ON srcacr.src_res_id = mkt_sw_rev_temp.src_res_id
+        Where srcacr.src_res_id is not null
+        and srcacr.res_init_date >= '2021-01-01';
+	DROP TABLE IF EXISTS marketing.marketing_revenue_commission_analysis_cube_rpt_tmp2;
+	IF EXISTS
+	 (SELECT * FROM information_schema.tables
+	  WHERE lower(table_schema) = 'marketing'
+	  AND lower(table_name) = 'marketing_revenue_commission_analysis_cube_rpt') 
+	THEN
+	ALTER TABLE marketing.marketing_revenue_commission_analysis_cube_rpt RENAME TO marketing_revenue_commission_analysis_cube_rpt_tmp2;
+	END IF;
+	ALTER TABLE marketing.marketing_revenue_commission_analysis_cube_rpt_tmp RENAME TO marketing_revenue_commission_analysis_cube_rpt;
+	DROP TABLE IF EXISTS marketing.marketing_revenue_commission_analysis_cube_rpt_tmp2;
+END;
+
+$$
+;

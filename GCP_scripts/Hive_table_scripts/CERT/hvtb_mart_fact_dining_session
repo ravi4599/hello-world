@@ -1,0 +1,25 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_fact_dining_session(
+  voyage_id string, 
+  voyage_skey bigint, 
+  itinerary_skey bigint, 
+  venue_skey bigint, 
+  dining_session_skey bigint, 
+  time_start_skey bigint, 
+  time_end_skey bigint, 
+  number_of_timeslots int, 
+  dining_table_skey bigint, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string)
+PARTITIONED BY ( 
+  part_dt date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_fact_dining_session';
+  

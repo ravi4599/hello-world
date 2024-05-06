@@ -1,0 +1,41 @@
+
+
+CREATE EXTERNAL TABLE vv_db.hvtb_parse_sw_rpl_apis_document(
+ADDRESS_CITY string,
+ADDRESS_LINE1 string,
+ADDRESS_LINE2 string,
+ZIP string,
+COMMENTS string,
+IS_ADDRESS_MAILING string,
+IS_ADDRESS_SHIPPING string,
+SEQ_NUMBER int,
+AIRPORT_CODE string,
+ADDRESS_TYPE string,
+STATE_CODE string,
+COUNTRY_CODE string,
+AIRPORT_ADDR_ID int,
+ADDRESS_LINE3 string,
+ADDRESS_LINE4 string,
+op string, 
+ts_ms timestamp, 
+shipcode string, 
+voyageid string, 
+batchtime timestamp)
+PARTITIONED BY ( 
+  part_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 
+'gs://vv-dev-nbx-cluster/data/parse/seaware/hvtb_parse_sw_rpl_apis_document';
+
+
+
+
+
+
+
+

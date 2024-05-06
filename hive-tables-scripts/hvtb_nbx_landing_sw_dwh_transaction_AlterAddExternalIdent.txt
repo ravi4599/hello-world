@@ -1,0 +1,1 @@
+ALTER TABLE vv_db.hvtb_nbx_landing_sw_dwh_transaction ADD COLUMNS (external_ident string);

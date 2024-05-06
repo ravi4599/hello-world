@@ -1,0 +1,10 @@
+CREATE  EXTERNAL TABLE hive_schema_stg.location_history_fact
+WITH PARTITION COLUMNS
+OPTIONS (
+  uris=['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_location_history/*'],
+  format=PARQUET,
+  hive_partition_uri_prefix='gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_location_history/'
+  );
+  
+  
+  CREATE OR REPLACE VIEW shipdw.location_history_fact AS SELECT * FROM hive_schema_stg.location_history_fact;

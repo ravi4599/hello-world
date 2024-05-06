@@ -1,0 +1,8 @@
+CREATE OR REPLACE EXTERNAL TABLE  hive_schema_stg.quickcode_dim
+(
+quickcode_skey bigint, quick_code string, quick_code_name string, load_dt timestamp, upd_dt timestamp, primaryhash string, md5_hash string   
+)
+OPTIONS (
+format = 'PARQUET',
+uris = ['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_dim_quickcode/*']
+);

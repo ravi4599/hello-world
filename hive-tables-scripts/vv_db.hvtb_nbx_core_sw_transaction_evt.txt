@@ -1,0 +1,34 @@
+DROP TABLE `vv_db.hvtb_nbx_core_sw_transaction_evt`
+
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_sw_transaction_evt`(
+  `trans_id` int, 
+  `src_trans_id` int, 
+  `res_id` int, 
+  `trans_status` string, 
+  `form_of_trans` string, 
+  `trans_type` string, 
+  `entity_type` string, 
+  `entity_id` int, 
+  `trans_time_stamp` timestamp, 
+  `currency_trans` string, 
+  `amount_full_trans` double, 
+  `rate_transprice` double, 
+  `currency_price` string, 
+  `amount_full_price` double, 
+  `rate_pricebase` double, 
+  `operator` string, 
+  `coupon_id` int, 
+  `is_dest_entity` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp, 
+  AR_AP_DUE_DATE timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_transaction_evt'
+;

@@ -1,0 +1,20 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_crm_conversation_definition_dialog_tmp(
+id_skey bigint,
+id string,
+MasterLabel string,
+ParentId string,
+VersionNumber int,
+BotDefinitionId string,
+BotDefinition_MasterLabel string,
+CreatedDate timestamp,
+LastModifiedDate timestamp, 
+IsDeleted boolean,	
+load_dt  timestamp,
+upd_dt  timestamp,
+primaryhash  string,
+md5_hash  string
+) 
+OPTIONS (
+format = 'PARQUET',
+uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_dim_conversation_definition_dialog/*']
+);

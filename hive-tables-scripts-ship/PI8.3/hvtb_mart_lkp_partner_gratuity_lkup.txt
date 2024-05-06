@@ -1,0 +1,13 @@
+ spark.sql(s"""CREATE EXTERNAL TABLE `shipdw`.`hvtb_mart_lkp_partner_gratuity_lkup`(partner_gratuity_skey bigint, `revenue_type` string, `item_plu_group_num` string, `partner_gratuity_pct` string)
+       ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+       WITH SERDEPROPERTIES (
+         'line.delim' = '
+       ',
+         'field.delim' = '\u0001',
+         'serialization.format' = ''
+       )
+       STORED AS
+         INPUTFORMAT 'org.apache.hadoop.mapred.TextInputFormat'
+         OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+       LOCATION '/data/PartnerGratuityLkup'
+       """)

@@ -1,0 +1,16 @@
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSFStgLoginHistory', '', '', '', '', 'daily', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSFStgTask', '', '', '', '', 'daily', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSFStgNetwork', '', '', '', '', 'daily',now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSWStgDWH_COUPON', 'hvtb_nbx_landing_sw_dwh_coupon', 'Hive', 'DWH_COUPON', 'Oracle', 'SW_DWH_daily_PI3', now());

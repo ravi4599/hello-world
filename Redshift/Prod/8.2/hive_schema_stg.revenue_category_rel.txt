@@ -1,0 +1,23 @@
+
+CREATE EXTERNAL TABLE hive_schema_stg.revenue_category_rel(
+revenue_type_skey int,
+revenue_area VARCHAR,
+revenue_type VARCHAR,
+target_revenue_stream VARCHAR,
+category_value VARCHAR,
+category_type VARCHAR,
+pos_include_flg VARCHAR,
+folio_include_flg VARCHAR,
+konami_include_flg VARCHAR)
+ROW FORMAT SERDE
+'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+WITH SERDEPROPERTIES (
+'field.delim'='\\u0001',
+'line.delim'='\n',
+'serialization.format'='\\u0001')
+STORED AS INPUTFORMAT
+'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT
+'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/ShipRevCategory';

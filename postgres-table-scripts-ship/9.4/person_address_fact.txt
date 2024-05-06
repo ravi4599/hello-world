@@ -1,0 +1,14 @@
+
+-- Drop table
+
+-- DROP TABLE hive_schema_stg.person_address_fact;
+
+CREATE TABLE hive_schema_stg.person_address_fact (
+	voyage_id text NULL,
+	person_skey int8 NULL,
+	address_skey int8 NULL,
+	src_deleted_flag bool NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	part_dt date NULL
+);

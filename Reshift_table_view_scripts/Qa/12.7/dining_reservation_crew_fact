@@ -1,0 +1,13 @@
+CREATE EXTERNAL TABLE hive_schema_stg.dining_reservation_crew_fact(
+voyage_id varchar(100),
+voyage_skey bigint,
+dining_reservation_detail_skey bigint,
+served_by_skey bigint,
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash varchar(256), 
+md5_hash varchar(256),
+part_dt date)
+STORED AS PARQUET LOCATION 's3://vv-qa-emr-cluster/data/mart/hvtb_mart_fact_dining_reservation_crew';
+
+CREATE OR REPLACE VIEW shipdw.dining_reservation_crew_fact AS SELECT * FROM hive_schema_stg.dining_reservation_crew_fact WITH NO SCHEMA BINDING;

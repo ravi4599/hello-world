@@ -1,0 +1,28 @@
+create EXTERNAL table vv_db.hvtb_nbx_core_sw_sail_activity_dim(
+SAIL_ACTIVITY_ID	int,
+REC_START_DTTM	timestamp,
+REC_END_DTTM	timestamp,
+SRC_SAIL_ACTIVITY_ID	int,
+SRC_SAIL_ID	int,
+SAIL_EVENT_DATETIME	timestamp,
+SAIL_EVENT_DATETIME_TS	timestamp,
+SAIL_EVENT_TYPE	string,
+PORT_CODE	string,
+MAY_EMBARK	string,
+MAY_DISEMBARK	string,
+ACTIVITY_DESC	string,
+ACTIVITY_COMMENTS	string,
+IS_ACTIVE	string,
+md5_dim	string,
+etl_ld_status	string,
+etl_ld_dt	timestamp,
+etl_upd_dt	timestamp
+)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_sail_activity_dim';

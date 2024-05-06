@@ -1,0 +1,12 @@
+create external table hive_schema_stg.seaware_allocation_lkp
+(
+allocation_id	int,
+src_allocation_id	int,
+allocation_timestamp	timestamp,
+allocation_inv_result	varchar(5),
+etl_ld_status varchar(20),	
+etl_ld_dt 	timestamp,
+etl_upd_dt	timestamp
+)
+stored as parquet 
+location 's3://vv-staging-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_allocation_lkp' ;

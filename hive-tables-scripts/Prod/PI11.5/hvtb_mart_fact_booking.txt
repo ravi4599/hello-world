@@ -1,0 +1,7 @@
+
+drop table shipdw.hvtb_mart_fact_booking;
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_fact_booking(voyage_id string, booking_detail_skey bigint, person_skey bigint, voyage_skey bigint, activity_skey bigint, activity_slot_skey bigint, vendor_skey bigint, booked_by_person_skey bigint, paid_by_person_skey bigint, cancelled_by_person_skey bigint, sale_detail_skey bigint, itinerary_skey bigint, venue_skey bigint, ship_code string, number_of_people bigint, booking_paid_amount double, booking_remaining_amount double, refund_paid_amount double, refund_remaining_amount double, start_date_time timestamp, end_date_time timestamp, start_date_skey bigint, start_time_skey bigint, checked_in_flag boolean, booked_date_time timestamp, canceled_date_time timestamp, src_deleted_flag boolean, load_dt timestamp, upd_dt timestamp, primaryhash string, md5_hash string)
+PARTITIONED BY (part_dt date)
+STORED AS PARQUET
+LOCATION 's3://vv-prdo-emr-cluster/data/mart/hvtb_mart_fact_booking';

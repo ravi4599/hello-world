@@ -1,0 +1,199 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_instagram_user(
+
+    `date` string,
+
+    profile_views int,
+
+    reach int,
+
+    impressions int,
+
+    website_clicks int,
+
+    follower_count int
+
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+
+WITH SERDEPROPERTIES (
+
+  'serialization.format' = '1'
+
+)
+
+STORED AS
+
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+
+LOCATION 's3://vv-prod-emr-cluster/facebook/tmp/hvtb_instagram_user/';
+
+ 
+
+ 
+
+CREATE EXTERNAL TABLE vv_db.hvtb_instagram_user_by_audience_city(
+
+    audience int,
+
+    audience_city string
+
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+
+WITH SERDEPROPERTIES (
+
+  'serialization.format' = '1'
+
+)
+
+STORED AS
+
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+
+LOCATION 's3://vv-prod-emr-cluster/facebook/tmp/hvtb_instagram_user_by_audience_city/';
+
+ 
+
+ 
+
+CREATE EXTERNAL TABLE vv_db.hvtb_instagram_user_by_audience_country(
+
+    audience int,
+
+    audience_country string
+
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+
+WITH SERDEPROPERTIES (
+
+  'serialization.format' = '1'
+
+)
+
+STORED AS
+
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+
+LOCATION 's3://vv-prod-emr-cluster/facebook/tmp/hvtb_instagram_user_by_audience_country/';
+
+ 
+
+ 
+
+CREATE EXTERNAL TABLE vv_db.hvtb_instagram_user_by_audience_gender_age(
+
+    audience int,
+
+    audience_gender_age string
+
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+
+WITH SERDEPROPERTIES (
+
+  'serialization.format' = '1'
+
+)
+
+STORED AS
+
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+
+LOCATION 's3://vv-prod-emr-cluster/facebook/tmp/hvtb_instagram_user_by_audience_gender_age/';
+
+ 
+
+ 
+
+CREATE EXTERNAL TABLE vv_db.hvtb_instagram_user_by_audience_locale(
+
+    audience int,
+
+    audience_locale string
+
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+
+WITH SERDEPROPERTIES (
+
+  'serialization.format' = '1'
+
+)
+
+STORED AS
+
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+
+LOCATION 's3://vv-prod-emr-cluster/facebook/tmp/hvtb_instagram_user_by_audience_locale/';
+
+ 
+
+ 
+
+CREATE EXTERNAL TABLE vv_db.hvtb_instagram_user_online_followers(
+
+    `date` string,
+
+    hour int,
+
+    online_followers int
+
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+
+WITH SERDEPROPERTIES (
+
+  'serialization.format' = '1'
+
+)
+
+STORED AS
+
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+
+LOCATION 's3://vv-prod-emr-cluster/facebook/tmp/hvtb_instagram_user_online_followers/';
+
+ 
+
+CREATE EXTERNAL TABLE vv_db.hvtb_instagram_media(
+
+    engagement int,
+
+    media_type string,
+
+    saved int,
+
+    reach int,
+
+    video_views int,
+
+    media_id string,
+
+    created_at string,
+
+    impressions int,
+
+    caption string
+
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+
+WITH SERDEPROPERTIES (
+
+  'serialization.format' = '1'
+
+)
+
+STORED AS
+
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+
+LOCATION 's3://vv-prod-emr-cluster/facebook/tmp/hvtb_instagram_media/';

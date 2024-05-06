@@ -1,0 +1,5 @@
+CREATE EXTERNAL TABLE hive_schema_stg.preference_dim_tmp(preference_skey BIGINT, voyage_id STRING, preference_id INT, person_id INT, preference_category_code STRING, category STRING, description STRING, comment STRING, allergy STRING, allergy_code STRING, preference_upd_date TIMESTAMP, src_deleted_flag BOOLEAN, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_preference/*']
+);

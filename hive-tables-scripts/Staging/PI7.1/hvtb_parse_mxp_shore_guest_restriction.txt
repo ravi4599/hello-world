@@ -1,0 +1,26 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_parse_mxp_shore_guest_restriction`(	
+  `voyageid` string, 	
+  `batchtime` timestamp, 	
+  `person_id` bigint, 	
+  `person_guid` string, 	
+  `restrictions_guid` string, 	
+  `restrictions_type` string, 	
+  `categoryid` bigint, 	
+  `category_code` string, 	
+  `category` string, 	
+  `comment` string, 	
+  `from_date` timestamp, 	
+  `to_date` timestamp, 	
+  `deleted_flag` boolean, 	
+  `created_date` timestamp, 	
+  `lastchanged` string)	
+PARTITIONED BY ( 	
+  `partdate` date)	
+ROW FORMAT SERDE 	
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 	
+STORED AS INPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 	
+OUTPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'	
+LOCATION	
+  's3://vv-staging-emr-cluster/data/parse/mxp/hvtb_parse_mxp_shore_guest_restriction'	

@@ -1,0 +1,21 @@
+CREATE TABLE `vv_db.hvtb_nbx_parse_revenue_kpi_plan_forecast_upload`(
+  `ship_code` string, 
+  `package_type` string, 
+  `sail_date` timestamp, 
+  `sail_days` int, 
+  `cabin_ctg_generic` string, 
+  `forecast_version` string, 
+  `forecast_metric` string, 
+  `comments` string, 
+  `value_index` string, 
+  `value` double, 
+  `batchtime` timestamp, 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/parse/hvtb_nbx_parse_revenue_kpi_plan_forecast_upload'

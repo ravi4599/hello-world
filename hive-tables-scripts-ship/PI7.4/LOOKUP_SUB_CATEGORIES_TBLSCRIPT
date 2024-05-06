@@ -1,0 +1,7 @@
+--TABLE CREATION OnBoard - MXP.dbo.Lookup_Sub_Categories
+
+spark.sql("""CREATE TABLE shipdw.hvtb_lnd_mxp_lookup_sub_categories (LOOKUP_SUB_CATEGORY_ID int, LOOKUP_SUB_CATEGORY_NAME string, LOOKUP_MAIN_CATEGORY_ID int, SHOW_DISPLAY_CODE boolean, PAGE_INDEX int, LOOKUP_TYPE string, CREATED timestamp, LAST_CHANGED timestamp, CHANGED string, GUID string, CREATED_BY_ID int, SHOW_IMAGE boolean, CREATED_AT_ID int, LOOKUP_SUB_CATEGORY_ALIAS_NAME string, SHOW_ALIAS_NAME boolean, SHOW_LOOKUP_TEXT_1 boolean, SHOW_LOOKUP_TEXT_2 boolean, UPLOAD_TO_E_COMMERCE boolean, LAST_CHANGE_LOG_ID bigint, VoyageId string, BatchTime timestamp) PARTITIONED BY (Part_Date date) STORED AS PARQUET LOCATION 'data/apps/nbx/hive/landing/mxp/hvtb_lnd_mxp_lookup_sub_categories' """).show(50,false)
+
+--VIEW CREATION
+
+spark.sql("CREATE VIEW shipdw.hvtb_parse_mxp_lookup_sub_categories as select * from shipdw.hvtb_lnd_mxp_lookup_sub_categories").show(50,false)

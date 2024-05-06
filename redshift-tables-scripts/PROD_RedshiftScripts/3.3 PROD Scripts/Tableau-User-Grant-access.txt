@@ -1,0 +1,30 @@
+
+--create user talenduser password 'Talenduser@123';
+
+--alter user talenduser createuser;
+
+
+--create user tableauuser password 'Reporting@123';
+--create group Tableau_poweruser_group with user Tableauuser;
+
+GRANT USAGE ON SCHEMA newsletter_stg TO  group Tableau_poweruser_group;
+GRANT USAGE ON SCHEMA news_letter TO  group Tableau_poweruser_group;
+
+GRANT USAGE ON SCHEMA hive_schema_stg TO  group Tableau_poweruser_group;
+GRANT USAGE ON SCHEMA crm TO  group Tableau_poweruser_group;
+GRANT USAGE ON SCHEMA crm_stg TO  group Tableau_poweruser_group;
+
+GRANT USAGE ON SCHEMA seaware_stg TO  group Tableau_poweruser_group;
+GRANT USAGE ON SCHEMA seaware TO  group Tableau_poweruser_group;
+
+
+grant select on all tables in schema newsletter_stg to group Tableau_poweruser_group ;
+grant select on all tables in schema news_letter to group Tableau_poweruser_group ;
+
+grant select on all tables in schema hive_schema_stg to group Tableau_poweruser_group ;
+grant select on all tables in schema crm to group Tableau_poweruser_group ;
+grant select on all tables in schema crm_stg to group Tableau_poweruser_group ;
+
+grant select on all tables in schema seaware_stg to group Tableau_poweruser_group ;
+grant select on all tables in schema seaware to group Tableau_poweruser_group ;
+

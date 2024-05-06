@@ -1,0 +1,23 @@
+
+
+CREATE EXTERNAL TABLE hive_schema_stg.hvtb_nbx_core_crm_conversation_definition_dialog(
+conversationdefinitiondialog_skey bigint,
+id varchar(50),
+MasterLabel varchar(80),
+ParentId varchar(50),
+VersionNumber int,
+BotDefinitionId varchar(50),
+BotDefinition_MasterLabel varchar(80),
+CreatedDate timestamp,
+LastModifiedDate timestamp,
+IsDeleted boolean,
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash varchar(100),
+md5_hash varchar(100)
+)
+STORED AS PARQUET LOCATION 's3://vv-dev-emr-cluster/data/mart/hvtb_mart_dim_conversation_definition_dialog';
+
+Create view crm.core_crm_conversation_definition_dialog as select * from hive_schema_stg.hvtb_nbx_core_crm_conversation_definition_dialog with no schema binding;
+
+

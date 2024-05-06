@@ -1,0 +1,15 @@
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_price_area_lkp`(
+`price_area_id` bigint, `price_area` string,
+`etl_ld_status` string,
+`load_dt` timestamp,
+`upd_dt` timestamp,
+`primaryhash` string,
+`md5_hash` string)
+ROW FORMAT SERDE
+'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_price_area_lkp'

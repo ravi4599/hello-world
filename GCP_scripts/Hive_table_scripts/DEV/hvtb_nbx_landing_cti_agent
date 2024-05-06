@@ -1,0 +1,13 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_landing_cti_agent(batchtime TIMESTAMP, message STRING)
+PARTITIONED BY (part_date DATE)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-dev-nbx-cluster/data/core/cti/agent/hvtb_nbx_landing_cti_agent'
+TBLPROPERTIES (
+  'transient_lastDdlTime' = '1659433908'
+);

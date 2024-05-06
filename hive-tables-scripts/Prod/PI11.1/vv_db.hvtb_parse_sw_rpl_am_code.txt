@@ -1,0 +1,37 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_parse_sw_rpl_am_code`(
+`AMENITY_CODE` string,
+	`RECORD_ID` int,
+	`AM_CATEGORY` string,
+	`AMENITY_TYPE` string,
+	`PROVIDER_CODE` string,
+	`AMENITY_NAME` string,
+	`COMMENTS` string,
+	`USE_TAX` string,
+	`SUBCODE_MANDATORY` string,
+	`MANDATORY_BEFORE_DLV` string,
+	`CODE_ACTIVE` string,
+	`ADDON_RESTRICTED` string,
+	`ADDON_ORDER_BASIS` string,
+	`ADDON_INV_ITEM_TYPE` string,
+	`INCLUDE_IN_ORDER` string,
+	`INITIAL_STATUS` string,
+	`LINKED_CLUB_TYPE` string,
+	`LINKED_CLUB_LEVEL` string,
+	`COUPON_CLASS` string,
+	`MANUAL_PRICE` string,
+	`USE_AS_CLIENT_PREFER` string,
+	`op` string,
+  `ts_ms` timestamp,
+  `shipcode` string,
+  `voyageid` string,
+  `batchtime` timestamp)
+PARTITIONED BY (
+  `part_date` date)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/parse/seaware/hvtb_parse_sw_rpl_am_code'

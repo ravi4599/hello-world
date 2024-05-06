@@ -1,0 +1,17 @@
+CREATE TABLE hive_schema_stg.dining_reservation_detail_dim (
+	dining_reservation_detail_skey int8 NOT NULL,
+	voyage_id text NOT NULL,
+	dining_reservation_id text NOT NULL,
+	booking_link_id text NULL,
+	reservation_upcoming_source text NULL,
+	reservation_waitlist_source text NULL,
+	reservation_seated_source text NULL,
+	reservation_completed_source text NULL,
+	reservation_canceled_source text NULL,
+	reservation_status text null,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL
+);
+create or replace view shipdw.dining_reservation_detail_dim as select * from hive_schema_stg.dining_reservation_detail_dim drdd ;

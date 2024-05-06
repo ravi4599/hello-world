@@ -1,0 +1,11 @@
+
+
+CREATE EXTERNAL TABLE `vv_db`.`hvtb_nbx_core_sw_res_addon_rel`(`src_res_addon_id` BIGINT, `res_addon_id` INT, `res_id` INT, `guest_id` BIGINT, `addon_id` BIGINT, `quantity` INT, `rec_start_dttm` TIMESTAMP, `rec_end_dttm` TIMESTAMP, `effective_date` TIMESTAMP, `is_default` STRING, `is_auto` STRING, `promotion_id` BIGINT, `comments` STRING, `addon_status` STRING, `notes` STRING, `paid_date` TIMESTAMP, `start_date` TIMESTAMP, `end_date` TIMESTAMP, `etl_ld_status` STRING, `load_dt` TIMESTAMP, `upd_dt` TIMESTAMP, `primaryhash` STRING, `md5_hash` STRING)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-qa-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_res_addon_rel'

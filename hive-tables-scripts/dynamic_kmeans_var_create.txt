@@ -1,0 +1,3 @@
+create external table vv_kmeans_variables (columns array<string>) 
+stored as Parquet
+Location "s3://vv-dev-emr-cluster/data/hivetables/vv_db/vv_kmeans_variables"

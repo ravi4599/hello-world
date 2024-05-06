@@ -1,0 +1,62 @@
+Drop table vv_db_mig.hvtb_nbx_core_sw_guest_dim; 
+
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_guest_dim`(
+  `guest_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_guest_id` int, 
+  `guest_seqn` int, 
+  `guest_type` string, 
+  `client_id` int, 
+  `age` int, 
+  `age_category` string, 
+  `gender` string, 
+  `address_line1` string, 
+  `address_line2` string, 
+  `city` string, 
+  `country` string, 
+  `zip` string, 
+  `state` string, 
+  `citizenship` string, 
+  `citizenship_name` string, 
+  `residency` string, 
+  `last_name` string, 
+  `first_name` string, 
+  `middle_name` string, 
+  `sex` string, 
+  `tier_level` string, 
+  `birthday` timestamp, 
+  `passport_number` string, 
+  `passport_exp_date` date, 
+  `passport_issue_date` date, 
+  `passport_issue_place` string, 
+  `id_doc_type` string, 
+  `id_doc_number` string, 
+  `id_doc_expiration_date` date, 
+  `id_doc_issue_date` date, 
+  `id_doc_issue_country` string, 
+  `id_doc_issue_city` string, 
+  `id2_doc_type` string, 
+  `id2_doc_number` string, 
+  `id2_doc_expiration_date` date, 
+  `id2_doc_issue_date` date, 
+  `id2_doc_issue_country` string, 
+  `id2_doc_issue_city` string, 
+  `email` string, 
+  `phone_intl_code` int, 
+  `phone_number` string, 
+  `etl_ld_status` string, 
+  `load_dt` timestamp, 
+  `upd_dt` timestamp, 
+  `primaryhash` string, 
+  `md5_hash` string,
+  scd_hash string
+  )
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_guest_dim';

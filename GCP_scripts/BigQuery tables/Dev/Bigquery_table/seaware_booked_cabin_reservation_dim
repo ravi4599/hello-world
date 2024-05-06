@@ -1,0 +1,34 @@
+create or replace external table hive_schema_stg.seaware_booked_cabin_reservation_dim(
+res_id_skey int,
+res_id int,
+guest_id int,
+package_id int,
+rec_start_dttm timestamp,
+rec_end_dttm timestamp,
+price_category string,
+price_category_rank int,
+berth_category string,
+berth_category_rank int,
+assigned_category string,
+assigned_category_rank int,
+generic_category string,
+allocation_id int,
+cabin_id string,
+sail_cabin_reserve_id string,
+etl_ld_status string, 
+load_dt timestamp, 
+upd_dt timestamp,
+primaryhash string,
+md5_hash string,
+scd_hash string)
+options (
+format = 'parquet',
+uris = ['gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_sw_booked_cabin_reservation_dim/*']
+);
+
+
+
+
+
+
+CREATE OR REPLACE VIEW seaware.seaware_booked_cabin_reservation_dim AS SELECT * FROM hive_schema_stg.seaware_booked_cabin_reservation_dim;

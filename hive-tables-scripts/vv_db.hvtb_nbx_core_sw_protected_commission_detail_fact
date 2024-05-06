@@ -1,0 +1,21 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_protected_commission_detail_fact
+(
+record_id	integer,
+res_id	integer,
+commission_type_skey	integer,
+commission_percent	double,
+commission_amount	double,
+commission_fare	double,
+commission_payout_date	timestamp,
+is_manual_adjustment	char(1),
+etl_ld_dt	timestamp)
+PARTITIONED BY ( 
+  snapshot_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_protected_commission_detail_fact';

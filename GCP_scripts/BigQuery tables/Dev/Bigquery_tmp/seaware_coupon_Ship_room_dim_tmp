@@ -1,0 +1,18 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_coupon_Ship_room_dim_tmp(
+  ship_room_id bigint, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  src_ship_room_id int,
+  facility_id int,
+  room_number int,
+  room_name string,
+  room_size string,
+  max_occupancy int, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_Ship_room_dim/*']
+);

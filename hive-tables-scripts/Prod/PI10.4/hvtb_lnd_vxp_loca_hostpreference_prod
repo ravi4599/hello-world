@@ -1,0 +1,14 @@
+
+Drop table shipdw.hvtb_lnd_vxp_location_hostpreference
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_lnd_vxp_loca_hostpreference`(`batchinstanceid` string, `voyageid` string, `batchtime` timestamp, `message` string,`shipcode` string)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-prod-emr-cluster/data/landing/vxp/hvtb_lnd_vxp_loca_hostpreference'
+

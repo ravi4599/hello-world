@@ -1,0 +1,1 @@
+ssh -o StrictHostKeyChecking=no -o BatchMode=yes -i /data/key/key.pem hadoop@10.3.100.232 'hadoop fs -cp hdfs:///data/mart/seaware_replica/hvtb_nbx_core_sw_transaction_evt_lad/append_data/*  s3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_transaction_evt_lad/'

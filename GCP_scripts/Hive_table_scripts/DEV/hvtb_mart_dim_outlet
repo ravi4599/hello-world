@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_outlet(
+  outlet_skey bigint, 
+  outlet_id bigint, 
+  outlet_name string, 
+  voyageid string, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string) STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_dim_outlet';

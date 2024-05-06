@@ -1,0 +1,32 @@
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_package_dim`(
+  `package_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_package_id` int, 
+  `package_class` string, 
+  `product_type` string, 
+  `package_type` string, 
+  `package_code` string, 
+  `package_name` string, 
+  `src_sail_id` int, 
+  `shorex_mode` string, 
+  `vacation_date` timestamp, 
+  `shorex_timing` string, 
+  `geog_area_code` string, 
+  `season_code` string, 
+  `is_active` string,
+  `shorex_total_spots` int,  
+  `etl_ld_status` string, 
+  `load_dt` timestamp, 
+  `upd_dt` timestamp, 
+  `primaryhash` string, 
+  `md5_hash` string, 
+  `scd_hash` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_package_dim'

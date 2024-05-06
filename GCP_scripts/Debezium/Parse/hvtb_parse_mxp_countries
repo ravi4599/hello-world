@@ -1,0 +1,65 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_countries(
+  country_id int, 
+  country_name string, 
+  country_alias_name string, 
+  country_code string, 
+  continent_id int, 
+  region_id int, 
+  supplied boolean, 
+  active boolean, 
+  created timestamp, 
+  last_changed timestamp, 
+  changed string, 
+  guid string, 
+  created_by_id int, 
+  international_phone_prefix string, 
+  currency_id int, 
+  primary_languages string, 
+  population_size int, 
+  created_at_id int, 
+  port_cost_notes string, 
+  tour_notes string, 
+  url_state_dept string, 
+  url_cia string, 
+  url_goverment_1 string, 
+  url_goverment_2 string, 
+  country_holiday_import_name string, 
+  country_alias_code string, 
+  country_code_3_letters string, 
+  company_tax_code string, 
+  territory_usa boolean, 
+  territory_eu boolean, 
+  territory_schengen boolean, 
+  territory_caricom boolean, 
+  trade_id int, 
+  un_country_reference_id int, 
+  last_change_log_id bigint, 
+  country_name_english string, 
+  country_name_spanish string, 
+  country_name_french string, 
+  country_name_german string, 
+  country_name_italien string, 
+  country_name_portugese string, 
+  country_name_greek string, 
+  country_name_dutch string, 
+  country_name_russian string, 
+  country_name_japanese string, 
+  country_name_chinese string, 
+  country_name_other1 string, 
+  country_name_other2 string, 
+  country_name_other3 string, 
+  op string, 
+  ts_ms timestamp, 
+  shipcode string, 
+  voyageid string, 
+  batchtime timestamp)
+PARTITIONED BY ( 
+  part_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/parse/mxp/shipdw.hvtb_parse_mxp_countries';

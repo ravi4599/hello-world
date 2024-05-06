@@ -1,0 +1,25 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_vxp_table_management_settings_seatingduration(
+	addeddate timestamp,
+	public_id string,
+	origin_public_id string,
+	party_size int,
+	duration int,
+	settings_id string,
+	addedby string,
+	lastmodifiedby string,
+	lastmodifieddate timestamp, 
+	VoyageId string, 
+	BatchTime timestamp, 
+	ShipCode string)
+PARTITIONED BY (Part_date date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-dev-emr-cluster/data/parse/hvtb_parse_vxp_table_management_settings_seatingduration'
+TBLPROPERTIES (
+  'bucketing_version' = '2'  
+);

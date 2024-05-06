@@ -1,0 +1,13 @@
+CREATE EXTERNAL TABLE hive_schema_stg.outlet_dim_tmp(outlet_skey bigint                                 
+, outlet_id bigint                                                                                  
+, outlet_name string                                                                          
+, voyage_id string                                                                            
+, load_dt timestamp                                                                                 
+, upd_dt timestamp                                                                                  
+, primaryhash string                                                                          
+, md5_hash string                                                                             
+)                                  
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_outlet/*']
+);

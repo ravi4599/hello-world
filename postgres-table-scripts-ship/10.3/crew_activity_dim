@@ -1,0 +1,16 @@
+CREATE TABLE hive_schema_stg.crew_activity_dim (
+	crew_activity_skey int8 NOT NULL,
+	voyage_id text NULL,
+	activity_id int4 NULL,
+	activity_name text NULL,
+	activity_type text NULL,
+	is_active boolean,
+	is_deleted boolean,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL,
+	CONSTRAINT crew_activity_skey PRIMARY KEY (crew_activity_skey)
+);
+
+create view shipdw.crew_activity_dim as select * from hive_schema_stg.crew_activity_dim;

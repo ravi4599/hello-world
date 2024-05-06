@@ -1,0 +1,6 @@
+CREATE EXTERNAL TABLE hive_schema_stg.folio_item_dim ( voyage_id text, folio_item_skey bigint, folio_item_quickcode text, ship_code text, quickcode_name text, product_code_name text, src_deleted_flag boolean, load_dt timestamp,
+upd_dt timestamp, primaryhash text, md5_hash text ) STORED AS PARQUET LOCATION 's3://vv-dev-emr-cluster/data/mart/hvtb_mart_dim_folio_item';
+
+CREATE OR REPLACE VIEW shipdw.folio_item_dim
+AS 
+SELECT * FROM hive_schema_stg.folio_item_dim with no schema binding;

@@ -1,0 +1,2 @@
+
+create view shipdw.spa_utilization_summary_fact as select * from hive_schema_stg.spa_utilization_summary_fact with no schema binding;

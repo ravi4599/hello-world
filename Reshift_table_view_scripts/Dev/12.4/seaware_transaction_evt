@@ -1,0 +1,31 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_transaction_evt(
+trans_id int4,
+src_trans_id int4,
+res_id int4,
+trans_status varchar,
+form_of_trans varchar,
+trans_type varchar,
+entity_type varchar,
+entity_id int4,
+trans_time_stamp timestamp,
+currency_trans varchar,
+maximum_party_size int,
+amount_full_trans int8,
+rate_transprice int,
+currency_price varchar,
+amount_full_price int8,
+rate_pricebase int,
+operator varchar,
+coupon_id int4,
+res_trans_id int4,
+is_dest_entity char,
+etl_ld_status varchar,
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash varchar(50), 
+md5_hash varchar(50))
+STORED AS PARQUET
+LOCATION
+'s3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_transaction_evt'
+
+Create view seaware.seaware_transaction_evt as select * from hive_schema_stg.seaware_transaction_evt ;

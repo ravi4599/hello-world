@@ -1,0 +1,6 @@
+﻿spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_menuitemtype(menuitemtypeid STRING,name STRING,description STRING,code STRING,sequence int,addeddate TIMESTAMP,lastmodifieddate TIMESTAMP, VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_menuitemtype'"""); 
+	
+spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_menuitemtype as select * from shipdw.hvtb_lnd_vxp_menuitemtype"""); 
+
+
+

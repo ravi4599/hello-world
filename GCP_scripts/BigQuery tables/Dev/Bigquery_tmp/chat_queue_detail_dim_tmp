@@ -1,0 +1,16 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.chat_queue_detail_dim_tmp(chat_queue_detail_skey bigint           
+, voyage_id string                                                                            
+, chat_queue_id int                                                                                 
+, iam_user_id string                                                                          
+, chat_subject string                                                                         
+, chat_status string                                                                          
+, loyalty_level string                                                                        
+, load_dt timestamp                                                                                 
+, upd_dt timestamp                                                                                  
+, primaryhash string                                                                          
+, md5_hash string                                                                             
+)                                                                                                   
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_dim_chat_queue_detail/*']
+);

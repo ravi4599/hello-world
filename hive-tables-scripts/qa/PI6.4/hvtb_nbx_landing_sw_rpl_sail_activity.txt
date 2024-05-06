@@ -1,0 +1,42 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_sw_rpl_sail_activity`(
+  `sail_activity_id` int, 
+  `sail_event_date_time` timestamp, 
+  `sail_event_type` string, 
+  `port_code` string, 
+  `pier_code` string, 
+  `may_embark` string, 
+  `may_disembark` string, 
+  `ship_code` string, 
+  `relative_day` int, 
+  `activity` string, 
+  `comments` string, 
+  `dep_arr_code` string, 
+  `dep_arr_ref_id` int, 
+  `notes` string, 
+  `ownership_code` string, 
+  `setup_session_id` int, 
+  `del_session_id` int, 
+  `setup_from` timestamp, 
+  `setup_to` timestamp, 
+  `tender_mode` string, 
+  `sail_event_ts` string, 
+  `dress_code` string, 
+  `is_active` string, 
+  `sail_event_date_time_utc` timestamp, 
+  `load_data_timestamp` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n', 
+  'serialization.format'='\u0001') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_sail_activity'
+  
+
+
+/*MSH-34392_Vikrant_13March2020*/

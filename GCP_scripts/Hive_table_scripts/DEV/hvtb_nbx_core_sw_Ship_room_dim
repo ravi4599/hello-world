@@ -1,0 +1,23 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_Ship_room_dim(
+  ship_room_id bigint, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  src_ship_room_id int,
+  facility_id int,
+  room_number int,
+  room_name string,
+  room_size string,
+  max_occupancy int,
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string 
+  )
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_Ship_room_dim';

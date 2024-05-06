@@ -1,0 +1,16 @@
+
+##ReservationPreference##
+
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_parse_vxp_table_management_reservations_reservationpreference`(`type` string, `value` string, `code` string, `guest_id` string, `public_id` string, `reservation_id` string, `addedby` string, `addeddate` timestamp, `lastmodifiedby` string, `lastmodifieddate` timestamp, `voyageid` string, `batchtime` timestamp, `shipcode` string)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-dev-nbx-cluster/data/parse/vxp/hvtb_parse_vxp_table_management_reservations_reservationpreference';
+
+
+

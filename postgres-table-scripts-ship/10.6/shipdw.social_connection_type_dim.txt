@@ -1,0 +1,1 @@
+CREATE OR REPLACE VIEW shipdw.social_connection_type_dim AS SELECT * FROM hive_schema_stg.social_connection_type_dim;

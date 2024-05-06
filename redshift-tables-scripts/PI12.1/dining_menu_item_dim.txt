@@ -1,0 +1,89 @@
+*****************DEV****************************************************************
+drop table if exists hive_schema_stg.dining_menu_item_dim;
+
+CREATE EXTERNAL TABLE hive_schema_stg.dining_menu_item_dim (
+	voyage_id text,
+	dining_menu_item_skey int8,	
+	dining_menu_item_code text,
+	dining_menu_item_name text,
+	dining_menu_item_group text,
+	dining_menu_item_category text,
+	dining_menu_item_sub_category text,
+	src_deleted_flag boolean,
+	src_active_flag boolean,
+	load_dt timestamp,
+	upd_dt timestamp,
+	primaryhash text,
+	md5_hash text 
+) STORED AS PARQUET 
+LOCATION 's3://vv-dev-emr-cluster/data/mart/hvtb_mart_dim_dining_menu_item'; 
+
+create or replace view shipdw.dining_menu_item_dim as select * from hive_schema_stg.dining_menu_item_dim with no schema binding;
+
+*****************QA****************************************************************
+
+drop table if exists hive_schema_stg.dining_menu_item_dim;
+
+CREATE EXTERNAL TABLE hive_schema_stg.dining_menu_item_dim (
+	voyage_id text,
+	dining_menu_item_skey int8,	
+	dining_menu_item_code text,
+	dining_menu_item_name text,
+	dining_menu_item_group text,
+	dining_menu_item_category text,
+	dining_menu_item_sub_category text,
+	src_deleted_flag boolean,
+	src_active_flag boolean,
+	load_dt timestamp,
+	upd_dt timestamp,
+	primaryhash text,
+	md5_hash text 
+) STORED AS PARQUET 
+LOCATION 's3://vv-qa-emr-cluster/data/mart/hvtb_mart_dim_dining_menu_item'; 
+
+create or replace view shipdw.dining_menu_item_dim as select * from hive_schema_stg.dining_menu_item_dim with no schema binding;
+
+
+*****************PROD****************************************************************
+drop table if exists hive_schema_stg.dining_menu_item_dim;
+
+CREATE EXTERNAL TABLE hive_schema_stg.dining_menu_item_dim (
+	voyage_id text,
+	dining_menu_item_skey int8,	
+	dining_menu_item_code text,
+	dining_menu_item_name text,
+	dining_menu_item_group text,
+	dining_menu_item_category text,
+	dining_menu_item_sub_category text,
+	src_deleted_flag boolean,
+	src_active_flag boolean,
+	load_dt timestamp,
+	upd_dt timestamp,
+	primaryhash text,
+	md5_hash text 
+) STORED AS PARQUET 
+LOCATION 's3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_dining_menu_item'; 
+
+create or replace view shipdw.dining_menu_item_dim as select * from hive_schema_stg.dining_menu_item_dim with no schema binding;
+
+*****************Staging****************************************************************
+drop table if exists hive_schema_stg.dining_menu_item_dim;
+
+CREATE EXTERNAL TABLE hive_schema_stg.dining_menu_item_dim (
+	voyage_id text,
+	dining_menu_item_skey int8,	
+	dining_menu_item_code text,
+	dining_menu_item_name text,
+	dining_menu_item_group text,
+	dining_menu_item_category text,
+	dining_menu_item_sub_category text,
+	src_deleted_flag boolean,
+	src_active_flag boolean,
+	load_dt timestamp,
+	upd_dt timestamp,
+	primaryhash text,
+	md5_hash text 
+) STORED AS PARQUET 
+LOCATION 's3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_dining_menu_item'; 
+
+create or replace view shipdw.dining_menu_item_dim as select * from hive_schema_stg.dining_menu_item_dim with no schema binding;

@@ -1,0 +1,16 @@
+CREATE TABLE hive_schema_stg.chat_queue_detail_dim (
+	chat_queue_detail_skey int8 NULL,
+	voyage_id text NULL,
+	chat_queue_id int NULL,
+	iam_user_id text NULL,
+	chat_subject text NULL,
+	chat_status text NULL,
+	loyalty_level text NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL
+);
+
+create view shipdw.chat_queue_detail_dim as select * from hive_schema_stg.chat_queue_detail_dim
+

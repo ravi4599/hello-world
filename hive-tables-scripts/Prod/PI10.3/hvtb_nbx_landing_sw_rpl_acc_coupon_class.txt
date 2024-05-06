@@ -1,0 +1,28 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_landing_sw_rpl_acc_coupon_class`(
+  `coupon_class` string, 
+  `record_id` int, 
+  `comments` string, 
+  `external_code` string, 
+  `is_gen_per_client` string, 
+  `apply_as_payment` string, 
+  `is_apply_per_client` string, 
+  `dflt_qty_valid_days` int, 
+  `frequent_pgm_code` string, 
+  `cancel_with_res` string, 
+  `apply_as_discount` string, 
+  `validate_for_owner` string, 
+  `pre_printed` string, 
+  `coupon_class_code` string,  
+  `load_data_timestamp` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n', 
+  'serialization.format'='\u0001') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_acc_coupon_class'

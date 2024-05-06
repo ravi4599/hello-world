@@ -1,0 +1,31 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.seaware_guest_flight_rel_tmp(
+guest_flight_id int,
+rec_start_dttm timestamp,
+rec_end_dttm timestamp,
+header_id int,
+src_res_id int,
+src_guest_id int,
+ticket_no string,
+is_booking_independent string,
+booking_status string,
+fare_kind string,
+seaware_fare_base float64,
+seaware_total_tax float64,
+amadeus_fare_base float64,
+amadeus_total_tax float64,
+is_paid string,
+segment_kind string,
+segment_seqn int,
+flight_id_leg_seqn_1 int,
+flight_id_leg_seqn_2 int,
+flight_id_leg_seqn_3 int,
+flight_id_leg_seqn_4 int,
+etl_ld_status string,
+load_dt timestamp,
+upd_dt timestamp,
+primaryhash string,
+md5_hash string)
+OPTIONS (
+format = 'PARQUET',
+uris = ['gs://vv-dev-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_guest_flight_rel/*']
+);

@@ -1,0 +1,15 @@
+CREATE TABLE hive_schema_stg.dining_reservation_preference_dim (
+	voyage_id text NULL,
+	dining_reservation_preference_skey int8 NULL,
+	"type" text NULL,
+	code text NULL,
+	description text NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL
+);
+
+CREATE OR REPLACE VIEW shipdw.dining_reservation_preference_dim
+AS 
+SELECT * FROM hive_schema_stg.dining_reservation_preference_dim;

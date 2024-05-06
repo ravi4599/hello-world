@@ -1,0 +1,15 @@
+DROP TABLE hive_schema_stg.person_position_fact;
+
+CREATE TABLE hive_schema_stg.person_position_fact (
+person_skey int8 NULL,
+position_skey int8 NULL,
+supervisor_group_skey int8,
+position_valid_from_timestamp timestamp NULL,
+position_valid_to_timestamp timestamp NULL,
+src_deleted_flag boolean,
+load_dt timestamp NOT NULL,
+upd_dt timestamp NOT NULL,
+primaryhash text NULL,
+md5_hash text NULL,
+part_dt date NOT NULL
+);

@@ -1,0 +1,20 @@
+create EXTERNAL table vv_db.hvtb_nbx_landing_sw_rpl_cancellation_case(
+	case_id int  ,
+	case_name string  ,
+	comments string ,
+	waive_charges string  ,
+	protect_commiss string  ,
+	gl_pmnt_id int 
+) 
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\u0001', 
+  'line.delim'='\n', 
+  'serialization.format'='\u0001') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION	
+  's3://vv-dev-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_cancellation_case';

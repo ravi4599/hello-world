@@ -1,0 +1,11 @@
+spark.sql("""CREATE EXTERNAL TABLE `vv_db`.`hvtb_parse_sw_rpl_gl_trans`(gl_trans_id decimal(11) , trans_id int , gl_batch_id int , gl_trans_amount decimal(15,2) , trans_time_stamp timestamp , comments string , full_dbt_gl string , full_crd_gl string , seq_number int , gl_trans_type string, entity_type string , gl_trans_source string , n_of_days int , entity_id int , period_id int , currency_code string , is_completed string, full_n_of_days decimal(38,10) , orig_item_code string, orig_item_subcode string , orig_item_rec_id decimal(11) , dlgt_res_id int , is_last_for_trans string , prorate_method string , trans_hist_id int , logical_date timestamp , gl_package_id int , guest_id int , office_code string , gl_trans_amount_base decimal(15,2) , exchange_rate decimal(38,10) , res_package_start_date timestamp , res_package_end_date timestamp , res_package_class string , gl_trans_base_currency string , coupon_id int , res_package_id int , orig_item_addcode string , reverse_accrual_period int , date_to timestamp , ignore_in_calc string , virtual_entry string, pre_combined string, is_reversal string, posted_date timestamp , post_date_trans_as_vt string, op STRING, ts_ms TIMESTAMP, shipcode STRING, voyageid STRING, batchtime TIMESTAMP, lsn BIGINT)
+PARTITIONED BY (`part_date` DATE)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-qa-nbx-cluster/data/parse/seaware/hvtb_parse_sw_rpl_gl_trans'
+""")

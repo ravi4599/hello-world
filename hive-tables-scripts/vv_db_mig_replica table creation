@@ -1,0 +1,740 @@
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_sail_dim`(
+  `sail_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_sail_id` int, 
+  `sail_days` int, 
+  `sail_route_code` string, 
+  `sail_port_from` string, 
+  `sail_port_to` string, 
+  `sail_geog_area_code` string, 
+  `dep_ref_id` int, 
+  `arr_ref_id` int, 
+  `sail_date_from` timestamp, 
+  `sail_date_to` timestamp, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp, 
+  `is_active` string, 
+  `ship_id` int)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_sail_dim';
+  
+  CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_guest_dim`(
+  `guest_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_guest_id` int, 
+  `guest_seqn` double, 
+  `guest_type` string, 
+  `client_id` double, 
+  `age` double, 
+  `age_category` string, 
+  `gender` string, 
+  `address_line1` string, 
+  `address_line2` string, 
+  `city` string, 
+  `country` string, 
+  `zip` string, 
+  `state` string, 
+  `citizenship` string, 
+  `citizenship_name` string, 
+  `residency` string, 
+  `last_name` string, 
+  `first_name` string, 
+  `middle_name` string, 
+  `sex` string, 
+  `tier_level` string, 
+  `birthday` timestamp, 
+  `passport_number` string, 
+  `passport_exp_date` timestamp, 
+  `passport_issue_date` timestamp, 
+  `passport_issue_place` string, 
+  `id_doc_type` string, 
+  `id_doc_number` string, 
+  `id_doc_expiration_date` timestamp, 
+  `id_doc_issue_date` timestamp, 
+  `id_doc_issue_country` string, 
+  `id_doc_issue_city` string, 
+  `id2_doc_type` string, 
+  `id2_doc_number` string, 
+  `id2_doc_expiration_date` timestamp, 
+  `id2_doc_issue_date` timestamp, 
+  `id2_doc_issue_country` string, 
+  `id2_doc_issue_city` string, 
+  `email` string, 
+  `phone_intl_code` double, 
+  `phone_number` string, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_guest_dim_rpl';
+
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_hotel_res_req_dim`(
+  `hotel_res_req_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_res_id` int, 
+  `src_guest_id` int, 
+  `request_type` string, 
+  `start_date` timestamp, 
+  `end_date` timestamp, 
+  `city_code` string, 
+  `hotel_id` int, 
+  `hotel_category` string, 
+  `room_seq_number` int, 
+  `room_category` string, 
+  `room_type` string, 
+  `occupancy` int, 
+  `hotel_space_type` string, 
+  `allocation_id` int, 
+  `inv_result` string, 
+  `is_land_component` string, 
+  `hotel_bed_type` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp, 
+  `md5_dim` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_hotel_res_req_dim'
+;
+
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_agency_dim`(
+  `agency_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_agency_id` int, 
+  `agency_name` string, 
+  `agency_code` string, 
+  `agency_market` string, 
+  `agency_class` string, 
+  `agency_sales_region` string, 
+  `agency_sales_district` string, 
+  `agency_country` string, 
+  `agency_state` string, 
+  `agency_zip` string, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_agency_dim'
+;
+
+CREATE EXTERNAL TABLE `vv_db_temp.hvtb_nbx_staging_sw_reservation_dim`(
+  `res_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_res_id` int, 
+  `res_init_date` timestamp, 
+  `res_guest_count` int, 
+  `res_mode` string, 
+  `cancellation_date` timestamp, 
+  `res_status` string, 
+  `operator` string, 
+  `res_type` string, 
+  `is_internal` string, 
+  `source_code` string, 
+  `effective_date` timestamp, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp, 
+  `vip_status` string, 
+  `stage` string, 
+  `booking_source` string, 
+  `last_modifiedby_id` string, 
+  `hotel_flag` string, 
+  `src_sail_id` int, 
+  `seaware_agency_id` int, 
+  `seaware_agent_id` int, 
+  `opted_fvc` string, 
+  `cancellation_case` string, 
+  `src_group_id` int, 
+  `currency` varchar(5), 
+  `currency_rate` double)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/stg_mart/seaware_replica/hvtb_nbx_staging_sw_reservation_dim';
+
+CREATE EXTERNAL TABLE `vv_db_temp.hvtb_nbx_core_sw_reservation_dim`(
+  `res_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_res_id` int, 
+  `res_init_date` timestamp, 
+  `res_guest_count` int, 
+  `res_mode` string, 
+  `cancellation_date` timestamp, 
+  `res_status` string, 
+  `operator` string, 
+  `res_type` string, 
+  `is_internal` string, 
+  `source_code` string, 
+  `effective_date` timestamp, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp, 
+  `vip_status` string, 
+  `stage` string, 
+  `booking_source` string, 
+  `last_modifiedby_id` string, 
+  `hotel_flag` string, 
+  `src_sail_id` int, 
+  `seaware_agency_id` int, 
+  `seaware_agent_id` int, 
+  `opted_fvc` string, 
+  `cancellation_case` string, 
+  `src_group_id` int, 
+  `currency` varchar(5), 
+  `currency_rate` double)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_reservation_dim'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1624297727');
+  
+  CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_promotion_dim`(
+  `res_id` int, 
+  `guest_id` int, 
+  `package_id` int, 
+  `addon_id` int, 
+  `cardeck_id` int, 
+  `shorex_id` int, 
+  `hotel_id` int, 
+  `promotion_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `is_active` string, 
+  `is_excluded` string, 
+  `promo_mode` string, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_promotion_dim'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1624294000');
+
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_payment_schedule_dim`(
+  `res_id` int, 
+  `guest_id` int, 
+  `payment_type` string, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `due_date` timestamp, 
+  `amount` double, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_payment_schedule_dim'
+TBLPROPERTIES (
+  'last_modified_by'='hadoop', 
+  'last_modified_time'='1563444857', 
+  'transient_lastDdlTime'='1563444857');
+  
+  CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_revenue_fact`(
+  `snapshot_time` timestamp, 
+  `res_id` int, 
+  `guest_id` int, 
+  `package_id` int, 
+  `invoice_item_type_id` int, 
+  `price_area_id` int, 
+  `ship_id` int, 
+  `agent_id` int, 
+  `agency_id` int, 
+  `promotion_id` int, 
+  `addon_id` int, 
+  `cardeck_id` int, 
+  `shorex_id` int, 
+  `hotel_res_req_id` int, 
+  `ship_room_req_id` int, 
+  `sail_id` int, 
+  `amount` double, 
+  `commission_percent` double, 
+  `net_due` double, 
+  `addon_qty` double, 
+  `currency` string, 
+  `currency_rate` double, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp, 
+  `coupon_class_id` int)
+PARTITIONED BY ( 
+  `snapshot_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_revenue_fact'
+;
+
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_addon_fact`(
+  `snapshot_time` timestamp, 
+  `res_id` int, 
+  `guest_id` int, 
+  `addon_id` int, 
+  `quantity` int, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+PARTITIONED BY ( 
+  `snapshot_date` date)
+  ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_addon_fact';
+  
+
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_group_dim`(
+  `group_id` int, 
+  `src_group_id` int, 
+  `group_init_date` timestamp, 
+  `group_status` string, 
+  `group_type` string, 
+  `group_name` string, 
+  `group_mode` string, 
+  `is_internal` string, 
+  `source_code` string, 
+  `office_code` string, 
+  `operator` string, 
+  `n_of_guests` int, 
+  `cancellation_date` timestamp, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_group_dim';
+  
+  CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_protected_commission_detail_fact`(
+  `record_id` int, 
+  `res_id` int, 
+  `commission_type_skey` int, 
+  `commission_percent` double, 
+  `commission_amount` double, 
+  `commission_fare` double, 
+  `commission_payout_date` timestamp, 
+  `is_manual_adjustment` string, 
+  `etl_ld_dt` timestamp)
+PARTITIONED BY ( 
+  `snapshot_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_protected_commission_detail_fact'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1617393789');
+  
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_revenue_summary_fact`(
+  `snapshot_time` timestamp, 
+  `res_id` int, 
+  `ship_id` int, 
+  `agent_id` int, 
+  `agency_id` int, 
+  `sail_id` int, 
+  `guest_id` int, 
+  `currency` string, 
+  `currency_rate` double, 
+  `amount` double, 
+  `voyage_amount` double, 
+  `taxes_and_fees` double, 
+  `voyage_protect` double, 
+  `addon_fare` double, 
+  `shorex_fare` double, 
+  `com_protected` double, 
+  `invoice_total` double, 
+  `invoice_paid` double, 
+  `gross_due` double, 
+  `net_due` double, 
+  `com_total` double, 
+  `com_paid` double, 
+  `com_bas_total` double, 
+  `com_bon_total` double, 
+  `charge_total` double, 
+  `grand_total` double, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+PARTITIONED BY ( 
+  `snapshot_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+WITH SERDEPROPERTIES ( 
+  'timestamp.formats'='yyyy-MM-dd HH:mm:ss') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_revenue_summary_fact'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1588765002');
+  
+  CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_coupon_dim`(
+  `coupon_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_coupon_id` int, 
+  `user_defined_coupon_id` string, 
+  `issue_date` timestamp, 
+  `valid_from` timestamp, 
+  `valid_to` timestamp, 
+  `effective_from` timestamp, 
+  `effective_to` timestamp, 
+  `coupon_category` string, 
+  `coupon_class` string, 
+  `coupon_class_code` string, 
+  `coupon_class_comments` string, 
+  `apply_as_payment` string, 
+  `apply_as_discount` string, 
+  `office_code` string, 
+  `res_id` int, 
+  `entity_type` string, 
+  `entity_id` int, 
+  `is_used` string, 
+  `is_active` string, 
+  `currency_code` string, 
+  `amount` double, 
+  `amount_left` double, 
+  `charge_code` string, 
+  `reason_code` string, 
+  `comments` string, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_coupon_dim';
+  
+  CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_sail_cabin_fact`(
+  `snapshot_time` timestamp, 
+  `sail_id` int, 
+  `cabin_category` string, 
+  `cabin_category_rank` int, 
+  `generic_category` string, 
+  `max_capacity` int, 
+  `num_of_cabins` int, 
+  `ok_abs` int, 
+  `ok_wgt` double, 
+  `gty_abs` int, 
+  `gty_wgt` double, 
+  `wtl_abs` int, 
+  `wtl_wgt` double, 
+  `avail_cabins` int, 
+  `avail_abs` int, 
+  `avail_wgt` double, 
+  `avail_nested` int, 
+  `num_of_reserved` int, 
+  `in_allotments` int, 
+  `num_of_upgrade` int, 
+  `num_of_downgrade` int, 
+  `shared_abs` int, 
+  `shared_allotment_abs` int, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp, 
+  `na_abs` int, 
+  `ok_gtry_rstr_abs` int, 
+  `taxes_and_fees` double, 
+  `voyage_fare_guest1` double, 
+  `voyage_fare_guest2` double, 
+  `voyage_fare_guest3` double, 
+  `voyage_fare_guest4` double)
+PARTITIONED BY ( 
+  `snapshot_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+WITH SERDEPROPERTIES ( 
+  'timestamp.formats'='yyyy-MM-dd HH:mm:ss') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_sail_cabin_fact';
+  
+  CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_hotel_res_req_dim`(
+  `hotel_res_req_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_res_id` int, 
+  `src_guest_id` int, 
+  `request_type` string, 
+  `start_date` timestamp, 
+  `end_date` timestamp, 
+  `city_code` string, 
+  `hotel_id` int, 
+  `hotel_category` string, 
+  `room_seq_number` int, 
+  `room_category` string, 
+  `room_type` string, 
+  `occupancy` int, 
+  `hotel_space_type` string, 
+  `allocation_id` int, 
+  `inv_result` string, 
+  `is_land_component` string, 
+  `hotel_bed_type` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp, 
+  `md5_dim` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_hotel_res_req_dim';
+
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_hotel_group_req_dim`(
+  `hotel_group_req_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `src_group_id` int, 
+  `effective_date` timestamp, 
+  `start_date` timestamp, 
+  `end_date` timestamp, 
+  `request_type` string, 
+  `occupancy` int, 
+  `quantity` int, 
+  `n_of_guests` int, 
+  `city_code` string, 
+  `hotel_id` int, 
+  `hotel_category` string, 
+  `room_category` string, 
+  `room_type` string, 
+  `hotel_space_type` string, 
+  `is_land_component` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp, 
+  `md5_dim` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_hotel_group_req_dim'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1595306413');
+
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_group_fact`(
+  `snapshot_time` timestamp, 
+  `group_id` int, 
+  `guest_seqn` int, 
+  `package_id` int, 
+  `invoice_item_type_id` int, 
+  `price_area_id` int, 
+  `ship_id` int, 
+  `agent_id` int, 
+  `agency_id` int, 
+  `promotion_id` int, 
+  `addon_id` int, 
+  `cardeck_id` int, 
+  `shorex_id` int, 
+  `hotel_group_req_id` int, 
+  `sail_id` int, 
+  `amount` double, 
+  `commission_percent` double, 
+  `quantity` double, 
+  `currency` string, 
+  `currency_rate` double, 
+  `effective_date` timestamp, 
+  `cabin_category` string, 
+  `generic_category` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+PARTITIONED BY ( 
+  `snapshot_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+WITH SERDEPROPERTIES ( 
+  'timestamp.formats'='yyyy-MM-dd HH:mm:ss') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_group_fact'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1624501315');
+  
+  CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_transaction_evt`(
+  `trans_id` int, 
+  `src_trans_id` int, 
+  `res_id` int, 
+  `trans_status` string, 
+  `form_of_trans` string, 
+  `trans_type` string, 
+  `entity_type` string, 
+  `entity_id` int, 
+  `trans_time_stamp` timestamp, 
+  `currency_trans` string, 
+  `amount_full_trans` double, 
+  `rate_transprice` double, 
+  `currency_price` string, 
+  `amount_full_price` double, 
+  `rate_pricebase` double, 
+  `operator` string, 
+  `coupon_id` int, 
+  `rec_trans_id` int, 
+  `is_dest_entity` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_transaction_evt'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1624558072');
+
+
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_booked_cabin_reservation_dim`(
+  `res_id` int, 
+  `guest_id` int, 
+  `package_id` int, 
+  `price_category` string, 
+  `price_category_rank` int, 
+  `berth_category` string, 
+  `berth_category_rank` int, 
+  `assigned_category` string, 
+  `assigned_category_rank` int, 
+  `generic_category` string, 
+  `allocation_id` int, 
+  `cabin_id` int, 
+  `sail_cabin_reserve_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_booked_cabin_reservation_dim'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1614070521');
+
+CREATE EXTERNAL TABLE `vv_db_mig.hvtb_nbx_core_sw_transaction_evt_lad`(
+  `rec_trans_id` int, 
+  `trans_id` int, 
+  `trans_status` string, 
+  `form_of_trans` string, 
+  `trans_type` string, 
+  `entity_type` string, 
+  `entity_id` int, 
+  `is_dest_entity` string, 
+  `trans_time_stamp` timestamp, 
+  `currency_trans` string, 
+  `amount_full_trans` double, 
+  `rate_transprice` double, 
+  `currency_price` string, 
+  `amount_full_price` double, 
+  `rate_pricebase` double, 
+  `operator` string, 
+  `voided_time_stamp` timestamp, 
+  `voided_by_operator` string, 
+  `is_manual` string, 
+  `external_ident` string, 
+  `etl_ld_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_transaction_evt_lad'
+TBLPROPERTIES (
+  'spark.sql.create.version'='2.2 or prior', 
+  'spark.sql.sources.schema.numParts'='1', 
+  'spark.sql.sources.schema.part.0'='{"type":"struct","fields":[{"name":"rec_trans_id","type":"integer","nullable":true,"metadata":{}},{"name":"trans_id","type":"integer","nullable":true,"metadata":{}},{"name":"trans_status","type":"string","nullable":true,"metadata":{}},{"name":"form_of_trans","type":"string","nullable":true,"metadata":{}},{"name":"trans_type","type":"string","nullable":true,"metadata":{}},{"name":"entity_type","type":"string","nullable":true,"metadata":{}},{"name":"entity_id","type":"integer","nullable":true,"metadata":{}},{"name":"is_dest_entity","type":"string","nullable":true,"metadata":{}},{"name":"trans_time_stamp","type":"timestamp","nullable":true,"metadata":{}},{"name":"currency_trans","type":"string","nullable":true,"metadata":{}},{"name":"amount_full_trans","type":"double","nullable":true,"metadata":{}},{"name":"rate_transprice","type":"double","nullable":true,"metadata":{}},{"name":"currency_price","type":"string","nullable":true,"metadata":{}},{"name":"amount_full_price","type":"double","nullable":true,"metadata":{}},{"name":"rate_pricebase","type":"double","nullable":true,"metadata":{}},{"name":"operator","type":"string","nullable":true,"metadata":{}},{"name":"voided_time_stamp","type":"timestamp","nullable":true,"metadata":{}},{"name":"voided_by_operator","type":"string","nullable":true,"metadata":{}},{"name":"is_manual","type":"string","nullable":true,"metadata":{}},{"name":"external_ident","type":"string","nullable":true,"metadata":{}},{"name":"etl_ld_dt","type":"timestamp","nullable":true,"metadata":{}}]}', 
+  'transient_lastDdlTime'='1604317616');

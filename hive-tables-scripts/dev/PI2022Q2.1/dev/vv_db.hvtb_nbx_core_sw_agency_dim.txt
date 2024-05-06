@@ -1,0 +1,13 @@
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_agency_dim_src_agency_id(
+src_agency_id string,
+new_src_agency_id string)
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_agency_dim_src_agency_id'
+
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_agency_dim_agency_id(
+agency_id__c string,
+new_agency_id__c string)
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_agency_dim_agency_id'

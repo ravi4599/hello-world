@@ -1,0 +1,21 @@
+  spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_parse_seaware_wearables_flag(
+  rowid int,
+  names string,
+  client_id string,
+  client_name string,
+  res_id string,
+  sw_generated_by_flg boolean,
+  sw_wearable_type boolean,
+  voyageid string,
+  batchtime timestamp,
+  shipcode string)
+PARTITIONED BY (
+  part_date date)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/parse/hvtb_parse_seaware_wearables_flag' """)

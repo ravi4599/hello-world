@@ -1,0 +1,23 @@
+CREATE EXTERNAL TABLE hive_schema_stg.restriction_dim_tmp(voyage_id string                        
+, restriction_skey bigint                                                                           
+, restriction_id int                                                                                
+, person_id int                                                                                     
+, restriction_guid string                                                                     
+, restriction_type string                                                                      
+, restriction_categoryid int                                                                        
+, restriction_category_code string                                                             
+, restriction_category string                                                                 
+, restriction_comment string                                                                  
+, restriction_from_date timestamp                                                                   
+, restriction_to_date timestamp                                                                     
+, src_deleted_flag boolean                                                                          
+, src_created_date timestamp                                                                        
+, load_dt timestamp                                                                                 
+, upd_dt timestamp                                                                                  
+, primaryhash string                                                                          
+, md5_hash string                                                                             
+)                                                                                                   
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_dim_restriction/*']
+);

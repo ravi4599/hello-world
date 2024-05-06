@@ -1,0 +1,26 @@
+Create External Table shipdw.hvtb_lnd_vxp_table_management_guests_preference(addeddate TIMESTAMP,
+public_id STRING,
+code STRING,
+dxp_id STRING,
+name STRING,
+active boolean,
+type_id STRING,
+addedby STRING,
+lastmodifiedby STRING,
+lastmodifieddate TIMESTAMP,
+voyageid STRING,
+shipcode string,
+BatchTime TIMESTAMP) 
+PARTITIONED BY ( 
+  part_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-cert-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_table_management_guests_preference';
+
+
+spark.sql("""Create View shipdw.hvtb_parse_vxp_table_management_guests_preference as Select * from shipdw.hvtb_lnd_vxp_table_management_guests_preference""");

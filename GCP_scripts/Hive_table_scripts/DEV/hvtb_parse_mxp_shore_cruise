@@ -1,0 +1,44 @@
+
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_cruise_roll(id double, guid string, lastchanged string, number string, description string, orgunitid string, orgunit string, shipcode string, startdate string, enddate string, cruisestatus string, voyageid string, batchtime timestamp)
+PARTITIONED BY (part_date date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-dev-nbx-cluster/data/parse/mxp/hvtb_parse_mxp_shore_cruise';
+
+gsutil cp gs://vv-dev-nbx-cluster/data/Test_Jar/LandingtoParse/SrcShrCr_TgtShrCr /home/ext_dileep_kumar_tulugu_capgemin/l2p_config
+
+
+
+gsutil cp gs://vv-dev-frmwrks-test/vv-nbx-data-parser-0.0.1-SNAPSHOT-jar-with-dependencies.jar /home/ext_dileep_kumar_tulugu_capgemin/jars
+
+
+
+UPSERT STATEMENT
+
+
+
+INSERT INTO SHIPDW.HBTB_INGESTION_METADATA(BATCH_INSTANCE_ID,BATCH_ID,PARENTBATCH,SRCCONFIGID,TGTCONFIGID,BATCHSTARTTIME,BATCHENDTIME,BATCH_EXECUTION_STARTTIME,BATCH_EXECUTION_ENDTIME,STATUS,ENVIRONMENT,VOYAGEID,TYPE) VALUES('SrcMXPCruise-TgtMXPCruise','SrcMXPCruise-TgtMXPCruise',null,'Srcshifttblstat','Tgtshifttblstat','1900-01-01 00:00:00','1900-01-01 00:00:00','1900-01-01 00:00:00','1900-01-01 00:00:00','Successful','dev','SC2002269NCR','Ingestion');
+
+
+
+select * from shipdw.HBTB_INGESTION_METADATA where BATCH_ID like '%SrcMXPCruise-TgtMXPCruise%';-
+
+
+delete from shipdw.HBTB_INGESTION_METADATA where BATCH_ID like '%SrcMXPCruise-TgtMXPCruise%';
+
+
+
+spark submit
+
+
+
+spark-submit --name "Cruise" --class com.virginvoyages.parse.ParseFramework --master yarn --deploy-mode cluster --properties-file /home/ext_dileep_kumar_tulugu_capgemin/l2p_config/SrcShrCr_TgtShrCr --jars /home/ext_dileep_kumar_tulugu_capgemin/jars/virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar /home/ext_dileep_kumar_tulugu_capgemin/jars/vv-nbx-data-parser-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+
+
+yarn application -kill application_1654264238969_0683

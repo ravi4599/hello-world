@@ -1,0 +1,14 @@
+spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_mart_fact_voyage_well_questionaire(
+voyage_id string,
+ship_code string,
+voyage_skey bigint,
+person_skey bigint,
+voyage_well_question_skey bigint,
+voyage_well_answer string, 
+load_dt timestamp, 
+upd_dt timestamp
+)
+PARTITIONED BY ( 
+part_dt date)STORED AS PARQUET
+LOCATION
+'/data/apps/nbx/mart/hvtb_mart_fact_voyage_well_questionaire'""")

@@ -1,0 +1,10 @@
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_parse_konami_vw_odbc_dailyptnrtg`(`avgwager` decimal(16,2), `countcard` decimal(10,0), `countdevice` decimal(14,2), `countrating` decimal(14,2), `creditbasepoint` decimal(16,2), `creditbonuscomppoint` decimal(14,2), `creditbonuspoint` decimal(16,2), `creditcomppoint` decimal(16,2), `creditpoint` decimal(16,2), `credittierpoint` decimal(16,2), `dateinserted` string, `ddinserted` decimal(2,0), `debitbonuspoint` decimal(10,0), `debitcomppoint` decimal(10,0), `debitpoint` decimal(10,0), `devgamename` string, `devid` decimal(10,0), `devtypid` decimal(10,0), `devtypname` string, `firstname` string, `gamedph` decimal(9,6), `gameid` decimal(10,0), `gametheholdpct` decimal(9,6), `gstid` decimal(10,0), `gstname` string, `lastmodby` string, `lastmoddate` string, `lastname` string, `mminserted` decimal(2,0), `ptnid` decimal(10,0), `theowin` decimal(16,2), `timeondevsec` decimal(16,2), `totbuyin` decimal(16,2), `totwalkwith` decimal(16,2), `yyyyinserted` decimal(4,0), `voyage_id` string, `batchtime` timestamp, `shipcode` string)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-dev-nbx-cluster/data/parse/konami/hvtb_parse_konami_vw_odbc_dailyptnrtg';

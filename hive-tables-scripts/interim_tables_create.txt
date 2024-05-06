@@ -1,0 +1,29 @@
+
+CREATE External TABLE IF NOT EXISTS
+CustomerDataStatistics_numbers(Attribute
+varchar(100),Minimum double,Maximum double,Min_Length
+int,Max_Length int,Average double,DistinctValues
+int,25th_Percentile double,50th_Percentile
+double,75th_percentile double,PercentageNonNull double)
+STORED AS PARQUET LOCATION 'hdfs:/tmp/customerdatastatistics';
+
+CREATE TABLE if not exists customerdatadistribution_categorical (attribute varchar(100),distribution  array<string>)
+STORED AS PARQUET LOCATION 'hdfs:/tmp/customerdatadistribution';
+ 
+CREATE TABLE IF NOT EXISTS CustomerDataAvailability (Attribute varchar(100),PercentageNull double,DistinctValues Double)
+STORED AS PARQUET LOCATION 'hdfs:/tmp/customerdataavailability;
+
+create table customerdataavailability stored as sequencefile  select * from customerdataavailability_full;
+
+=====================================================================================================================================================
+create external table ext_customerdataavailability_full(attribute string, percentagenull double,distinctvalues double)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY  ';'
+LINES TERMINATED BY '\n'
+LOCATION '/user/vmahakal/customerdataavailability_full.csv';
+
+
+CREATE TABLE emp(id int, name string, department string, salary float)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS PARQUET TBLPROPERTIES ("parquet.compression"="SNAPPY"); 
+

@@ -1,0 +1,32 @@
+CREATE EXTERNAL TABLE  hive_schema_stg.seaware_sail_cabin_fact(
+  snapshot_date timestamp, 
+  sail_id int, 
+  cabin_category varchar(5),
+  cabin_category_rank int, 
+  generic_category varchar(30), 
+  max_capacity int, 
+  num_of_cabins int, 
+  ok_abs int, 
+  ok_wgt float,
+  gty_abs int, 
+  gty_wgt float,
+  wtl_abs int, 
+  wtl_wgt float,
+  avail_cabins int, 
+  avail_abs int, 
+  avail_wgt float,
+  avail_nested int, 
+  num_of_reserved int, 
+  in_allotments int, 
+  num_of_upgrade int, 
+  num_of_downgrade int, 
+  shared_abs int, 
+  shared_allotment_abs int, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp)
+
+STORED AS PARQUET 
+LOCATION
+  's3://vv-staging-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_sail_cabin_fact'
+
+

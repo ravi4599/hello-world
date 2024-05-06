@@ -1,0 +1,79 @@
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(623, 'jSWStgRPLSHIP_ROOM_REQUEST', '', 'Hive', 'SHIP_ROOM_REQUEST', 'POSTGRESQL', 'SPF_DAILY', '2020-04-13 09:21:42.000');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(624, 'jSWStgRPLSHIP_ROOM_ALLOC', '', 'Hive', 'SHIP_ROOM_ALLOC', 'POSTGRESQL', 'SPF_DAILY', '2020-04-13 13:17:06.000');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(638, 'jSWRPLShip_Room_Request_Dim', '', 'Hive', '', '', 'SPF_DAILY', '2020-04-15 15:59:49.000', NULL, NULL);
+
+
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(639, 'jSailorServiceAttributionFact', '', '', '', '', 'Sailservice_runtime', '2020-04-16 12:07:01.000');
+INSERT INTO vv_metadata.job_info
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES(640, 'jSailorServiceAttributionParse', '', '', '', '', 'Sailservice_runtime', '2020-04-16 12:07:17.000', NULL, NULL);
+
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jHbaseToKafka_AffinityFingerPrint', '', '', '', '', 'shoretoship_daily', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jHbaseToKafka_CalendarRecommendation', '', '', '', '', 'shoretoship_daily', now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jHbaseToKafka_CalrecoSailor', '', '', '', '', 'shoretoship_daily', now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jHbaseToKafka_FeedbackStreamHistory', '', '', '', '', 'shoretoship_daily', now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jHbaseToKafka_MatchScore', '', '', '', '', 'shoretoship_daily', now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jHbaseToKafka_SailorTribe', '', '', '', '', 'shoretoship_daily', now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jHbaseToKafka_SewareReservation', '', '', '', '', 'shoretoship_daily', now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jVoyageRefreshUtil', '', '', '', '', 'shoretoship_daily', now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jHbaseToKafka_AcxiomReservation', '', '', '', '', 'shoretoship_daily', now());
+
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSetSailLoadStartJob_Shoretoship', '', '', '', '', 'shoretoship_daily', now());
+
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_QuickcodeDim', '', '', '', '', 'SailorReport_daily', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jSailorReporting_Quickcodeparser', '', '', '', '', 'SailorReport_runtime', now());
+(job_id, job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES(640, 'jSailorServiceAttributionParse', '', '', '', '', 'Sailservice_runtime', '2020-04-16 12:07:17.000');

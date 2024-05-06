@@ -1,0 +1,49 @@
+
+CREATE EXTERNAL TABLE hive_schema_stg.chat_queue_fact_err(
+	voyage_id text ,
+	ship_code text ,
+	voyage_skey int8 ,
+	chat_queue_detail_skey int8 ,
+	person_skey int8 ,
+	queue_joined_datetime timestamp ,
+	queue_responded_datetime timestamp ,
+	queue_resolved_datetime timestamp ,
+	time_to_respond_seconds int4 ,
+	length_of_interaction_seconds int4 ,
+	time_in_queue_seconds int4 ,
+	load_dt timestamp ,
+	upd_dt timestamp ,
+	primaryhash text ,
+	md5_hash text )
+PARTITIONED BY ( 
+part_dt date)
+STORED AS PARQUET
+LOCATION
+'s3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_chat_queue_err'
+
+
+CREATE EXTERNAL TABLE hive_schema_stg.chat_queue_fact(
+	voyage_id text ,
+	ship_code text ,
+	voyage_skey int8 ,
+	chat_queue_detail_skey int8 ,
+	person_skey int8 ,
+	queue_joined_datetime timestamp ,
+	queue_responded_datetime timestamp ,
+	queue_resolved_datetime timestamp ,
+	time_to_respond_seconds int4 ,
+	length_of_interaction_seconds int4 ,
+	time_in_queue_seconds int4 ,
+	load_dt timestamp ,
+	upd_dt timestamp ,
+	primaryhash text ,
+	md5_hash text )
+PARTITIONED BY ( 
+part_dt date)
+STORED AS PARQUET
+LOCATION
+'s3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_chat_queue'
+
+
+
+CREATE OR REPLACE VIEW shipdw.chat_queue_fact AS SELECT * FROM hive_schema_stg.chat_queue_fact with no schema binding;

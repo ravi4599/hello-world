@@ -1,0 +1,1 @@
+insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jSFLandingsenddefinition','hvtb_nbx_core_crm_senddefinition','Hive','et4ae5__SendDefinition__c','SalesForce','daily',now());

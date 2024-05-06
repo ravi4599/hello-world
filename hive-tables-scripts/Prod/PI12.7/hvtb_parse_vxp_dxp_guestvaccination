@@ -1,0 +1,28 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_vxp_dxp_guestvaccination (
+	guestvaccinationid string,
+	reservationguestid string,
+	disease string,
+	finalvaccinationstatus string,
+	vaccinetypeid string,
+	finalvaccinationdate date,
+	isboosterdosereceived boolean,
+	lastboosterdosereceiveddate date,
+	isdeleted boolean,
+	addeddate timestamp,
+	addedby string,
+	lastmodifieddate timestamp,
+	lastmodifiedby string,
+	lastmodifiedbyuserid string,
+	lastmodifiedbyapplicationid string,
+	VoyageId string, 
+	BatchTime timestamp, 
+	ShipCode string)
+	PARTITIONED BY (Part_Date date)
+	ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+	WITH SERDEPROPERTIES (
+	'serialization.format' = '1'
+	)
+	STORED AS
+	INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+	OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+	LOCATION 's3://vv-prod-emr-cluster/data/parse/vxp/hvtb_parse_vxp_dxp_guestvaccination';

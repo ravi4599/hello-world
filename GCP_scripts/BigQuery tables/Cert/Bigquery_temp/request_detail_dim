@@ -1,0 +1,24 @@
+CREATE EXTERNAL TABLE hive_schema_stg.request_detail_dim_tmp(
+  request_detail_skey bigint, 
+  voyage_id string, 
+  request_id string, 
+  request_guid string, 
+  request_description string, 
+  request_priority int, 
+  request_category_id int, 
+  request_category_name string, 
+  request_type_id int, 
+  request_type_name string, 
+  request_type_priority int, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_request_detail'

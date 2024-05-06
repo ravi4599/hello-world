@@ -1,0 +1,6 @@
+create external table shipdw.hvtb_parse_konami_ems_vw_tal_shifttblstat
+(SHIFTID decimal(1,0),DATEINSERTED timestamp,DEVID decimal(10,0),GAMEID decimal(10,0),
+GSTID decimal(5,0),ASSETNUM string,OPENTRANSID decimal(16,0),CLOSETRANSID decimal(16,0),
+YEAR decimal(4,0),QUARTER decimal(1,0),MONTH decimal(2,0),WEEK decimal(2,0),DAY decimal(2,0),
+FYEAR decimal(4,0),FQUARTER decimal(1,0),FMONTH decimal(2,0),OPENER decimal(14,2),OPENER_ADJ decimal(14,2),CLOSER decimal(14,2),CLOSER_ADJ decimal(14,2),FILL decimal(14,2),FILL_ADJ decimal(14,2),CREDIT decimal(14,2),CREDIT_ADJ decimal(14,2),ESTDROP decimal(14,2),UNPOSTEDDROP decimal(14,2),POSTEDDROP decimal(14,2),MARKER decimal(14,2),MARKER_ADJ decimal(14,2),TBL_AUDIT_ADJ decimal(14,2),CPV decimal(14,2),FOD decimal(14,2),VOUCHER decimal(14,2),VARIANCEAMT decimal(14,2),LASTMODDATE timestamp,LASTMODBY string,TBLNETWIN decimal(14,2),CPV_ADJ decimal(14,2),TBLJP decimal(14,2),TBLJP_ADJ decimal(14,2),POSTEDDROP_PROMOCHIP decimal(14,2),POSTEDDROP_OTHER decimal(14,2),POSTEDDROP_PROMO_ADJ decimal(14,2),POSTEDDROP_OTHER_ADJ decimal(14,2),VoyageId string,BatchTime TIMESTAMP)partitioned by (Part_Date date) STORED AS parquet
+LOCATION 's3://vv-prod-emr-cluster/data/parse/hvtb_parse_konami_ems_vw_tal_shifttblstat'

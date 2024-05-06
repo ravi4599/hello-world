@@ -1,0 +1,60 @@
+CREATE EXTERNAL TABLE hive_schema_stg.seaware_guest_dim(
+  guest_id int, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  src_guest_id int, 
+  guest_seqn float, 
+  guest_type varchar, 
+  client_id float, 
+  age float, 
+  age_category varchar, 
+  gender varchar, 
+  address_line1 varchar, 
+  address_line2 varchar, 
+  city varchar, 
+  country varchar, 
+  zip varchar, 
+  state varchar, 
+  citizenship varchar, 
+  citizenship_name varchar, 
+  residency varchar, 
+  last_name varchar, 
+  first_name varchar, 
+  middle_name varchar, 
+  sex varchar, 
+  tier_level varchar, 
+  birthday timestamp, 
+  passport_number varchar, 
+  passport_exp_date timestamp, 
+  passport_issue_date timestamp, 
+  passport_issue_place varchar, 
+  id_doc_type varchar, 
+  id_doc_number varchar, 
+  id_doc_expiration_date timestamp, 
+  id_doc_issue_date timestamp, 
+  id_doc_issue_country varchar, 
+  id_doc_issue_city varchar, 
+  id2_doc_type varchar, 
+  id2_doc_number varchar, 
+  id2_doc_expiration_date timestamp, 
+  id2_doc_issue_date timestamp, 
+  id2_doc_issue_country varchar, 
+  id2_doc_issue_city varchar, 
+  email varchar, 
+  phone_intl_code float, 
+  phone_number varchar, 
+  client_is_active	varchar,
+  cabin_id	integer,
+  md5_dim varchar, 
+  etl_ld_status varchar, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_guest_dim'
+;

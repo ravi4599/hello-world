@@ -1,0 +1,18 @@
+
+
+CREATE  EXTERNAL TABLE hive_schema_stg.position_org_unit_detail_fact
+WITH PARTITION COLUMNS
+OPTIONS (
+  uris=['gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_fact_position_org_unit_detail/*'],
+  format=PARQUET,
+  hive_partition_uri_prefix='gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_fact_position_org_unit_detail/'
+);
+
+
+
+
+create or replace view shipdw.position_org_unit_detail_fact as select * from hive_schema_stg.position_org_unit_detail_fact;
+
+
+
+

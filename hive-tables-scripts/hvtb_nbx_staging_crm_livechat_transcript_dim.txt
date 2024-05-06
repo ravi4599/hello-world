@@ -1,0 +1,45 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_staging_crm_livechat_transcript_dim`(
+  `livechat_transcript_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `id` varchar(500), 
+  `src_case_id` varchar(500), 
+  `leadid` varchar(500), 
+  `name` varchar(255), 
+  `createddate` timestamp, 
+  `starttime` timestamp, 
+  `endtime` timestamp, 
+  `waittime` int, 
+  `abandoned` int, 
+  `abandoned__c` varchar(100), 
+  `status` varchar(500), 
+  `chat_transferred__c` varchar(500), 
+  `of_chat_transfers_request_cancelled__c` varchar(500), 
+  `chat_accepted__c` varchar(500), 
+  `chatduration` int, 
+  `ownerid` varchar(500), 
+  `contactid` varchar(500), 
+  `lastmodifieddate` timestamp, 
+  `md5_dim` varchar(500), 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp, 
+  `answered_in_10__c` int, 
+  `averageresponsetimeoperator` int, 
+  `averageresponsetimevisitor` int, 
+  `booking_flow__c` string, 
+  `chats_cancelled__c` int, 
+  `requesttime` timestamp)
+PARTITIONED BY ( 
+  `etl_ld_status` varchar(20))
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'hdfs://ip-10-15-2-225.ec2.internal:8020/data/core/crm_kpi/hvtb_nbx_staging_crm_livechat_transcript_dim'
+TBLPROPERTIES (
+  'last_modified_by'='hadoop', 
+  'last_modified_time'='1603985046', 
+  'transient_lastDdlTime'='1603985046');

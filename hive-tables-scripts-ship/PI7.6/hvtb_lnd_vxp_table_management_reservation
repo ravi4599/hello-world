@@ -1,0 +1,4 @@
+
+spark.sql("create external table shipdw.hvtb_lnd_vxp_table_management_res_reservation(addeddate timestamp ,public_id string ,status string ,res_timestamp timestamp ,waitlist_delay int,type string ,external_id string ,anon_guest_count int,created timestamp ,seated timestamp ,last_notified timestamp ,venue_id string ,voyage_id string ,addedby string ,lastmodifiedby string ,lastmodifieddate timestamp ,VoyageId STRING,BatchTime TIMESTAMP)partitioned by (Part_Date date) STORED AS parquet  LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_table_management_res_reservation'")
+
+spark.sql("create view shipdw.hvtb_parse_vxp_table_management_reservation as select * from shipdw.hvtb_lnd_vxp_table_management_res_reservation")

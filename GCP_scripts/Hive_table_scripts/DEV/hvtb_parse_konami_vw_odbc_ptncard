@@ -1,0 +1,10 @@
+CREATE EXTERNAL TABLE `shipdw`.`hvtb_parse_konami_vw_odbc_ptncard`(`cardcolor` decimal(1,0), `cardcolorvalue` string, `cardid` decimal(10,0), `cardlvl` decimal(2,0), `cardstatid` decimal(2,0), `cardstatusdesc` string, `cardtype` decimal(8,0), `claexpiredate` string, `claisfrozen` decimal(1,0), `claisfrozenvalue` string, `clasetdate` string, `description` string, `firstname` string, `gstid` decimal(5,0), `gstname` string, `isdefault` decimal(1,0), `isdefaultvalue` string, `issecondary` decimal(1,0), `issecondaryvalue` string, `issuedate` string, `issuenum` decimal(4,0), `lastmodby` string, `lastmoddate` string, `lastname` string, `maxvalue` decimal(14,2), `minvalue` decimal(14,2), `ptnid` decimal(10,0), `ranked` decimal(1,0), `rankedvalue` string, `voyage_id` string, `batchtime` timestamp, `shipcode` string)
+PARTITIONED BY (`part_date` date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-dev-nbx-cluster/data/parse/konami/hvtb_parse_konami_vw_odbc_ptncard';

@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS crm.splashboard_kpi_tbl ( 
+      cabin_number VARCHAR(10) ,
+      res_init_date TIMESTAMP ,
+      package_code VARCHAR(30) ,
+      package_name VARCHAR(100) ,
+      price_category VARCHAR(4) ,
+      seaware_agency_id__c VARCHAR(100) ,
+      agency_name VARCHAR(100) ,
+      seaware_agent_id__c VARCHAR(100) ,
+      agent_contact_id VARCHAR(500),
+      agent_name VARCHAR(100) ,
+      src_group_id INTEGER ,
+      src_res_id INTEGER ,
+      res_guest_count INTEGER ,
+      sum_actual_gross_ticket_revenue DOUBLE PRECISION ENCODE RAW ,
+      sum_actual_gross_ticket_revenue_usd DOUBLE PRECISION ENCODE RAW ,
+      currency VARCHAR(5),
+      currency_rate NUMERIC(10,5),
+      sail_date_from TIMESTAMP ,
+      sail_date_to TIMESTAMP,
+      etl_ld_dt TIMESTAMP 
+) ;
+
+GRANT SELECT ON crm.splashboard_kpi_tbl TO integuser;
+GRANT SELECT ON crm.splashboard_kpi_tbl TO GROUP tableau_poweruser_group;
+GRANT SELECT ON crm.splashboard_kpi_tbl TO GROUP integration_user_group;

@@ -1,0 +1,53 @@
+CREATE OR REPLACE PROCEDURE shipdw.postvoyage_sailor_survey_rpt_sp()
+	LANGUAGE plpgsql
+AS $$
+	
+	
+	
+BEGIN
+
+	INSERT INTO shipdw.postvoyage_sailor_survey_rpt (
+	SELECT 
+rf.request_id, rf.client_id, rf.ship_id, rf.sail_id, rf.guest_id, rf.request_time, rf.response_time, 
+qd.question_id,qd.src_question_id, qd.variable_id, qd.question_text, 
+rf.itinerary_port, rf.activity_skey, rf.answer_rating, rf.answer_text, 
+qd.is_postcruise,qd.is_reminiscence,
+qd.type question_type, qd.category question_category, qd.answer_code_min, qd.answer_code_max, qd.answer_code_min_text, qd.answer_code_max_text,
+qad.question_answer_id, qad.answer_code, qad.answer_code_text, 
+ad.activity_id, ad.activity_code, ad.access_type, ad.activity_description, ad.activity_duration,
+ad.activity_group_code, ad.activity_group_name, ad.activity_location_type, ad.activity_name, ad.activity_port_code,
+ad.activity_type, ad.vip_flg activity_vip_flag, sailor_classification.classification,
+gd.age guest_age, gd.age_category guest_age_category, gd.citizenship, gd.citizenship_name, gd.city guest_city, gd.client_id guest_client_id,
+gd.country guest_country, gd.first_name guest_first_name, gd.middle_name guest_middle_name, gd.last_name guest_last_name, 
+gd.gender, gd.src_guest_id, gd.guest_seqn, gd.guest_type, gd.sex guest_gender, gd.state guest_state, gd.tier_level,
+gd.zip guest_zip, pd.package_class, pd.package_code, pd.src_package_id, pd.package_type, pd.package_name,
+sd.sail_date_from, sd.sail_date_to, sd.sail_port_from, sd.sail_port_to, sh.ship_name, 
+sp.cabin_category, sp.cabin_category_desc, sp.cabin_category_generic,sp.cabin_number,
+rf.load_dt,rf.upd_dt,rf.part_dt 
+FROM "seaware"."postvoyage_survey_questions_dim" qd 
+  LEFT JOIN "seaware"."postvoyage_survey_responses_fact" rf ON (qd."question_id" = rf."question_id")
+  LEFT JOIN "seaware"."seaware_sail_dim" sd ON ((rf."sail_id" = sd."sail_id"))
+  LEFT JOIN "seaware"."seaware_package_dim" pd ON ((sd."src_sail_id" = pd."src_sail_id") AND ('9999-12-31 00:00:00.000' = pd."rec_end_dttm"))
+  LEFT JOIN "seaware"."seaware_ship_dim" sh ON (sd."ship_id" = sh."ship_id")
+  LEFT JOIN "seaware"."seaware_guest_dim" gd ON ((rf."guest_id" = gd."guest_id"))
+  LEFT JOIN "seaware"."seaware_res_guest_rel" rel ON (gd."guest_id" = rel."guest_id")
+  LEFT JOIN "seaware"."seaware_reservation_dim" rd ON ((rel."res_id" = rd."res_id"))
+  LEFT JOIN (
+  SELECT f.guest_id,f.question_id, d.src_question_id,f.answer_rating,
+  case when answer_rating in (10,11) then 'Promoter'
+  when answer_rating in (1,2,3,4,5,6,7) then 'Detractor'
+  when answer_rating in (8,9) then 'Passive' else '0' end classification
+  FROM  seaware.postvoyage_survey_questions_dim d
+  join seaware.postvoyage_survey_responses_fact f on f.question_id = d.question_id
+  where d.src_question_id = 'Q2'
+) sailor_classification ON (rf."guest_id" = sailor_classification."guest_id")
+  LEFT JOIN "seaware"."postvoyage_survey_question_answer_dim" qad ON (rf."question_answer_id" = qad."question_answer_id")
+  LEFT JOIN "shipdw"."activity_dim" ad ON (rf."activity_skey" = ad."activity_skey")
+  LEFT JOIN "crm"."splashboard_kpi_tbl" sp ON (rd."src_res_id" = sp."booking_number")
+  where rf.part_dt=(select max(part_dt) from "seaware"."postvoyage_survey_responses_fact")
+
+	);END;
+
+
+$$
+;

@@ -1,0 +1,14 @@
+create external table vv_db.hvtb_nbx_core_sw_res_package_rel(
+respackage_skey bigint,
+res_package_id int,
+src_res_id int,
+src_guest_id int,
+src_package_id int,
+effective_date timestamp,
+rec_start_dttm timestamp,
+rec_end_dttm timestamp,
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)
+stored as parquet location 'gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_sw_res_package_rel';

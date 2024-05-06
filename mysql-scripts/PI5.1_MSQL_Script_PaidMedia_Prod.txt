@@ -1,0 +1,35 @@
+INSERT INTO vv_metadata.job_info( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on) 
+VALUES( 'jPMDWHLoader_dv360', 'hvtb_nbx_core_paidmedia_dv360', 'Hive', 'DV360.csv', 'CSV file', 'paidmedia_monthly', now());
+
+INSERT INTO vv_metadata.job_info ( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on) 
+VALUES( 'jPMDWHLoader_reach', 'hvtb_nbx_core_paidmedia_reach', 'Hive', 'Reach.csv', 'CSV file', 'paidmedia_monthly', now()); 
+ 
+INSERT INTO vv_metadata.job_info ( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jPMDWHLoader_search', 'hvtb_nbx_core_paidmedia_search', 'Hive', 'Search.csv', 'CSV file', 'paidmedia_monthly',now()); 
+
+INSERT INTO vv_metadata.job_info ( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on) 
+VALUES( 'jPMDWHLoader_hulu', 'hvtb_nbx_core_paidmedia_hulu', 'Hive', 'Hulu.csv', 'CSV file', 'paidmedia_monthly', now()); 
+
+INSERT INTO vv_metadata.job_info ( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on) 
+VALUES( 'jPMDWHLoader_devicemetrics', 'hvtb_nbx_core_paidmedia_device_metrics', 'Hive', 'Device.csv', 'CSV file', 'paidmedia_monthly', now()); 
+
+INSERT INTO vv_metadata.job_info ( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on) 
+VALUES( 'jPMDWHLoader_youtube', 'hvtb_nbx_core_paidmedia_youtube', 'Hive', 'YouTube.csv', 'CSV file', 'paidmedia_monthly',now()); 
+
+INSERT INTO vv_metadata.job_info ( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on) 
+VALUES( 'jPMDWHLoader_gcm', 'hvtb_nbx_core_paidmedia_gcm', 'Hive', 'GCM.csv', 'CSV file', 'paidmedia_monthly',now());
+
+INSERT INTO vv_metadata.job_info ( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jPMDWHLoader_amazon', 'hvtb_nbx_core_paidmedia_amazon', 'Hive', 'Amazon.csv', 'CSV file', 'paidmedia_monthly',now());
+
+INSERT INTO vv_metadata.job_info ( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jPMDWHLoader_facebook', 'hvtb_nbx_core_paidmedia_facebook', 'Hive', 'Facebook.csv', 'CSV file', 'paidmedia_monthly', now());
+
+INSERT INTO vv_metadata.job_info ( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jPMDWHLoader_outbrain', 'hvtb_nbx_core_paidmedia_outbrain', 'Hive', 'Outbrain.csv', 'CSV file', 'paidmedia_monthly',now());
+
+INSERT INTO vv_metadata.load_dt
+( load_start_dt, load_end_dt, load_exec_start_dt,  load_status, load_ind, error_details, load_type, project_name, load_frequency)
+VALUES('1990-01-01 00:00:00', now(), now(), 'In Progress', 'P', '', 'Incremental', 'VV_NBX_ETL', 'paidmedia_monthly');
+
+

@@ -1,0 +1,29 @@
+create external table vv_db.hvtb_nbx_core_seaq_scores 
+(
+agent_id int, 
+  seaware_agent_id string, 
+  revenue_score double, 
+  social_influence_score double, 
+  vlist_participation_score double, 
+  seaq_score double, 
+  etl_ld_dt timestamp)
+PARTITIONED BY ( 
+  snapshot_date date)
+STORED AS PARQUET  
+Location "s3://vv-prod-emr-cluster/data/core/SeaQ/hvtb_nbx_core_seaq_scores" ;
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_staging_seaq_scores(
+  agent_id string, 
+  revenue_score double, 
+  social_influence_score double, 
+  vlist_participation_score double, 
+  seaq_score double,
+  created_date timestamp,
+  etl_ld_dt timestamp
+  )
+row format delimited
+fields terminated by '\001'
+lines terminated by '\n'
+stored as textfile
+location "hdfs:///data/staging/SeaQ/hvtb_nbx_staging_seaq_scores"
+;

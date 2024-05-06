@@ -1,0 +1,29 @@
+-- hive_schema_stg.voyage_with_fact definition
+
+-- Drop table
+
+DROP TABLE hive_schema_stg.voyage_with_fact cascade;
+
+CREATE TABLE hive_schema_stg.voyage_with_fact (	
+	voyage_id text,
+	ship_code text,
+	voyage_skey int8,
+	person_skey int8,
+	person_reservationid text,
+	connection_person_skey int8,
+	connectionperson_reservationid text,
+	connection_type_skey int8,
+	is_travel_with boolean,
+	is_connection_confirmed	boolean,
+	is_connection_deleted boolean,
+	is_event_visible boolean,
+	load_dt timestamp NOT NULL,
+	upd_dt timestamp NOT NULL,
+	primaryhash text NULL,
+	md5_hash text NULL,
+	part_dt date NOT NULL
+);
+	
+
+CREATE OR REPLACE VIEW shipdw.voyage_with_fact
+AS SELECT * FROM hive_schema_stg.voyage_with_fact;

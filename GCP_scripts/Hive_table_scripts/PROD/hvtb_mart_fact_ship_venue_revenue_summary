@@ -1,0 +1,9 @@
+ CREATE EXTERNAL TABLE `shipdw`.`hvtb_mart_fact_ship_venue_revenue_summary`(`voyage_id` string, `ship_code` string, `voyage_skey` bigint, `itinerary_skey` bigint, `venue_skey` bigint, `venue_name` string, `revenue_type` string, `revenue_group` string, `revenue_type_skey` int, `voyage_start_date` timestamp, `voyage_length` int, `itinerary_description` string, `day_of_voyage` int, `count_sailors_booked` bigint, `count_sailors_planned` double, `planned_load_factor_pct` double, `target_obr_gross_apd` double, `target_obr_net_apd` double, `count_bookings` bigint, `sum_booking_guests` bigint, `sum_listprice_plus_taxes` double, `sum_vat_taxes` double, `sum_list_prices` double, `sum_debit_amount` double, `sum_credit_amount` double, `sum_promotions_discounts` double, `sum_shared_manual_adjustments_comps` double, `sum_total_collected_sales` double, `sum_partner_gratuities` double, `sum_retail_retail_cogs` double, `sum_total_shared_revenue` double, `sum_partner_revenue` double, `vv_gross_onboard_revenue` double, `sum_prevoyage_commissions` double, `sum_vv_manual_adjustments_comps` double, `sum_vv_cost_of_goods` double, `sum_donations` double, `vv_net_onboard_revenue` double, `count_sales_receipts` bigint, `count_order_items` bigint, `count_venue_hours` double, `load_dt` timestamp, `upd_dt` timestamp)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_fact_ship_venue_revenue_summary'

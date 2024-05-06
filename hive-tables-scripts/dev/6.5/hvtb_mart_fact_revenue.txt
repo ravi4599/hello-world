@@ -1,0 +1,49 @@
+
+CREATE EXTERNAL TABLE `shipdw.hvtb_mart_fact_revenue`(
+  `voyage_id` string, 
+  `sale_detail_skey` bigint, 
+  `pos_item_skey` bigint, 
+  `folio_item_skey` bigint, 
+  `person_skey` bigint, 
+  `ship_code` string, 
+  `voyage_skey` bigint, 
+  `itinerary_skey` bigint, 
+  `outlet_skey` bigint, 
+  `activity_skey` bigint, 
+  `sale_date_skey` bigint, 
+  `sale_time_skey` bigint, 
+  `device_skey` bigint, 
+  `venue_skey` bigint, 
+  `charge_skey` bigint, 
+  `wearable_skey` bigint, 
+  `time_on_device_seconds` int, 
+  `avg_wager_amount` double, 
+  `casino_game_dph` int, 
+  `theoritical_winnings` double, 
+  `booking_reference_number` string, 
+  `sale_quantity` int, 
+  `item_list_price_amount` double, 
+  `debit_amount` double, 
+  `credit_amount` double, 
+  `tax_amount` double, 
+  `discount_amount` double, 
+  `discount_value` double, 
+  `cost_of_goods` double, 
+  `manual_adjustment_amount` double, 
+  `total_collected_sales_amount` double, 
+  `total_collected_sales_ap` double, 
+  `total_shared_revenue_amount` double, 
+  `total_shared_revenue_ap` double, 
+  `source_type` string, 
+  `load_dt` timestamp, 
+  `upd_dt` timestamp)
+PARTITIONED BY ( 
+  `part_dt` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/hvtb_mart_fact_revenue'

@@ -1,0 +1,22 @@
+DROP table hive_schema_stg.sale_detail_dim;
+
+
+
+CREATE TABLE hive_schema_stg.sale_detail_dim (
+	sale_detail_skey int8 ,
+	voyage_id text ,
+	sale_id int8 ,
+	sale_detail_src text ,
+	sale_operator_num int4 ,
+	receipt_number int4 ,
+	check_status text ,
+	sales_voyagenumber text,
+	"location" text ,
+	line_type text ,
+	"line_Status" text ,
+	line_description text ,
+	load_dt timestamp ,
+	upd_dt timestamp ,
+	primaryhash text ,
+	md5_hash text 
+);

@@ -1,0 +1,37 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_menus(
+  row_counter int, 
+  menu_id int, 
+  menu_code string, 
+  menu_name string, 
+  menu_category_id int, 
+  menu_comments string, 
+  active boolean, 
+  rec_deleted boolean, 
+  created_at_id int, 
+  created_by_id int, 
+  created timestamp, 
+  last_changed timestamp, 
+  changed string, 
+  guid string, 
+  analysis_city_id int, 
+  analysis_guest_count int, 
+  analysis_org_unit_id int, 
+  menu_is_quick_select boolean, 
+  menu_display_name string, 
+  menu_description string, 
+  last_change_log_id bigint, 
+  op string, 
+  ts_ms timestamp, 
+  shipcode string, 
+  voyageid string, 
+  batchtime timestamp)
+PARTITIONED BY ( 
+  part_date date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/parse/mxp/hvtb_parse_mxp_menus';

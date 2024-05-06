@@ -1,0 +1,9 @@
+create external table vv_db.hvtb_nbx_core_sw_ship_dim(
+ship_id bigint,
+ship string ,
+ship_name string,
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)
+stored as parquet location 'gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_sw_ship_dim';

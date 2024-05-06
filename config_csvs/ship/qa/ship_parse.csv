@@ -1,0 +1,252 @@
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.source.table,select * from shipdw.hvtb_lnd_mxp_ship_cruise_mxp_cruise_roll
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.target.location,/data/apps/nbx/hive/parsing/mxphvtb_parse_mxp_ship_cruise
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.target.table,shipdw.hvtb_parse_mxp_ship_cruise
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.src.config.id,SrcShrCr
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.voyage.id,SC2002269NCR 
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.tgt.env,Qa
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.target.config.id,TgtShrCr
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.parent.id,SrcMXPCruise-TgtMXPCruise-SC2002269NCR
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.target.ops.table.format,org.apache.phoenix.spark
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.target.ops.table.mode,overwrite
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.target.enablerops_table,SHIP.HBTB_INGESTION_METADATA 
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.target.zkurl,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/hbase-secure:nbx.service@VIRGINVOYAGES.QA.DEV:/home/nbx.service/nbx.keytab
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.kafka.zookeeper,10.9.100.157:2181
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.datasource.hive.warehouse.load.staging.dir,/tmp
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.datasource.hive.warehouse.metastoreUri, thrift://q-lab-hdp-ada3.virginvoyages.qa.dev:9083
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.hadoop.hive.llap.daemon.service.hosts,@llap0
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.hadoop.hive.zookeeper.quorum ,""" q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181"""
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.sql.hive.hiveserver2.jdbc.url,"""jdbc:hive2://q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2"""
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.sql.hive.hiveserver2.jdbc.url.principal,hive/_HOST@VIRGINVOYAGES.QA.DEV
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.sql.hive.metastore.jars,/usr/hdp/current/spark2-client/standalone-metastore/*
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.sql.hive.metastore.version,3.0
+SrcShrCru,TgtShrCr,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrCr_TgtShrCr,spark.sql.warehouse.dir,/apps/spark/warehouse
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.source.table,select * from shipdw.hvtb_lnd_mxp_ship_guest_mxp_guest
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.guest.persoon.target.table,shipdw.hvtb_parse_mxp_ship_guest_person
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.guest.booking.target.table,shipdw.hvtb_parse_mxp_ship_guest_booking         
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.guest.account.target.table,shipdw.hvtb_parse_mxp_ship_guest_account
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.guest.address.target.table,shipdw.hvtb_parse_mxp_ship_guest_address
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.src.config.id,SrcShrGuest
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.voyage.id,SC2002269NCR 
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.tgt.env,Qa
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.target.config.id,TgtShrGuest
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.parent.id,SrcMXPGuest-TgtMXPGuest-SC2002269NCR
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.target.offset.mode,overwrite 
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.target.offset.table,SHIP.HBTB_STREAMING_INGESTION_OFFSET
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.target.ops.table.format,org.apache.phoenix.spark
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.target.ops.table.mode,overwrite
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.target.enablerops_table,SHIP.HBTB_INGESTION_METADATA 
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.target.zkurl,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/hbase-secure:nbx.service@VIRGINVOYAGES.QA.DEV:/home/nbx.service/nbx.keytab
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.kafka.zookeeper,10.9.100.157:2181
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.datasource.hive.warehouse.load.staging.dir,/tmp
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.datasource.hive.warehouse.metastoreUri, thrift://q-lab-hdp-ada3.virginvoyages.qa.dev:9083
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.hadoop.hive.llap.daemon.service.hosts,@llap0
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.hadoop.hive.zookeeper.quorum ,""" q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181"""
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.sql.hive.hiveserver2.jdbc.url,"""jdbc:hive2://q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2"""
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.sql.hive.hiveserver2.jdbc.url.principal,hive/_HOST@VIRGINVOYAGES.QA.DEV
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.sql.hive.metastore.jars,/usr/hdp/current/spark2-client/standalone-metastore/*
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.sql.hive.metastore.version,3.0
+SrcShrGuest,TgtShrGuest,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrGuest_TgtShrGuest,spark.sql.warehouse.dir,/apps/spark/warehouse
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.src.config.id,SrcShrIti
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.voyage.id,SC2002269NCR 
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.tgt.env,Qa
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.target.config.id,TgtShrIti
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.parent.id,SrcMXPIti-TgtMXPIti-SC2002269NCR
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.target.ops.table.format,org.apache.phoenix.spark
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.target.ops.table.mode,overwrite
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.target.enablerops_table,SHIP.HBTB_INGESTION_METADATA 
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.target.zkurl,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/hbase-secure:nbx.service@VIRGINVOYAGES.QA.DEV:/home/nbx.service/nbx.keytab
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.kafka.zookeeper,10.9.100.157:2181
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.datasource.hive.warehouse.load.staging.dir,/tmp
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.datasource.hive.warehouse.metastoreUri, thrift://q-lab-hdp-ada3.virginvoyages.qa.dev:9083
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.hadoop.hive.llap.daemon.service.hosts,@llap0
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.hadoop.hive.zookeeper.quorum ,""" q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181"""
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.sql.hive.hiveserver2.jdbc.url,"""jdbc:hive2://q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2"""
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.sql.hive.hiveserver2.jdbc.url.principal,hive/_HOST@VIRGINVOYAGES.QA.DEV
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.sql.hive.metastore.jars,/usr/hdp/current/spark2-client/standalone-metastore/*
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.sql.hive.metastore.version,3.0
+SrcShrIti,TgtShrIti,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrIti_TgtShrIti,spark.sql.warehouse.dir,/apps/spark/warehouse
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.source.table,select * from shipdw.hvtb_lnd_mxp_ship_pos_mxp_sales_stream_mxp
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.target.salesitem.table, shipdw.hvtb_parse_mxp_pos_sales
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.target.checkdetails.table, shipdw.hvtb_parse_mxp_ship_pos_sales_checkdetails
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.target.costgood.table,shipdw.hvtb_parse_mxp_ship_Pos_Sales_CostOfGood
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.salesitem.target.location,/data/apps/nbx/hive/parsing/mxphvtb_parse_mxp_pos_sales 
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.cdetails.target.location,/data/apps/nbx/hive/parsing/mxphvtb_parse_mxp_ship_pos_sales_checkdetails 
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.goods.target.location,/data/apps/nbx/hive/parsing/mxphvtb_parse_mxp_ship_Pos_Sales_CostOfGood 
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.src.config.id,SrcShrPosSales
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.voyage.id,SC2002269NCR 
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.tgt.env,Qa
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.target.config.id,TgtShrPOsSales
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.parent.id,SrcMXPPosSales-TgtMXPPosSales-SC2002269NCR
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.target.ops.table.format,org.apache.phoenix.spark
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.target.ops.table.mode,overwrite
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.target.enablerops_table,SHIP.HBTB_INGESTION_METADATA 
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.target.zkurl,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/hbase-secure:nbx.service@VIRGINVOYAGES.QA.DEV:/home/nbx.service/nbx.keytab
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.kafka.zookeeper,10.9.100.157:2181
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.datasource.hive.warehouse.load.staging.dir,/tmp
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.datasource.hive.warehouse.metastoreUri, thrift://q-lab-hdp-ada3.virginvoyages.qa.dev:9083
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.hadoop.hive.llap.daemon.service.hosts,@llap0
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.hadoop.hive.zookeeper.quorum ,""" q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181"""
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.sql.hive.hiveserver2.jdbc.url,"""jdbc:hive2://q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2"""
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.sql.hive.hiveserver2.jdbc.url.principal,hive/_HOST@VIRGINVOYAGES.QA.DEV
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.sql.hive.metastore.jars,/usr/hdp/current/spark2-client/standalone-metastore/*
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.sql.hive.metastore.version,3.0
+SrcShrPosSales,TgtShrPosSales,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrSales_TgtShrSales,spark.sql.warehouse.dir,/apps/spark/warehouse
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.target.salesgroup.table,shipdw.hvtb_parse_mxp_ship_positems_salesgroup
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.target.categories.table,shipdw.hvtb_parse_mxp_ship_positems_categories
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.target.plugroup.table,shipdw.hvtb_parse_mxp_ship_positems_plugroups
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.target.items.table,shipdw.hvtb_parse_mxp_ship_positems_items
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.target.prices.table,shipdw.hvtb_parse_mxp_ship_positems_prices
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.src.config.id,SrcShrPosItem
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.voyage.id,SC2002269NCR 
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.tgt.env,Qa
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.target.config.id,TgtShrPosItem
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.parent.id,SrcMXPPosItems-TgtMXPPosItems-SC2002269NCR
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.target.ops.table.format,org.apache.phoenix.spark
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.target.ops.table.mode,overwrite
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.target.enablerops_table,SHIP.HBTB_INGESTION_METADATA 
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.target.zkurl,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/hbase-secure:nbx.service@VIRGINVOYAGES.QA.DEV:/home/nbx.service/nbx.keytab
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.kafka.zookeeper,10.9.100.157:2181
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.source.table,select * from shipdw.hvtb_lnd_mxp_ship_pos_mxp_pos_items
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.datasource.hive.warehouse.load.staging.dir,/tmp
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.datasource.hive.warehouse.metastoreUri, thrift://q-lab-hdp-ada3.virginvoyages.qa.dev:9083
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.hadoop.hive.llap.daemon.service.hosts,@llap0
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.hadoop.hive.zookeeper.quorum ,""" q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181"""
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.sql.hive.hiveserver2.jdbc.url,"""jdbc:hive2://q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2"""
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.sql.hive.hiveserver2.jdbc.url.principal,hive/_HOST@VIRGINVOYAGES.QA.DEV
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.sql.hive.metastore.jars,/usr/hdp/current/spark2-client/standalone-metastore/*
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.sql.hive.metastore.version,3.0
+SrcShrPosItem,TgtShrPosItem,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrItem_TgtShrItem,spark.sql.warehouse.dir,/apps/spark/warehouse
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.source.table,select * from shipdw.hvtb_lnd_apollo_recipe_cost_by_voyage
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.target.table,shipdw.hvtb_parse_apollo_poschange
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.src.config.id,SrcShrApolloPosParse
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.voyage.id,SC2002269NCR 
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.tgt.env,Qa
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.target.config.id,TgtShrApolloPosParse
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.parent.id,SrcApolloPosIngest-TgtApolloPosIngest-SC2002269NCR
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.target.ops.table.format,org.apache.phoenix.spark
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.target.ops.table.mode,overwrite
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.target.enablerops_table,SHIP.HBTB_INGESTION_METADATA 
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.target.zkurl,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/hbase-secure:nbx.service@VIRGINVOYAGES.QA.DEV:/home/nbx.service/nbx.keytab
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.kafka.zookeeper,10.9.100.157:2181
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.datasource.hive.warehouse.load.staging.dir,/tmp
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.datasource.hive.warehouse.metastoreUri, thrift://q-lab-hdp-ada3.virginvoyages.qa.dev:9083
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.hadoop.hive.llap.daemon.service.hosts,@llap0
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.hadoop.hive.zookeeper.quorum ,""" q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181"""
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.sql.hive.hiveserver2.jdbc.url,"""jdbc:hive2://q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2"""
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.sql.hive.hiveserver2.jdbc.url.principal,hive/_HOST@VIRGINVOYAGES.QA.DEV
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.sql.hive.metastore.jars,/usr/hdp/current/spark2-client/standalone-metastore/*
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.sql.hive.metastore.version,3.0
+SrcShrApolloPos,TgtShrApolloPos,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrApolloPos_TgtShrApolloPos,spark.sql.warehouse.dir,/apps/spark/warehouse
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.source.table,select * from shipdw.hvtb_lnd_go_event
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.target.table,shipdw.hvtb_parse_Gospark_Event
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.src.config.id,SrcKonamiDevice
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.voyage.id,SC2002269NCR 
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.tgt.env,Qa
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.target.config.id,TgtKonamiDevice
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.parent.id,SrcGoEventKafka-TgtGoEventHive-SC2002269NCR 
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.target.ops.table.format,org.apache.phoenix.spark
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.target.ops.table.mode,overwrite 
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.target.enablerops_table,SHIP.HBTB_INGESTION_METADATA 
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.target.zkurl,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/hbase-secure:nbx.service@VIRGINVOYAGES.QA.DEV:/home/nbx.service/nbx.keytab
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.kafka.zookeeper,10.9.100.157:2181
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.datasource.hive.warehouse.load.staging.dir,/tmp
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.datasource.hive.warehouse.metastoreUri, thrift://q-lab-hdp-ada3.virginvoyages.qa.dev:9083
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.hadoop.hive.llap.daemon.service.hosts,@llap0
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.hadoop.hive.zookeeper.quorum ,""" q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181"""
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.sql.hive.hiveserver2.jdbc.url,"""jdbc:hive2://q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2"""
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.sql.hive.hiveserver2.jdbc.url.principal,hive/_HOST@VIRGINVOYAGES.QA.DEV
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.sql.hive.metastore.jars,/usr/hdp/current/spark2-client/standalone-metastore/*
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.sql.hive.metastore.version,3.0
+SrcGosparkEvent,TgtGosparkEvent,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkEvent_TgtGosparkEvent,spark.sql.warehouse.dir,/apps/spark/warehouse
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.source.table,select * from shipdw.hvtb_lnd_go_venue_availability 
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.target.table,shipdw.hvtb_parse_Gospark_Venue_availability
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.src.config.id,SrcKonamiDevice
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.voyage.id,SC2002269NCR 
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.tgt.env,Qa
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.target.config.id,TgtKonamiDevice
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.parent.id,SrcGoVenueAvailKafka-TgtGoVenuAvailHive-SC2002269NCR 
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.target.ops.table.format,org.apache.phoenix.spark
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.target.ops.table.mode,overwrite 
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.target.enablerops_table,SHIP.HBTB_INGESTION_METADATA 
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.target.zkurl,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/hbase-secure:nbx.service@VIRGINVOYAGES.QA.DEV:/home/nbx.service/nbx.keytab
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.kafka.zookeeper,10.9.100.157:2181
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.datasource.hive.warehouse.load.staging.dir,/tmp
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.datasource.hive.warehouse.metastoreUri, thrift://q-lab-hdp-ada3.virginvoyages.qa.dev:9083
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.hadoop.hive.llap.daemon.service.hosts,@llap0
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.hadoop.hive.zookeeper.quorum ,""" q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181"""
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.sql.hive.hiveserver2.jdbc.url,"""jdbc:hive2://q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2"""
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.sql.hive.hiveserver2.jdbc.url.principal,hive/_HOST@VIRGINVOYAGES.QA.DEV
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.sql.hive.metastore.jars,/usr/hdp/current/spark2-client/standalone-metastore/*
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.sql.hive.metastore.version,3.0
+SrcGosparkVenue,TgtGosparkVenue,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcGosparkVenue_TgtGosparkVenue,spark.sql.warehouse.dir,/apps/spark/warehouse
+SrcMxpQuickApi,TgtMxpQuickParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcMxpQuickApi_TgtMxpQuickParse,spark.quick_parser.mode,overwrite
+SrcMxpQuickApi,TgtMxpQuickParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcMxpQuickApi_TgtMxpQuickParse,spark.quick_parser_output.location,/data/apps/nbx/hive/parsing/mxp/hvtb_parse_mxp_ship_quickcode
+SrcMxpQuickApi,TgtMxpQuickParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcMxpQuickApi_TgtMxpQuickParse,spark.quickcode.apiurl,http://10.2.52.133/API/MXP_Virgin.exe/quickcode
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.source.table,select * from shipdw.hvtb_lnd_mxp_internal_account
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.person.target.table,shipdw.hvtb_parse_mxp_internal_person_detail
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.account.target.table,shipdw.hvtb_parse_mxp_internal_account_detail
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.address.target.table,shipdw.hvtb_parse_mxp_internal_address_detail
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.src.config.id,SrcInternalAcc
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.voyage.id,SC2002269NCR
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.tgt.env,Qa
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.target.config.id,TgtInternalAcc
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.parent.id,SrcMXPAccSystem-TgtMXPAccSystem-SC2002269NCR
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.target.ops.table.format,org.apache.phoenix.spark
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.target.ops.table.mode,overwrite
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.target.enablerops_table,SHIP.HBTB_INGESTION_METADATA 
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.target.zkurl,q-lab-hdp-ada3.virginvoyages.qa.dev:2181/hbase-secure:nbx.service@VIRGINVOYAGES.QA.DEV:/home/nbx.service/nbx.keytab
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.kafka.zookeeper,10.9.100.157:2181
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.datasource.hive.warehouse.load.staging.dir,/tmp
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.datasource.hive.warehouse.metastoreUri,thrift://q-lab-hdp-ada3.virginvoyages.qa.dev:9083
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.hadoop.hive.llap.daemon.service.hosts,@llap0
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.hadoop.hive.zookeeper.quorum ,"q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181"
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.sql.hive.hiveserver2.jdbc.url,"jdbc:hive2://q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2"
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.sql.hive.hiveserver2.jdbc.url.principal,hive/_HOST@VIRGINVOYAGES.QA.DEV
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.sql.hive.metastore.jars,/usr/hdp/current/spark2-client/standalone-metastore/*
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.sql.hive.metastore.version,3.0
+SrcInternalAcc,TgtInternalAcc,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcInternalAcc_TgtInternalAcc,spark.sql.warehouse.dir,/apps/spark/warehouse
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.source.table,select * from shipdw.hvtb_lnd_ars_activity_search
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.target.activity.table,shipdw.hvtb_parse_ars_ship_activity_detail
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.target.slot.table,shipdw.hvtb_parse_ars_ship_activity_slot
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.target.vendor.table,shipdw.hvtb_parse_ars_ship_activity_vendor
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.src.config.id,SrcArsActivityParse
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.voyage.id,SC2002269NCR
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.tgt.env,Qa
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.target.config.id,TgtArsActivityParse
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.parent.id,SrckafkaArsActivity-TgtlndArsActivity-SC2002269NCR
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.target.ops.table.format,org.apache.phoenix.spark
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.target.ops.table.mode,overwrite
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.target.enablerops_table,SHIP.HBTB_INGESTION_METADATA 
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.target.zkurl,q-lab-hdp-ada3.virginvoyages.qa.dev:2181/hbase-secure:nbx.service@VIRGINVOYAGES.QA.DEV:/home/nbx.service/nbx.keytab
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.kafka.zookeeper,10.9.100.157:2181
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.datasource.hive.warehouse.load.staging.dir,/tmp
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.datasource.hive.warehouse.metastoreUri,thrift://q-lab-hdp-ada3.virginvoyages.qa.dev:9083
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.hadoop.hive.llap.daemon.service.hosts,@llap0
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.hadoop.hive.zookeeper.quorum ,"q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181"
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.sql.hive.hiveserver2.jdbc.url,"jdbc:hive2://q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2"
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.sql.hive.hiveserver2.jdbc.url.principal,hive/_HOST@VIRGINVOYAGES.QA.DEV
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.sql.hive.metastore.jars,/usr/hdp/current/spark2-client/standalone-metastore/*
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.sql.hive.metastore.version,3.0
+SrcArsActivityParse,TgtArsActivityParse,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcArsActivityParse_TgtArsActivityParse,spark.sql.warehouse.dir,/apps/spark/warehouse
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.src.config.id,SrcShrArsBooking,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.voyage.id,SC2002269NCR,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.tgt.env,Qa,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.target.config.id,TgtShrArsBooking,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.parent.id,SrcVXPArsBooking-TgtVXPArsBooking-SC2002269NCR,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.target.ops.table.format,org.apache.phoenix.spark,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.target.ops.table.mode,overwrite,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.target.enablerops_table,SHIP.HBTB_INGESTION_METADATA,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.ars_ingestion.table,shipdw.hvtb_lnd_mxp_ship_ars_booking,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.arsbooking.target.table,shipdw.hvtb_parse_ars_booking,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.target.offset.mode,overwrite,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.target.enablerops_table,SHIP.HBTB_INGESTION_METADATA,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.target.zkurl,"q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/hbase-secure:user.name@VIRGINVOYAGES.QA.DEV:/abc/xyz/user.keytab",
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.datasource.hive.warehouse.load.staging.dir,/tmp,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.datasource.hive.warehouse.metastoreUri,thrift://q-lab-hdp-ada3.virginvoyages.qa.dev:9083,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.hadoop.hive.llap.daemon.service.hosts,@llap0,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.hadoop.hive.zookeeper.quorum,"q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181",
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.sql.hive.hiveserver2.jdbc.url,"jdbc:hive2://q-lab-hdp-ada3.virginvoyages.qa.dev:2181,q-lab-hdp-ada2.virginvoyages.qa.dev:2181,q-lab-hdp-ada1.virginvoyages.qa.dev:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2",
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.sql.hive.hiveserver2.jdbc.url.principal,hive/_HOST@VIRGINVOYAGES.QA.DEV,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.sql.hive.metastore.jars,/usr/hdp/current/spark2-client/standalone-metastore/*,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.sql.hive.metastore.version,3.0,
+SrcShrArsBooking,TgtShrArsBooking,SC2002269NCR,Qa,/data/apps/nbx/MXP/parse/config/SrcShrArsBooking_TgtShrArsBooking,spark.sql.warehouse.dir,/apps/spark/warehouse,

@@ -1,0 +1,33 @@
+create external table vv_db.hvtb_nbx_landing_sw_rpl_res_room_request(
+	room_request_id int,
+	res_id int,
+	room_seq_number int,
+	effective_date timestamp ,
+	date_from timestamp ,
+	date_to timestamp ,
+	hotel_category string,
+	hotel_room_category string,
+	hotel_id int,
+	hotel_room_type string,
+	occupancy int ,
+	city_code varchar(5) ,
+	is_independent string ,
+	extra_room_mode string ,
+	comments string,
+	changed_manually string,
+	hotel_bed_type string, 
+  `load_data_timestamp` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='', 
+  'line.delim'='\n', 
+  'serialization.format'='') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/landing/spf/hvtb_nbx_landing_seaware_rpl_res_room_request'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1652905207');

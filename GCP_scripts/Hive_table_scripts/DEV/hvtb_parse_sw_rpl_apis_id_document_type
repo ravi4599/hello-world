@@ -1,0 +1,22 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_parse_sw_rpl_apis_id_document_type`(
+  `record_id` int, 
+  `id_document_type` string, 
+  `id_document_name` string, 
+  `comments` string, 
+  `noad_document_code` string, 
+  `sw_id_document_type` string,  
+  `op` string, 
+  `ts_ms` timestamp,
+  `shipcode` string,  
+  `voyageid` string, 
+  `batchtime` timestamp)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/parse/seaware/hvtb_parse_sw_rpl_apis_id_document_type';

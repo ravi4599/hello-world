@@ -1,0 +1,63 @@
+create or replace view seaware.seaware_group_dim
+as 
+select 
+   group_id,           
+   src_group_id,       
+   group_init_date,    
+   group_status,       
+   group_type,         
+   group_name,         
+   group_mode,         
+   is_internal,        
+   source_code,        
+   office_code ,       
+   operator,           
+   n_of_guests,        
+   cancellation_date,  
+   rec_start_dttm,     
+   rec_end_dttm,
+   SALES_CHANNEL, 
+   SUB_SALES_CHANNEL,
+   CASE WHEN SUB_SALES_CHANNEL='SAILOR SERVICES' and (source_code='IN HOUSE' or source_code='INT-ASSC'or source_code='INT-CON')THEN 'SS VIA CALL/CHAT'
+     WHEN SUB_SALES_CHANNEL='SAILOR SERVICES' and source_code='INT-AGENT' THEN 'SS VIA FMDC'
+     WHEN SUB_SALES_CHANNEL='VV.COM' THEN 'VV.COM'
+     WHEN SUB_SALES_CHANNEL='FIRST MATES' and source_code='INT-AGENT' THEN 'FM VIA FMDC'
+     WHEN SUB_SALES_CHANNEL='FIRST MATES' and source_code='OPENTRAVEL' THEN 'FM VIA VV.COM'
+     WHEN SUB_SALES_CHANNEL='FIRST MATES' and (source_code='IN HOUSE' or source_code='INT-ASSC'or source_code='INT-CON') THEN 'FM VIA SAILOR SERVICES'
+     END AS SUB_SUB_SALES_CHANNEL
+from          
+(select 
+   group_id,           
+   src_group_id,       
+   group_init_date,    
+   group_status,       
+   group_type,         
+   group_name,         
+   group_mode,         
+   is_internal,        
+   source_code,        
+   office_code ,       
+   operator,           
+   n_of_guests,        
+   cancellation_date,  
+   rec_start_dttm,     
+   rec_end_dttm,
+    CASE WHEN is_internal ='Y' THEN 'SAILOR' ELSE 'FM' END AS SALES_CHANNEL, 
+   CASE WHEN is_internal='N' THEN 'FIRST MATES'
+        WHEN is_internal='Y' AND source_code ='OPENTRAVEL' THEN 'VV.COM'
+        WHEN is_internal='Y' AND (source_code ='IN HOUSE' OR source_code ='INT-ASSC' OR source_code='INT-CON') THEN 'SAILOR SERVICES' 
+         WHEN is_internal='Y' AND source_code ='INT-AGENT' THEN 'SAILOR SERVICES'
+         END  AS SUB_SALES_CHANNEL
+from hive_schema_stg.seaware_group_dim ) GROUP_DIM
+with no schema binding;
+
+create or replace view seaware.seaware_group_res_dim
+as 
+select * from hive_schema_stg.seaware_group_res_dim
+with no schema binding;
+
+
+create or replace view seaware.seaware_group_fact
+as 
+select * from hive_schema_stg.seaware_group_fact
+with no schema binding;

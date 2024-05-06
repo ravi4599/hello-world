@@ -1,0 +1,132 @@
+DROP TABLE IF EXISTS vv_db.hvtb_facebook_page;
+CREATE EXTERNAL TABLE vv_db.hvtb_facebook_page(
+    `date` string,
+    page_actions_post_reactions_love_total int,
+    page_actions_post_reactions_wow_total int,
+    page_actions_post_reactions_like_total int,
+    page_engaged_users int,
+    page_fan_removes_unique int,
+    page_fan_adds_unique int,
+    page_post_engagements int,
+    page_actions_post_reactions_haha_total int,
+    page_fans int,
+    page_fan_adds int,
+    page_fans_online_per_day int,
+    page_actions_post_reactions_anger_total int,
+    page_actions_post_reactions_sorry_total int,
+    page_fan_removes int
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/facebook/tmp/hvtb_facebook_page/';
+
+
+DROP TABLE IF EXISTS vv_db.hvtb_facebook_page_by_city;
+CREATE EXTERNAL TABLE vv_db.hvtb_facebook_page_by_city(
+    `date` string,
+    city string,
+    page_fans_city int
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/facebook/tmp/hvtb_facebook_page_by_city/';
+
+
+DROP TABLE IF EXISTS vv_db.hvtb_facebook_page_by_country;
+CREATE EXTERNAL TABLE vv_db.hvtb_facebook_page_by_country(
+    `date` string,
+    country string,
+    page_fans_country int
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/facebook/tmp/hvtb_facebook_page_by_country/';
+
+
+DROP TABLE IF EXISTS vv_db.hvtb_facebook_page_by_gender_age;
+CREATE EXTERNAL TABLE vv_db.hvtb_facebook_page_by_gender_age(
+    `date` string,
+    gender_age string,
+    page_fans_gender_age int
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/facebook/tmp/hvtb_facebook_page_by_gender_age/';
+
+
+DROP TABLE IF EXISTS vv_db.hvtb_facebook_page_by_like_source;
+CREATE EXTERNAL TABLE vv_db.hvtb_facebook_page_by_like_source(
+    `date` string,
+    page_fans_by_like_source_unique int,
+    page_fans_by_like_source int,
+    like_source string
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/facebook/tmp/hvtb_facebook_page_by_like_source/';
+
+
+DROP TABLE IF EXISTS vv_db.hvtb_facebook_page_by_locale;
+CREATE EXTERNAL TABLE vv_db.hvtb_facebook_page_by_locale(
+    `date` string,
+    locale string,
+    page_fans_locale int
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/facebook/tmp/hvtb_facebook_page_by_locale/';
+
+
+DROP TABLE IF EXISTS vv_db.hvtb_facebook_page_by_reaction;
+CREATE EXTERNAL TABLE vv_db.hvtb_facebook_page_by_reaction(
+    `date` string,
+    reaction string,
+    page_actions_post_reactions_total int
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/facebook/tmp/hvtb_facebook_page_by_reaction/';
+
+
+DROP TABLE IF EXISTS vv_db.hvtb_facebook_page_by_unlike_source;
+CREATE EXTERNAL TABLE vv_db.hvtb_facebook_page_by_unlike_source(
+    `date` string,
+    unlike_source string,
+    page_fans_by_unlike_source int,
+    page_fans_by_unlike_source_unique int
+) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-qa-emr-cluster/facebook/tmp/hvtb_facebook_page_by_unlike_source/';

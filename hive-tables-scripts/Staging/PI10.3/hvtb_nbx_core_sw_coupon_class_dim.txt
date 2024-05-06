@@ -1,0 +1,24 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_sw_coupon_class_dim`(
+  `coupon_class_id` int, 
+  `rec_start_dttm` timestamp, 
+  `rec_end_dttm` timestamp, 
+  `coupon_class` string, 
+  `coupon_class_desc` string, 
+  `coupon_class_code` string, 
+  `gen_per_client` string, 
+  `apply_as_payment` string, 
+  `apply_per_client` string, 
+  `cancel_with_res` string, 
+  `apply_as_discount` string,
+  `md5_dim` string, 
+  `etl_ld_status` string, 
+  `etl_ld_dt` timestamp, 
+  `etl_upd_dt` timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-staging-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_coupon_class_dim'

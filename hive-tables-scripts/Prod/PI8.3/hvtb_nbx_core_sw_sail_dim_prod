@@ -1,0 +1,26 @@
+CREATE EXTERNAL TABLE `vv_db`.`hvtb_nbx_core_sw_sail_dim_temp`(`sail_id` int, `rec_start_dttm` timestamp, `rec_end_dttm` timestamp, `src_sail_id` int, `sail_days` int, `sail_route_code` string, `sail_port_from` string, `sail_port_to` string, `sail_geog_area_code` string, `dep_ref_id` int, `arr_ref_id` int, `sail_date_from` timestamp, `sail_date_to` timestamp, `md5_dim` string, `etl_ld_status` string, `etl_ld_dt` timestamp, `etl_upd_dt` timestamp, `is_active` string, `ship_id` int)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_sail_dim_temp'
+
+==========================================
+
+drop table vv_db.hvtb_nbx_core_sw_sail_dim
+
+errfs delete s3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_sail_dim
+emrfs sync s3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_sail_dim
+
+CREATE EXTERNAL TABLE `vv_db`.`hvtb_nbx_core_sw_sail_dim`(`sail_id` int, `rec_start_dttm` timestamp, `rec_end_dttm` timestamp, `src_sail_id` int, `sail_days` int, `sail_route_code` string, `sail_port_from` string, `sail_port_to` string, `sail_geog_area_code` string, `dep_ref_id` int, `arr_ref_id` int, `sail_date_from` timestamp, `sail_date_to` timestamp, `md5_dim` string, `etl_ld_status` string, `etl_ld_dt` timestamp, `etl_upd_dt` timestamp, `is_active` string, `ship_id` int)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_sail_dim'

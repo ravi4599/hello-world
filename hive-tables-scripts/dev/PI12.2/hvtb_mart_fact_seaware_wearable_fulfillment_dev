@@ -1,0 +1,29 @@
+
+
+drop table shipdw.hvtb_mart_fact_seaware_wearable_fulfillment_err
+
+drop table shipdw.hvtb_mart_fact_seaware_wearable_fulfillment
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_fact_seaware_wearable_fulfillment(res_id integer,sail_id integer,guest_id integer,src_res_id integer,client_id integer,sw_generated_by_flg boolean,sw_wearable_type string,sw_listener_success_flg boolean,sw_listener_error_flg boolean,sw_listener_error_details string,seaware_to_vxp_success_flg boolean,seaware_to_vxp_status string,vxp_to_rrd_success_flg  	boolean,vxp_to_rrd_status string,vxp_wearable_color	 string,rrd_success_flg boolean,rrd_processing_status string,vxp_rrd_file_received_flg boolean,rrd_to_vxp_ingestion_success_flg boolean,rrd_to_vxp_ingestion_status string,load_dt timestamp,upd_dt timestamp,primaryhash string,md5_hash string)
+PARTITIONED BY (part_dt date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-dev-emr-cluster/data/mart/hvtb_mart_fact_seaware_wearable_fulfillment'
+
+
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_fact_seaware_wearable_fulfillment_err(res_id integer,sail_id integer,guest_id integer,src_res_id integer,client_id integer,sw_generated_by_flg boolean,sw_wearable_type string,sw_listener_success_flg boolean,sw_listener_error_flg boolean,sw_listener_error_details string,seaware_to_vxp_success_flg boolean,seaware_to_vxp_status string,vxp_to_rrd_success_flg  	boolean,vxp_to_rrd_status string,vxp_wearable_color 	string,rrd_success_flg boolean,rrd_processing_status string,vxp_rrd_file_received_flg boolean,rrd_to_vxp_ingestion_success_flg boolean,rrd_to_vxp_ingestion_status string,load_dt timestamp,upd_dt timestamp,primaryhash string,md5_hash string,part_dt date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 's3://vv-dev-emr-cluster/data/mart/hvtb_mart_fact_seaware_wearable_fulfillment_err'
+

@@ -1,0 +1,13 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_vxp_dxp_reservationsocialconnection_lad(reservationsocialconnectionid string, reservationid string, connectionreservationid string, istravelwith boolean, state string, isdeleted boolean, addeddate timestamp, addedby string, lastmodifieddate timestamp, lastmodifiedby string, additionalinfo string, connectiontype string, VoyageId string, BatchTime timestamp, ShipCode string, Part_date date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION 'hdfs://virginprod/data/apps/nbx/mart/hvtb_parse_vxp_dxp_reservationsocialconnection_lad'
+TBLPROPERTIES (
+  'bucketing_version' = '2',
+  'transient_lastDdlTime' = '1619681612'
+)

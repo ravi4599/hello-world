@@ -1,0 +1,24 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_mart_fact_terminal_checkin`(
+  `voyage_id` string,
+  `voyage_skey` bigint, 
+  `ship_code` string,
+  `checkin_id` string, 
+  `checkin_type` string, 
+  `person_skey` bigint, 
+  `person_type` string, 
+  `checkin_start_date` timestamp,
+  `checkin_end_date` timestamp,
+  `checkin_time_in_seconds` timestamp,
+  `load_dt` timestamp, 
+  `upd_dt` timestamp 
+  )
+PARTITIONED BY ( 
+  `part_dt` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/mart/hvtb_mart_fact_terminal_checkin';

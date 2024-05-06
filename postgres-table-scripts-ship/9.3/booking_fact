@@ -1,0 +1,39 @@
+CREATE TABLE hive_schema_stg.booking_fact (
+	voyage_id text NULL,
+	booking_detail_skey int8 NULL,
+	person_skey int8 NULL,
+	voyage_skey int8 NULL,
+	activity_skey int8 NULL,
+	activity_slot_skey int8 NULL,
+	vendor_skey int8 NULL,
+	booked_by_person_skey int8 NULL,
+	paid_by_person_skey int8 NULL,
+	cancelled_by_person_skey int8 NULL,
+	sale_detail_skey int8 NULL,
+	itinerary_skey int8 NULL,
+	venue_skey int8 NULL,
+	ship_code text NULL,
+	number_of_people int8 NULL,
+	booking_paid_amount float8 NULL,
+	booking_remaining_amount float8 NULL,
+	refund_paid_amount float8 NULL,
+	refund_remaining_amount float8 NULL,
+	start_date_time timestamp NULL,
+	end_date_time timestamp NULL,
+	start_date_skey int8 NULL,
+	start_time_skey int8 NULL,
+	checked_in_flag bool NULL,
+	booked_date_time timestamp NULL,
+	canceled_date_time timestamp NULL,
+	src_deleted_flag bool NULL,
+	load_dt timestamp NOT NULL,
+	upd_dt timestamp NOT NULL,
+	primaryhash text NULL,
+	md5_hash text NULL,
+	part_dt date NOT NULL
+);
+
+##############################
+
+
+create view shipdw.booking_fact as select * from hive_schema_stg.booking_fact;

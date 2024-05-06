@@ -1,0 +1,11 @@
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jCMSActivityDim', 'hbtb_nbx_cms_activity_dim', 'Redshift', 'HBTB_NBX_CMS_ACTIVITY', 'Hbase', 'realtime', now());
+
+INSERT INTO vv_metadata.job_info
+( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jActivityFeedbackFact', 'HBTB_NBX_SAILOR_CAL_FEEDBACK_STREAM_HISTORY', 'Redshift', 'HBTB_NBX_ACTIVITY_FEEDBACK_FACT', 'Hbase', 'realtime', now()); 
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jActivityRecommendedFact', 'HBTB_NBX_CALENDAR_RECOMMENDATIONS', 'Redshift', 'HBTB_NBX_ACTIVITY_RECOMMENDED_FACT', 'Hbase', 'realtime', now()); 

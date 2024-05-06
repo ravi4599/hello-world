@@ -1,0 +1,21 @@
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.chat_queue_fact_tmp(
+  voyage_id string,
+  ship_code string,
+  voyage_skey bigint,
+  chat_queue_detail_skey bigint,
+  person_skey bigint,
+  queue_joined_datetime timestamp,
+  queue_responded_datetime timestamp,
+  queue_resolved_datetime timestamp,
+  time_to_respond_seconds int,
+  length_of_interaction_seconds int,
+  time_in_queue_seconds int,
+  load_dt timestamp,
+  upd_dt timestamp,
+  primaryhash string,
+  md5_hash string,
+  part_dt date)
+  OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_chat_queue/*']
+);

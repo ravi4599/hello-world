@@ -1,0 +1,104 @@
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_Tblmanagereserv_action', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSailorReporting_Tblmanagereservation', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSailorReporting_Tblmanagereserv_guest', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSailorReporting_Tblmanagevoyages', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_diningstatus_factvxp', '', '', '', '', 'SailorReport_daily', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSailorReporting_diningstatus_factmxp', '', '', '', '', 'SailorReport_daily', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_Konamicasino_Parse', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_diningstatus_fact', '', '', '', '', 'SailorReport_daily', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_diningreserv_fact', '', '', '', '', 'SailorReport_daily', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_devicerevenue_fact', '', '', '', '', 'SailorReport_daily', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_orderitemFact', '', '', '', '', 'SailorReport_daily', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_menuitem_Dim', '', '', '', '', 'SailorReport_daily', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_diningtable_Dim', '', '', '', '', 'SailorReport_daily', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_diningreservation_Dim', '', '', '', '', 'SailorReport_daily', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_orderdetail_Dim', '', '', '', '', 'SailorReport_daily',now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_Settingslayout', '', '', '', '', 'SailorReport_runtime',now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_Reservationstable', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_settingstable', '', '', '', '', 'SailorReport_runtime',now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_TbManagementVenues', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_TbManagementSession', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_ordertype_Parse', '', '', '', '', 'SailorReport_runtime',now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_vxpfoodorder_Parse', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSailorReporting_vxpfoodvenue_Parse', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSailorReporting_vxpmenuitem_Parse', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_orderorigin_Parse', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_menuitemtype_Parse', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_CasinoGamesite_Parse', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_menuitemprice_Parse', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSailorReporting_orderdetailDim', '', '', '', '', 'SailorReport_daily', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSailorReporting_OrderFact', '', '', '', '', 'SailorReport_daily',now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_orderdetail_Parse', '', '', '', '', 'SailorReport_runtime', now());
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSailorReporting_ordercancel_Parse', '', '', '', '', 'SailorReport_runtime', now());
+
+INSERT INTO vv_metadata.job_info
+(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES( 'jSailorReporting_DiningReservGuestFact', '', '', '', '', 'SailorReport_daily', now());
+
+
+
+

@@ -1,0 +1,10 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_mart_crm_agency_hierarchy_rel(
+  agency_id string,
+  child_agency_id string,
+  agency_name string,
+  child_agency_name string,
+  seaware_agency_id string,
+  child_seaware_agency_id string,
+  immediate_parent_agency_id string,
+  level int
+) STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_crm_agency_hierarchy_rel';

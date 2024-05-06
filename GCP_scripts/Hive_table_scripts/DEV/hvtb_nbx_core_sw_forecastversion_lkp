@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_core_sw_forecastversion_lkp`(
+ `forecast_version_id` bigint, 
+  `forecast_version_desc` string, 
+  `etl_ld_status` string, 
+  `load_dt` timestamp, 
+  `upd_dt` timestamp,
+  `primaryhash` string,
+  `md5_hash` string)
+ STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_sw_forecastversion_lkp';

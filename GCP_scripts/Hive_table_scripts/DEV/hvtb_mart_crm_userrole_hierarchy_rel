@@ -1,0 +1,27 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_mart_crm_userrole_hierarchy_rel(
+  USERID  string,
+UserChildID  string,
+UserContactID  string,
+UserChildContactID  string,
+UserRole   string,
+UserChildRole  string,
+UserRoleID  string,
+UserChildRoleID   string,
+Immediate_ParentroleID  string,
+UserAgencyID  string,
+UserChildAgencyID  string,
+Level  bigint,
+load_dt timestamp,
+   upd_dt timestamp,
+   primaryhash string,
+   md5_hash string
+   )
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_crm_userrole_hierarchy_rel';
+ 

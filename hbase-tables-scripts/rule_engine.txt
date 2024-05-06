@@ -1,0 +1,9 @@
+CREATE TABLE RULE_ENGINE
+(
+   RULE_ID integer PRIMARY KEY,
+   RULE_TYPE varchar(0),
+   VALID_EVENT integer,
+   DESCRIPTION varchar(0),
+   ACTIVE_RULE varchar(0)
+)
+;

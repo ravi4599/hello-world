@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE hive_schema_stg.cabin_dim(voyage_id STRING, cabin_skey BIGINT, cabin_id INT, cabin_number STRING, ship_code STRING, cabin_floor_name STRING, cabin_category STRING, cabin_type STRING, cabin_view STRING, cabin_category_generic STRING, src_deleted_flag BOOLEAN, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING                                                                            
+)                                                                                                   
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_cabin/*']
+);         
+
+
+CREATE OR REPLACE VIEW shipdw.cabin_dim AS SELECT * FROM hive_schema_stg.cabin_dim;

@@ -1,0 +1,128 @@
+CREATE OR replace VIEW seaware.seaware_revenue_fact AS SELECT snapshot_date,
+res_id,
+guest_id,
+package_id,
+ship_id,
+agency_id,
+agent_id,
+sail_id,
+coupon_class_id,
+shorex_id,
+hotel_res_req_id,
+ship_room_req_id,
+guest_flight_id,
+Nvl(invoice_item_type_id, -1) AS invoice_item_type_id,
+Nvl(price_area_id, -1)        AS price_area_id,
+addon_id,
+promotion_id,
+amount,
+voyage_amount,
+Nvl(taxesandfees, 0)                                     AS taxesandfees,
+Nvl(manual_adj, 0)                                       AS manual_adj,
+Nvl(voyage_protect, 0)                                   AS insurance,
+Nvl((voyage_protect *.542),0)                            AS aon_insurace_payment,
+((voyage_amount)      * commission_percent)/100          AS voyage_commission_amt, --((VOYAGE_AMOUNT+NVL(MANUAL_ADJ,0))* COMMISSION_PERCENT )/100 AS VOYAGE_COMMISSION_AMT,
+(taxesandfees         *commission_percent)/ 100          AS tax_commision_amt,
+Nvl(voyage_amount     *0.025, 0)                         AS voyage_credit_card_fee,
+Nvl(insurance         *0.025, 0)                         AS insurance_credit_card_fee,
+Nvl(taxesandfees      *0.025, 0)                         AS taxesandfees_credit_card_fee,
+(Nvl(voyage_amount, 0)+Nvl(taxesandfees, 0))             AS actual_gross_ticket_revenue, --(nvl(VOYAGE_AMOUNT,0)+nvl(TAXESandFEES,0)+nvl(MANUAL_ADJ,0)) AS ACTUAL_GROSS_TICKET_REVENUE,
+Nvl(actual_gross_other_revenue, 0)                       AS actual_gross_other_revenue,
+Nvl(actual_gross_onboard_revenue, 0)                     AS actual_gross_onboard_revenue,
+((Nvl(voyage_amount, 0)+Nvl(taxesandfees, 0))+ Nvl(actual_gross_other_revenue, 0)+Nvl(actual_gross_onboard_revenue, 0))  as actual_gross_total_revenue,
+net_due,
+currency,
+currency_rate,
+commission_percent,
+(amount                       * currency_rate) AS amount_usd ,
+(voyage_amount                * currency_rate) AS voyage_amount_usd ,
+(taxesandfees                 * currency_rate) AS taxesandfees_usd,
+(manual_adj                   * currency_rate) AS manual_adj_usd ,
+(insurance                    * currency_rate) AS insurance_usd ,
+(aon_insurace_payment         * currency_rate) AS aon_insurace_payment_usd ,
+(voyage_commission_amt        * currency_rate) AS voyage_commission_amt_usd,
+(tax_commision_amt            * currency_rate) AS tax_commision_amt_usd,
+(voyage_credit_card_fee       * currency_rate) AS voyage_credit_card_fee_usd,
+(insurance_credit_card_fee    * currency_rate) AS insurance_credit_card_fee_usd,
+(taxesandfees_credit_card_fee * currency_rate) AS taxesandfees_credit_card_fee_usd ,
+(actual_gross_ticket_revenue  * currency_rate) AS actual_gross_ticket_revenue_usd ,
+(actual_gross_other_revenue   * currency_rate) AS actual_gross_other_revenue_usd,
+(actual_gross_onboard_revenue * currency_rate) AS actual_gross_onboard_revenue_usd,
+(((Nvl(voyage_amount, 0)+Nvl(taxesandfees, 0))+ Nvl(actual_gross_other_revenue, 0)+Nvl(actual_gross_onboard_revenue, 0))* currency_rate)  as actual_gross_total_revenue_usd
+FROM   (
+SELECT    fact.snapshot_date AS snapshot_date,
+fact.res_id        AS res_id,
+fact.guest_id      AS guest_id,
+fact.package_id    AS package_id,
+ship_id,
+agency_id,
+agent_id,
+sail_id,
+shorex_id,
+hotel_res_req_id,
+ship_room_req_id,
+guest_flight_id,
+fact.invoice_item_type_id,
+fact.price_area_id,
+addon_id,
+promotion_id,
+Sum(amount) AS amount,
+Sum (
+CASE
+WHEN invoice_item_type = 'VOYAGE FARE' THEN amount
+END) AS voyage_amount, --SUM (CASE WHEN INVOICE_ITEM_TYPE =  'VOYAGE FARE' AND  PRICE_AREA <> 'MANUAL ADJ' THEN AMOUNT END ) AS VOYAGE_AMOUNT,
+Sum(
+CASE
+WHEN invoice_item_type = 'TAXES & FEES' THEN amount
+END) AS taxesandfees,
+Sum(
+CASE
+WHEN price_area = 'MANUAL ADJ' THEN amount
+END) AS manual_adj,
+Sum(
+CASE
+WHEN invoice_item_type = 'INSURANCE' THEN amount
+END) AS voyage_protect,
+Sum(
+CASE
+WHEN invoice_item_type IN ('INSURANCE',
+'HOTEL FARE',
+'HOTEL TAXES') THEN amount
+END) AS actual_gross_other_revenue,
+Sum(
+CASE
+WHEN invoice_item_type IN ('AMENITY',
+'SHORE THINGS',
+'SAILOR LOOT',
+'SAILOR LOOT +') THEN amount
+END) AS actual_gross_onboard_revenue,
+net_due,
+commission_percent,
+currency,
+currency_rate,
+fact.coupon_class_id
+FROM      hive_schema_stg.seaware_revenue_fact FACT
+LEFT JOIN seaware.seaware_invoice_item_type_lkp INV
+ON        fact.invoice_item_type_id = inv.invoice_item_type_id
+LEFT JOIN seaware.seaware_price_area_lkp PA
+ON        fact.price_area_id = pa.price_area_id
+GROUP BY  fact.snapshot_date,
+fact.res_id,
+fact.guest_id,
+fact.package_id,
+ship_id,
+agency_id,
+agent_id,
+sail_id,
+shorex_id,
+hotel_res_req_id,
+ship_room_req_id,
+guest_flight_id,
+fact.invoice_item_type_id,
+fact.price_area_id,
+addon_id,
+promotion_id,
+commission_percent,
+currency,
+currency_rate,
+net_due,fact.coupon_class_id) BASE_SQL with no SCHEMA binding;

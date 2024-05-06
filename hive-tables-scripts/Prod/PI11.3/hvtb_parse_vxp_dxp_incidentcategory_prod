@@ -1,0 +1,33 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_parse_vxp_dxp_incidentcategory`(
+  `incidentcategoryid` string, 
+  `code` string, 
+  `departmentcode` string, 
+  `primarypoc` string, 
+  `namekey` string, 
+  `fromtime` timestamp, 
+  `totime` timestamp, 
+  `dueinterval` int, 
+  `severity` int, 
+  `isactive` boolean, 
+  `isdefault` boolean, 
+  `parentincidentcategoryid` string, 
+  `priority` int, 
+  `resolutiontime` int, 
+  `isdeleted` boolean, 
+  `addeddate` timestamp, 
+  `addedby` string, 
+  `lastmodifieddate` timestamp, 
+  `lastmodifiedby` string, 
+  `voyageid` string, 
+  `batchtime` timestamp, 
+  `shipcode` string)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/parse/hvtb_parse_vxp_dxp_incidentcategory'

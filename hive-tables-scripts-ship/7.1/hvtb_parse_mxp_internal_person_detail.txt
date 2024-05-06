@@ -1,0 +1,10 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_internal_person_detail(voyageid string, batchtime timestamp, person_id bigint, wearableid bigint, chargeid string, type string, title string, firstname string, middlename string, lastname string, gender string, email string, pincode string, person_guid string, lastchanged string, dateofbirth string, country string, preferedlanguage string)
+PARTITIONED BY (part_date date)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = '1'
+)
+STORED AS
+  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION '/data/apps/nbx/hive/parsing/mxp/hvtb_parse_mxp_internal_person_detail'

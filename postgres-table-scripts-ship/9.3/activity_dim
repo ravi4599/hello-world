@@ -1,0 +1,38 @@
+CREATE TABLE hive_schema_stg.activity_dim (
+	activity_skey int8 NULL,
+	voyage_id text NULL,
+	activity_id text NULL,
+	activity_cms_id text NULL,
+	activity_code text NULL,
+	activity_type text NULL,
+	activity_level text NULL,
+	activity_name text NULL,
+	activity_group_code text NULL,
+	activity_port_code text NULL,
+	activity_description text NULL,
+	currency_code text NULL,
+	multiple_booking_allowed_flg bool NULL,
+	price_type text NULL,
+	vip_flg bool NULL,
+	giftable_flg bool NULL,
+	packageable_flg bool NULL,
+	bookable_flg bool NULL,
+	ada_accessible_flg bool NULL,
+	minimum_age int4 NULL,
+	maximum_age int4 NULL,
+	access_type text NULL,
+	waitlist_enable_flg bool NULL,
+	booking_closed_duration int4 NULL,
+	activity_setup_duration int4 NULL,
+	activity_duration int4 NULL,
+	activity_location_type text NULL,
+	enabled_flg bool NULL,
+	src_deleted_flg bool NULL,
+	load_dt timestamp NULL,
+	upd_dt timestamp NULL,
+	primaryhash text NULL,
+	md5_hash text NULL
+);
+###############################################################################
+
+create view shipdw.activity_dim as select * from hive_schema_stg.activity_dim

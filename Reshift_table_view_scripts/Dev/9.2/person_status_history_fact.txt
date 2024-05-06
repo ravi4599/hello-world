@@ -1,0 +1,23 @@
+CREATE EXTERNAL TABLE hive_schema_stg.person_status_history_fact(
+  person_status_id varchar(50), 
+  person_skey int8, 
+  ship_code varchar(50), 
+  voyage_skey int8, 
+  person_type_code varchar(50), 
+  embark_date date, 
+  debark_date date, 
+  status varchar(50), 
+  status_type_code varchar(50), 
+  status_changed_date_time timestamp, 
+  is_deleted_flg boolean, 
+  src_last_modified_timestamp timestamp, 
+  load_dt timestamp, 
+  upd_dt timestamp)
+PARTITIONED BY ( 
+  part_dt date)
+STORED AS PARQUET
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/hvtb_mart_person_status_history_fact'
+  
+
+CREATE OR REPLACE VIEW shipdw.person_status_history_fact AS SELECT * FROM hive_schema_stg.person_status_history_fact with no schema binding;

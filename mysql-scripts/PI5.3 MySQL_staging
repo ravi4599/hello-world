@@ -1,0 +1,12 @@
+INSERT INTO vv_metadata.job_info( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status,source_query)
+VALUES( 'jSWStgRPL_RES_CHARGE_DETAIL', 'hvtb_nbx_landing_sw_rpl_res_charge_detail', 'Hive', 'RPL_RES_CHARGE_DETAIL', 'Postgresql', 'SPF_daily', now(), NULL, NULL);
+INSERT INTO vv_metadata.job_info( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status,source_query)
+VALUES( 'jSWStgRPL_RES_CHARGE_SUBDETAIL', 'hvtb_nbx_landing_sw_rpl_res_charge_subdetail', 'Hive', 'RPL_RES_CHARGE_SUBDETAIL', 'Postgresql', 'SPF_daily', now(), NULL, NULL);
+INSERT INTO vv_metadata.job_info(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status,source_query)
+VALUES('jSWStgRPL_RES_CHARGEABLE_ACTION', 'hvtb_nbx_landing_sw_rpl_res_chargeable_action', 'Hive', 'RPL_RES_CHARGEABLE_ACTION', 'Postgresql', 'SPF_daily', now(), NULL,NULL);
+INSERT INTO vv_metadata.job_info (job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
+VALUES('jSPFCharge_evt', 'hvtb_nbx_core_spf_charge_evt', 'Hive', 'hvtb_nbx_landing_sw_rpl_res_chargeable_action', 'Hive', 'SPF_daily',now() , NULL, NULL);
+INSERT INTO vv_metadata.job_info(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSWTransactions_evt', 'hvtb_nbx_core_sw_transaction_evt', 'Hive', 'hvtb_nbx_landing_sw_dwh_transaction', 'Hive', 'SW_DWH_daily_PI3', now());
+INSERT INTO vv_metadata.job_info(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
+VALUES('jSWResGuestRel', 'hvtb_nbx_core_sw_res_guest_rel', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_guest', 'Hive', 'SW_DWH_daily_PI3', now());

@@ -1,0 +1,14 @@
+spark.sql(s"""CREATE EXTERNAL TABLE `shipdw`.`hvtb_mart_lkp_activity_group_revenue_rel`(activity_group_revenue_skey bigint, `activity_group_code` string, `activity_group_name` string, `revenue_type` string)
+       ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+       WITH SERDEPROPERTIES (
+         'line.delim' = '
+       ',
+         'field.delim' = '\u0001',
+         'serialization.format' = ''
+       )
+       STORED AS
+         INPUTFORMAT 'org.apache.hadoop.mapred.TextInputFormat'
+         OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+     LOCATION '/data/ActivityGroupRevenueRel'
+     """)
+	 

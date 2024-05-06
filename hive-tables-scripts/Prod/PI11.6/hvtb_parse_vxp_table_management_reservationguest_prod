@@ -1,0 +1,43 @@
+CREATE EXTERNAL TABLE `shipdw.hvtb_parse_vxp_table_management_reservationguest`(
+  `guest_id` string, 
+  `is_main` boolean, 
+  `addeddate` timestamp, 
+  `public_id` string, 
+  `reservation_id` string, 
+  `addedby` string, 
+  `lastmodifiedby` string, 
+  `lastmodifieddate` timestamp, 
+  `status` string, 
+  `cabin_number` string, 
+  `language` string, 
+  `reservation_number` string, 
+  `birth_date` date, 
+  `citizenship` string, 
+  `group_id` string, 
+  `loyalty_level` string, 
+  `deleted_at` timestamp, 
+  `global_guest_id` string, 
+  `first_name` string, 
+  `gender` string, 
+  `last_name` string, 
+  `voyage_guest_id` string, 
+  `travel_with_id` string, 
+  `stateroom_id` string, 
+  `dining_rotation` string, 
+  `session_id` string, 
+  `voyageid` string, 
+  `batchtime` timestamp, 
+  `shipcode` string)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/landing/VXP/hvtb_parse_vxp_table_management_reservationguest'
+TBLPROPERTIES (
+  'bucketing_version'='2', 
+  'transient_lastDdlTime'='1623232637');

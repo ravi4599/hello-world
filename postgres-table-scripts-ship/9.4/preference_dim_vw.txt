@@ -1,0 +1,15 @@
+CREATE OR REPLACE VIEW shipdw.preference_dim
+AS SELECT preference_dim.voyage_id as voyage_id,
+	preference_dim.preference_skey as preference_skey,
+	preference_dim.preference_id as preference_id,
+	preference_dim.person_id as person_id,
+	preference_dim.preference_category_code as preference_category_code,
+	preference_dim.category as category,
+	preference_dim.description as description,
+	preference_dim.comment as comment,
+	preference_dim.allergy as allergy,
+	preference_dim.allergy_code as allergy_code,
+	preference_dim.preference_upd_date as preference_upd_date,
+	preference_dim.load_dt as load_dt,
+	preference_dim.upd_dt as upd_dt 
+FROM hive_schema_stg.preference_dim;

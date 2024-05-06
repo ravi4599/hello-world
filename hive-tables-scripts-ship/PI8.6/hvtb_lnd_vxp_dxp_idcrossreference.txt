@@ -1,0 +1,13 @@
+spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_dxp_idcrossreference (
+
+BatchInstanceID String,
+
+VoyageId string,
+
+BatchTime timestamp,
+
+Message string)
+
+PARTITIONED BY (Part_date date) STORED AS PARQUET
+
+LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_dxp_idcrossreference' """)

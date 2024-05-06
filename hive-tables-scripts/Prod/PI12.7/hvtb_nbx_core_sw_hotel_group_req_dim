@@ -1,0 +1,33 @@
+CREATE EXTERNAL TABLE vv_db_mig.hvtb_nbx_core_sw_hotel_group_req_dim(
+  hotel_group_req_id bigint, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  src_hotel_group_req_id int,
+  src_group_id int, 
+  effective_date timestamp, 
+  start_date timestamp, 
+  end_date timestamp, 
+  request_type string, 
+  occupancy int, 
+  quantity int, 
+  n_of_guests int, 
+  city_code string, 
+  hotel_id int, 
+  hotel_category string, 
+  room_category string, 
+  room_type string, 
+  hotel_space_type string, 
+  is_land_component string, 
+  etl_ld_status string, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string,
+  md5_hash string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_hotel_group_req_dim';

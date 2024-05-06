@@ -1,0 +1,27 @@
+spark.sql("""
+CREATE EXTERNAL TABLE `shipdw.hvtb_parse_vxp_dxp_activitylog`(
+  `activitylogid` string, 
+  `activitytype` string, 
+  `starttime` timestamp, 
+  `endtime` timestamp, 
+  `numberofpersons` int, 
+  `voyageid` string, 
+  `isdeleted` boolean, 
+  `addeddate` timestamp, 
+  `addedby` string, 
+  `lastmodifieddate` timestamp, 
+  `lastmodifiedby` string, 
+  `lastmodifiedbyuserid` string, 
+  `lastmodifiedbyapplicationid` string, 
+  `batchtime` timestamp, 
+  `shipcode` string)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-staging-emr-cluster/data/parse/hvtb_parse_vxp_dxp_activitylog'""");

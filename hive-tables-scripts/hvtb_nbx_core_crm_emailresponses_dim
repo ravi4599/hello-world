@@ -1,0 +1,45 @@
+DROP table `vv_db.hvtb_nbx_core_crm_emailresponses_dim`;
+
+CREATE EXTERNAL TABLE `hvtb_nbx_core_crm_emailresponses_dim`(
+  `load_data_timestamp` timestamp,
+  `createdbyid` string,
+  `createddate` timestamp,
+  `et4ae5__campaignmemberid__c` string,
+  `et4ae5__clicked__c` string,
+  `et4ae5__contact_id__c` string,
+  `et4ae5__contact__c` string,
+  `et4ae5__datebounced__c` string,
+  `et4ae5__dateopened__c` timestamp,
+  `et4ae5__datesent__c` timestamp,
+  `et4ae5__dateunsubscribed__c` timestamp,
+  `et4ae5__email_asset_id__c` string,
+  `et4ae5__email_id__c` string,
+  `et4ae5__email__c` string,
+  `et4ae5__fromaddress__c` string,
+  `et4ae5__fromname__c` string,
+  `et4ae5__hardbounce__c` string,
+  `et4ae5__lead_id__c` string,
+  `et4ae5__lead__c` string,
+  `et4ae5__numberoftotalclicks__c` double,
+  `et4ae5__numberofuniqueclicks__c` double,
+  `et4ae5__opened__c` string,
+  `et4ae5__senddefinition__c` string,
+  `et4ae5__softbounce__c` string,
+  `et4ae5__subjectline__c` string,
+  `et4ae5__tracking_as_of__c` string,
+  `et4ae5__triggeredsenddefinitionname__c` string,
+  `id` string,
+  `isdeleted` string,
+  `lastmodifiedbyid` string,
+  `lastmodifieddate` timestamp,
+  `name` string,
+  `ownerid` string,
+  `SystemModstamp` timestamp)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-qa-emr-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_emailresponses_dim'

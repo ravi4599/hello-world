@@ -1,0 +1,20 @@
+Create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_revenue_target_header(
+RECORD_ID	integer	,
+SHIP_CODE	string,
+PACKAGE_TYPE	string,
+SAIL_DATE	timestamp,
+SAIL_DAYS	integer	,
+CABIN_CTG_GENERIC	string,
+FORECAST_VERSION	string,
+FORECAST_METRIC	string,
+TIMESTAMP_CREATED	timestamp,
+TIMESTAMP_CHANGED	timestamp,
+USER_CREATED	string,
+USER_CHANGED	string,
+COMMENTS	string,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-prod-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_revenue_target_header'

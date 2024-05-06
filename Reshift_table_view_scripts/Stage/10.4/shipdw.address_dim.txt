@@ -1,0 +1,1 @@
+CREATE VIEW shipdw.address_dim AS select * from  hive_schema_stg.address_dim with no schema binding;

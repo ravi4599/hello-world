@@ -1,0 +1,33 @@
+
+Drop table shipdw.hvtb_lnd_mxp_persons
+
+Drop view shipdw.hvtb_parse_mxp_persons
+
+Drop table shipdw.hvtb_lnd_mxp_countries
+
+Drop view shipdw.hvtb_parse_mxp_countries
+
+Drop table shipdw.hvtb_lnd_mxp_person_address
+
+Drop view shipdw.hvtb_parse_mxp_person_address
+
+
+Drop table shipdw.hvtb_lnd_mxp_cities
+
+Drop view shipdw.hvtb_parse_mxp_cities
+
+Drop table shipdw.hvtb_lnd_mxp_Cruise
+
+Drop view shipdw.hvtb_parse_mxp_Cruise
+
+Drop table shipdw.hvtb_lnd_mxp_person_booking
+
+Drop view shipdw.hvtb_parse_mxp_person_booking
+
+Drop table shipdw.hvtb_lnd_mxp_positions
+
+Drop view shipdw.hvtb_parse_mxp_positions
+
+Drop table shipdw.hvtb_lnd_mxp_org_units
+
+Drop view shipdw.hvtb_parse_mxp_org_units

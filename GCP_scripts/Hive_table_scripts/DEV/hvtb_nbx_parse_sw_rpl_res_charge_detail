@@ -1,0 +1,31 @@
+CREATE EXTERNAL TABLE `vv_db.hvtb_nbx_parse_sw_rpl_res_charge_detail`(
+  `action_id` int, 
+  `charge_id` int, 
+  `charge_component_code` string, 
+  `entity_type` string, 
+  `entity_id` int, 
+  `calculated_amount` decimal(15,2), 
+  `amount` decimal(15,2), 
+  `origin_trans_id` int, 
+  `comments` string, 
+  `ch_entity_type` string, 
+  `charge_state` string, 
+  `amount_in_hdr_curr` decimal(15,2), 
+  `invoice_hdr_id` bigint, 
+  `designated_payment_code` string, 
+  `manual_update_timestamp` timestamp, 
+  `manual_update_user` string, 
+  `op` string, 
+  `ts_ms` timestamp, 
+  `voyageid` string, 
+  `batchtime` timestamp)
+PARTITIONED BY ( 
+  `part_date` date)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'gs://vv-dev-nbx-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_res_charge_detail';

@@ -1,0 +1,136 @@
+CREATE EXTERNAL TABLE vv_db_mig.hvtb_nbx_lnd_sw_rpl_vendor(
+BatchInstanceID String,
+VoyageId String,
+BatchTime Timestamp,
+Message String)
+partitioned by (Part_Date Date)
+STORED AS PARQUET
+LOCATION 's3://vv-qa-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_vendor'
+
+CREATE EXTERNAL TABLE vv_db_mig.hvtb_nbx_parse_sw_rpl_vendor(
+VENDOR_ID int,
+VENDOR_CODE string,
+VENDOR_NAME_TYPED string,
+VENDOR_NAME string,
+CONTACT string,
+COMMENTS string,
+IS_ACTIVE string,
+EMAIL string,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp)
+partitioned by (Part_Date Date)
+STORED AS PARQUET
+LOCATION
+'s3://vv-qa-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_vendor'
+
+CREATE EXTERNAL TABLE vv_db_mig.hvtb_nbx_lnd_sw_rpl_cabin_category_generic(
+BatchInstanceID String,
+VoyageId String,
+BatchTime Timestamp,
+Message String)
+partitioned by (Part_Date Date)
+STORED AS PARQUET
+LOCATION 's3://vv-qa-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_cabin_category_generic'
+
+CREATE EXTERNAL TABLE vv_db_mig.hvtb_nbx_parse_sw_rpl_cabin_category_generic(
+RECORD_ID int,
+CABIN_CATEGORY_GENERIC string,
+COMMENTS string,
+RANK int,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp)
+partitioned by (Part_Date Date)
+STORED AS PARQUET
+LOCATION
+'s3://vv-qa-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_cabin_category_generic'
+
+CREATE EXTERNAL TABLE vv_db_mig.hvtb_nbx_lnd_sw_rpl_ship_cabin(
+BatchInstanceID String,
+VoyageId String,
+BatchTime Timestamp,
+Message String)
+partitioned by (Part_Date Date)
+STORED AS PARQUET
+LOCATION 's3://vv-qa-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_ship_cabin'
+
+CREATE EXTERNAL TABLE vv_db_mig.hvtb_nbx_parse_sw_rpl_ship_cabin(
+SHIP_CODE string,
+CABIN_NUMBER string,
+CABIN_ID int,
+DECK_NUMBER int,
+CABIN_NAME string,
+COMMENTS string,
+IMAGE_ID int,
+CABIN_RANK int,
+FIREZONE_CODE string,
+EXT_CABIN_ID int,
+RECORD_ADDED_MANUALLY string,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp)
+partitioned by (Part_Date Date)
+STORED AS PARQUET
+LOCATION
+'s3://vv-qa-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_ship_cabin'
+
+CREATE EXTERNAL TABLE vv_db_mig.hvtb_nbx_lnd_sw_rpl_cabin_cat_gen_lnk_cabin_cat(
+BatchInstanceID String,
+VoyageId String,
+BatchTime Timestamp,
+Message String)
+partitioned by (Part_Date Date)
+STORED AS PARQUET
+LOCATION 's3://vv-qa-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_cabin_cat_gen_lnk_cabin_cat'
+
+CREATE EXTERNAL TABLE vv_db_mig.hvtb_nbx_parse_sw_rpl_cabin_cat_gen_lnk_cabin_cat(
+RECORD_ID int,
+CABIN_CATEGORY_GENERIC string,
+SHIP_CODE string,
+CABIN_CATEGORY string,
+LINK_TYPE string,
+EFF_DATE_FROM timestamp,
+EFF_DATE_TO timestamp,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp)
+partitioned by (Part_Date Date)
+STORED AS PARQUET
+LOCATION
+'s3://vv-qa-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_cabin_cat_gen_lnk_cabin_cat'
+
+CREATE EXTERNAL TABLE vv_db_mig.hvtb_nbx_lnd_sw_rpl_ship_cabin_ctg_link(
+BatchInstanceID String,
+VoyageId String,
+BatchTime Timestamp,
+Message String)
+partitioned by (Part_Date Date)
+STORED AS PARQUET
+LOCATION 's3://vv-qa-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_ship_cabin_ctg_link'
+
+CREATE EXTERNAL TABLE vv_db_mig.hvtb_nbx_parse_sw_rpl_ship_cabin_ctg_link(
+RECORD_ID int,
+SHIP_CODE string,
+CABIN_NUMBER string,
+CABIN_CATEGORY string,
+EFF_SAIL_FROM timestamp,
+EFF_SAIL_TO timestamp,
+ROLLAWAY_BEDS int,
+CABIN_CAPACITY int,
+IS_ACTIVE string,
+EXT_CABIN_CONTRACT_TYPE string,
+ACCOUNT_NUMBER string,
+CHILD_BEDS int,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp)
+partitioned by (Part_Date Date)
+STORED AS PARQUET
+LOCATION
+'s3://vv-qa-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_ship_cabin_ctg_link'

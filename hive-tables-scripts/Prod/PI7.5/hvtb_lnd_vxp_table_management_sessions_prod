@@ -1,0 +1,11 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_table_management_sessions (addeddate TIMESTAMP,public_id STRING,origin_public_id STRING,name STRING,day_name STRING,time_start TIMESTAMP,time_end TIMESTAMP,voyage_day_number int,day_and_month Date,venue_id STRING,settings_id STRING,voyage_id STRING,tag_id STRING,rotation_id STRING,group_id STRING,addedby STRING,lastmodifiedby STRING,lastmodifieddate TIMESTAMP,VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) 
+ROW FORMAT SERDE 	
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 	
+STORED AS INPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 	
+OUTPUTFORMAT 	
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'	
+LOCATION	
+  's3://vv-prod-emr-cluster/data/landing/hvtb_lnd_vxp_table_management_sessions'
+  
+CREATE VIEW shipdw.hvtb_parse_vxp_table_management_sessions as select * from shipdw.hvtb_lnd_vxp_table_management_sessions

@@ -1,0 +1,1 @@
+CREATE OR REPLACE VIEW shipdw.hvtb_parse_vxp_dxp_guestcheckindetail AS SELECT * FROM shipdw.hvtb_lnd_vxp_dxp_guestcheckindetail;

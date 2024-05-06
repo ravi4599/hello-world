@@ -1,0 +1,21 @@
+spark.sql("""CREATE EXTERNAL TABLE vv_db.hvtb_lnd_sfdc_bot_definition(
+  CreatedById string,
+  CreatedDate timestamp,
+  DeveloperName string,
+  Id string,
+  IsDeleted boolean,
+  LastModifiedById string,
+  LastModifiedDate timestamp,
+  MasterLabel string,
+  SystemModstamp timestamp,
+  batchtime timestamp,
+  part_date date)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/landing/crm/hvtb_lnd_sfdc_bot_definition'""")
+  

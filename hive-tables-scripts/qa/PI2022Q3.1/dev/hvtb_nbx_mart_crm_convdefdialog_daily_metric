@@ -1,0 +1,36 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_mart_crm_convdefdialog_daily_metric(
+convdefdialogdailymetric_skey bigint,
+id  string,
+Article string,
+ArticleName string,
+BotDefinitionName string,
+ChannelType string,
+ConversationDefinitionID string,
+DialogDefinitionId string,
+DialogDefinitionName string,
+IntegrationType string,
+IntegrationName string,
+IsSuccessful boolean,
+Language string,
+MetricDateTime date,
+MetricType string,
+name string,
+sessionendtype string,
+sessiontransfertype string,
+staticchoicevalue string,
+value int,
+createddate timestamp,
+lastmodifieddate timestamp,
+isdeleted boolean,
+load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-dev-emr-cluster/data/mart/hvtb_nbx_mart_crm_convdefdialog_daily_metric';

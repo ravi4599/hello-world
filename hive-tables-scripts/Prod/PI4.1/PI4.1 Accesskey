@@ -1,0 +1,274 @@
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_landing_pushtopic_accesskey(
+  createddate timestamp, 
+  replayid int, 
+  type string, 
+  usage__c double, 
+  access_key__c string, 
+  key_type__c string, 
+  client_id__c string, 
+  total_claimed__c int, 
+  campaign_status__c string, 
+  lead_id__c string, 
+  id string, 
+  promo_code__c string, 
+  campaign__c string, 
+  active__c string, 
+  deleted string, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='', 
+  'line.delim'='\n', 
+  'serialization.format'='') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/landing/hvtb_nbx_landing_pushtopic_accesskey'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1565493638');
+
+======================================================================================================
+
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_landing_pushtopic_campaign(
+  createddate timestamp, 
+  replayid int, 
+  type string, 
+  allowed_domains__c string, 
+  coupon_expiration_date__c timestamp, 
+  group_size__c double, 
+  campaign_country__c string, 
+  db_campaign_tactic__c string, 
+  treatment_type__c string, 
+  opportunity__c string, 
+  name string, 
+  numberofleads int, 
+  numberofopportunities int, 
+  startdate timestamp, 
+  campaign_ready__c string, 
+  numberofresponses int, 
+  promo_code__c string, 
+  campaign_brand__c string, 
+  campaign_office__c string, 
+  treatment_activation_date__c string, 
+  treatment_name__c string, 
+  variation_code__c string, 
+  amountwonopportunities double, 
+  coupon_code__c string, 
+  segment_code__c string, 
+  budgetedcost string, 
+  campaign_cancel__c string, 
+  sub_plan_code__c string, 
+  accesskey__c string, 
+  program_code__c string, 
+  coupon_activation_date__c timestamp, 
+  numberofcontacts int, 
+  plan_name__c string, 
+  key_type__c string, 
+  domain_restriction__c string, 
+  currencyisocode string, 
+  voyage__c string, 
+  coupon_name__c string, 
+  id string, 
+  status__c string, 
+  numberofconvertedleads int, 
+  program_name__c string, 
+  amountallopportunities double, 
+  isactive string, 
+  plan_code__c string, 
+  expectedresponse double, 
+  campaign_code__c string, 
+  numbersent double, 
+  expectedrevenue string, 
+  treatment_expiration_date__c string, 
+  ownerid string, 
+  campaignid__c string, 
+  coupon_description__c string, 
+  treatment_description__c string, 
+  parentid string, 
+  treatment_code__c string, 
+  campaign_channel__c string, 
+  campaign_region__c string, 
+  enddate timestamp, 
+  actualcost string, 
+  type_s string, 
+  numberofwonopportunities int, 
+  voyagespecific__c string, 
+  wave_code__c string, 
+  sub_plan_name__c string, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='', 
+  'line.delim'='\n', 
+  'serialization.format'='') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/landing/hvtb_nbx_landing_pushtopic_campaign'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1565343585');
+
+=============================================================================================================
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_landing_pushtopic_sailoraccesskey(
+  createddate timestamp, 
+  replayid int, 
+  type string, 
+  promo_code__c string, 
+  access_key__c string, 
+  booking_number__c string, 
+  client_id__c string, 
+  id string, 
+  status__c string, 
+  campaign__c string, 
+  claimed__c string, 
+  campaign_member_id__c string, 
+  reservation_number__c int, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='', 
+  'line.delim'='\n', 
+  'serialization.format'='') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/landing/hvtb_nbx_landing_pushtopic_sailoraccesskey'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1565363443');
+========================================================================================================================
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_pushtopic_accesskey(
+  access_key_id int, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  src_accces_key_id string, 
+  access_key__c string, 
+  key_type__c string, 
+  usage__c double, 
+  total_claimed__c int, 
+  promo_code__c string, 
+  client_id__c string, 
+  campaign__c string, 
+  campaign_status__c string, 
+  lead_id__c string, 
+  active__c string, 
+  replayid int, 
+  type string, 
+  createddate timestamp, 
+  deleted string, 
+  md5_dim string, 
+  etl_ld_status string, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/core/accesskeys/hvtb_nbx_core_pushtopic_accesskey'
+TBLPROPERTIES (
+  'last_modified_by'='hadoop', 
+  'last_modified_time'='1565068675', 
+  'transient_lastDdlTime'='1565200236');
+
+=====================================================================================================================
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_pushtopic_campaign(
+  campaign_id int, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  src_campaign_id string, 
+  allowed_domains__c string, 
+  group_size__c double, 
+  campaign_country__c string, 
+  db_campaign_tactic__c string, 
+  treatment_type__c string, 
+  opportunity__c string, 
+  name string, 
+  numberofleads int, 
+  numberofopportunities int, 
+  startdate timestamp, 
+  promo_code__c string, 
+  accesskey__c string, 
+  key_type__c string, 
+  domain_restriction__c string, 
+  currencyisocode string, 
+  voyage__c string, 
+  coupon_name__c string, 
+  status__c string, 
+  program_name__c string, 
+  amountallopportunities double, 
+  isactive string, 
+  plan_code__c string, 
+  expectedresponse double, 
+  campaign_code__c string, 
+  treatment_expiration_date__c string, 
+  ownerid string, 
+  campaignid__c string, 
+  parentid string, 
+  campaign_channel__c string, 
+  campaign_region__c string, 
+  enddate timestamp, 
+  actualcost string, 
+  type string, 
+  voyagespecific__c string, 
+  md5_dim string, 
+  etl_ld_status string, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/core/accesskeys/hvtb_nbx_core_pushtopic_campaign'
+TBLPROPERTIES (
+  'last_modified_by'='hadoop', 
+  'last_modified_time'='1565022972', 
+  'transient_lastDdlTime'='1565271057');
+=============================================================================================================
+CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_pushtopic_sailoraccesskey(
+  sailor_access_key_id int, 
+  rec_start_dttm timestamp, 
+  rec_end_dttm timestamp, 
+  src_sailor_accces_key_id string, 
+  promo_code__c string, 
+  access_key__c string, 
+  booking_number__c string, 
+  client_id__c string, 
+  status__c string, 
+  campaign__c string, 
+  claimed__c string, 
+  campaign_member_id__c string, 
+  reservation_number__c int, 
+  md5_dim string, 
+  etl_ld_status string, 
+  etl_ld_dt timestamp, 
+  etl_upd_dt timestamp)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  's3://vv-prod-emr-cluster/data/core/accesskeys/hvtb_nbx_core_pushtopic_sailoraccesskey'
+TBLPROPERTIES (
+  'last_modified_by'='hadoop', 
+  'last_modified_time'='1565022972', 
+  'transient_lastDdlTime'='1565363605');
+

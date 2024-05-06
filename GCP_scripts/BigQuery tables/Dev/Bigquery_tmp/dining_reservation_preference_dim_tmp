@@ -1,0 +1,14 @@
+CREATE EXTERNAL TABLE hive_schema_stg.dining_reservation_preference_dim_tmp(voyage_id string      
+, dining_reservation_preference_skey bigint                                                         
+, "type" string                                                                               
+, code string                                                                                 
+, description string                                                                          
+, load_dt timestamp                                                                                 
+, upd_dt timestamp                                                                                  
+, primaryhash string                                                                          
+, md5_hash string                                                                             
+)          
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_dim_dining_reservation_preference/*']
+);

@@ -1,0 +1,26 @@
+CREATE OR REPLACE view seaware.seaware_agency_dim as select * from hive_schema_stg.seaware_agency_dim ;
+CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.seaware_agency_dim(agency_id int                              
+, rec_start_dttm timestamp                                                                          
+, rec_end_dttm timestamp                                                                            
+, src_agency_id  integer                                                                                
+, agency_name string                                                                          
+, agency_code string                                                                          
+, agency_market string                                                                         
+, agency_class string                                                                          
+, agency_sales_region string                                                                   
+, agency_sales_district string                                                                
+, agency_country string                                                                      
+, agency_state string                                                                           
+, agency_zip string                                                                           
+, etl_ld_status string
+,load_dt timestamp
+,upd_dt timestamp
+,primaryhash string
+,md5_hash string
+,scd_hash string
+,part_dt date
+)
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_agency_dim/*'])                   
+;

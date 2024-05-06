@@ -1,0 +1,15 @@
+Create external table vv_db_mig.hvtb_nbx_parse_sw_rpl_revenue_target_value(
+RECORD_ID	integer	,
+HEADER_ID	integer	,
+VALUE_INDEX	integer	,
+VALUE	decimal(15,2)	,
+TIMESTAMP_CREATED	timestamp,
+TIMESTAMP_CHANGED	timestamp,
+USER_CREATED	string,
+USER_CHANGED	string,
+op string,
+ts_ms timestamp,
+voyageid string,
+Batchtime timestamp) partitioned by (Part_Date Date) STORED AS PARQUET
+LOCATION
+'s3://vv-qa-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_revenue_target_value'

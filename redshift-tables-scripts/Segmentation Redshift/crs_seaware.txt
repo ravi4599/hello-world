@@ -1,0 +1,3 @@
+create schema seaware_stg authorization talenduser;
+
+create schema seaware authorization talenduser;

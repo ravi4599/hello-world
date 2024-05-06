@@ -1,0 +1,30 @@
+  CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_address(
+  voyage_id string, 
+  address_skey bigint, 
+  address_id int, 
+  address_country string, 
+  address_type string, 
+  address_mailing_flg boolean, 
+  address_line1 string, 
+  address_line2 string, 
+  address_line3 string, 
+  address_city string, 
+  address_state string, 
+  address_postal_code string, 
+  phone_number string, 
+  mobile_phone_number string, 
+  fax_number string, 
+  email_address string, 
+  address_comment string, 
+  home_airport string, 
+  load_dt timestamp, 
+  upd_dt timestamp, 
+  primaryhash string, 
+  md5_hash string)
+  STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_dim_address';
+  
+  
+  
+
+
+

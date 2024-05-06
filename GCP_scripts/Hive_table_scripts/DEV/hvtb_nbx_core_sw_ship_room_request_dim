@@ -1,0 +1,19 @@
+create external table vv_db.hvtb_nbx_core_sw_ship_room_request_dim(
+ship_room_req_id bigint,
+src_request_id int,
+effective_date timestamp,
+src_guest_id int,
+inventory_request_type string,
+ship_code string,
+facility_type string,
+usage_start timestamp,
+usage_duration int,
+party_size int,
+quantity int,
+allocation_id int,
+ship_room_id int,
+load_dt timestamp, 
+upd_dt timestamp, 
+primaryhash string, 
+md5_hash string)
+stored as parquet location 'gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_sw_ship_room_request_dim';

@@ -1,0 +1,3 @@
+CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_Currencies(currency_id int, currency_abb string, currency_name string, country_id int, active boolean, supplied boolean, created timestamp, last_changed timestamp, changed string, guid string, created_by_date int, decimals_on_purchase_docs int, created_at_id int, bank_sell_quick_code string, bank_buy_quick_code string, sell_quick_code string, buy_quick_code string, employee_sell_quick_code string, employee_buy_quick_code string, currency_symbol string, last_change_log_id bigint, currency_number_code string, op string,ts_ms timestamp,shipcode string,  voyageid string, batchtime timestamp)
+PARTITIONED BY ( part_date date)
+STORED AS PARQUET LOCATION 's3://vv-prod-emr-cluster/data/parse/mxp/hvtb_parse_mxp_Currencies'
