@@ -1,1 +1,0 @@
-create or replace view shipdw.hvtb_parse_batch_entity_hash as select * from shipdw.hvtb_lnd_batch_entity_hash;

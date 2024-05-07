@@ -1,7 +1,0 @@
-
-CREATE TABLE hive_schema_stg.sestra_cogs(
-sestra_item_skey int,
-plunbr VARCHAR,
-cost DOUBLE PRECISION);
-
- 

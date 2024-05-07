@@ -1,5 +1,0 @@
-create external table shipdw.hvtb_parse_vxp_foodnbev_order(orderid string,venueid string,locationid string,orderdate timestamp,guestid string,status int,tokennumber int,colorcode string,deliverypersonid string,orderdeliverydate timestamp,discount decimal(18,2), taxamount decimal(18,2), taxpercentage decimal(5,2), gratuity decimal(18,2), gratuitypercentage decimal(5,2), amount decimal(18,2), currency string, paymentid string, refundid string, modifieddate timestamp, ordernumber int, delivertoguestid string, servicechargepercentage decimal(5,2), addedby string, addeddate timestamp, additionaldetails string, deliveredatlocationcode string, ordertypeid string, orderoriginid string, preorderslotsettingid string, waittimeid string, ispickupplaterequested boolean, modifiedby string, minwaittime int, maxwaittime int, hasotherallergy boolean, locationtype string, islocked boolean,
-  `batchtime` timestamp, 
-  `voyageid` string)PARTITIONED BY ( `Part_date` date) stored as parquet 
-  LOCATION
-  's3://vv-prod-emr-cluster/data/parse/hvtb_parse_vxp_foodnbev_order'

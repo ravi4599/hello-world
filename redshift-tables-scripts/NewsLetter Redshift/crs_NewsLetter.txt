@@ -1,3 +1,0 @@
-create schema NEWSLETTER_STG authorization talenduser;
-
-create schema NEWS_LETTER authorization talenduser;

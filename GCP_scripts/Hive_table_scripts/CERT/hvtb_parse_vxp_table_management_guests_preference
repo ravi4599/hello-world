@@ -1,1 +1,0 @@
-spark.sql("""Create View shipdw.hvtb_parse_vxp_table_management_guests_preference as Select * from shipdw.hvtb_lnd_vxp_table_management_guests_preference""");

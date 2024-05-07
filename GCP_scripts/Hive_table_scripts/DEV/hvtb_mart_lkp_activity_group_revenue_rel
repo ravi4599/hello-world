@@ -1,5 +1,0 @@
-CREATE EXTERNAL TABLE `shipdw.hvtb_mart_lkp_activity_group_revenue_rel`(
-  `activity_group_revenue_skey` bigint, 
-  `activity_group_code` string, 
-  `activity_group_name` string, 
-  `revenue_type` string) STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_lkp_activity_group_revenue_rel';

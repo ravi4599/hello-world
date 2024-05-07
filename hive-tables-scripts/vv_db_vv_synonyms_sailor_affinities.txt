@@ -1,8 +1,0 @@
-CREATE EXTERNAL TABLE `vv_db.HVTB_NBX_CORE_CALRECO_sailor`(
-  `id_seaware` string, 
-  `synonyms` string, 
-  `time_stamp` string, 
-  `date_stamp` timestamp
-  )
-STORED AS PARQUET
-LOCATION 's3a://vv-qa-emr-cluster/data/core/calendar_reco/sailor_affinities';

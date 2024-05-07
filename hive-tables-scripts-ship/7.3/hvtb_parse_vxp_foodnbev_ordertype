@@ -1,1 +1,0 @@
-spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_foodnbev_ordertype as select * from shipdw.hvtb_lnd_vxp_foodnbev_ordertype""");

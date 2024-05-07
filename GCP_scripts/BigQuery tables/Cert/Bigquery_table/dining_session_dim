@@ -1,7 +1,0 @@
-CREATE EXTERNAL TABLE  shipdw.dining_session_dim(voyage_id STRING, dining_session_skey BIGINT, dining_session_id STRING, dining_session_name STRING, session_day_name STRING, session_voyage_number STRING, venue_id STRING, timeslot_duration_seconds INT, max_party_size INT, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
-OPTIONS (
-  format = 'PARQUET',
-  uris = ['gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_dining_session/*']
-);
-
-CREATE OR REPLACE VIEW shipdw.dining_session_dim AS SELECT * FROM hive_schema_stg.dining_session_dim;

@@ -1,9 +1,0 @@
-CREATE EXTERNAL TABLE `vv_db`.`hvtb_nbx_core_sw_booked_cabin_reservation_dim`(`booked_cabin_res_id` INT, `res_id` INT, `guest_id` INT, `package_id` INT, `rec_start_dttm` TIMESTAMP, `rec_end_dttm` TIMESTAMP, `price_category` STRING, `price_category_rank` INT, `berth_category` STRING, `berth_category_rank` INT, `assigned_category` STRING, `assigned_category_rank` INT, `generic_category` STRING, `allocation_id` INT, `cabin_id` STRING, `sail_cabin_reserve_id` STRING, `etl_ld_status` STRING, `load_dt` TIMESTAMP, `upd_dt` TIMESTAMP, `primaryhash` STRING, `md5_hash` STRING, `scd_hash` STRING)
-ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
-WITH SERDEPROPERTIES (
-  'serialization.format' = '1'
-)
-STORED AS
-  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
-  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
-LOCATION 'gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_booked_cabin_reservation_dim';

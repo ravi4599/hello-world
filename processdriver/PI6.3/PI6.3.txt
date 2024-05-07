@@ -1,8 +1,0 @@
-Processname             variablename             value
--------------------   ---------------------     -----------------------------------------------
-
-CDC_crm_caseactivity	main_table_query	select * from vv_db.hvtb_nbx_core_crm_caseactivity
-CDC_crm_caseactivity	incr_table_query	select * from vv_db.hvtb_nbx_landing_crm_caseactivity_cdc
-CDC_crm_caseactivity	temp_file_path	        s3://vv-qa-emr-cluster/data/staging/crm/hvtb_nbx_core_crm_caseactivity
-CDC_crm_caseactivity	original_file_path	s3://vv-qa-emr-cluster/data/core/crm/hvtb_nbx_core_crm_caseactivity
-CDC_crm_caseactivity	subtract_query	        select a.id, a.case_activity_queue__c, a.case_activity_status__c, a.case_closed__c, a.case_close_datetime__c, a.case_opened_datetime__c, a.case__c, a.change_type__c, a.createdbyid, a.createddate, a.currencyisocode, a.durationformula__c, a.duration__c, a.isdeleted, a.is_active__c, a.is_current_value__c, a.lastmodifiedbyid, a.lastmodifieddate, a.name, a.systemmodstamp, a.value_changed_from__c, a.value_changed_to__c, a.value_duration__c, a.value_in_time__c, a.value_out_time__c FROM vv_db.hvtb_nbx_core_crm_caseactivity a left join vv_db.hvtb_nbx_landing_crm_caseactivity_cdc b on a.id = b.id where b.id is null

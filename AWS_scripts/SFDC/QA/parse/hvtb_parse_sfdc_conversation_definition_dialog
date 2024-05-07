@@ -1,1 +1,0 @@
-CREATE OR REPLACE VIEW vv_db.hvtb_parse_sfdc_conversation_definition_dialog AS SELECT * FROM vv_db.hvtb_lnd_sfdc_conversation_definition_dialog;

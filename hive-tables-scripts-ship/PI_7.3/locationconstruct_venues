@@ -1,6 +1,0 @@
-venues :-
-
-spark.sql("create external table shipdw.hvtb_lnd_vxp_locationcon_venues(id int,  name  string, x int, y int,  len int, width int,teleport_x int, teleport_y int,sector_id int,yaw_value int,capacity  int,recommendation_venue_id int,global_venue_id  string,crew_sailor_rate decimal(8,0),shipping_venue_id int,parent_id int,crew_only boolean,server_venue_id  int,VoyageId string,BatchTime timestamp)partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_locationcon_venues'")
-
-
-spark.sql("create view shipdw.hvtb_parse_vxp_locationcon_venues as select * from shipdw.hvtb_lnd_vxp_locationcon_venues")

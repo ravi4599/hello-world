@@ -1,8 +1,0 @@
-CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.voyage_dim(voyage_skey BIGINT, voyage_id STRING, voyage_number STRING, voyage_guid STRING, cruise_id BIGINT, voyage_description STRING, voyage_start_date TIMESTAMP, voyage_end_date TIMESTAMP, voyage_length INT, voyage_status STRING, ship_guid STRING, ship_code STRING, ship_name STRING, isseaday INT, actual_capacity_days INT, booked_capacity_days INT, actual_sailor_days INT, built_capacity_days INT, sailed_cabin_occupancy_pct INT, active_status STRING, src_deleted_flag BOOLEAN, src_active_flag BOOLEAN, next_voyage_number STRING, previous_voyage_number STRING, next_voyage_skey BIGINT, previous_voyage_skey BIGINT, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
-                                                                                                                                   
-OPTIONS (
-  format = 'PARQUET',
-  uris = ['gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_voyage/*']
-);
-
-CREATE OR REPLACE VIEW shipdw.voyage_dim AS SELECT * FROM hive_schema_stg.voyage_dim;

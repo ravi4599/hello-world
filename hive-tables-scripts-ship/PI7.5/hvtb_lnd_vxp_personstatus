@@ -1,3 +1,0 @@
-spark.sql("""CREATE EXTERNAL TABLE vv_db.hvtb_lnd_vxp_personstatus (personstatusid STRING,personid STRING,persontypecode STRING,shipcode STRING,embarkdate DATE,debarkdate DATE,statustypeid STRING,status STRING,statuschangeddate TIMESTAMP,isdeleted boolean,addeddate TIMESTAMP,addedby STRING,lastmodifieddate TIMESTAMP,lastmodifiedby STRING,statustypecode STRING,purgedate TIMESTAMP,percentagecompleted Decimal,statuschangedbypersonid STRING,statuschangedbypersontypecode STRING,VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_personstatus'""");
-
-spark.sql("""CREATE VIEW vv_db.hvtb_parse_vxp_personstatus as select * from vv_db.hvtb_lnd_vxp_personstatus""");

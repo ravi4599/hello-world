@@ -1,1 +1,0 @@
-CREATE OR REPLACE VIEW vv_db.hvtb_parse_sfdc_bot_version AS SELECT * FROM vv_db.hvtb_lnd_sfdc_bot_version;

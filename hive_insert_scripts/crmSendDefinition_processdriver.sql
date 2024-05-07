@@ -1,7 +1,0 @@
-insert into table vv_db.processdriver
-VALUES
-('CDC_crm_senddefinition','incr_table_query','select * from vv_db.hvtb_nbx_landing_crm_senddefinition_cdc'),
-('CDC_crm_senddefinition','main_table_query','select * from vv_db.hvtb_nbx_core_crm_senddefinition'),
-('CDC_crm_senddefinition','temp_file_path','s3://vv-dev-emr-cluster/data/staging/crm/hvtb_nbx_core_crm_senddefinition'),
-('CDC_crm_senddefinition','subtract_query','select a.load_data_timestamp,a.id,a.et4ae5__datesent__c,a.et4ae5__allsources__c,a.et4ae5__emailid__c,a.et4ae5__emailname__c,a.et4ae5__fromemail__c,a.et4ae5__numbernotclicked__c,a.et4ae5__numberofexistingundeliverables__c,a.et4ae5__numberofexistingunsubscribes__c,a.et4ae5__numberofhardbounces__c,a.et4ae5__numberofsoftbounces__c,a.et4ae5__numberofsubscribersforwardingemail__c,a.et4ae5__numberoftotalclicks__c,a.et4ae5__numberoftotalopens__c,a.et4ae5__numberofuniqueclicks__c,a.et4ae5__numberofuniqueopens__c,a.et4ae5__numbersent__c,a.et4ae5__numberunsubscribed__c,a.et4ae5__number_bounced__c,a.et4ae5__number_delivered__c,a.et4ae5__number_not_opened__c,a.et4ae5__open_rate__c,a.et4ae5__click_through_rate__c,a.et4ae5__unsubscribe_rate__c,a.et4ae5__subject__c,a.isdeleted from vv_db.hvtb_nbx_core_crm_senddefinition a left join vv_db.hvtb_nbx_landing_crm_senddefinition_cdc b on a.id=b.id where b.id is null'),
-('CDC_crm_senddefinition','original_file_path','s3://vv-dev-emr-cluster/data/core/crm/hvtb_nbx_core_crm_senddefinition');

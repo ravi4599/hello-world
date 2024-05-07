@@ -1,1 +1,0 @@
-CREATE or replace VIEW shipdw.restriction_dim  AS SELECT * FROM hive_schema_stg.restriction_dim with no schema binding;

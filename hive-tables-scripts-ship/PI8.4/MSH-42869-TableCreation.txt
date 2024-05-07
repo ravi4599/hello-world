@@ -1,5 +1,0 @@
-####################Spark Table###################3
-spark.sql("""Create external table shipdw.hvtb_mart_dim_allergy(allergy_skey bigint,voyage_id string,source string,allergy_id string,parent_allergy_id string,allergy_code string,allergy_name string,src_active_flg boolean,load_dt timestamp,upd_dt timestamp,primaryhash string,md5_hash string) STORED AS parquet LOCATION '/data/apps/nbx/mart/hvtb_mart_dim_allergy'""")
- 
-###########################Postgres Table************************
-Create table hive_schema_stg.allergy_dim(allergy_skey int8, voyage_id text, source text, allergy_id text, parent_allergy_id text, allergy_code text, allergy_name text, src_active_flg boolean ,load_dt timestamp, upd_dt timestamp, primaryhash text, md5_hash text) 

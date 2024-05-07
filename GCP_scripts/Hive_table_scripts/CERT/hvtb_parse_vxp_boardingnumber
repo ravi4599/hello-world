@@ -1,1 +1,0 @@
-CREATE OR REPLACE VIEW shipdw.hvtb_parse_vxp_boardingnumber AS SELECT * FROM shipdw.hvtb_lnd_vxp_boardingnumber;

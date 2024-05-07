@@ -1,5 +1,0 @@
-create or replace view seaware.seaware_res_guest_rel as
-select
-*
-from hive_schema_stg.seaware_res_guest_rel  
-with no schema binding;

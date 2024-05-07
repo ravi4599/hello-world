@@ -1,1 +1,0 @@
-Create table hive_schema_stg.virtual_queue_definition_dim(virtual_queue_definition_skey int8, voyage_id text, virtual_queue_definition_id text, virtual_queue_definition_name text,src_deleted_flg boolean ,load_dt timestamp, upd_dt timestamp, primaryhash text, md5_hash text)

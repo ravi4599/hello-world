@@ -1,7 +1,0 @@
-Create external table vv_db.hvtb_nbx_lnd_sw_rpl_revenue_target_value( BatchInstanceID String,
-VoyageId String,
-BatchTime Timestamp, 
-Message String,
-Shipcode string) 
-partitioned by (Part_Date Date)
-STORED AS parquet LOCATION 'gs://vv-dev-nbx-cluster/data/seaware/hvtb_nbx_lnd_sw_rpl_revenue_target_value';

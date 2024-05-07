@@ -1,9 +1,0 @@
-CREATE TABLE shipdw.service_type_dim 
-(voyage_id text null,
-service_type_skey int8 not null,
-service_type text not null,
-service_category text not null,
-load_dt timestamp null,
-upd_dt timestamp null,
-primaryhash text null,
-md5_hash text null)

@@ -1,9 +1,0 @@
-CREATE OR REPLACE VIEW shipdw.ship_folio_fact AS SELECT * FROM hive_schema_stg.ship_folio_fact;
-
-CREATE  EXTERNAL TABLE hive_schema_stg.ship_folio_fact
-WITH PARTITION COLUMNS
-OPTIONS (
-  uris=['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_ship_folio/*'],
-  format=PARQUET,
-  hive_partition_uri_prefix='gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_ship_folio/'
-);

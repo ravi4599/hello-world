@@ -1,1 +1,0 @@
-create external table shipdw.hvtb_parse_mxp_shore_quickcode (quick_code_name string,quick_code string,BatchTime timestamp,part_date date) stored as parquet location 's3://vv-qa-emr-cluster/data/parse/hvtb_parse_mxp_shore_quickcode'

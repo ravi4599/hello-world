@@ -1,9 +1,0 @@
-CREATE EXTERNAL TABLE `shipdw`.`hvtb_mart_dim_folio_detail`(`voyage_id` string, `folio_detail_skey` bigint, `folio_detail_id` bigint, `currency_code` string, `location` string, `line_type` string, `line_status` string, `line_description` string, `sale_comment` string, `sale_discount_comment` string, `src_deleted_flag` boolean, `load_dt` timestamp, `upd_dt` timestamp, `primaryhash` string, `md5_hash` string)
-ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
-WITH SERDEPROPERTIES (
-  'serialization.format' = '1'
-)
-STORED AS
-  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
-  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
-  LOCATION 'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_dim_folio_detail';

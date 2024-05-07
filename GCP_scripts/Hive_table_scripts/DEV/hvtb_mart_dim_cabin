@@ -1,3 +1,0 @@
-CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_cabin(voyage_id string, cabin_skey bigint, cabin_id int, cabin_number string, ship_code string, cabin_floor_name string, cabin_category string, cabin_type string, cabin_view string, cabin_category_generic string, src_deleted_flag boolean, load_dt timestamp, upd_dt timestamp, primaryhash string, md5_hash string) STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_dim_cabin';
-
-  

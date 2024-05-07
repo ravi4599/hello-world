@@ -1,9 +1,0 @@
-drop table shipdw.hvtb_nbx_landing_xref_reference_audit;
-drop table shipdw.hvtb_nbx_parse_xref_reference_audit;
-
-CREATE EXTERNAL TABLE shipdw.hvtb_nbx_landing_xref_reference_audit(reference_audit_id string, reference_id string, reference_type_id string, native_source_id_value string, master_id string, event_type string, event_timestamp timestamp, system_id string, merge_id string, source_master_id string, op string, ts_ms timestamp, voyageid string, batchtime timestamp,ship_code string)
-PARTITIONED BY (part_date date)
-STORED AS PARQUET
-LOCATION 's3://vv-prod-emr-cluster/data/landing/xref/hvtb_nbx_landing_xref_reference_audit';
-
-CREATE VIEW shipdw.hvtb_nbx_parse_xref_reference_audit as select * from shipdw.hvtb_nbx_landing_xref_reference_audit ;

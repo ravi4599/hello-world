@@ -1,3 +1,0 @@
-CREATE EXTERNAL TABLE `shipdw`.`hvtb_mart_dim_vendor`(`vendor_skey` bigint, `voyage_id` string, `vendor_id` string, `vendor_name` string, `src_active_flg` boolean, `src_deleted_flg` boolean, `load_dt` timestamp, `upd_dt` timestamp, `primaryhash` string, `md5_hash` string)
-ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
-STORED AS LOCATION 'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_dim_vendor';

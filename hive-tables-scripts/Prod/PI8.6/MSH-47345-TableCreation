@@ -1,8 +1,0 @@
-create external table shipdw.hvtb_lnd_vxp_ars_activitylocation(activitylocationid string,setupduration int,activityduration int,deckcode string,sectioncode string,directioncode string,venueid string,locationtype string,isdeleted BOOLEAN,addeddate timestamp,lastmodifieddate timestamp,addedby string,lastmodifiedby string,arsvenueid string,VoyageId string,BatchTime string)PARTITIONED BY ( Part_Date date) STORED AS PARQUET LOCATION 's3://vv-prod-emr-cluster/data/landing/VXP/hvtb_lnd_vxp_ars_activitylocation'
-
-
-CREATE VIEW shipdw.hvtb_parse_vxp_ars_activitylocation as select * from shipdw.hvtb_lnd_vxp_ars_activitylocation
-
-
-
-

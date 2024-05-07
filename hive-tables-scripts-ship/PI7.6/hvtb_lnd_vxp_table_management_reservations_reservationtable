@@ -1,7 +1,0 @@
-spark.sql("drop table shipdw.hvtb_lnd_vxp_table_management_reservations_reservationtable")
-
-spark.sql("drop view shipdw.hvtb_parse_vxp_table_management_reservations_reservationtable")
-
-spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_table_management_reservations_reservationtable (auto_assigned boolean,addeddate TIMESTAMP,public_id STRING,reservation_id STRING,table_id STRING,addedby STRING,lastmodifiedby STRING,lastmodifieddate TIMESTAMP,VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_table_management_reservations_reservationtable'""");
-
-spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_table_management_reservations_reservationtable as select * from shipdw.hvtb_lnd_vxp_table_management_reservations_reservationtable""");

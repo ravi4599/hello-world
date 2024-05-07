@@ -1,8 +1,0 @@
-CREATE TABLE HBTB_NBX_SFDC_TABLEUPDATES
-(
-   SOURCE_MSG varchar,
-   TIMESTAMP varchar,
-   SFDC_UPDATE_TYPE varchar,
-   ROW_ID varchar PRIMARY KEY,
-   RESPONSE varchar
-)

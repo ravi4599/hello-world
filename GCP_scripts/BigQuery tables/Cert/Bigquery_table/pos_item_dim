@@ -1,6 +1,0 @@
-create EXTERNAL TABLE hive_schema_stg.pos_item_dim(item_skey BIGINT, voyage_id STRING, item_plu_number STRING, item_name STRING, item_plu_group_number STRING, item_plu_group_name STRING, item_plu_category_number STRING, item_plu_category_name STRING, ship_code STRING, src_updated_datetime TIMESTAMP, src_deleted_flag BOOLEAN, src_active_flag BOOLEAN, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)OPTIONS (
-  format = 'PARQUET',
-  uris = ['gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_pos_item/*']
-);
-
-CREATE OR REPLACE VIEW shipdw.pos_item_dim AS SELECT * FROM hive_schema_stg.pos_item_dim;

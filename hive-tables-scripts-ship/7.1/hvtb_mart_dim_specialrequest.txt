@@ -1,3 +1,0 @@
-spark.sql("CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_specialrequest(specialrequest_skey bigint, voyage_id string, person_skey bigint, specialrequest_id bigint, specialrequest_guid string, specialrequest_type string, specialrequest_date timestamp, specialrequest_description string, specialrequest_comment string, specialrequest_upd_date timestamp, load_dt timestamp, upd_dt timestamp, primaryhash string, md5_hash string)
-STORED AS PARQUET
-LOCATION '/data/apps/nbx/hive/mart/hvtb_mart_dim_specialrequest'")

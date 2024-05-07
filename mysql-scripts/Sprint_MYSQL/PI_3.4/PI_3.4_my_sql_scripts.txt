@@ -1,9 +1,0 @@
-insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jSFStreamingtoKafkaSailorAccessKey','','','','','realtime',now()); 
-
-INSERT INTO vv_metadata.job_info
-(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
-VALUES('jSWShorexPkgLkp', 'hvtb_nbx_core_sw_shorex_pkg_lkp', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_shorex', 'Hive', 'SW_DWH_daily_PI3', now(), NULL, NULL);
-
-INSERT INTO vv_metadata.job_info
-( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on, job_status, source_query)
-VALUES( 'jSWShorexDim', 'hvtb_nbx_core_sw_shorex_dim', 'Hive', '', 'Hive', 'SW_DWH_daily_PI3', now(), NULL, NULL);

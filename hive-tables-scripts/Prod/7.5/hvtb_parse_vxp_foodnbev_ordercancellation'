@@ -1,4 +1,0 @@
-CREATE EXTERNAL TABLE shipdw.hvtb_parse_vxp_foodnbev_ordercancellation(ordercancellationid string, orderid string, cancellationrequestedby string, approvedby string, cancellationreason string, refundamount decimal(10,2), cancellationdate timestamp, utcoffset int, isdeleted boolean, addeddate timestamp, addedby string, lastmodifieddate timestamp, lastmodifiedby string, VoyageId string, BatchTime timestamp)
-PARTITIONED BY (Part_Date date)
-stored as parquet
-LOCATION 's3://vv-prod-emr-cluster/data/parse/hvtb_parse_vxp_foodnbev_ordercancellation'

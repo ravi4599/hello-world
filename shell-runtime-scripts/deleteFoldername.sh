@@ -1,1 +1,0 @@
-sed -i '/foldername/d' /data/apps/talend/shared/parameterfiles/infegy_parameterfile.txt

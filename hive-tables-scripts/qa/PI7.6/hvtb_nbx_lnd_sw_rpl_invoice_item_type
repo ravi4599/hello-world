@@ -1,1 +1,0 @@
-Create external table vv_db_mig.hvtb_nbx_lnd_sw_rpl_invoice_item_type( BatchInstanceID String,VoyageId String,BatchTime Timestamp, Message String) partitioned by (Part_Date Date) STORED AS parquet LOCATION 's3://vv-qa-emr-cluster/data/nbx/hive/landing/debezium/seaware/hvtb_nbx_lnd_sw_rpl_invoice_item_type'

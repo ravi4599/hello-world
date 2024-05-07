@@ -1,7 +1,0 @@
-CREATE EXTERNAL TABLE shipdw.hvtb_mart_fact_dining_table_status(voyage_id string, voyage_skey bigint,
-dining_reservation_detail_skey int,dining_table_skey bigint, venue_skey bigint, 
-table_status string, table_status_lastmodifieddate timestamp, 
-load_dt timestamp, upd_dt timestamp)
-PARTITIONED BY (part_dt date)
-STORED AS PARQUET
-LOCATION 's3://vv-qa-emr-cluster/data/mart/hvtb_mart_fact_dining_table_status'

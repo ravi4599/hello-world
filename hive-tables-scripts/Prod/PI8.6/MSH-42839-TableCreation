@@ -1,3 +1,0 @@
-CREATE EXTERNAL TABLE shipdw.hvtb_lnd_mxp_vvirgin_reservations(ShipCode STRING,VoyageNumber STRING,VenueID STRING,TableID int,ReservationID STRING,ReservationTime TIMESTAMP,PartySize int,PartySeatedTime TIMESTAMP,PartyCheckoutTime TIMESTAMP,CrewID int,ItemCode STRING,ItemName STRING,ItemGroup STRING,ItemCategory STRING,MenuGUID STRING,MenuCode int,MenuName STRING,ItemOrderedAtTime TIMESTAMP,ItemServedAtTime TIMESTAMP,LocationCode STRING,ReservationCreated TIMESTAMP,GUEST_ORDER_STATUS_ID int,VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) STORED AS parquet LOCATION 's3://vv-prod-emr-cluster/data/landing/hvtb_lnd_mxp_vvirgin_reservations'
-
-CREATE VIEW shipdw.hvtb_parse_mxp_vvirgin_reservations as select * from shipdw.hvtb_lnd_mxp_vvirgin_reservations

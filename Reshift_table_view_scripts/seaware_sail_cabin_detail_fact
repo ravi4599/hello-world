@@ -1,1 +1,0 @@
-CREATE OR REPLACE VIEW seaware.seaware_sail_cabin_detail_fact AS SELECT * FROM hive_schema_stg.seaware_sail_cabin_detail_fact with no schema binding;

@@ -1,2 +1,0 @@
-
-CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_foodandbeverage_orderallergy(BatchInstanceID string,VoyageId string,BatchTime timestamp,Message string) PARTITIONED BY (Part_Date date) Stored as Parquet LOCATION 's3://vv-staging-emr-cluster/data/landing/hvtb_lnd_vxp_foodandbeverage_orderallergy'

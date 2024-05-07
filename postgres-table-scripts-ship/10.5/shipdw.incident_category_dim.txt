@@ -1,1 +1,0 @@
-CREATE or replace VIEW shipdw.incident_category_dim AS SELECT * FROM hive_schema_stg.incident_category_dim with no schema binding;  

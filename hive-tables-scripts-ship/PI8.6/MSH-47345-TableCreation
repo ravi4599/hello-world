@@ -1,5 +1,0 @@
-spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_ars_activitylocation(activitylocationid STRING,setupduration int,activityduration int,deckcode STRING,sectioncode STRING,directioncode STRING,venueid STRING,locationtype STRING,isdeleted BOOLEAN,addeddate TIMESTAMP,lastmodifieddate TIMESTAMP,addedby STRING,lastmodifiedby STRING,arsvenueid STRING,VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_ars_activitylocation'"""); 
-
-
-spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_ars_activitylocation as select * from shipdw.hvtb_lnd_vxp_ars_activitylocation"""); 
-

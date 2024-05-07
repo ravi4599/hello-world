@@ -1,1 +1,0 @@
-create or replace view vv_db.hvtb_parse_sfdc_opportunity as select * from vv_db.hvtb_lnd_sfdc_opportunity;

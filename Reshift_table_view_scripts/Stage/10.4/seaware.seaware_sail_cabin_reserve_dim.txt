@@ -1,1 +1,0 @@
-create or replace view seaware.seaware_sail_cabin_reserve_dim as select * from hive_schema_stg.seaware_sail_cabin_reserve_dim with no schema binding;

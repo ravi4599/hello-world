@@ -1,2 +1,0 @@
-spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_dxp_codevalue(codevalueid, codetypecode, code, namekey, descriptionkey, isdeleted, addeddate, addedby,	lastmodifieddate, lastmodifiedby, VoyageId, BatchTime, ShipCode, Part_Date) AS
-select * from shipdw.hvtb_lnd_vxp_dxp_codevalue """)

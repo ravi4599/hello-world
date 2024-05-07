@@ -1,1 +1,0 @@
- create or replace view vv_db.hvtb_parse_vxp_trackable as select * from vv_db.hvtb_lnd_vxp_trackable;

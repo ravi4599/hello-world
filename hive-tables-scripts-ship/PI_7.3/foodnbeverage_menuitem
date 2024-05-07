@@ -1,8 +1,0 @@
-
-
-Menuitem :- 
-
-spark.sql("create external table shipdw.hvtb_lnd_vxp_foodnbeverage_menuitem(menuitemid string,venueid string,skunumber string,menuitemtypeid  string,name string,smalldescription  string,description string,abv decimal(5,2),addeddate timestamp,inactiveflag boolean,photourl string,offerdefaultunitid string,menuitemnumber int,menuitemimagename string,thumbnailphotourl string,lastmodifieddate timestamp,VoyageId string,BatchTime timestamp)partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_foodnbeverage_menuitem'")
-
-
-spark.sql("create view shipdw.hvtb_parse_vxp_foodnbev_menuitem as select * from shipdw.hvtb_lnd_vxp_foodnbeverage_menuitem")

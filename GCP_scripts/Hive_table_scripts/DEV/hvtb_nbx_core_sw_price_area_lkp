@@ -1,8 +1,0 @@
-CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_price_area_lkp(
-  price_area_id bigint, 
-  price_area string, 
-  etl_ld_status string, 
-  load_dt timestamp, 
-  upd_dt timestamp, 
-  primaryhash string, 
-  md5_hash string) STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_price_area_lkp';

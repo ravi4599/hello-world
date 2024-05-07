@@ -1,9 +1,0 @@
-CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_location_optout(location_optout_skey bigint, voyage_id string, location_optout_id string, person_skey bigint, location_optout_flg boolean, location_optout_datetime timestamp, src_deleted_flg boolean, load_dt timestamp, upd_dt timestamp, primaryhash string, md5_hash string)
-ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
-WITH SERDEPROPERTIES (
-  'serialization.format' = '1'
-)
-STORED AS
-  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
-  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
-  LOCATION 'gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_location_optout';

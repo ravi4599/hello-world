@@ -1,5 +1,0 @@
-CREATE EXTERNAL TABLE `hive_schema_stg`.`postvoyage_survey_questions_dim_tmp`(`question_id` bigint, `src_question_id` string, `variable_id` string, `question_text` string, `is_postcruise` string, `is_reminiscence` string, `type` string, `category` string, `answer_code_min` int, `answer_code_max` int, `answer_code_min_text` string, `answer_code_max_text` string, `load_dt` timestamp, `upd_dt` timestamp, `primaryhash` string, `md5_hash` string)
-OPTIONS (
-  format = 'PARQUET',
-  uris = ['gs://vv-dev-nbx-cluster/data/core/seaware/temp/hvtb_nbx_core_postvoyage_survey_questions_dim/*']
-);

@@ -1,1 +1,0 @@
-spark.sql("create view shipdw.hvtb_parse_mxp_pos_sales_outlets as select * from shipdw.hvtb_lnd_mxp_pos_sales_outlets")

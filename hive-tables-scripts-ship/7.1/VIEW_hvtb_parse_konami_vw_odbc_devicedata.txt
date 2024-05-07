@@ -1,1 +1,0 @@
-CREATE VIEW shipdw.hvtb_parse_konami_vw_odbc_devicedata as SELECT * from shipdw.hvtb_lnd_konami_vw_odbc_device

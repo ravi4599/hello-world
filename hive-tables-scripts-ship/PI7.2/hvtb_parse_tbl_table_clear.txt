@@ -1,2 +1,0 @@
-spark.sql("""create external table shipdw.hvtb_parse_tbl_table_clear(tablecleardate timestamp,restaurant string,restaurantCode string,meal string,mealCode string,tableNumber integer,BatchTime timestamp,voyageId string)PARTITIONED BY (
-part_date date) stored as parquet location '/data/apps/nbx/hive/parsing/mxp/hvtb_parse_mxp_ship_tableclear'""")

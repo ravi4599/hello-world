@@ -1,3 +1,0 @@
-create or replace view seaware.seaware_guest_dim
-as select * from hive_schema_stg.seaware_guest_dim
-with no schema binding;

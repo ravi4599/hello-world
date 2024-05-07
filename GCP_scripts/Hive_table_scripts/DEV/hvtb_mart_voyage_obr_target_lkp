@@ -1,9 +1,0 @@
-CREATE EXTERNAL TABLE `shipdw.hvtb_mart_voyage_obr_target_lkp`(
-  `voyage_number` string, 
-  `target_revenue_stream` string, 
-  `net_apd_target_amount` double, 
-  `gross_apd_target_amount` double, 
-  `plan_load_factor_pct` double, 
-  `plan_sailors` double, 
-  `load_dt` timestamp, 
-  `upd_dt` timestamp) PARTITIONED BY (part_dt date) STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/shipdw.hvtb_mart_voyage_obr_target_lkp';

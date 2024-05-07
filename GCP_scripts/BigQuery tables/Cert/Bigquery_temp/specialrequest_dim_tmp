@@ -1,5 +1,0 @@
-CREATE EXTERNAL TABLE hive_schema_stg.specialrequest_dim_tmp(voyage_id STRING, specialrequest_skey BIGINT, specialrequest_id BIGINT, person_id INT, specialrequest_guid STRING, specialrequest_type STRING, specialrequest_type_code STRING, specialrequest_date TIMESTAMP, specialrequest_description STRING, specialrequest_comment STRING, specialrequest_upd_date TIMESTAMP, src_deleted_flag BOOLEAN, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
-OPTIONS (
-  format = 'PARQUET',
-  uris = ['gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_specialrequest/*']
-);

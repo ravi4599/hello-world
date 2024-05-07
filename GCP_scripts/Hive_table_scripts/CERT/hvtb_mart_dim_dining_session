@@ -1,9 +1,0 @@
-CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_dining_session(voyage_id STRING, dining_session_skey BIGINT, dining_session_id STRING, dining_session_name STRING, session_day_name STRING, session_voyage_number STRING, venue_id STRING, timeslot_duration_seconds INT, max_party_size INT, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
-ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
-WITH SERDEPROPERTIES (
-  'serialization.format' = '1'
-)
-STORED AS
-  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
-  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
-LOCATION 'gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_dining_session';

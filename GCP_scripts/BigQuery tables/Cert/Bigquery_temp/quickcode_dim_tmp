@@ -1,5 +1,0 @@
-CREATE EXTERNAL TABLE hive_schema_stg.quickcode_dim_tmp(quickcode_skey BIGINT, quick_code STRING, quick_code_name STRING, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
-OPTIONS (
-  format = 'PARQUET',
-  uris = ['gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_quickcode/*']
-);

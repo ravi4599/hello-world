@@ -1,7 +1,0 @@
-create external table hive_schema_stg.seaware_price_area_lkp (
-price_area_id int,
-price_area varchar(15),
-etl_ld_dt timestamp,
-etl_upd_dt timestamp )
-STORED AS PARQUET  
-Location 's3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_price_area_lkp' ;

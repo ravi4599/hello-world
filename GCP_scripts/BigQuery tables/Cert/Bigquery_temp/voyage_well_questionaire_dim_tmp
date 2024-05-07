@@ -1,5 +1,0 @@
-CREATE EXTERNAL TABLE hive_schema_stg.voyage_well_questionaire_dim_tmp(voyage_well_question_skey BIGINT, voyage_id STRING, question_type STRING, question_code STRING, question_title STRING, question_resource STRING, src_deleted_flg BOOLEAN, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
-OPTIONS (
-  format = 'PARQUET',
-  uris = ['gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_voyage_well_questionaire/*']
-);

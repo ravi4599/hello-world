@@ -1,6 +1,0 @@
-CREATE EXTERNAL TABLE shipdw.hvtb_parse_vxp_foodnbev_orderdetail(orderdetailid string, orderid string, orderqty int, menuitemid string, unitprice decimal(18,2), discount decimal(18,2), taxamount decimal(18,2), amount decimal(18,2), orderitemsequence int, unitid string, menuitemoptionids string, menuitemoptionid string, addeddate timestamp, lastmodifieddate timestamp, VoyageId string, BatchTime timestamp)
-PARTITIONED BY (Part_Date date)
-STORED AS
-  parquet
-LOCATION
-  's3://vv-prod-emr-cluster/data/landing/hvtb_parse_vxp_foodnbev_orderdetail'

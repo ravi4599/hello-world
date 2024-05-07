@@ -1,5 +1,0 @@
-CREATE EXTERNAL TABLE hive_schema_stg.seaware_res_addon_rel_tmp
-OPTIONS(
-  format="PARQUET",
-  uris=["gs://vv-prod-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_res_addon_rel/*"]
-);

@@ -1,5 +1,0 @@
-CREATE EXTERNAL TABLE `hive_schema_stg`.`postvoyage_survey_responses_fact_err`(`request_id` string, `client_id` bigint, `ship_id` bigint, `sail_id` bigint, `guest_id` bigint, `request_time` timestamp, `response_time` timestamp, `itinerary_port` bigint, `activity_skey` bigint, `question_id` bigint, `answer_rating` decimal(6,3), `answer_text` string, `question_answer_id` int, `load_dt` timestamp, `upd_dt` timestamp, `primaryhash` string, `md5_hash` string,`part_dt` date)
-OPTIONS (
-  format = 'PARQUET',
-  uris = ['gs://vv-dev-nbx-cluster/data/core/seaware/hvtb_nbx_core_postvoyage_survey_responses_fact_err/*']
- );

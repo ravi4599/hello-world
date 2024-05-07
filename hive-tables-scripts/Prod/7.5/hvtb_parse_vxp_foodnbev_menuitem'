@@ -1,2 +1,0 @@
-create external table shipdw.hvtb_parse_vxp_foodnbev_menuitem(menuitemid string,venueid string,skunumber string,menuitemtypeid string,smalldescription string,name string,description string,addeddate string,inactiveflag boolean,menuitemnumber bigint,  `batchtime` timestamp,`voyageid` string)PARTITIONED BY (`Part_date` date) stored as parquet  LOCATION
-  's3://vv-prod-emr-cluster/data/parse/hvtb_parse_vxp_foodnbev_menuitem'

@@ -1,8 +1,0 @@
-
-
-
-spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_table_management_reservationguest(id int,guest_id string,is_main boolean,reservation_id int,created_utc timestamp, VoyageId STRING,BatchTime TIMESTAMP)partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_table_management_reservationguest'""")
-
-spark.sql("create view shipdw.hvtb_parse_vxp_table_management_reservationguest as select * from shipdw.hvtb_lnd_vxp_table_management_reservationguest")
-
-

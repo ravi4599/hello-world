@@ -1,1 +1,0 @@
-create view shipdw.hvtb_parse_vxp_ars_vendor as select * from shipdw.hvtb_lnd_vxp_ars_vendor;

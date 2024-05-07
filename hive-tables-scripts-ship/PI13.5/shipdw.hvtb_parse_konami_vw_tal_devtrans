@@ -1,1 +1,0 @@
-spark.sql("create or replace view shipdw.hvtb_parse_konami_vw_tal_devtrans as select * from shipdw.hvtb_lnd_konami_vw_tal_devtrans").show(false)

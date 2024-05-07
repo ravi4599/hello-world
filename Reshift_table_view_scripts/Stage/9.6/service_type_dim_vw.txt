@@ -1,1 +1,0 @@
-CREATE VIEW shipdw.service_type_dim  AS SELECT * FROM hive_schema_stg.service_type_dim with no schema binding;

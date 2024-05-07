@@ -1,1 +1,0 @@
-create or replace view shipdw.hvtb_parse_vxp_table_management_res_reservationaction as select * from shipdw.hvtb_lnd_vxp_table_management_res_reservationaction;

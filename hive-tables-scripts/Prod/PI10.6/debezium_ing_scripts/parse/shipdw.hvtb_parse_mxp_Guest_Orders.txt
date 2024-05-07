@@ -1,3 +1,0 @@
-CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_Guest_Orders(row_counter int, guest_order_id bigint, table_by_meal_id bigint, guest_no int, guest_category_id int, created_at_id int, created_by_id int, created timestamp, last_changed timestamp, changed string, guid string, guest_order_status_id int, group_no int, created_by_person_id int, last_change_log_id bigint, op string, ts_ms timestamp, shipcode string, voyageid string, batchtime timestamp)
-PARTITIONED BY ( part_date date)
-STORED AS PARQUET LOCATION 's3://vv-prod-emr-cluster/data/parse/mxp/hvtb_parse_mxp_Guest_Orders'

@@ -1,1 +1,0 @@
-spark.sql(""" CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_foodnbev_ordertype(ordertypeid STRING,	name STRING, isdeleted boolean,	addeddate timestamp,addedby STRING,	lastmodifieddate timestamp,	lastmodifiedby STRING, VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_foodnbev_ordertype' """);

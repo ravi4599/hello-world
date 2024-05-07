@@ -1,1 +1,0 @@
-Create external table shipdw.hvtb_lnd_vxp_table_management_reservation( batchinstanceid String,voyageid String,batchtime Timestamp, message String,shipcode string) partitioned by (part_date Date) STORED AS parquet LOCATION 's3://vv-dev-emr-cluster/data/landing/hvtb_lnd_vxp_table_management_reservation';

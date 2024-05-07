@@ -1,4 +1,0 @@
-
-spark.sql("""CREATE VIEW `shipdw`.`hvtb_parse_mxp_scheduling_activities`(ActivityID, ActivityCode, ActivityName, ActivityType, ActivityColor, ActivityIsOvertime, ActivityIsNotAllowedOffsite, ACTIVE, REC_DELETED, VoyageId, BatchTime, ShipCode, Part_date) AS
-select * from shipdw.hvtb_lnd_mxp_scheduling_activities
-""")

@@ -1,1 +1,0 @@
-CREATE OR REPLACE VIEW shipdw.address_dim AS SELECT * FROM hive_schema_stg.address_dim;

@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXISTS seaware_stg.HBTB_NBX_CMS_ACTIVITY_DIM
-(
-   SRC_ACTIVITY_ID                           varchar(100),
-   ACTIVITY_NAME                             varchar(100),
-   ACTIVITY_DESC                             varchar(500),
-   ISACTIVE                                   char(1)
-)
-

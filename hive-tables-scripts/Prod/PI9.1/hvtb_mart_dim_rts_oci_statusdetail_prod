@@ -1,8 +1,0 @@
-
-Drop table vv_db.hvtb_mart_dim_rts_oci_statusdetail
-
-CREATE EXTERNAL TABLE  vv_db.hvtb_mart_dim_rts_oci_statusdetail (rts_id bigint, vxp_guest_id string,  src_res_id  int,  src_guest_id  int,  client_id  double,  rts_transfer_response  string,arrival_transportation_mode string,arrival_booking_source string,arrival_flight_number string,arrival_transportation_date date,arrival_transportation_time string,departure_transportation_mode string,departure_booking_source string,departure_flight_number string  ,departure_transportation_date date,departure_transportation_time string,parking_at_port_flg char(1),voyageid  string,  load_dt  timestamp,  upd_dt  timestamp,  primaryhash  string,  md5_hash  string)
-ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
-WITH SERDEPROPERTIES (   'serialization.format' = '1') 
-STORED AS  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'   OUTPUTFORMAT'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat' 
-LOCATION 's3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_rts_oci_statusdetail'

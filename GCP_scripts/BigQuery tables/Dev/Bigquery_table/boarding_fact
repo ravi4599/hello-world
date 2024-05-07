@@ -1,9 +1,0 @@
-CREATE  EXTERNAL TABLE hive_schema_stg.boarding_fact
-WITH PARTITION COLUMNS
-OPTIONS (
-  uris=['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_vxp_boarding_fact/*'],
-  format=PARQUET,
-  hive_partition_uri_prefix='gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_vxp_boarding_fact/'
-);
-
-CREATE OR REPLACE VIEW shipdw.boarding_fact AS SELECT * FROM hive_schema_stg.boarding_fact;

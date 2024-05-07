@@ -1,6 +1,0 @@
-CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.seaware_reservation_dim_tmp(res_id int, rec_start_dttm timestamp, rec_end_dttm timestamp, src_res_id int, res_init_date timestamp, res_guest_count int, res_mode string, cancellation_date timestamp, res_status string, operator string, res_type string, is_internal string, source_code string, effective_date timestamp, vip_status string, stage string, booking_source string, last_modifiedby_id string, hotel_flag string, src_sail_id int, seaware_agency_id int, seaware_agent_id int, agency_id int,agent_id int,sec_agency_id int,sec_agent_id int,opted_fvc string, cancellation_case string, src_group_id int, currency string, currency_rate float64, etl_ld_status string, load_dt timestamp, upd_dt timestamp,primaryhash string,md5_hash string,scd_hash string                                                                           
-)                                                                                                                                   
-OPTIONS (
-  format = 'PARQUET',
-  uris = ['gs://vv-dev-nbx-cluster/data/temp/seaware/hvtb_nbx_core_sw_reservation_dim/*']
-);

@@ -1,8 +1,0 @@
-CREATE TABLE SAILORS
-(
-   ID varchar(0) PRIMARY KEY,
-   FIRSTNAME varchar(0),
-   LASTNAME varchar(0),
-   GENDER varchar(0)
-)
-;

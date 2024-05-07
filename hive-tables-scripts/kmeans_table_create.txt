@@ -1,9 +1,0 @@
-create external table kmeans_variable(kmeans_var string)
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY '\t'
-LINES TERMINATED BY '\n'
-stored as TEXTFILE
-Location "s3://vv-dev-emr-cluster/data/hivetables/bd_db/kmeans_variable"
-
-
-

@@ -1,7 +1,0 @@
-CREATE EXTERNAL TABLE hive_schema_stg.incident_detail_dim ( voyage_id text, incident_detail_skey bigint, incident_id text, incident_description text, incident_comment text, incident_reference_id text, incident_external_reference_id text, incident_resolution_amount float, incident_resolution_amount_currency text, incident_reporter_type text, incident_resolution_description text, incident_notify_flg boolean, incident_raised_by_notes text, incident_attended_by_notes text, incident_priority text, incident_severity text, incident_score float, incident_status_changed_datetime_utc timestamp, incident_status_changed_datetime timestamp,
-load_dt timestamp,
-upd_dt timestamp, primaryhash text, md5_hash text ) STORED AS PARQUET LOCATION 's3://vv-qa-emr-cluster/data/mart/hvtb_mart_dim_incident_detail';
-
-CREATE OR REPLACE VIEW shipdw.incident_detail_dim
-AS 
-SELECT * FROM hive_schema_stg.incident_detail_dim;

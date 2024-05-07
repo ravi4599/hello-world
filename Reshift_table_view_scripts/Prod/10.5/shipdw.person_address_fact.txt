@@ -1,1 +1,0 @@
-create or replace view shipdw.person_address_fact as select * from hive_schema_stg.person_address_fact with no schema binding;

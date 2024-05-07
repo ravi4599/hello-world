@@ -1,9 +1,0 @@
-spark.sql("""CREATE EXTERNAL TABLE `shipdw`.`hvtb_mart_dim_virtual_queue_detail`(`virtual_queue_detail_skey` bigint, `voyage_id` string,`virtual_queue_id` string, `virtual_queue_definition_id` string, `person_id` string,`queue_joined_datetime` timestamp,`queue_status` string,`status_changed_datetime` timestamp ,`queue_origin` string,`queue_no` decimal(8,4) ,`notified_count` int ,`last_notified_datetime` timestamp, `src_deleted_flg` boolean,`load_dt` timestamp, `upd_dt` timestamp, `primaryhash` string, `md5_hash` string)
-ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
-WITH SERDEPROPERTIES (
-  'serialization.format' = '1'
-)
-STORED AS
-  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
-  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
-LOCATION 'hdfs://DEV/data/apps/nbx/mart/hvtb_mart_dim_virtual_queue_detail' """)

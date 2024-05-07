@@ -1,8 +1,0 @@
-drop table Hive_schema_stg.booking_fact;
-
-CREATE EXTERNAL TABLE Hive_schema_stg.booking_fact(voyage_id varchar, booking_detail_skey bigint, person_skey bigint, voyage_skey bigint, activity_skey bigint, activity_slot_skey bigint, vendor_skey bigint, booked_by_person_skey bigint, paid_by_person_skey bigint, cancelled_by_person_skey bigint, sale_detail_skey bigint, itinerary_skey bigint, venue_skey bigint, ship_code varchar, number_of_people bigint, booking_paid_amount double precision, booking_remaining_amount double precision, refund_paid_amount double precision, refund_remaining_amount double precision, start_date_time timestamp, end_date_time timestamp, start_date_skey bigint, start_time_skey bigint, checked_in_flag boolean, booked_date_time timestamp, canceled_date_time timestamp, src_deleted_flag boolean, load_dt timestamp, upd_dt timestamp, primaryhash varchar, md5_hash varchar)
-PARTITIONED BY (part_dt date)
-STORED AS PARQUET
-LOCATION 's3://vv-prod-emr-cluster/data/mart/hvtb_mart_fact_booking';
-
-create or replace view  shipdw.booking_fact as select * from Hive_schema_stg.booking_fact with no schema binding;

@@ -1,1 +1,0 @@
-CREATE VIEW shipdw.cabin_dim AS select * from  hive_schema_stg.cabin_dim with no schema binding;

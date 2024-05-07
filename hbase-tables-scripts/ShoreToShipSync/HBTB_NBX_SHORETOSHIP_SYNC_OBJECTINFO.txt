@@ -1,9 +1,0 @@
-CREATE TABLE HBTB_NBX_SHORETOSHIP_SYNC_OBJECTINFO
-(
-   OBJECTNAME varchar PRIMARY KEY,
-   OBJECTTYPE varchar,
-   PKLIST varchar,
-   CHANGECOLUMN varchar,
-   ADDNLCOND varchar,
-   ISACTIVE varchar default 'Y'
-);

@@ -1,3 +1,0 @@
-create view shipdw.person_address_fact as
-SELECT *
-FROM hive_schema_stg.person_address_fact;

@@ -1,6 +1,0 @@
-------table_management.venues
-
-
-spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_table_management_venues (id int,created_utc TIMESTAMP,public_id STRING,name STRING,dxp_id STRING,external_id STRING,vq_background STRING,cms_id STRING,active boolean,VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_table_management_venues'""");
-
-spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_table_management_venues as select * from shipdw.hvtb_lnd_vxp_table_management_venues""");

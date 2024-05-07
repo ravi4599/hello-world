@@ -1,3 +1,0 @@
-spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_dxp_virtualqueuedefinition(virtualqueuedefinitionid STRING,virtualqueuegroupid STRING,virtualqueuedefinitionname STRING,addeddate TIMESTAMP,addedby STRING,lastmodifieddate TIMESTAMP,isdeleted BOOLEAN,VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_dxp_virtualqueuedefinition'"""); 
-	
-spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_dxp_virtualqueuedefinition as select * from shipdw.hvtb_lnd_vxp_dxp_virtualqueuedefinition"""); 

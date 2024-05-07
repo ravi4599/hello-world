@@ -1,2 +1,0 @@
-spark.sql("""CREATE VIEW `shipdw`.`hvtb_parse_vxp_dxp_activitylogdetail`(activitylogdetailid, activitylogid, personid, persontype, isdeleted, addeddate, addedby, lastmodifieddate, lastmodifiedby, lastmodifiedbyuserid, lastmodifiedbyapplicationid, batchtime, shipcode, part_date) AS
-select * from shipdw.hvtb_lnd_vxp_dxp_activitylogdetail""")

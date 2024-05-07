@@ -1,3 +1,0 @@
-CREATE TABLE hive_schema_stg.location_optout_dim(location_optout_skey int8, voyage_id text, location_optout_id text, person_skey int8, location_optout_flg bool, location_optout_datetime timestamp, src_deleted_flg bool, load_dt timestamp, upd_dt timestamp, primaryhash text, md5_hash text, part_dt date);
-
-CREATE OR REPLACE VIEW shipdw.location_optout_dim as SELECT * FROM hive_schema_stg.location_optout_dim;

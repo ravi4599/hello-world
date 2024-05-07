@@ -1,1 +1,0 @@
-create schema crm_stg authorization talenduser;

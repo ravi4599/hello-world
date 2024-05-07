@@ -1,2 +1,0 @@
-spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_dxp_languageresource(languageresourceid,languagecode,resourcekey,resourcevalue,addeddate,addedby,lastmodifieddate,lastmodifiedby,isdeleted ,VoyageId, BatchTime, ShipCode, Part_Date) AS
-select * from shipdw.hvtb_lnd_vxp_dxp_languageresource """)

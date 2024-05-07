@@ -1,9 +1,0 @@
-CREATE TABLE hbtb_nbx_c360_xref
-(
-   C360ID varchar(50) PRIMARY KEY,
-   MASTER_ID varchar(50),
-   CRM_ID varchar(50), 
-   SEAWARE_ID varchar(50),
-   VXP_ID varchar(50),
-   TIMESTAMP varchar(50)
-);

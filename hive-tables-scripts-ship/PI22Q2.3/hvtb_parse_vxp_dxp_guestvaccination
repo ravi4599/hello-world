@@ -1,3 +1,0 @@
-spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_dxp_guestvaccination(guestvaccinationid, 
-reservationguestid, disease, finalvaccinationstatus, vaccinetypeid, finalvaccinationdate, isboosterdosereceived, lastboosterdosereceiveddate, isdeleted, addeddate, addedby, lastmodifieddate, lastmodifiedby, lastmodifiedbyuserid, lastmodifiedbyapplicationid, guestid, VoyageId, BatchTime, ShipCode, Part_Date) AS
-select * from shipdw.hvtb_lnd_vxp_dxp_guestvaccination""")

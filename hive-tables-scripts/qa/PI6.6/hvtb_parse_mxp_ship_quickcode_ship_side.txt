@@ -1,1 +1,0 @@
-spark.sql("""create external table shipdw.hvtb_parse_mxp_ship_quickcode (quick_code_name string,quick_code string,BatchTime timestamp,part_date date) stored as parquet location '/data/apps/nbx/hive/parsing/mxp/hvtb_parse_mxp_ship_quickcode'""")

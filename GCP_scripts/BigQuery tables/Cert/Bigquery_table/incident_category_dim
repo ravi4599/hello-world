@@ -1,7 +1,0 @@
-CREATE OR REPLACE EXTERNAL TABLE hive_schema_stg.incident_category_dim(voyage_id STRING, incident_category_skey BIGINT, incident_category_id STRING, incident_category_code STRING, incident_category_dept_code STRING, incident_category_name STRING, incident_category_due_interval INT, incident_category_severity INT, incident_parent_category_code STRING, incident_parent_category_name STRING, incident_category_priority INT, incident_category_types STRING, src_active_flg BOOLEAN, src_deleted_flg BOOLEAN, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
-OPTIONS (
-  format = 'PARQUET',
-  uris = ['gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_incident_category/*']
-);
-
-CREATE OR REPLACE VIEW shipdw.incident_category_dim AS SELECT * FROM hive_schema_stg.incident_category_dim;

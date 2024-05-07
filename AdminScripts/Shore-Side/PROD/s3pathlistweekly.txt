@@ -1,7 +1,0 @@
-s3://vv-prod-emr-cluster/data/core/Feedback
-s3://vv-prod-emr-cluster/data/core/Infegy
-s3://vv-prod-emr-cluster/data/core/Random_Forest_Infegy
-s3://vv-prod-emr-cluster/data/core/calendar_recommendation
-s3://vv-prod-emr-cluster/data/core/processdriver
-s3://vv-prod-emr-cluster/data/core/sailor_attributes
-s3://vv-prod-emr-cluster/data/core/tribe_subtribe

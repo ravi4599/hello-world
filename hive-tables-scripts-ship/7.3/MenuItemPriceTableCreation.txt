@@ -1,6 +1,0 @@
-﻿spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_lnd_vxp_menuitemprice(menuitempriceid STRING,menuitemid STRING,unitid STRING,price DECIMAL(18,2),startdate TIMESTAMP,enddate TIMESTAMP,happyhourprice DECIMAL(18,2),currencyid STRING,pricetag STRING, VoyageId STRING,BatchTime TIMESTAMP) partitioned by (Part_Date date) STORED AS parquet LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_menuitemprice'"""); 
-	
-spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_menuitemprice as select * from shipdw.hvtb_lnd_vxp_menuitemprice"""); 
-
-
-

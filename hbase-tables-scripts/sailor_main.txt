@@ -1,7 +1,0 @@
-CREATE TABLE SAILOR_MAIN
-(
-   SAILOR_ID integer PRIMARY KEY,
-   calendar_details varchar(0),
-   cal_reco varchar(0)
-)
-;

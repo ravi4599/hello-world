@@ -1,4 +1,0 @@
-insert into vv_metadata.load_dt(load_start_dt, load_end_dt, load_exec_start_dt, load_status, load_ind, load_type, project_name, load_frequency) values ('1990-01-01 00:00:00', now(), now(), 'In Progress', 'P', 'Incremental', 'VV_NBX_ETL', 'SPF_daily');
-insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jSPFStgREVENUE_TARGET_VALUE','','','','','SPF_daily',now());  
-insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jSPFStgREVENUE_TARGET_HEADER','','','','','SPF_daily',now());
-insert into vv_metadata.job_info (job_name,target_table_name,target_table_type,source_table_name,source_table_type,load_frequency,created_on) values ('jSPFStgREVENUE_FORECAST_VERSION','','','','','SPF_daily',now());

@@ -1,3 +1,0 @@
-CREATE TABLE hive_schema_stg.venue_dim(venue_skey int8, voyage_id text, venue_id text, venue_name text, venue_sector_name text, data_src text, density_threshold_1 int4, density_threshold_2 int4, load_dt timestamp, upd_dt timestamp, primaryhash text, md5_hash text, part_dt date);
-
-CREATE OR REPLACE VIEW shipdw.venue_dim as SELECT * FROM hive_schema_stg.venue_dim;

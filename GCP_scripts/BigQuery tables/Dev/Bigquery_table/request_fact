@@ -1,9 +1,0 @@
-CREATE  EXTERNAL TABLE hive_schema_stg.request_fact
-WITH PARTITION COLUMNS
-OPTIONS (
-  uris=['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_request/*'],
-  format=PARQUET,
-  hive_partition_uri_prefix='gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_request/'
-);
-
-CREATE OR REPLACE VIEW shipdw.request_fact as SELECT * FROM hive_schema_stg.request_fact;

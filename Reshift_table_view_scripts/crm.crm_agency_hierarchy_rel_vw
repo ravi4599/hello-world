@@ -1,5 +1,0 @@
-CREATE OR REPLACE VIEW crm.crm_agency_hierarchy_rel_vw
-AS select
-*
-from hive_schema_stg.crm_agency_hierarchy_rel   
-with no schema binding;

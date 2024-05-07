@@ -1,2 +1,0 @@
-spark.sql("""CREATE VIEW shipdw.hvtb_parse_vxp_trackable_shipment(trackableshipmentid ,trackableid ,shipmentid ,lastmodifieddate ,lastmodifiedby ,isdeleted ,addeddate ,addedby ,VoyageId, BatchTime, ShipCode, Part_Date) AS
-select * from shipdw.hvtb_lnd_vxp_trackable_shipment """)

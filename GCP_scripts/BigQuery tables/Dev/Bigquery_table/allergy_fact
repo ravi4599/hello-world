@@ -1,9 +1,0 @@
-CREATE  EXTERNAL TABLE hive_schema_stg.allergy_fact
-WITH PARTITION COLUMNS
-OPTIONS (
-  uris=['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_allergy/*'],
-  format=PARQUET,
-  hive_partition_uri_prefix='gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_allergy/'
-);
-
-CREATE OR REPLACE VIEW shipdw.allergy_fact as SELECT * FROM hive_schema_stg.allergy_fact;

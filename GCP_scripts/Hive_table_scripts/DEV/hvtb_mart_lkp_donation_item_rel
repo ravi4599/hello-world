@@ -1,5 +1,0 @@
-CREATE EXTERNAL TABLE `shipdw.hvtb_mart_lkp_donation_item_rel`(
-  `donation_item_skey` bigint, 
-  `donation_type` string, 
-  `category_type` string, 
-  `category_value` string) STORED AS PARQUET LOCATION 'gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_lkp_donation_item_rel';

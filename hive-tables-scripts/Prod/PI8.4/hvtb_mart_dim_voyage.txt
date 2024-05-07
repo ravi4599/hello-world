@@ -1,9 +1,0 @@
-CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_voyage(voyage_skey bigint, voyage_id string, voyage_number string, voyage_guid string, cruise_id bigint, voyage_description string, voyage_start_date timestamp, voyage_end_date timestamp, voyage_length int, voyage_status string, ship_guid string, ship_code string, ship_name string, isseaday int, actual_capacity_days int, booked_capacity_days int, actual_sailor_days int, built_capacity_days int, sailed_cabin_occupancy_pct int, active_status string, src_deleted_flag boolean, src_active_flag boolean, next_voyage_number string, previous_voyage_number string, next_voyage_skey bigint, previous_voyage_skey bigint, load_dt timestamp, upd_dt timestamp, primaryhash string, md5_hash string)
-ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
-WITH SERDEPROPERTIES (
-  'serialization.format' = '1'
-)
-STORED AS
-  INPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
-  OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
-LOCATION 's3://vv-prod-emr-cluster/data/mart/hvtb_mart_dim_voyage'

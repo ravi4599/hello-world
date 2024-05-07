@@ -1,5 +1,0 @@
-ReservationAction
-
-spark.sql("create external table  shipdw.hvtb_lnd_vxp_table_management_res_reservationaction( addeddate timestamp ,status string ,created timestamp ,source string ,public_id string ,reservation_id string ,addedby string ,lastmodifiedby string ,lastmodifieddate timestamp ,VoyageId STRING,BatchTime TIMESTAMP)partitioned by (Part_Date date)STORED AS parquet  LOCATION '/data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_table_management_res_reservationaction'")
-
-spark.sql("create view shipdw.hvtb_parse_vxp_table_management_reservationaction as select * from shipdw.hvtb_lnd_vxp_table_management_res_reservationaction")

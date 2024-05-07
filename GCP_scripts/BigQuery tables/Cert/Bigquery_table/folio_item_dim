@@ -1,8 +1,0 @@
-create external table hive_schema_stg.folio_item_dim(voyage_id STRING, folio_item_skey BIGINT, folio_item_quickcode STRING, ship_code STRING, quickcode_name STRING, product_code_name STRING, src_deleted_flag BOOLEAN, load_dt TIMESTAMP, upd_dt TIMESTAMP, primaryhash STRING, md5_hash STRING)
-OPTIONS (
-  format = 'PARQUET',
-  uris = ['gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_folio_item/*']
-);
-
-
-CREATE OR REPLACE VIEW shipdw.folio_item_dim AS SELECT * FROM hive_schema_stg.folio_item_dim;

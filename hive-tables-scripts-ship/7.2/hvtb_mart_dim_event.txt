@@ -1,2 +1,0 @@
-spark.sql("""CREATE EXTERNAL TABLE shipdw.hvtb_mart_dim_event(event_skey bigint, voyage_id string, event_id string, template_id string, event_name string, event_start_time timestamp, event_duration_minutes int, event_date date, venue_skey bigint, event_location string, event_capacity int, event_inventoried_flg boolean, event_hidden_flg boolean, event_vip_flg boolean, event_deleted_flg string, load_dt timestamp, upd_dt timestamp,primaryhash string, md5_hash string) STORED AS PARQUET
-LOCATION 'data/apps/nbx/hive/mart/hvtb_mart_dim_event'""")

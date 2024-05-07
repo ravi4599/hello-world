@@ -1,9 +1,0 @@
-create external table hive_schema_stg.seaware_ship_dim (
- SHIP_ID int,
- SHIP varchar(10),
- SHIP_BRAND varchar(30),
- etl_ld_dt timestamp,
- etl_upd_dt timestamp
-) 
-STORED AS PARQUET  
-Location 's3://vv-prod-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_ship_dim' ;

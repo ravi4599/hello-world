@@ -1,1 +1,0 @@
-CREATE OR REPLACE VIEW shipdw.hvtb_parse_mxp_cities AS SELECT * FROM shipdw.hvtb_lnd_mxp_cities ;

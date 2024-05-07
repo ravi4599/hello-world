@@ -1,9 +1,0 @@
-CREATE  EXTERNAL TABLE hive_schema_stg.voyage_well_questionaire_fact
-WITH PARTITION COLUMNS
-OPTIONS (
-  uris=['gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_voyage_well_questionaire/*'],
-  format=PARQUET,
-  hive_partition_uri_prefix='gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_voyage_well_questionaire/'
-);
-
-CREATE OR REPLACE VIEW shipdw.voyage_well_questionaire_fact as SELECT * FROM hive_schema_stg.voyage_well_questionaire_fact;

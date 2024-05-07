@@ -1,7 +1,0 @@
-INSERT INTO vv_metadata.job_info
-(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
-VALUES('jSWTransactions_evt', 'hvtb_nbx_core_sw_transaction_evt', 'Hive', 'hvtb_nbx_landing_sw_dwh_transaction', 'Hive', 'SW_DWH_daily_PI3', now());
-
-INSERT INTO vv_metadata.job_info
-(job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
-VALUES('jSWResGuestRel', 'hvtb_nbx_core_sw_res_guest_rel', 'Hive', 'hvtb_nbx_landing_sw_dwh_res_guest', 'Hive', 'SW_DWH_daily_PI3', now());

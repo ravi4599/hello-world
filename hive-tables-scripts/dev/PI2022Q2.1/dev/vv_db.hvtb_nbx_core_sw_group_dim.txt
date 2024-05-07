@@ -1,5 +1,0 @@
-CREATE EXTERNAL TABLE vv_db.hvtb_nbx_core_sw_group_dim_src_group_id(
-src_group_id string,
-new_src_group_id string)
-LOCATION
-  's3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_group_dim_src_group_id'

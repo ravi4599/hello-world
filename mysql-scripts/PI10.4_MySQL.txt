@@ -1,9 +1,0 @@
-INSERT INTO vv_metadata.job_info
-( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
-VALUES( 'jSWStgRPL_SHIP_CABIN_RESERVE_TYPE', '', 'hive', '', '', 'SPF_daily',now())
-INSERT INTO vv_metadata.job_info
-( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
-VALUES( 'jSWStgRPL_SHIP_CABIN_RESERVE', '', 'hive', '', '', 'SPF_daily',now())
-INSERT INTO vv_metadata.job_info
-( job_name, target_table_name, target_table_type, source_table_name, source_table_type, load_frequency, created_on)
-VALUES( 'jSWSailcabinReserveDim', '', 'hive', '', '', 'SPF_daily',now());

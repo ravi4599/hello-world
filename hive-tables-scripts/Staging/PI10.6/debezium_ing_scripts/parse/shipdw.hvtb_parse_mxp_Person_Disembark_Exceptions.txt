@@ -1,3 +1,0 @@
-CREATE EXTERNAL TABLE shipdw.hvtb_parse_mxp_Person_Disembark_Exceptions(row_counter int, person_disembark_exception_id int, person_id int, disembark_exception_type string, disembark_exception_category_id int, disembark_exception_comment string, disembark_exception_from timestamp, disembark_exception_to timestamp, rec_deleted boolean, created_at_id int, created_by_id int, created timestamp, last_changed timestamp, changed string, guid string, org_unit_id int, last_change_log_id bigint, op string, ts_ms timestamp, shipcode string, voyageid string, batchtime timestamp)
-PARTITIONED BY ( part_date date)
-STORED AS PARQUET LOCATION 's3://vv-staging-emr-cluster/data/parse/mxp/hvtb_parse_mxp_Person_Disembark_Exceptions'
