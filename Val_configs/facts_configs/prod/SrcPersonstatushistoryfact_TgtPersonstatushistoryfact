@@ -1,0 +1,42 @@
+#------------------# 
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+#------META DATA CONFIG-----#	
+spark.src.config.id SrcPersonstatushistoryfact
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtPersonstatushistoryfact
+#spark.parent.id SrcVxpDcpPersonStatus-TgtVxpDcpPersonStatus					
+spark.parent.id SrcVxpPersonStatus-TgtVxpPersonStatus
+spark.api.env Prod
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+#-------------------------# 
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.database prodnbx
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename person_status_history_fact
+#------Query Propery-----#
+#spark.source.sql select ps.VoyageId as voyage_id,personstatusid as person_status_id,per.person_skey as person_skey,ps.shipcode as ship_code,vyg.voyage_skey as voyage_skey,persontypecode as person_type_code,ps.embarkdate as embark_date,ps.debarkdate as debark_date,ps.status,ps.statustypecode as status_type_code,ps.statuschangeddate as status_changed_date_time,ps.isdeleted as is_deleted_flg, ps.lastmodifieddate as src_last_modified_timestamp,ps.addeddate as src_added_timestamp,ps.batchtime as batchtime,ps.part_date as part_date from vv_db.hvtb_parse_vxp_personstatus ps left join shipdw.hvtb_mart_dim_person per on ps.personid=per.reservationguest_guid left join vv_db.hvtb_parse_vxp_reservationguest rg on ps.personid=rg.reservationguestid left join vv_db.hvtb_parse_vxp_reservation r on rg.reservationid=r.reservationid left join shipdw.hvtb_mart_dim_voyage vyg on r.voyagenumber=vyg.voyage_number
+#spark.source.sql select ps.VoyageId as voyage_id,personstatusid as person_status_id,per.person_skey as person_skey,ps.shipcode as ship_code,vyg.voyage_skey as voyage_skey,persontypecode as person_type_code,ps.embarkdate as embark_date,ps.debarkdate as debark_date,ps.status,ps.statustypecode as status_type_code,ps.statuschangeddate as status_changed_date_time,ps.isdeleted as is_deleted_flg, ps.lastmodifieddate as src_last_modified_timestamp,ps.addeddate as src_added_timestamp,ps.batchtime as batchtime,ps.part_date as part_date from (select * from (select * , row_number() over(partition by personstatusid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_personstatus) where rn = 1) ps left join shipdw.hvtb_mart_dim_person per on ps.personid=per.reservationguest_guid left join (select * from (select * , row_number() over(partition by reservationguestid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_reservationguest ) where rn = 1) rg on ps.personid=rg.reservationguestid left join (select * from (select * ,row_number() over(partition by reservationid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_reservation ) where rn = 1) r on rg.reservationid=r.reservationid left join shipdw.hvtb_mart_dim_voyage vyg on r.voyagenumber=vyg.voyage_number
+spark.source.sql  select ps.VoyageId as voyage_id,ps.personstatusid as person_status_id,NVL(per.person_skey,-1) as person_skey,ps.shipcode as ship_code,NVL(vyg.voyage_skey,-1) as voyage_skey,persontypecode as person_type_code,ps.embarkdate as embark_date,ps.debarkdate as debark_date,ps.status as status,ps.statustypecode as status_type_code,ps.statuschangeddate as status_changed_date_time,cast(ps.percentagecompleted as int) AS percentage_completed,ps.isdeleted as is_deleted_flg, ps.lastmodifieddate as src_last_modified_timestamp,ps.addeddate as src_added_timestamp,ps.batchtime as batchtime,ps.part_date as part_date from (select * from (select * , row_number() over(partition by personstatusid order by lastmodifieddate desc) rn from vv_db.hvtb_parse_vxp_personstatus) where rn = 1) ps left join shipdw.hvtb_mart_dim_person per on ps.personid=per.reservationguest_guid left join (select * from (select * , row_number() over(partition by reservationguestid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_reservationguest ) where rn = 1) rg on ps.personid=rg.reservationguestid left join (select * from (select * ,row_number() over(partition by reservationid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_reservation ) where rn = 1) r on rg.reservationid=r.reservationid left join shipdw.hvtb_mart_dim_voyage vyg on r.voyagenumber=vyg.voyage_number
+#spark.source.columns personstatusid,person_skey,shipcode,voyage_skey,persontypecode,embarkdate,debarkdate,status,statustypecode,statuschangeddate,isdeleted,lastmodifieddate
+spark.source.columns   voyage_id,person_status_id,person_skey,ship_code,voyage_skey,person_type_code,embark_date,debark_date,status,status_type_code,status_changed_date_time,percentage_completed,is_deleted_flg,src_last_modified_timestamp,src_added_timestamp
+spark.pond.allColumns voyage_id as pond_voyage_id,person_status_id as pond_person_status_id,person_skey as pond_person_skey,ship_code as pond_ship_code,voyage_skey as pond_voyage_skey,person_type_code as pond_person_type_code,embark_date as pond_embark_date,debark_date as pond_debark_date,status as pond_status,status_type_code as pond_status_type_code,status_changed_date_time as pond_status_changed_date_time,percentage_completed as pond_percentage_completed,is_deleted_flg as pond_is_deleted_flg,src_last_modified_timestamp as pond_src_last_modified_timestamp,load_dt as pond_load_dt,upd_dt as pond_upd_dt,part_dt as pond_part_dt
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_person_status_history_fact
+spark.target.schema shipdw									
+#spark.target.table hvtb_mart_person_status_history_fact
+#spark.source.primaryKeyColumns person_skey,voyage_skey
+#spark.source.primaryKeyColumns person_skey,voyage_skey,schedule_date_skey
+spark.target.final_collist final_view.voyage_id as voyage_id,person_status_id,NVL(final_view.person_skey,-1)  as person_skey,final_view.ship_code,NVL(final_view.voyage_skey,-1)as voyage_skey,final_view.person_type_code,final_view.embark_date,final_view.debark_date,final_view.status,final_view.status_type_code,final_view.status_changed_date_time,final_view.percentage_completed,final_view.is_deleted_flg,final_view.src_last_modified_timestamp,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.part_dt as part_dt
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_person_status_history_fact
+spark.target.location /data/apps/nbx/mart/hvtb_mart_person_status_history_fact
+spark.redshift.schema Hive_schema_stg
+spark.tableType FACT
+spark.frameworkEnv ship
+

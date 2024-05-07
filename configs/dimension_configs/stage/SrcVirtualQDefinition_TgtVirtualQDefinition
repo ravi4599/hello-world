@@ -1,0 +1,40 @@
+spark.src.config.id SrcVirtualQDefinition
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtVirtualQDefinition
+spark.parent.id SrcHvVirtualQDef-TgtHvVirtualQDef-SC2002269NCR
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+spark.table.type dim
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename virtual_queue_definition_dim
+
+spark.source.sql select NVL(A.VoyageId, -1) as voyage_id, A.virtualqueuedefinitionid as virtual_queue_definition_id, A.virtualqueuedefinitionname as virtual_queue_definition_name, A.isdeleted as src_deleted_flg, A.BatchTime, A.Part_Date from (select * from (select *, row_number() over (partition by virtualqueuedefinitionid order by lastmodifieddate desc) rn  from shipdw.hvtb_parse_vxp_dxp_virtualqueuedefinition) where rn = 1) A
+
+spark.source.columns voyage_id,virtual_queue_definition_id,virtual_queue_definition_name,src_deleted_flg
+
+spark.pond.allColumns virtual_queue_definition_skey as pond_virtual_queue_definition_skey,voyage_id as pond_voyage_id,virtual_queue_definition_id as pond_virtual_queue_definition_id,virtual_queue_definition_name as pond_virtual_queue_definition_name,src_deleted_flg as pond_src_deleted_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+
+
+spark.surrogate_key.column virtual_queue_definition_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_virtual_queue_definition
+spark.source.primaryKeyColumns virtual_queue_definition_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+spark.target.final_collist virtual_queue_definition_skey,final_view.voyage_id,final_view.virtual_queue_definition_id,final_view.virtual_queue_definition_name,final_view.src_deleted_flg,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_dim_virtual_queue_definition
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_virtual_queue_definition
+
+
+
+
+

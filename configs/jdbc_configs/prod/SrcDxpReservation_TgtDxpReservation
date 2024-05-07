@@ -1,0 +1,31 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://vxpdb.gcp.virginvoyages.com/dxpcore
+spark.src.user pgreadaccessuser
+spark.src.password mvsZ72sVq75KARjLhK9D
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcDxpReservation
+spark.tgt.env Prod
+spark.ing.type Ingestion
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtDxpReservation
+spark.target.table shipdw.hvtb_lnd_vxp_reservation
+spark.target.hive.table shipdw.hvtb_lnd_vxp_reservation
+spark.src.table.query "reservation"
+spark.condition.column lastmodifieddate
+spark.source.columns reservationid,reservationnumber,bookedbyguestid,shipcode,sailingpackagecode,fromdate,todate,bookeddate,currencycode,faretypeid,paymentmodecode,paymentreferencetoken,pmsid,reservationstatusid,guestcount,stateroomcount,accessiblestateroomcount,paidamount,totalamount,cartdetail,iscabincruisecontractoptin,addeddate,addedby,lastmodifieddate,lastmodifiedby,expensetype,expenselimit,ispartyexpenselimitoptin,voyagenumber,faretypecode,reservationstatuscode,paymentstatuscode,agencyemail
+spark.stop.flag N
+spark.ship.code SHORE
+
+ 
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.target.location gs://vv-prod-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_reservation
+
+ 
+spark.hadoop.hive.execution.engine mr
+

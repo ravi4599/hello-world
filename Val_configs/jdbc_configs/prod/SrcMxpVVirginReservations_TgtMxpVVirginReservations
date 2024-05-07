@@ -1,0 +1,23 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:sqlserver://10.102.220.122:1442;database=MXP
+spark.src.user Capgemini
+spark.src.password virginvoyages2020!
+spark.src.con.driver com.microsoft.sqlserver.jdbc.SQLServerDriver
+spark.src.table.query (select * from dbo.VVirgin_Reservations) as VVirgin_Reservations
+spark.condition.column PartyCheckoutTime
+spark.src.table MXP.dbo.VVirgin_Reservations
+spark.src.config.id SrcMxpVVirginReservations
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtMxpVVirginReservations
+spark.target.location /data/apps/nbx/hive/landing/mxp/hvtb_lnd_mxp_vvirgin_reservations
+spark.target.hive.table shipdw.hvtb_lnd_mxp_vvirgin_reservations
+spark.source.columns ShipCode,VoyageNumber,VenueID,TableID,ReservationID,ReservationTime,PartySize,PartySeatedTime,PartyCheckoutTime,CrewID,ItemCode,ItemName,ItemGroup,ItemCategory,MenuGUID,MenuCode,MenuName,ItemOrderedAtTime,ItemServedAtTime,LocationCode,ReservationCreated,GUEST_ORDER_STATUS_ID
+spark.source.query ShipCode,VoyageNumber,VenueID,TableID,ReservationID,ReservationTime,PartySize,PartySeatedTime,PartyCheckoutTime,CrewID,ItemCode,ItemName,ItemGroup,ItemCategory,MenuGUID,MenuCode,MenuName,ItemOrderedAtTime,ItemServedAtTime,LocationCode,ReservationCreated,GUEST_ORDER_STATUS_ID
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+

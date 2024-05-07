@@ -1,0 +1,34 @@
+spark.src.con.format sfdc
+spark.src.salesforce.username vv_datascience_api@virginvoyages.com.qa
+spark.src.salesforce.password Dec!1218gEw3temK8VJdeGLSCSjjlUszf
+spark.src.salesforce.endpoint https://virginvoyages--qa.my.salesforce.com/services/Soap/u/53.0
+spark.src.salesforce.version 53.0
+spark.src.config.id SrcSFDCConversationDefinitionSession
+spark.voyage.id SC2002269NCR
+
+ 
+spark.source.columns ChannelType, ConversationDefinitionId, CreatedById, CreatedDate, HasErrorLogs, Id, IntegrationName, IntegrationType, IsDeleted, Language, LastModifiedById, LastModifiedDate, SessionDuration, SessionEndType, SessionStartTime, SessionStatus, SessionTransferResult, SessionTransferTargetType, SessionTransferType, SystemModstamp
+
+ 
+spark.src.table.query SELECT ChannelType, ConversationDefinitionId, CreatedById, CreatedDate, HasErrorLogs, Id, IntegrationName, IntegrationType, IsDeleted, Language, LastModifiedById, LastModifiedDate, SessionDuration, SessionEndType, SessionStartTime, SessionStatus, SessionTransferResult, SessionTransferTargetType, SessionTransferType, SystemModstamp from ConversationDefinitionSession    
+
+ 
+
+ 
+spark.src.condition.column LastModifiedDate
+
+ 
+spark.tgt.env Qa
+spark.target.config.id TgtSFDCConversationDefinitionSession
+spark.target.hive.table vv_db.hvtb_lnd_sfdc_definition_sesssion
+spark.target.table vv_db.hvtb_lnd_sfdc_definition_sesssion
+spark.api.env Qa
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr
+

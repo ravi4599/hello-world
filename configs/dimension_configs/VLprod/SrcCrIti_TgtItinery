@@ -1,0 +1,39 @@
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.database prodnbx
+spark.postgres.jdbc.user nifiusr
+spark.postgres.jdbc.password finiDEV@123
+spark.postgres.jdbc.url jdbc:postgresql://10.2.52.161:5432/prodnbx
+spark.src.config.id SrcCrIti
+spark.voyage.id SC1912065NCM
+spark.tgt.env Prod
+spark.target.config.id TgtItinery
+spark.parent.id SrcShrIti-TgtShrIti-SC1912065NCM
+spark.target.schema shipdw
+spark.target.table itinerary_dim
+spark.target.table.format org.apache.phoenix.spark
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.source.sql select voyage_id as voyageid,number as voyage_number,itinerary_id,itinerary_voyageitineraryid,namekey,cast(itinerary_itineraryday as int)as itinerary_itineraryday,embarkdate,debarkdate,embarkportcode,debarkportcode,itinerary_gangwayopeningtime,itinerary_gangwayclosingtime,itinerary_departuretime,itinerary_arrivaltime,itinerary_isseaday,batchtime,part_date,Cast(split(itinerary_date,'T')[0] as date)as sale_date,from_unixtime(UNIX_TIMESTAMP(Cast(concat(split(itinerary_date,'T')[0],
+spark.source.columns voyageid,voyage_number,itinerary_id,itinerary_voyageitineraryid,namekey,itinerary_itineraryday,embarkdate,debarkdate,embarkportcode,debarkportcode,itinerary_gangwayopeningtime,itinerary_gangwayclosingtime,itinerary_departuretime,itinerary_arrivaltime,itinerary_isseaday,itinerary_day_date
+spark.pond.allColumns itinerary_skey as pond_itinerary_skey,voyage_id as pond_voyage_id,voyage_number as pond_voyage_number,itinerary_id as pond_itinerary_id,voyage_itinerary_guid as pond_voyage_itinerary_guid,itinerary_name as pond_itinerary_name,itinerary_day as pond_itinerary_day,itinerary_embark_dt as pond_itinerary_embark_dt,itinerary_debark_dt as pond_itinerary_debark_dt,itinerary_embark_port_code as pond_itinerary_embark_port_code,itinerary_debark_port_code as pond_itinerary_debark_port_code,gangway_open_time as pond_gangway_open_time,gangway_close_time as pond_gangway_close_time,itinerary_departure_time as pond_itinerary_departure_time,itinerary_arrival_time as pond_itinerary_arrival_time,itinerary_isseaDay as pond_itinerary_isseaDay,load_dt as pond_load_dt,upd_dt as pond_upd_dt,itinerary_day_date as pond_itinerary_day_date,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column itinerary_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_itinerary
+spark.target.schema shipdw
+spark.target.table itinerary_dim
+spark.source.primaryKeyColumns voyageid,itinerary_id
+spark.scdtype type1
+spark.frameworkEnv ship
+spark.target.final_collist itinerary_skey,final_view.voyageid as voyage_id,final_view.voyage_number as voyage_number,final_view.itinerary_id as itinerary_id,final_view.itinerary_voyageitineraryid as voyage_itinerary_guid ,final_view.namekey as itinerary_name,cast(final_view.itinerary_itineraryday as int)as itinerary_day,Cast (final_view.embarkdate as timestamp)as  itinerary_embark_dt,cast(final_view.debarkdate as timestamp) as itinerary_debark_dt,final_view.embarkportcode as itinerary_embark_port_code,final_view.debarkportcode as itinerary_debark_port_code ,Cast(final_view.itinerary_gangwayopeningtime as timestamp) as gangway_open_time ,cast(final_view.itinerary_gangwayclosingtime as timestamp) as gangway_close_time,cast(final_view.itinerary_departuretime as timestamp) as itinerary_departure_time,cast(final_view.itinerary_arrivaltime as timestamp) as itinerary_arrival_time,final_view.itinerary_isseaday,final_view.itinerary_day_date,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.location /data/apps/nbx/hive/hvtb_mart_dim_itinerary
+spark.target.temp /data/apps/nbx/hive/temp/hvtb_mart_dim_itinerary
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+ 
+spark.ship.code VAL
+

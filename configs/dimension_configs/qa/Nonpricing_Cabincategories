@@ -1,0 +1,31 @@
+spark.query select ship_code as Ship_Code, cabin_category as Category_Code, cabin_category_rank as Category_Rank, is_active as Active, cabin_capacity as Max_Category_Capacity, comments as Category_Name from (select * from (select *,row_number() over(partition by cabin_category_id order by ts_ms desc) as rn from vv_db.hvtb_parse_sw_cabin_category) p where p.rn=1) cabinCategory where ship_code in ('SC', 'VL', 'RS', 'BR') and cabin_category not in ('SCH', 'SCM', 'SCL', 'SAH', 'SAM', 'SAL')
+
+#spark.query select ship_code as Ship_Code,cabin_category as Category_Code,cabin_category_rank as Category_Rank, is_active as Active,cabin_capacity as Max_Category_Capacity, comments as Category_Name from shipdw.hvtb_parse_sw_cabin_category where ship_code IN ('SC', 'VL') and cabin_category NOT IN ('SCH', 'SCM', 'SCL', 'SAH', 'SAM', 'SAL')
+
+
+spark.temp gs://vv-cert-nbx-cluster/test_nonpricing/test/temp/
+spark.location gs://vv-cert-nbx-cluster/temp/
+spark.filename VV_cabin_categories
+spark.prefix_with_date false
+spark.sql.codegen.wholeStage false
+
+
+#spark.manageExecution.dayOftheWeek Wed,Thu
+
+spark.hadoop.hive.execution.engine mr
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.frameworkEnv shore
+spark.table.type dim
+
+#spark.talend.processName 'jSWstgRPL_CABIN_CATEGORY'
+
+spark.src.config.id SrcNonpricingCabincat
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtNonpricingCabincat
+

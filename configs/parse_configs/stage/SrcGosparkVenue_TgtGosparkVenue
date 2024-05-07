@@ -1,0 +1,14 @@
+spark.source.table select * from shipdw.hvtb_lnd_go_venue_availability 
+spark.target.venue.table shipdw.hvtb_parse_mxp_shore_gospark_venue
+spark.target.venuedetails.table shipdw.hvtb_parse_mxp_shore_gospark_venue_details
+spark.target.mealdata.table shipdw.hvtb_parse_mxp_shore_gospark_venue_mealperiod
+spark.target.Availability_data.table shipdw.hvtb_parse_mxp_shore_gospark_venue_availability
+spark.src.config.id SrcGosparkVenue
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtGosparkVenue
+spark.parent.id SrcGoVenueAvailKafka-TgtGoVenuAvailHive-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite 
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.4.100.154/hbase-unsecure

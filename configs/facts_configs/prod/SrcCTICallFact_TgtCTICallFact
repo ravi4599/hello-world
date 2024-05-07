@@ -1,0 +1,54 @@
+spark.src.config.id SrcCTICallFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtCTICallFact
+spark.parent.id SrcCTICallParser-TgtCTICallParser
+
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=!Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+spark.table.type Fact
+spark.api.env Prod
+spark.hadoop.hive.execution.engine mr
+
+spark.cti.call.agent.dim.sql select src_agent_id as cti_agent_dim_agentId, cti_agent_skey as cti_agent_dim_cti_agent_skey from vv_db.hvtb_nbx_core_cti_agent_dim
+spark.cti.call.team.dim.sql select src_team_id as cti_team_dim_teamId, cti_team_skey as cti_team_dim_cti_team_skey  from vv_db.hvtb_nbx_core_cti_team_dim
+spark.cti.call.skill.dim.sql select src_skill_id as cti_skill_dim_skillId, cti_skill_skey as cti_skill_dim_cti_skill_skey from vv_db.hvtb_nbx_core_cti_skill_dim
+spark.cti.call.compaign.dim.sql select src_campaign_id as cti_compaign_dim_campaignId, cti_campaign_skey as cti_compaign_dim_cti_campaign_skey from vv_db.hvtb_nbx_core_cti_campaign_dim
+spark.cti.call.date.dim.sql select date as datedim_date, date_id as datedim_date_id from vv_db.hvtb_nbx_core_date_dim
+spark.cti.call.time.dim.sql select time_skey as time_dim_s_key, second_of_day as time_dim_second_of_day from vv_db.hvtb_nbx_core_time_dim
+
+spark.source.columns contactid,mastercontactid,pointofcontactname,agentid,teamid,skillid,campaignid,dateskey,timeskey,prequeueseconds,inqueueseconds,postqueueseconds,totaldurationseconds,abandonseconds,callbacktime,agentseconds,isoutbound,transferindicatorid,abandoned,ACWSeconds,confSeconds,isLogged,isShortAbandon,isTakeover,releaseSeconds,routingTime,holdCount,holdSeconds
+spark.pond.allColumns src_contact_id as pond_src_contact_id,src_master_contact_Id as pond_src_master_contact_Id,point_of_contact_name as pond_point_of_contact_name,cti_agent_skey as pond_cti_agent_skey,cti_team_skey as pond_cti_team_skey,cti_skill_skey as pond_cti_skill_skey,cti_campaign_skey as pond_cti_campaign_skey,start_date_skey as pond_start_date_skey,start_time_skey as pond_start_time_skey,prequeue_time_in_seconds as pond_prequeue_time_in_seconds,inqueue_time_in_seconds as pond_inqueue_time_in_seconds,postqueue_time_in_seconds as pond_postqueue_time_in_seconds,total_duration_in_seconds as pond_total_duration_in_seconds,abandon_time_in_seconds as pond_abandon_time_in_seconds,callback_time as pond_callback_time,agent_seconds as pond_agent_seconds,outbound_call_flg as pond_outbound_call_flg,transferIndicator_flg as pond_transferIndicator_flg,abandoned_flg as pond_abandoned_flg,ACWSeconds as pond_after_call_work_in_seconds,confSeconds as pond_conference_call_in_seconds,isLogged as pond_logged_flg,isShortAbandon as pond_short_abandon_flg,isTakeover as pond_takeover_flg,releaseSeconds as pond_call_release_in_seconds,routingTime as pond_routing_time_in_seconds,holdCount as pond_hold_count,holdSeconds as pond_hold_time_in_seconds,load_dt as pond_load_dt,upd_dt as pond_upd_dt,part_dt as pond_part_dt
+
+
+spark.target.cticall.table vv_db.hvtb_parse_cti_call
+
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_cti_call_fact
+spark.target.schema vv_db
+spark.target.table cti_call_fact
+
+
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.scdtype type1
+
+spark.target.final_collist final_view.contactid as src_contact_id,final_view.mastercontactid as src_master_contact_Id,final_view.pointofcontactname as point_of_contact_name,final_view.agentid as cti_agent_skey,final_view.teamid as cti_team_skey,final_view.skillid as cti_skill_skey,final_view.campaignid as cti_campaign_skey,final_view.dateskey as start_date_skey,final_view.timeskey as start_time_skey,final_view.prequeueseconds as prequeue_time_in_seconds,final_view.inqueueseconds as inqueue_time_in_seconds,final_view.postqueueseconds as postqueue_time_in_seconds,final_view.totaldurationseconds as total_duration_in_seconds,final_view.abandonseconds as abandon_time_in_seconds,final_view.callbacktime as callback_time,final_view.agentseconds as agent_seconds,final_view.isoutbound as outbound_call_flg,final_view.transferindicatorid as transferIndicator_flg,final_view.abandoned as abandoned_flg,final_view.ACWSeconds as after_call_work_in_seconds,final_view.confSeconds as conference_call_in_seconds,final_view.isLogged as logged_flg,final_view.isShortAbandon as short_abandon_flg,final_view.isTakeover as takeover_flg,final_view.releaseSeconds as call_release_in_seconds,final_view.routingTime as routing_time_in_seconds,final_view.holdCount as hold_count,final_view.holdSeconds as hold_time_in_seconds,load_dt,upd_dt,part_dt
+
+
+spark.target.temp gs://vv-prod-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_cti_call_fact
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_cti_call_fact
+
+
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname cti_call_fact_tmp
+spark.bq.permtblname cti_call_fact
+spark.bq.viewname cti.cti_call_fact

@@ -1,0 +1,23 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.102.150.228:1521/emsvaldata.synkdb.com
+spark.src.user emsdal
+spark.src.password Daluser1*
+spark.src.table EMS.VW_ODBC_PTNCARD
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.src.config.id KonamiPtnCard
+spark.voyage.id VAL2002269NCR
+spark.target.config.id PtnCardIng
+spark.target.location /data/apps/nbx/hive/landing/konami/hvtb_lnd_konami_vw_odbc_ptncard
+spark.target.hive.table shipdw.hvtb_lnd_konami_vw_odbc_ptncard
+spark.src.table.query (SELECT CARDLVL,PINNUM,DESCRIPTION,CARDTYPE,LASTNAME,FIRSTNAME,PTNID,CARDID,GSTNAME,GSTID,LASTMODBY,LASTMODDATE,PTNCARDNOTE,ISSECONDARYVALUE,ISSECONDARY,CLAISFROZENVALUE,CLAISFROZEN,CLAFREEZEDATE,CLAEXPIREDATE,CLASETDATE,VALIDTHRUDATE,MAXVALUE,MINVALUE,RANKEDVALUE,RANKED,ISDEFAULTVALUE,ISDEFAULT,RETIREDATE,ISSUEDATE,ISSUENUM,CARDSTATUSDESC,CARDSTATID,CARDCOLORVALUE,CARDCOLOR from EMS.VW_ODBC_PTNCARD)
+spark.condition.column LASTMODDATE
+#Metadbta Hbase table and connection details
+spark.tgt.env Prod
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+#cluster details
+spark.ship.code VAL
+

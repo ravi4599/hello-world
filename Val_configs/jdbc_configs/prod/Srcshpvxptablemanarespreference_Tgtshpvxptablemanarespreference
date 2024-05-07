@@ -1,0 +1,22 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148:5432/table_management
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.table public.reservations_reservationpreference
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcvxpRespreference
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtvxpRespreference
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_table_management_reservations_reservationpreference
+spark.target.hive.table shipdw.hvtb_lnd_vxp_table_management_reservations_reservationpreference
+spark.src.table.query (select * from reservations_reservationpreference) as reservations_reservationpreference
+spark.condition.column lastmodifieddate
+spark.target.offset.mode overwrite
+spark.src.table.query "reservations_reservationpreference"
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.source.columns type,value,code,guest_id,public_id,reservation_id,addedby,addeddate,lastmodifiedby,lastmodifieddate
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+

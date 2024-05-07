@@ -1,0 +1,42 @@
+#------META DATA CONFIG-----#
+spark.src.config.id SrcVoyageWellQuestionaireDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtVoyageWellQuestionaireDim
+spark.parent.id  SrcVxpDxpHealthQuestion-TgtVxpDxpHealthQuestion-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+#-------------------------#
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+#------Query Propery-----#
+
+#spark.source.sql select * from (select nvl(hq.VoyageId, -1) as voyage_id ,String(hq.questiontype) as question_type ,hq.code as question_code , nvl(hq.title,'NULL') as question_title,lr.resourcevalue as question_resource, hq.isdeleted as src_deleted_flg, hq.BatchTime as batchtime, hq.Part_Date as partdate from shipdw.hvtb_parse_vxp_dxp_healthquestion hq left join shipdw.hvtb_parse_vxp_dxp_languageresource lr on hq.questionkey =lr.resourcekey and lr.isdeleted = false)a
+
+spark.source.sql select * from (select nvl(hq.VoyageId, -1) as voyage_id ,String(hq.questiontype) as question_type ,hq.code as question_code , nvl(hq.title,'NULL') as question_title,lr.resourcevalue as question_resource, hq.isdeleted as src_deleted_flg, hq.BatchTime as batchtime, hq.Part_Date as part_date from shipdw.hvtb_parse_vxp_dxp_healthquestion hq left join shipdw.hvtb_parse_vxp_dxp_languageresource lr on hq.questionkey =lr.resourcekey and lr.isdeleted = false)a
+
+spark.source.columns voyage_id,question_type,question_code,question_title,question_resource,src_deleted_flg
+
+spark.pond.allColumns voyage_well_question_skey as pond_voyage_well_question_skey,voyage_id as pond_voyage_id,question_type as pond_question_type,question_code as pond_question_code,question_title as pond_question_title,question_resource as pond_question_resource,src_deleted_flg as pond_src_deleted_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.surrogate_key.column voyage_well_question_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_voyage_well_questionaire
+spark.source.primaryKeyColumns question_code
+spark.table.type dim
+spark.target.schema shipdw
+spark.target.table hvtb_mart_dim_voyage_well_questionaire
+
+spark.target.final_collist voyage_well_question_skey , final_view.voyage_id as voyage_id, final_view.question_type as question_type, final_view.question_code as question_code, final_view.question_title as question_title, final_view.question_resource as question_resource, final_view.src_deleted_flg as src_deleted_flg, load_dt,upd_dt,primaryhash,md5_hash
+
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_dim_voyage_well_questionaire
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_voyage_well_questionaire
+
+spark.redshift.schema hive_schema_stg
+spark.redshift.tablename voyage_well_questionaire_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore

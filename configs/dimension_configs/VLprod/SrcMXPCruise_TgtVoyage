@@ -1,0 +1,36 @@
+spark.src.config.id SrcMXPCruise
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtVoyage
+spark.parent.id SrcMxpCruise-TgtMxpCruise
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.sql select dim_voyage.voyage_skey,dim_voyage.voyage_id,dim_voyage.voyage_number,dim_voyage.voyage_guid,dim_voyage.cruise_id,dim_voyage.voyage_description,dim_voyage.voyage_start_date,dim_voyage.voyage_end_date,dim_voyage.voyage_length,dim_voyage.voyage_status,dim_voyage.ship_guid,dim_voyage.ship_code,dim_voyage.ship_name,dim_voyage.isseaday,dim_voyage.actual_capacity_days,dim_voyage.booked_capacity_days,dim_voyage.actual_sailor_days,dim_voyage.built_capacity_days,dim_voyage.sailed_cabin_occupancy_pct,dim_voyage.active_status,dim_voyage.src_active_flag,dim_voyage.src_deleted_flag,dim_voyage_prev.voyage_number as previous_voyage_number,dim_voyage_next.voyage_number as next_voyage_number,NVL(dim_voyage_prev.voyage_skey ,-1) as previous_voyage_skey ,NVL(dim_voyage_next.voyage_skey,-1) as next_voyage_skey,batchtime from (  select batchtime, cruise_id,next_cruise_id,previous_cruise_id from (select batchtime,cruise_id,next_cruise_id,previous_cruise_id,row_number() over(partition by cruise_id,cruise_number order by last_changed desc) as rn   from shipdw.hvtb_parse_mxp_cruise)cruise where cruise.rn=1  ) mxp_cruise left join shipdw.hvtb_mart_dim_voyage dim_voyage_prev  on( dim_voyage_prev.src_active_flag ==true and dim_voyage_prev.src_deleted_flag == false and mxp_cruise.previous_cruise_id==dim_voyage_prev.cruise_id)   left join shipdw.hvtb_mart_dim_voyage dim_voyage_next  on(dim_voyage_next.src_active_flag ==true and dim_voyage_next.src_deleted_flag == false and mxp_cruise.next_cruise_id==dim_voyage_next.cruise_id)  right join shipdw.hvtb_mart_dim_voyage dim_voyage  on(mxp_cruise.cruise_id==dim_voyage.cruise_id)
+spark.source.columns next_voyage_number,previous_voyage_number,next_voyage_skey,previous_voyage_skey,voyage_id,src_deleted_flag,src_active_flag,voyage_number,voyage_guid,cruise_id,voyage_description,voyage_start_date,voyage_end_date,voyage_length,voyage_status,ship_guid,ship_code,ship_name,isSeaDay,actual_capacity_days,booked_capacity_days,actual_sailor_days,built_capacity_days,sailed_cabin_occupancy_pct,active_status
+spark.pond.allColumns voyage_skey as pond_voyage_skey,voyage_id as pond_voyage_id , voyage_number as pond_voyage_number , voyage_guid as pond_voyage_guid ,cruise_id as pond_cruise_id, voyage_description as pond_voyage_description , voyage_start_date as pond_voyage_start_date , voyage_end_date as pond_voyage_end_date , voyage_length as pond_voyage_length , voyage_status as pond_voyage_status , ship_guid as pond_ship_guid , ship_code as pond_ship_code , ship_name as pond_ship_name , isSeaDay as pond_isSeaDay , actual_capacity_days as pond_actual_capacity_days , booked_capacity_days as pond_booked_capacity_days , actual_sailor_days as pond_actual_sailor_days , built_capacity_days as pond_built_capacity_days , sailed_cabin_occupancy_pct as pond_sailed_cabin_occupancy_pct ,active_status as pond_active_status,src_deleted_flag as pond_src_deleted_flag,src_active_flag as pond_src_active_flag,next_voyage_number as pond_next_voyage_number,previous_voyage_number as pond_previous_voyage_number ,next_voyage_skey as pond_next_voyage_skey,previous_voyage_skey as pond_previous_voyage_skey, load_dt as pond_load_dt , upd_dt as pond_upd_dt , primaryhash as pond_primaryhash , md5_hash as pond_md5_hash
+spark.surrogate_key.column voyage_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_voyage
+spark.table.type dim
+spark.source.primaryKeyColumns voyage_number
+spark.pond.primaryKeyColumns 
+spark.scdtype type1
+spark.frameworkEnv ship
+spark.target.final_collist voyage_skey,final_view.voyage_id as voyage_id ,final_view.voyage_number as  voyage_number,final_view.voyage_guid as voyage_guid,final_view.cruise_id as cruise_id,final_view.voyage_description as voyage_description,Cast(final_view.voyage_start_date as timestamp) as voyage_start_date,Cast(final_view.voyage_end_date as timestamp) as voyage_end_date,Cast(final_view.voyage_length as int) as voyage_length,final_view.voyage_status as voyage_status,final_view.ship_guid as ship_guid,final_view.ship_code as ship_code,final_view.ship_name as ship_name,Cast(final_view.isSeaDay as int) as isseaday,Cast(final_view.actual_capacity_days as int) as actual_capacity_days,Cast(final_view.booked_capacity_days as int) as booked_capacity_days,Cast(final_view.actual_sailor_days as int) as actual_sailor_days,Cast(final_view.built_capacity_days as int) as built_capacity_days,Cast(final_view.sailed_cabin_occupancy_pct as int) as sailed_cabin_occupancy_pct,final_view.active_status as active_status,src_deleted_flag,src_active_flag,final_view.next_voyage_number as next_voyage_number,final_view.previous_voyage_number as previous_voyage_number ,final_view.next_voyage_skey as next_voyage_skey,final_view.previous_voyage_skey as previous_voyage_skey,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_voyage
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_voyage
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename voyage_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+ 
+spark.ship.code VAL
+

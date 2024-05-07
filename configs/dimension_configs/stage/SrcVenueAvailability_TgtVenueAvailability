@@ -1,0 +1,30 @@
+spark.src.config.id SrcVenueAvailability
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtVenueAvailability
+spark.parent.id SrcGosparkVenue-TgtGosparkVenue-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.table.type dim
+spark.redshift.url jdbc:redshift://10.3.0.120:5439/qanbxpub
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.source.columns voyage_id,venue_skey,availability_type,availability_date,availability_starttime_hour,availability_starttime_minute,availability_duration_mins
+spark.pond.allColumns venue_availability_skey as pond_venue_availability_skey,venue_skey as pond_venue_skey,voyage_id as pond_voyage_id,availability_type as pond_availability_type,availability_date as pond_availability_date,availability_starttime_hour as pond_availability_starttime_hour,availability_starttime_minute as pond_availability_starttime_minute,availability_duration_mins as pond_availability_duration_mins,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column venue_availability_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_venue_availability
+spark.target.schema shipdw
+spark.target.table venue_availability_dim
+spark.source.primaryKeyColumns venue_id
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_dim_venue_availability
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_venue_availability
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename venue_availability_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.target.final_collist venue_availability_skey, final_view.venue_skey as venue_skey,cast(final_view.voyage_id as string) as voyage_id,cast(final_view.availability_type as string) as availability_type, cast(final_view.availability_date as date) as availability_date, cast(final_view.availability_starttime_hour as int) as availability_starttime_hour, cast(final_view.availability_starttime_minute as int) as availability_starttime_minute, cast(final_view.availability_duration_mins as int) as availability_duration_mins,load_dt,upd_dt,primaryhash,md5_hash
+spark.source.sql select dv.venue_skey as venue_skey,va.batchtime as batchtime,va.availability_duration as availability_duration_mins,va.availability_type as availability_type, va.starttime_hour as availability_starttime_hour,va.starttime_minute as availability_starttime_minute,va.pl_id as venue_id, va.voyageid as voyage_id,gv.pl_date as availability_date from shipdw.hvtb_parse_mxp_gospark_venue_availability va  left join shipdw.hvtb_mart_dim_venue  dv on va.pl_id==dv.venue_id  left join (Select * from (select pl_id,pl_date,ROW_NUMBER() over (partition by pl_id order by pl_date desc  ) as rn  from shipdw.hvtb_parse_mxp_gospark_venue)parse_spark_venue  where rn=1) gv on va.pl_id=gv.pl_id

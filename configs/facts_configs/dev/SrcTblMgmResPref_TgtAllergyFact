@@ -1,0 +1,55 @@
+spark.src.config.id   SrcTblMgmResPref
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   dev
+spark.target.config.id   TgtAllergyFact
+
+spark.parent.id   SrcvxpRespreference-TgtvxpRespreference
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.ing.type Fact
+
+spark.source.sql select cast(-1 as long) as order_detail_skey, cast(-1 as long) as menu_item_skey, NVL(dining_dim.dining_reservation_detail_skey,-1) as dining_reservation_detail_skey, NVL(person_dim.person_skey , -1) as person_skey, NVL(allergy_dim.allergy_skey, -1) as allergy_skey, 'Res_Preference' as allergy_details_category, cast(false as boolean) as src_deleted_flg, res.voyage_id as voyage_id, res.batchtime as batchtime, res.part_dt as part_dt from ( select resprf.reservation_id as reservation_id,resprf.code as code,case when (resprf.guest_id is null or resprf.guest_id='')then resguest.guest_id else resprf.guest_id end as guest_id, resprf.VoyageId as voyage_id,resprf.BatchTime as batchtime,resprf.Part_Date as part_dt from (select * from (select * , row_number() over(partition by  reservation_id, code order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_table_management_reservations_reservationpreference ) where rn = 1 and type = 'ALLERGEN') resprf join (select * from (select * , row_number() over(partition by reservation_id, guest_id order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_table_management_reservationguest ) where rn = 1) resguest on resprf.reservation_id = resguest.reservation_id where resguest.is_main = true) res left join shipdw.hvtb_mart_dim_dining_reservation_detail dining_dim on dining_dim.dining_reservation_id = res.reservation_id left join shipdw.hvtb_mart_dim_person person_dim on res.guest_id = person_dim.reservationguest_guid left join shipdw.hvtb_mart_dim_allergy allergy_dim on upper(res.code) = upper(allergy_dim.allergy_code) and allergy_dim.source = 'Table_Management' *whereclause*
+
+
+spark.source.primaryKeyColumns order_detail_skey,menu_item_skey,dining_reservation_detail_skey,person_skey,allergy_skey
+
+spark.source.columns   voyage_id,order_detail_skey,menu_item_skey,dining_reservation_detail_skey,person_skey,allergy_skey,allergy_details_category,src_deleted_flg
+   
+spark.pond.allColumns   voyage_id as pond_voyage_id,order_detail_skey as pond_order_detail_skey,menu_item_skey as pond_menu_item_skey,dining_reservation_detail_skey as pond_dining_reservation_detail_skey,person_skey as pond_person_skey,allergy_skey as pond_allergy_skey,allergy_details_category as pond_allergy_details_category,src_deleted_flg as pond_src_deleted_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt,part_dt as pond_part_dt
+
+spark.target.final_collist   final_view.voyage_id ,final_view.order_detail_skey ,final_view.menu_item_skey ,final_view.dining_reservation_detail_skey,final_view.person_skey ,final_view.allergy_skey ,final_view.allergy_details_category ,final_view.src_deleted_flg ,final_view.load_dt,final_view.upd_dt,final_view.part_dt
+
+
+spark.tableType   FACT
+spark.frameworkEnv   shore 
+
+
+spark.frameworkEnv   shore 
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname allergy_fact_tmp
+spark.bq.permtblname allergy_fact
+spark.bq.viewname    shipdw.allergy_fact
+
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_allergy
+spark.target.table allergy_fact
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_fact_allergy
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_allergy
+
+#----------------------LAD--------------------------------#
+spark.ladjob.flag true
+spark.lad.srctablekey reservation_id,code
+spark.lad.srctable shipdw.hvtb_parse_vxp_table_management_reservations_reservationpreference
+spark.lad.tgttable shipdw.hvtb_parse_vxp_table_management_reservations_reservationpreference_lad
+spark.lad.columns order_detail_skey,menu_item_skey,dining_reservation_detail_skey,person_skey,allergy_skey
+spark.ladremoval.flag false 
+
+#----------------------------------------------------------#

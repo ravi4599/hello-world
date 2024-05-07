@@ -1,0 +1,37 @@
+spark.src.config.id SrcSalesFolio
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtRevenueFact
+spark.parent.id SrcShrPosSales_TgtRevenueFact_SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type fact
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.columns source_type,voyage_id,sale_detail_skey,pos_item_skey,folio_item_skey,person_skey,ship_code,voyage_skey,itinerary_skey,outlet_skey,activity_skey,sale_date_skey,sale_time_skey,sale_quantity,item_list_price_amount,debit_amount,credit_amount,tax_amount,discount_amount,discount_value,cost_of_goods,manual_adjustment_amount,total_collected_sales_amount,total_collected_sales_ap,total_shared_revenue_amount,total_shared_revenue_ap
+spark.pond.allColumns pond_source_type,pond_voyage_id,pond_sale_detail_skey,pond_pos_item_skey,pond_folio_item_skey,pond_person_skey,pond_ship_code,pond_voyage_skey,pond_itinerary_skey,pond_outlet_skey,pond_activity_skey,pond_sale_date_skey,pond_sale_time_skey,pond_sale_quantity,pond_item_list_price_amount,pond_debit_amount,pond_credit_amount,pond_tax_amount,pond_discount_amount,pond_discount_value,pond_cost_of_goods,pond_manual_adjustment_amount,pond_total_collected_sales_amount,pond_total_collected_sales_ap,pond_total_shared_revenue_amount,pond_total_shared_revenue_ap,load_dt as pond_load_dt,upd_dt as pond_upd_dt,part_dt as pond_part_dt
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_revenue
+spark.postgresql.schema Hive_schema_stg
+spark.target.final_collist voyage_id,NVL(sale_detail_skey,-1)  as sale_detail_skey,NVL(pos_item_skey,-1)as pos_item_skey,NVL(folio_item_skey,-1)as folio_item_skey,NVL(person_skey,-1)as person_skey,ship_code,NVL(voyage_skey,-1)as voyage_skey,NVL(itinerary_skey,-1)as itinerary_skey,NVL(outlet_skey,-1) as outlet_skey,NVL(activity_skey,-1) as activity_skey,NVL(cast(sale_date_skey as bigint),-1) as sale_date_skey,NVL(cast(sale_time_skey as bigint),-1) as sale_time_skey,-1 as device_skey,  -1 as venue_skey, -1 as charge_skey,-1 as wearable_skey,0 as time_on_device_seconds,0.0 as avg_wager_amount,0 as casino_game_dph, 0.0 as theoritical_winnings,booking_reference_number,cast(sale_quantity as int) as sale_quantity,cast(item_list_price_amount as decimal(16,2)) as item_list_price_amount,cast(debit_amount as decimal(16,2)) as debit_amount,cast(credit_amount as decimal(16,2)) as credit_amount,cast(tax_amount as decimal(16,2)) as tax_amount,cast(discount_amount as decimal(16,2)) as discount_amount,cast(discount_value as decimal(16,2)) as discount_value, cast(cost_of_goods as decimal(16,2)) as cost_of_goods,cast(manual_adjustment_amount as decimal(16,2)) as manual_adjustment_amount,cast(total_collected_sales_amount as decimal(16,2)) as total_collected_sales_amount,cast(total_collected_sales_ap as decimal(16,2)) as total_collected_sales_ap,total_shared_revenue_amount,total_shared_revenue_ap,source_type,load_dt,upd_dt,part_dt
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_fact_revenue
+spark.target.location /data/apps/nbx/mart/hvtb_mart_fact_revenue
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename ship_revenue_fact
+spark.scdtype type1
+spark.tableType FACT
+spark.frameworkEnv ship
+#----------------------LAD--------------------------------# 
+spark.source.sql SELECT *,-1 as device_skey,0 as time_on_device_seconds,0 as avg_wager_amount,0 as casino_game_dph,0 as theoritical_winnings ,-1 as activity_skey, NVL((((debit_amount-credit_amount)* sale_quantity)-discount_amount),0) as total_collected_sales_amount, NVL((((debit_amount-credit_amount)* sale_quantity)-discount_amount)/(guest_count*voyage_length),0) as total_collected_sales_ap, NVL((((debit_amount-credit_amount)* sale_quantity)-discount_amount),0) as total_shared_revenue_amount , NVL((((debit_amount-credit_amount)* sale_quantity)-discount_amount)/(guest_count*voyage_length),0) as total_shared_revenue_ap  from   ( SELECT   'FOLIO' as source_type, cruisenbr as voyage_id,   NVL(sale_detail_skey, -1) as sale_detail_skey, -1 as pos_item_skey,  NVL(dim_voyage.voyage_skey,-1) as voyage_skey,  dim_voyage.ship_code as ship_code,  NVL(folio_item_skey, -1)as folio_item_skey, NVL(person_skey, -1) as person_skey,  NVL(itinerary_skey, -1)itinerary_skey, -1 as outlet_skey, NVL(dd.date_id, -1) as sale_date_skey,  NVL(time_skey, -1) as sale_time_skey, quantity as sale_quantity, 0 as item_list_price_amount,   NVL(creditamount, 0) as credit_amount,   NVL(debitamount, 0) as debit_amount, 0 as tax_amount,  NVL(discountamount, 0) as discount_amount, 0 as discount_value, 0 as cost_of_goods,   CASE when (UPPER(person_dim.person_type)=='COMPANY ACCOUNT')   THEN NVL((((NVL(debitamount, 0)-NVL(creditamount, 0)-NVL(discountamount, 0))* quantity)),0) ELSE 0  end as manual_adjustment_amount,   NVL(guest_count.voyage_length, 0) as voyage_length, NVL(guest_count, 0) as guest_count,  external_reference as booking_reference_number,  batchtime, part_date from   shipdw.hvtb_parse_folio_vperson_account_detail_lad as accnt_detail    inner join  shipdw.hvtb_mart_lkp_revenue_category_rel revenue_rel   on(   category_type='FOLIO_QUICKCODE'and accnt_detail.quickcode==revenue_rel.category_value     )  left join shipdw.hvtb_mart_dim_sale_detail sale_detail  on ( accnt_detail.referencenbr == sale_detail.sale_id)  left join shipdw.hvtb_mart_dim_folio_item folio_item   on (accnt_detail.quickcode = folio_item.folio_item_quickcode)  left join  shipdw.hvtb_mart_dim_voyage dim_voyage  on(dim_voyage.src_active_flag=TRUE and dim_voyage.src_deleted_flag=FALSE and accnt_detail.cruisenbr == dim_voyage.voyage_number)  left join shipdw.hvtb_mart_dim_person person_dim on   (accnt_detail.cruisenbr==person_dim.booking_cruise_number and accnt_detail.person_id = person_dim.person_id )   left join shipdw.hvtb_mart_dim_date dd on date(accnt_detail.businessday) = dd.`date`   left join shipdw.hvtb_nbx_core_time_dim dt on dt.second_of_day = hour(accnt_detail.businessday)* 60 * 60 + minute(accnt_detail.businessday)* 60 + second(accnt_detail.businessday)   left join shipdw.hvtb_mart_dim_itinerary as itinerary   on (  itinerary.src_active_flag=True and itinerary.src_deleted_flag=False and itinerary.voyage_number == accnt_detail.cruisenbr and date(accnt_detail.businessday) == date(itinerary.itinerary_day_date) )  left join (  select count(*) as guest_count, voyage_number ,abs(voyage_length) as voyage_length  from shipdw.hvtb_mart_dim_voyage voyage inner join shipdw.hvtb_mart_dim_person person on (voyage.voyage_number==person.booking_cruise_number) where person_type='1'  group by voyage_number,abs(voyage_length))guest_count  on (guest_count.voyage_number==accnt_detail.cruisenbr)   *whereclause*  )FOLIO_FACT
+spark.ladjob.flag true
+spark.lad.srctablekey REFERENCENBR
+spark.lad.srctable shipdw.hvtb_parse_folio_vperson_account_detail
+spark.lad.columns sale_detail_skey,itinerary_skey,person_skey,ship_code,sale_date_skey,sale_time_skey
+spark.ladremoval.flag true
+#----------------------------------------------------------# 
+spark.ship.code VAL
+

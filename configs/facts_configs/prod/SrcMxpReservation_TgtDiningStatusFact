@@ -1,0 +1,32 @@
+spark.src.config.id SrcMxpReservation
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtDiningStatusFact
+spark.parent.id SrcParseTableClear-TgtParseTableClear
+spark.hadoop.hive.execution.engine mr
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.source.sql select voyage_id,voyage_skey,dining_reservation_detail_skey, dining_table_skey,venue_skey,table_status,table_status_lastmodifieddate,BatchTime,part_date from (select NVL(tc.voyageid,'N/A') as voyage_id,-1 as voyage_skey, -1 as dining_reservation_detail_skey, NVL(dt.dining_table_skey,-1) as dining_table_skey , vd.venue_skey as venue_skey, 'clear' as table_status, tablecleardate as table_status_lastmodifieddate, tc.BatchTime, tc.partdate as part_date, row_number () OVER (partition by tmv.public_id, dining_table_skey order by tmv.public_id ) as rnk from shipdw.hvtb_parse_tbl_table_clear tc left outer join shipdw.hvtb_parse_vxp_table_management_settings_table st ON tc.tableNumber= st.name left outer join shipdw.hvtb_parse_vxp_table_management_settings_layout sl ON st.layout_id = st.public_id left outer join shipdw.hvtb_parse_vxp_table_management_sessions ts ON ts.settings_id = sl.settings_id left outer join shipdw.hvtb_parse_vxp_table_management_venues tmv ON tmv.public_id = ts.venue_id and tc.restaurantCode = tmv.external_id left outer join shipdw.hvtb_mart_dim_dining_table dt ON dt.dining_table_id= tc.tableNumber left outer join shipdw.hvtb_mart_dim_venue vd ON tc.restaurantCode=vd.venue_id)re where re.rnk = 1 and
+spark.source.columns voyage_id,voyage_skey,dining_reservation_detail_skey,dining_table_skey,venue_skey,table_status,table_status_lastmodifieddate
+spark.pond.allColumns voyage_id as pond_voyage_id,voyage_skey as pond_voyage_skey,dining_reservation_detail_skey as pond_dining_reservation_detail_skey,dining_table_skey as pond_dining_table_skey,venue_skey as pond_venue_skey,table_status as pond_table_status,table_status_datetime_utc as pond_table_status_datetime_utc,table_status_lastmodifieddate as pond_table_status_lastmodifieddate,load_dt as pond_load_dt, upd_dt as pond_upd_dt,part_dt as pond_part_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.pond.database shipdw
+spark.target.table dining_table_status_fact
+spark.source.primaryKeyColumns dining_table_skey
+spark.pond.table hvtb_mart_fact_dining_table_status
+spark.target.final_collist final_view.voyage_id,final_view.voyage_skey,final_view.dining_reservation_detail_skey,final_view.dining_table_skey,final_view.venue_skey,final_view.table_status,final_view.table_status_lastmodifieddate,final_view.table_status_datetime_utc, final_view.load_dt, final_view.upd_dt,final_view.part_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_fact_dining_table_status
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_fact_dining_table_status
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.factType Accu
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname dining_table_status_fact_tmp
+spark.bq.permtblname dining_table_status_fact
+spark.bq.viewname shipdw.dining_table_status_fact
+

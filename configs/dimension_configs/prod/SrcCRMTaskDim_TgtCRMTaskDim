@@ -1,0 +1,105 @@
+spark.src.config.id SrcCRMTaskDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtCRMTaskDim
+spark.parent.id SrcSFDCtask-TgtSFDCtask
+
+ 
+spark.table.Type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+ 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+ 
+
+ 
+
+ 
+spark.source.sql select * from (select * from (Select id as src_task_id,AccountId,OwnerId,Subject,Priority,Type,Status,RecordTypeId,CreatedDate,Task_Type_Grouping__c,WhatId,CallDurationInSeconds,CallType,Skillname__c,CallReason__c,Call_Resolution__c,Complaint_Type__c,Case_Created__c,abandoned__c,abandonSeconds__c,ActivityAudience__c,ActivityDate,agentId__c,CallDisposition,CallObject,CallRecording__c,Call_Sub_Resolution__c,Complaint_Details__c,CreatedById,CTIDataProcessed__c,DB_Activity_Type__c,Description,EndDateTime__c,Escalated__c,FCR_Phone__c,holdSeconds__c,InQueueSeconds__c,IsClosed,IsHighPriority,LastModifiedById,LastModifiedDate,Phone_ANI__c,preQueueSeconds__c,IsClosed as IsReminderSet,ReminderDateTime,routingTime__c,StartDateTime__c,SystemModstamp,TaskNumber__c,TaskSubtype,Task_Type__c,WhatCount,WhoCount,WhoId,Campaign_Name__c,CompletedDateTime,batchtime,part_date,row_number() over (partition by id order by LastModifiedDate desc) as rn from vv_db.hvtb_parse_sfdc_task)b where b.rn=1)
+
+ 
+
+ 
+
+ 
+spark.source.columns src_task_id,AccountId,OwnerId,Subject,Priority,Type,Status,RecordTypeId,CreatedDate,Task_Type_Grouping__c,WhatId,CallDurationInSeconds,CallType,Skillname__c,CallReason__c,Call_Resolution__c,Complaint_Type__c,Case_Created__c,abandoned__c,abandonSeconds__c,ActivityAudience__c,ActivityDate,agentId__c,CallDisposition,CallObject,CallRecording__c,Call_Sub_Resolution__c,Complaint_Details__c,CreatedById,CTIDataProcessed__c,DB_Activity_Type__c,Description,EndDateTime__c,Escalated__c,FCR_Phone__c,holdSeconds__c,InQueueSeconds__c,IsClosed,IsHighPriority,LastModifiedById,LastModifiedDate,Phone_ANI__c,preQueueSeconds__c,IsReminderSet,ReminderDateTime,routingTime__c,StartDateTime__c,SystemModstamp,TaskNumber__c,TaskSubtype,Task_Type__c,WhatCount,WhoCount,WhoId,Campaign_Name__c,CompletedDateTime
+
+ 
+
+ 
+
+ 
+spark.pond.allColumns task_id as pond_task_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,src_task_id as pond_src_task_id,AccountId as pond_AccountId,OwnerId as pond_OwnerId,Subject as pond_Subject,Priority as pond_Priority,Type as pond_Type,Status as pond_Status,RecordTypeId as pond_RecordTypeId,CreatedDate as pond_CreatedDate,Task_Type_Grouping__c as pond_Task_Type_Grouping__c,WhatId as pond_WhatId,CallDurationInSeconds as pond_CallDurationInSeconds,CallType as pond_CallType,Skillname__c as pond_Skillname__c,CallReason__c as pond_CallReason__c,Call_Resolution__c as pond_Call_Resolution__c,Complaint_Type__c as pond_Complaint_Type__c,Case_Created__c as pond_Case_Created__c,abandoned__c as pond_abandoned__c,abandonSeconds__c as pond_abandonSeconds__c,ActivityAudience__c as pond_ActivityAudience__c,ActivityDate as pond_ActivityDate,agentId__c as pond_agentid,CallDisposition as pond_CallDisposition,CallObject as pond_CallObject,CallRecording__c as pond_CallRecording__c,Call_Sub_Resolution__c as pond_Call_Sub_Resolution__c,Complaint_Details__c as pond_Complaint_Details__c,CreatedById as pond_CreatedById,CTIDataProcessed__c as pond_CTIDataProcessed__c,DB_Activity_Type__c as pond_DB_Activity_Type__c,Description as pond_Description,EndDateTime__c as pond_EndDateTime__c,Escalated__c as pond_Escalated__c,FCR_Phone__c as pond_FCR_Phone__c,holdSeconds__c as pond_holdSeconds__c,InQueueSeconds__c as pond_InQueueSeconds__c,IsClosed as pond_IsClosed,IsHighPriority as pond_IsHighPriority ,LastModifiedById as pond_LastModifiedById,LastModifiedDate as pond_LastModifiedDate,Phone_ANI__c as pond_Phone_ANI__c,preQueueSeconds__c as pond_preQueueSeconds__c,IsReminderSet as pond_IsReminderSet,ReminderDateTime as pond_ReminderDateTime,routingTime__c as pond_routingTime__c,StartDateTime__c as pond_StartDateTime__c,SystemModstamp as pond_SystemModstamp,TaskNumber__c as pond_TaskNumber__c,TaskSubtype as pond_TaskSubtype,Task_Type__c as pond_Task_Type__c,WhatCount as pond_WhatCount,WhoCount as pond_WhoCount,WhoId as pond_WhoId,Campaign_Name__c as pond_Campaign_Name__c,CompletedDateTime as pond_CompletedDateTime,etl_ld_Status as pond_etl_ld_Status,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash,scd_hash as pond_scd_hash
+
+ 
+
+ 
+
+ 
+
+ 
+spark.surrogate_key.column task_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_crm_task_dim
+spark.target.schema hive_schema_stg
+spark.target.table hvtb_nbx_mart_crm_task_dim
+spark.source.primaryKeyColumns src_task_id
+
+
+
+ 
+spark.target.final_collist final_view.task_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.src_task_id,final_view.AccountId,final_view.OwnerId,final_view.Subject,final_view.Priority,final_view.Type,final_view.Status,final_view.RecordTypeId,final_view.CreatedDate,final_view.Task_Type_Grouping__c,final_view.WhatId,final_view.CallDurationInSeconds,final_view.CallType,final_view.Skillname__c,final_view.CallReason__c,final_view.Call_Resolution__c,final_view.Complaint_Type__c,final_view.Case_Created__c,final_view.abandoned__c,final_view.abandonSeconds__c,final_view.ActivityAudience__c,final_view.ActivityDate,final_view.agentId__c,final_view.CallDisposition,final_view.CallObject,final_view.CallRecording__c,final_view.Call_Sub_Resolution__c,final_view.Complaint_Details__c,final_view.CreatedById,final_view.CTIDataProcessed__c,final_view.DB_Activity_Type__c,final_view.Description,final_view.EndDateTime__c,final_view.Escalated__c,final_view.FCR_Phone__c,final_view.holdSeconds__c,final_view.InQueueSeconds__c,final_view.IsClosed,final_view.IsHighPriority,final_view.LastModifiedById,final_view.LastModifiedDate,final_view.Phone_ANI__c,final_view.preQueueSeconds__c,final_view.IsReminderSet,final_view.ReminderDateTime,final_view.routingTime__c,final_view.StartDateTime__c,final_view.SystemModstamp,final_view.TaskNumber__c,final_view.TaskSubtype,final_view.Task_Type__c,final_view.WhatCount,final_view.WhoCount,final_view.WhoId,final_view.Campaign_Name__c,final_view.CompletedDateTime,etl_ld_Status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+
+
+spark.target.temp gs://vv-prod-nbx-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_task_dim_tmp
+spark.target.location gs://vv-prod-nbx-cluster/data/core/crm_kpi/hvtb_nbx_core_crm_task_dim 
+ 
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname crm_task_dim_tmp
+spark.bq.permtblname crm_task_dim
+spark.bq.viewname crm.crm_task_dim
+
+ 
+spark.scdtype type2
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage
+
+ 
+
+spark.source.landingsql select id as src_task_id  from vv_db.hvtb_parse_sfdc_task where isdeleted = 'true' 
+
+ 
+
+ 
+
+ 
+##=============SCD2 Config Details ==============
+
+ 
+
+ 
+
+ 
+spark.source.srcDateColumn src_date
+spark.scd.columns src_task_id,AccountId,OwnerId,Subject,Priority,Type,Status,RecordTypeId,CreatedDate,Task_Type_Grouping__c,WhatId,CallDurationInSeconds,CallType,Skillname__c,CallReason__c,Call_Resolution__c,Complaint_Type__c,Case_Created__c,abandoned__c,abandonSeconds__c,ActivityAudience__c,ActivityDate,agentId__c,CallDisposition,CallObject,CallRecording__c,Call_Sub_Resolution__c,Complaint_Details__c,CreatedById,CTIDataProcessed__c,DB_Activity_Type__c,Description,EndDateTime__c,Escalated__c,FCR_Phone__c,holdSeconds__c,InQueueSeconds__c,IsClosed,IsHighPriority,LastModifiedById,LastModifiedDate,Phone_ANI__c,preQueueSeconds__c,IsReminderSet,ReminderDateTime,routingTime__c,StartDateTime__c,SystemModstamp,TaskNumber__c,TaskSubtype,Task_Type__c,WhatCount,WhoCount,WhoId,Campaign_Name__c,CompletedDateTime
+
+ 
+
+ 
+
+ 
+spark.scdtype type2
+
+ 
+
+ 
+
+ 
+# all source columns as alias (id_new,amount_new,oppo_new)along with all audit columns
+spark.source.updateReq task_id,rec_start_dttm,rec_end_dttm,src_task_id_new,AccountId_new,OwnerId_new,Subject_new,Priority_new,Type_new,Status_new,RecordTypeId_new,CreatedDate_new,Task_Type_Grouping__c_new,WhatId_new,CallDurationInSeconds_new,CallType_new,Skillname__c_new,CallReason__c_new,Call_Resolution__c_new,Complaint_Type__c_new,Case_Created__c_new,abandoned__c_new,abandonSeconds__c_new,ActivityAudience__c_new,ActivityDate_new,agentId__c_new,CallDisposition_new,CallObject_new,CallRecording__c_new,Call_Sub_Resolution__c_new,Complaint_Details__c_new,CreatedById_new,CTIDataProcessed__c_new,DB_Activity_Type__c_new,Description_new,EndDateTime__c_new,Escalated__c_new,FCR_Phone__c_new,holdSeconds__c_new,InQueueSeconds__c_new,IsClosed_new,IsHighPriority_new,LastModifiedById_new,LastModifiedDate_new,Phone_ANI__c_new,preQueueSeconds__c_new,IsClosed_new,ReminderDateTime_new,routingTime__c_new,StartDateTime__c_new,SystemModstamp_new,TaskNumber__c_new,TaskSubtype_new,Task_Type__c_new,WhatCount_new,WhoCount_new,WhoId_new,Campaign_Name__c_new,CompletedDateTime_new,etl_ld_Status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+spark.hadoop.hive.execution.engine mr

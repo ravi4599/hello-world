@@ -1,0 +1,11 @@
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_crm_agency_hierarchy_rel
+spark.target.schema shipdw
+spark.target.table crm_agency_hierarchy_rel
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_crm_agency_hierarchy_rel
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_crm_agency_hierarchy_rel
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename crm_agency_hierarchy_rel

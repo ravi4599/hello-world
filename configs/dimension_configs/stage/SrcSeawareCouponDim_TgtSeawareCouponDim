@@ -1,0 +1,58 @@
+spark.src.config.id   SrcSeawareCouponDim
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   Stage
+spark.target.config.id   TgtSeawareCouponDim
+spark.parent.id   SrcSeawareAccCoupon-TgtSeawareAccCoupon
+   
+spark.target.ops.table.format   org.apache.phoenix.spark
+spark.target.ops.table.mode   overwrite
+spark.target.enablerops_table   HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+   
+spark.table.type   dim
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx_mig
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.redshift.schema   Hive_schema_stg
+spark.redshift.tablename   seaware_coupon_dim
+
+   
+  
+
+
+spark.source.sql select ac.COUPON_ID as SRC_COUPON_ID,ac.USER_DEFINED_COUPON_ID as USER_DEFINED_COUPON_ID,cpn_issue_date.issue_date as ISSUE_DATE ,ac.VALID_FROM as VALID_FROM, ac.VALID_TO as VALID_TO,ac.EFFECTIVE_FROM as EFFECTIVE_FROM,ac.EFFECTIVE_TO as EFFECTIVE_TO,ac.COUPON_CATEGORY as COUPON_CATEGORY,ac.COUPON_CLASS as COUPON_CLASS,cc.COUPON_CLASS_CODE as COUPON_CLASS_CODE,cc.COMMENTS as COUPON_CLASS_COMMENTS,cc.APPLY_AS_PAYMENT as APPLY_AS_PAYMENT,cc.APPLY_AS_DISCOUNT as APPLY_AS_DISCOUNT,ac.OFFICE_CODE as OFFICE_CODE,ac.RES_ID as RES_ID,ac.ENTITY_TYPE as ENTITY_TYPE,ac.ENTITY_ID as ENTITY_ID,ac.IS_USED as IS_USED,ac.IS_ACTIVE as IS_ACTIVE,ac.CURRENCY_CODE as CURRENCY_CODE,ac.AMOUNT as AMOUNT,ac.AMOUNT_LEFT as AMOUNT_LEFT,ac.CHARGE_CODE as CHARGE_CODE,ac.REASON_CODE as REASON_CODE,ac.COMMENTS as COMMENTS,ac.batchtime as batchtime,ac.part_date as part_date,ac.ts_ms as ts_ms_ac,cc.ts_ms  as ts_ms_cc,ts_ms_va from vv_db.hvtb_parse_sw_rpl_acc_coupon ac left join vv_db.hvtb_parse_sw_rpl_acc_coupon_class cc on ac.COUPON_CLASS=cc.COUPON_CLASS left join (select COUPON_ID,issue_date,ts_ms_va from (select SRC_REC_ID as COUPON_ID,CAST(from_unixtime(COL_VALUE/1000,'yyyy-MM-dd HH:mm:ss') as timestamp) as issue_date,ts_ms as ts_ms_va,row_number() over(partition by SRC_REC_ID order by DOUBLE(COL_VALUE) asc) rn from vv_db.hvtb_parse_sw_rpl_vcs_arch where COL_NAME = 'STAMP_' and ACTION != 'C' and TBL_NAME ='ACC_COUPON') where rn = 1) cpn_issue_date on ac.COUPON_ID = cpn_issue_date.COUPON_ID left join vv_db.hvtb_nbx_core_sw_reservation_dim RD on RD.src_res_id=ac.res_id AND RD.rec_end_dttm='9999-12-31' *whereclause*
+  
+spark.source.columns SRC_COUPON_ID,USER_DEFINED_COUPON_ID,ISSUE_DATE,VALID_FROM,VALID_TO,EFFECTIVE_FROM,EFFECTIVE_TO,COUPON_CATEGORY,COUPON_CLASS,COUPON_CLASS_CODE,COUPON_CLASS_COMMENTS,APPLY_AS_PAYMENT,APPLY_AS_DISCOUNT,OFFICE_CODE,RES_ID,ENTITY_TYPE,ENTITY_ID,IS_USED,IS_ACTIVE,CURRENCY_CODE,AMOUNT,AMOUNT_LEFT,CHARGE_CODE,REASON_CODE,COMMENTS
+   
+spark.pond.allColumns COUPON_ID as pond_COUPON_ID,REC_START_DTTM as pond_REC_START_DTTM,REC_END_DTTM as pond_REC_END_DTTM,SRC_COUPON_ID as pond_SRC_COUPON_ID,USER_DEFINED_COUPON_ID as pond_USER_DEFINED_COUPON_ID ,ISSUE_DATE as pond_ISSUE_DATE,VALID_FROM as pond_VALID_FROM,VALID_TO as pond_VALID_TO,EFFECTIVE_FROM as pond_EFFECTIVE_FROM,EFFECTIVE_TO as pond_EFFECTIVE_TO,COUPON_CATEGORY as pond_COUPON_CATEGORY,COUPON_CLASS as pond_COUPON_CLASS,COUPON_CLASS_CODE as pond_COUPON_CLASS_CODE,COUPON_CLASS_COMMENTS as pond_COUPON_CLASS_COMMENTS,APPLY_AS_PAYMENT as pond_APPLY_AS_PAYMENT,APPLY_AS_DISCOUNT as pond_APPLY_AS_DISCOUNT,OFFICE_CODE as pond_OFFICE_CODE,RES_ID as pond_RES_ID,ENTITY_TYPE as pond_ENTITY_TYPE,ENTITY_ID as pond_ENTITY_ID,IS_USED as pond_IS_USED,IS_ACTIVE as pond_IS_ACTIVE,CURRENCY_CODE as pond_CURRENCY_CODE,AMOUNT as pond_AMOUNT,AMOUNT_LEFT as pond_AMOUNT_LEFT,CHARGE_CODE as pond_CHARGE_CODE,REASON_CODE as pond_REASON_CODE,COMMENTS as pond_COMMENTS,etl_ld_status as pond_etl_ld_status,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,scd_hash as pond_scd_hash
+
+
+spark.target.final_collist COUPON_ID,final_view.REC_START_DTTM,final_view.REC_END_DTTM,final_view.SRC_COUPON_ID,final_view.USER_DEFINED_COUPON_ID,final_view.ISSUE_DATE,final_view.VALID_FROM,final_view.VALID_TO,final_view.EFFECTIVE_FROM,final_view.EFFECTIVE_TO,final_view.COUPON_CATEGORY,final_view.COUPON_CLASS,final_view.COUPON_CLASS_CODE,final_view.COUPON_CLASS_COMMENTS,final_view.APPLY_AS_PAYMENT,final_view.APPLY_AS_DISCOUNT,final_view.OFFICE_CODE,final_view.RES_ID,final_view.ENTITY_TYPE,final_view.ENTITY_ID,final_view.IS_USED,final_view.IS_ACTIVE,final_view.CURRENCY_CODE,final_view.AMOUNT,final_view.AMOUNT_LEFT,final_view.CHARGE_CODE,final_view.REASON_CODE,final_view.COMMENTS,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash   
+
+spark.surrogate_key.column   COUPON_ID
+spark.pond.database   vv_db_mig
+spark.pond.table   hvtb_nbx_core_sw_coupon_dim
+spark.source.primaryKeyColumns   SRC_COUPON_ID
+spark.frameworkEnv   shore
+spark.tableType   DIMENSION
+spark.target.temp   s3://vv-staging-emr-cluster/data/temp/seaware_replica/hvtb_nbx_core_sw_coupon_dim
+spark.target.location   s3://vv-staging-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_coupon_dim
+
+spark.source.prevoyageflag Prevoyage
+spark.mysql.db vv_metadata
+spark.mysql.login admin
+spark.mysql.password VirginAdmin9$
+spark.mysql.url jdbc:mysql://staging-talend-metadata.cluster-cz4e2a1fysom.us-east-1.rds.amazonaws.com:3306/vv_metadata
+spark.mysql.table load_job_status_log
+spark.mysql.driver com.mysql.jdbc.Driver
+
+   
+##=============SCD2 Config Details ==============  
+
+spark.source.srcDateColumn ts_ms
+spark.scd.columns USER_DEFINED_COUPON_ID,ISSUE_DATE,VALID_FROM,VALID_TO,EFFECTIVE_FROM,EFFECTIVE_TO,COUPON_CATEGORY,COUPON_CLASS,COUPON_CLASS_CODE,COUPON_CLASS_COMMENTS,APPLY_AS_PAYMENT,APPLY_AS_DISCOUNT,OFFICE_CODE,RES_ID,ENTITY_TYPE,ENTITY_ID,IS_USED,IS_ACTIVE,CURRENCY_CODE,AMOUNT,AMOUNT_LEFT,CHARGE_CODE,REASON_CODE,COMMENTS
+spark.scdtype type2
+
+# all source columns as alias ( id_new,amount_new,oppo_new )along with all audit columns
+spark.source.updateReq COUPON_ID,REC_START_DTTM,REC_END_DTTM,SRC_COUPON_ID_new,USER_DEFINED_COUPON_ID_new,ISSUE_DATE_new,VALID_FROM_new,VALID_TO_new,EFFECTIVE_FROM_new,EFFECTIVE_TO,COUPON_CATEGORY_new,COUPON_CLASS_new,COUPON_CLASS_CODE_new,COUPON_CLASS_COMMENTS_new,APPLY_AS_PAYMENT_new,APPLY_AS_DISCOUNT_new,OFFICE_CODE_new,RES_ID_new,ENTITY_TYPE_new,ENTITY_ID_new,IS_USED_new,IS_ACTIVE_new,CURRENCY_CODE_new,AMOUNT_new,AMOUNT_LEFT_new,CHARGE_CODE_new,REASON_CODE_new,COMMENTS_new,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+

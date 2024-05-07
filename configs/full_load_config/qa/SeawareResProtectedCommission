@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.RES_PROTECTED_COMMISSION
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT RECORD_ID, RES_ID, COMMISS_SOURCE, COMMISS_CODE, PERCENT, AMOUNT, COMMISS_FARE, IS_MANUAL_ADJUSTMENT, IS_LOWER_LIMIT, IS_UPPER_LIMIT, AGENCY_ID, PAYOUT_DATE, GL_PROTOTYPE_ID FROM SEAWARE.RES_PROTECTED_COMMISSION)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_res_protected_commission
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/RES_PROTECTED_COMMISSION
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_res_protected_commission/
+
+spark.hadoop.hive.execution.engine mr

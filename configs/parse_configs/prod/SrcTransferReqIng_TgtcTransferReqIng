@@ -1,0 +1,18 @@
+spark.src.config.id SrcTransferReqIng
+spark.voyage.id SC1912065NCM
+spark.tgt.env Prod
+spark.target.config.id TgtcTransferReqIng
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.input.filepath gs://vv-prod-nbx-cluster/data/testexcel/Initial/
+spark.input.processedfilepath gs://vv-prod-nbx-cluster/data/testexcel/processed/
+spark.transfer.table vv_db.hvtb_lnd_transfer_deets
+spark.poi.table vv_db.hvtb_lnd_point_of_interest
+spark.hadoop.hive.execution.engine mr
+##spark.s3.ssh hadoop@10.3.100.232
+

@@ -1,0 +1,17 @@
+spark.source.table select * from shipdw.hvtb_lnd_vxp_loca_hostpreference
+spark.target.table shipdw.hvtb_parse_vxp_loca_hostpreference
+spark.src.config.id SrcParsehostpreference
+spark.voyage.id SC2002269NCR 
+spark.tgt.env Stage
+spark.target.config.id TgtParsehostpreference
+spark.parent.id SrcKfkhostpreference-TgtHvhostpreference-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.kafka.zookeeper 10.7.12.61:2181
+
+
+
+
+

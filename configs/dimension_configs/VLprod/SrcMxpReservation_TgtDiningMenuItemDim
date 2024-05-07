@@ -1,0 +1,32 @@
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.src.config.id SrcMxpReservation
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtDiningMenuItemDim
+spark.parent.id SrcMxpVVirginReservations-TgtMxpVVirginReservations-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.table.type dim
+spark.postgresql.database prodnbx
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename dining_menu_item_dim
+spark.source.sql select res.ItemCode as dining_menu_item_code, res.ItemName as dining_menu_item_name, res.ItemGroup as dining_menu_item_group , res.ItemCategory as dining_menu_item_category ,res.VoyageId as voyage_id, res.BatchTime as batchtime, res.Part_Date as partdate from (select * from (select *, row_number() over (partition by ItemCode order by PartyCheckoutTime  desc) rn  from shipdw.hvtb_parse_mxp_vvirgin_reservations) where rn = 1 and ItemCode <> '' ) res
+spark.source.columns dining_menu_item_code,dining_menu_item_name,dining_menu_item_group,dining_menu_item_category,voyage_id
+spark.pond.allColumns dining_menu_item_skey as pond_dining_menu_item_skey,voyage_id as pond_voyage_id,  dining_menu_item_code as pond_dining_menu_item_code,dining_menu_item_name as pond_dining_menu_item_name, dining_menu_item_group as pond_dining_menu_item_group , dining_menu_item_category as pond_dining_menu_item_category ,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_dining_menu_item
+spark.surrogate_key.column dining_menu_item_skey
+spark.source.primaryKeyColumns dining_menu_item_code
+spark.target.final_collist dining_menu_item_skey,final_view.voyage_id as voyage_id,final_view.dining_menu_item_code,final_view.dining_menu_item_name,final_view.dining_menu_item_group,final_view.dining_menu_item_category ,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_dining_menu_item
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_dining_menu_item
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+ 
+spark.ship.code VAL
+

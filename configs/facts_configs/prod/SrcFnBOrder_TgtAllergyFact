@@ -1,0 +1,30 @@
+spark.src.config.id SrcFnBOrder
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtAllergyFact
+spark.parent.id Srcshrfoodnbevorder-Tgtshrfoodnbevorder
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.ing.type Fact
+spark.source.sql select * from (select NVL(order_dim.order_detail_skey, -1) as order_detail_skey, cast(-1 as long) as menu_item_skey, cast(-1 as long) dining_reservation_detail_skey, NVL(person_dim.person_skey , -1) as person_skey, NVL(allergy_dim.allergy_skey, -1) as allergy_skey, 'Order' as allergy_details_category, orderallergy.isdeleted as src_deleted_flg, order.VoyageId as voyage_id, order.BatchTime as batchtime, order.Part_Date as part_dt from (select * from (select * , row_number() over(partition by orderid order by modifieddate desc) rn from shipdw.hvtb_parse_vxp_foodnbev_order ) where rn = 1) order join ( select * from (select * , row_number() over(partition by orderallergyid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_foodandbeverage_orderallergy ) where rn = 1) orderallergy on order.orderid  = orderallergy.orderid and order.status <> 0 left join shipdw.hvtb_mart_dim_order_detail order_dim on order.orderid  = order_dim.order_id left join shipdw.hvtb_mart_dim_person person_dim on order.delivertoguestid = person_dim.reservationguest_guid left join shipdw.hvtb_mart_dim_allergy allergy_dim on orderallergy.allergyid = allergy_dim.allergy_id) *whereclause* union select * from (select NVL(order_dim.order_detail_skey, -1) as order_detail_skey, NVL(menu_dim.menu_item_skey , -1) as menu_item_skey, cast(-1 as long) dining_reservation_detail_skey, NVL(person_dim.person_skey , -1) as person_skey, NVL(allergy_dim.allergy_skey, -1) as allergy_skey, 'Menu_Item' as allergy_details_category, cast(false as boolean) as src_deleted_flg, order.VoyageId as voyage_id, order.BatchTime as batchtime, order.Part_Date as part_dt from (select * from (select * , row_number() over(partition by orderid order by modifieddate desc) rn from shipdw.hvtb_parse_vxp_foodnbev_order ) where rn = 1) order join ( select * from (select * , row_number() over(partition by orderdetailid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_foodnbev_orderdetail ) where rn = 1) orderdetail on order.orderid  = orderdetail.orderid and order.status <> 0 left join ( select * from (select * , row_number() over(partition by menuitemallergyid order by addeddate desc) rn from shipdw.hvtb_parse_vxp_foodandbeverage_menuitemallergy ) where rn = 1) menuitem on orderdetail.menuitemid = menuitem.menuitemid left join shipdw.hvtb_mart_dim_order_detail order_dim on order.orderid  = order_dim.order_id left join shipdw.hvtb_mart_dim_menu_item menu_dim on menuitem.menuitemid = menu_dim.menu_item_id left join shipdw.hvtb_mart_dim_person person_dim on order.delivertoguestid = person_dim.reservationguest_guid left join shipdw.hvtb_mart_dim_allergy allergy_dim on menuitem.allergyid = allergy_dim.allergy_id) *whereclause*
+spark.source.columns voyage_id,order_detail_skey,menu_item_skey,dining_reservation_detail_skey,person_skey,allergy_skey,allergy_details_category,src_deleted_flg
+spark.pond.allColumns voyage_id as pond_voyage_id,order_detail_skey as pond_order_detail_skey,menu_item_skey as pond_menu_item_skey,dining_reservation_detail_skey as pond_dining_reservation_detail_skey,person_skey as pond_person_skey,allergy_skey as pond_allergy_skey,allergy_details_category as pond_allergy_details_category,src_deleted_flg as pond_src_deleted_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt,part_dt as pond_part_dt
+spark.target.final_collist final_view.voyage_id ,final_view.order_detail_skey ,final_view.menu_item_skey ,final_view.dining_reservation_detail_skey,final_view.person_skey ,final_view.allergy_skey ,final_view.allergy_details_category ,final_view.src_deleted_flg ,final_view.load_dt,final_view.upd_dt,final_view.part_dt
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname allergy_fact_tmp
+spark.bq.permtblname allergy_fact
+spark.bq.viewname shipdw.allergy_fact
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_allergy
+spark.target.table allergy_fact
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_fact_allergy
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_fact_allergy
+spark.hadoop.hive.execution.engine mr
+

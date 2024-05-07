@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.GROUP_HOTEL_REQUEST
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT RECORD_ID, PRODUCT_TYPE, HOTEL_REQUEST_TYPE, HOTEL_CATEGORY, HOTEL_ROOM_CATEGORY, HOTEL_ID, HOTEL_ROOM_TYPE, QUANTITY, N_OF_GUESTS, CABIN_CATEGORY, PACKAGE_TYPE, SHIP_CODE, CITY_CODE, STAY_DATE_FROM, STAY_DATE_TO, GROUP_ID, EFFECTIVE_DATE, PACKAGE_ID, HOTEL_SPACE_TYPE, OCCUPANCY FROM SEAWARE.GROUP_HOTEL_REQUEST)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_group_hotel_request
+
+spark.src.con.fetchSize 100000
+
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_group_hotel_request/
+
+spark.hadoop.hive.execution.engine mr

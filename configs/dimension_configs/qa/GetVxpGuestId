@@ -1,0 +1,15 @@
+spark.source.query select distinct gd.src_guest_id, cast(gd.client_id as int) as client_id, sd.sail_id, sd.sail_date_from, sd.sail_date_to, rd.src_res_id from vv_db.hvtb_nbx_core_sw_guest_dim gd left join vv_db.hvtb_nbx_core_sw_res_guest_rel rgl on gd.guest_id=rgl.guest_id left join vv_db.hvtb_nbx_core_sw_reservation_dim rd on rgl.res_id=rd.res_id and rd.rec_end_dttm='9999-12-31' left join vv_db.hvtb_nbx_core_sw_sail_dim sd on rd.src_sail_id =sd.src_sail_id and sd.rec_end_dttm = '9999-12-31' where gd.rec_end_dttm='9999-12-31' 
+
+spark.reservation.query select * from (select * , row_number() over(partition by reservationid order by lastmodifieddate desc) rn from vv_db.hvtb_parse_vxp_reservation  ) where rn = 1
+
+
+spark.hadoop.hive.execution.engine mr
+
+
+spark.reservationguest.query select * from (select * , row_number() over(partition by reservationid,guestid order by lastmodifieddate desc) rn from vv_db.hvtb_parse_vxp_reservationguest  ) where rn = 1
+
+spark.frameworkEnv shore
+ 
+spark.target.table vv_db.hvtb_nbx_seaware_guest_sw_vxp_rel
+
+spark.guestrel.query   SELECT sw_vxp_guest_rel_id, src_guest_id, client_id, vxp_guest_id, sail_date_from, sail_date_to, src_res_id, vxp_res_id, vxp_reservation_guest_id, loadtimestamp FROM vv_db.hvtb_nbx_seaware_guest_sw_vxp_rel

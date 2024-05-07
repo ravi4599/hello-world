@@ -1,0 +1,40 @@
+spark.src.config.id SrcPersonTrainingDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtPersonTrainingDim
+spark.parent.id SrcMxpPersonCourses-TgtMxpPersonCourses
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.table.type dim
+
+spark.source.sql select course.person_id as person_id, course.person_course_id as person_course_id, course.training_program_course_id as training_program_course_id, course.course_date_started as course_date_started, course.course_date_completed as course_date_completed, course.person_course_certificate_notification as person_course_certificate_notification, ptpro.person_training_program_started as person_training_program_started, ptpro.person_training_program_completed as person_training_program_completed, tpcour.training_program_course_title as course_title, tpcour.course_tier as course_tier_id, tpctier.training_program_course_tier_title as course_tier_title,part_date,batchtime from (select * from (select person_id,person_course_id,training_program_course_id,course_date_started,course_date_completed,person_course_certificate_notification,part_date,batchtime ,row_number() over(partition by person_course_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_person_courses where person_course_id > 0 )crse where crse.rn=1)course left join (select * from (select person_id,person_course_id,min(person_training_program_started) as person_training_program_started, max(person_training_program_completed) as person_training_program_completed ,row_number() over(partition by person_id,person_course_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_person_training_programs where rec_deleted = false group by person_id,person_course_id,last_changed )ptp where ptp.rn=1) ptpro on (course.person_id = ptpro.person_id and course.person_course_id = ptpro.person_course_id) left join (select * from (select training_program_course_title, course_tier, training_program_course_id,row_number() over(partition by training_program_course_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_training_program_courses )tpc where tpc.rn=1) tpcour on (tpcour.training_program_course_id = course.training_program_course_id) left join (select * from (select training_program_course_tier_title, training_program_course_tier_id,row_number() over(partition by training_program_course_tier_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_training_program_course_tiers )tpct where tpct.rn=1) tpctier on (tpctier.training_program_course_tier_id = tpcour.course_tier) *whereclause*
+
+spark.source.columns person_id,person_course_id,training_program_course_id,course_date_started,course_date_completed,person_course_certificate_notification,person_training_program_started,person_training_program_completed,course_title,course_tier_id,course_tier_title
+
+spark.surrogate_key.column person_training_id
+spark.source.primaryKeyColumns person_id,person_course_id,training_program_course_id
+
+spark.pond.allColumns person_training_id as pond_person_training_id,person_id as pond_person_id,person_course_id as pond_person_course_id,training_program_course_id as pond_training_program_course_id,course_date_started as pond_course_date_started,course_date_completed as pond_course_date_completed,person_course_certificate_notification as pond_person_course_certificate_notification,person_training_program_started as pond_person_training_program_started,person_training_program_completed as pond_person_training_program_completed,course_title as pond_course_title,course_tier_id as pond_course_tier_id,course_tier_title as pond_course_tier_title,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.target.final_collist final_view.person_training_id,final_view.person_id,final_view.person_course_id,final_view.training_program_course_id,final_view.course_date_started,final_view.course_date_completed,final_view.person_course_certificate_notification,final_view.person_training_program_started,final_view.person_training_program_completed,final_view.course_title,final_view.course_tier_id,final_view.course_tier_title,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname person_training_dim_tmp
+spark.bq.permtblname person_training_dim
+spark.bq.viewname shipdw.person_training_dim
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_person_training
+spark.target.schema shipdw
+spark.target.table person_training_dim
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_person_training
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_person_training
+spark.hadoop.hive.execution.engine mr
+

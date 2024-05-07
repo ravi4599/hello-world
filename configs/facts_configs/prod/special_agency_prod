@@ -1,0 +1,14 @@
+spark.landing.table vv_db.hvtb_lnd_special_agency
+spark.hadoop.hive.execution.engine mr
+spark.custapi.url https://prod-swota.gcp.virginvoyages.com/ota/rest/OTA_CruiseSailAvailRQ
+#spark.custapi.url https://swnbx-bizlogic.gcp.virginvoyages.com/ota/rest/OTA_CruiseSailAvailRQ
+spark.maxdate.query Select sail_date_to  from vv_db.hvtb_nbx_core_sw_sail_dim sail inner join vv_db.hvtb_nbx_core_sw_ship_dim shipd on ( shipd.ship !='VC' and shipd.ship !='XE' and sail.ship_id == shipd.ship_id)
+spark.maxcutoff.months 24  
+spark.numadults.list 1,2,3,4
+spark.agency.list 3044,378,5782,3011,8161,3014,3010,483,12861,11877,18448,5344
+#spark.agency.list 3044
+spark.target.table vv_db.hvtb_nbx_core_special_agency
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_nbx_core_special_agency
+spark.target.final gs://vv-prod-nbx-cluster/data/mart/hvtb_nbx_core_special_agency
+spark.noofDays 7
+spark.noofRecords 200

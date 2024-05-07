@@ -1,0 +1,37 @@
+spark.src.con.format jdbc
+spark.src.con.driver org.postgresql.Driver
+spark.src.con.url jdbc:postgresql://prod-apidbreplica.gcp.virginvoyages.com/P_AWS_XREF_DB
+spark.src.user vvadmin
+spark.src.password VvAdmin9$
+
+spark.src.config.id SrcXrefRefType
+spark.tgt.env QA
+spark.ing.type Ingestion
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtXrefRefType
+spark.src.table.query xref.reference_type
+
+spark.target.lnd.table shipdw.hvtb_nbx_landing_xref_reference_type
+spark.target.table shipdw.hvtb_nbx_landing_xref_reference_type
+
+spark.target.lnd.table shipdw.hvtb_nbx_landing_xref_reference_type
+spark.target.table shipdw.hvtb_nbx_landing_xref_reference_type
+
+
+spark.target.temp gs://vv-cert-nbx-cluster/data/landing/xref/temp/hvtb_nbx_landing_xref_reference_type
+spark.target.table.loc gs://vv-cert-nbx-cluster/data/landing/xref/hvtb_nbx_landing_xref_reference_type
+
+spark.source.columns reference_type_id,reference_source_id,reference_type
+spark.source.query reference_type_id,reference_source_id,reference_type
+spark.ship.code SHORE
+
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.offset.mode Append
+spark.metadata.offset.table shipdw.hbtb_streaming_ingestion_offset
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr

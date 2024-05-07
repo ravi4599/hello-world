@@ -1,0 +1,36 @@
+spark.src.con.format jdbc
+spark.src.config.id SrcTxnAmexMCC
+spark.tgt.env dev
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtTxnAmexMCC
+
+spark.target.location gs://vv-dev-nbx-cluster/data/parse/creditcard/hvtb_parse_cc_txn_amex_mcc
+spark.target.table vv_db.hvtb_parse_cc_txn_amex_mcc
+
+spark.api.env dev
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr
+
+spark.source.format csv
+spark.csv.header true
+spark.input.inputfilepath gs://vv-dev-credit-card/Amex/MCC/landing/
+
+spark.error.filepath gs://vv-dev-credit-card/Amex/MCC/error/
+
+#spark.source.file 
+
+########while writing spark.source.query no need write -->"from table name"--> as its already present in the scala code ###########
+
+spark.source.query select _c0 as field_01 , _c1 as field_02 , _c2 as field_03 , _c3 as field_04 , _c4 as field_05 , _c5 as field_06 , _c6 as field_07 , _c7 as field_08 , _c8 as field_09 , _c9 as field_10 , _c10 as field_11 , _c11 as field_12 , _c12 as field_13 , _c13 as field_14 , _c14 as field_15 , _c15 as field_16 , _c16 as field_17 , _c17 as field_18 , _c18 as field_19 , _c19 as field_20 , _c20 as field_21 , _c21 as field_22 , _c22 as field_23 , _c23 as field_24 , _c24 as field_25 , _c25 as field_26 , _c26 as field_27 , _c27 as field_28 , _c28 as field_29 , _c29 as field_30 , _c30 as field_31 , _c31 as field_32 , _c32 as field_33 , _c33 as field_34 , _c34 as field_35 , _c35 as field_36 , _c36 as field_37 , _c37 as field_38 , _c38 as field_39 , _c39 as field_40 , _c40 as field_41 , _c41 as field_42 , _c42 as field_43 , _c43 as field_44
+
+######### If aliasing and casting is not required only spark.source.columns can be used #########
+
+#spark.source.columns 
+
+

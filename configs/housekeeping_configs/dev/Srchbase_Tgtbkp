@@ -1,0 +1,21 @@
+spark.housekeeping.format org.apache.phoenix.spark
+spark.kafkastreamoffset.kafkastreamoffsettable HBTB_NBX_KAFKA_STREAMING_OFFSET
+spark.streamingingestoffset.streamingingestoffsettable HBTB_STREAMING_INGESTION_OFFSET
+spark.ingestmetadata.ingestmetadatatable HBTB_INGESTION_METADATA
+
+spark.kafkastreamoffset.deletequery DELETE FROM HBTB_NBX_KAFKA_STREAMING_OFFSET WHERE TIMESTAMP
+spark.streamingingestoffset.deletequery DELETE FROM HBTB_STREAMING_INGESTION_OFFSET WHERE to_date(ARRAY_ELEM (REGEXP_SPLIT(BATCH_INSTANCE_ID,'-'),4),'yyyyMMddhhmms')
+
+
+spark.ingestmetadata.deletequery DELETE  from HBTB_INGESTION_METADATA where BATCH_EXECUTION_STARTTIME
+
+
+
+
+spark.housekeeping.days 30
+
+
+spark.filepath.housekeeping s3://vv-dev-emr-cluster/tmp/backups/hbase-offsets-backup/
+spark.housekeeping.readhbasezkurl 10.3.100.222:2181/hbase-unsecure;autocommit=true
+
+spark.housekeeping.jdbcurl jdbc:phoenix:10.3.100.222:2181/hbase-unsecure;autocommit=true

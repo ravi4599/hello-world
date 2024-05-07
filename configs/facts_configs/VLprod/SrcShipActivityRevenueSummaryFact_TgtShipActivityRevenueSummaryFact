@@ -1,0 +1,33 @@
+#PROD cluster and hive details
+#Unique constant for Batchid and Parentid details
+spark.src.config.id SrcShipActivityRevenueSummaryFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtShipActivityRevenueSummaryFact
+spark.parent.id SrcSalesFolio-TgtRevenueFact-SC2002269NCR
+#Metadata Hbase table and connection details
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+#PROD postgress database details
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.database prodnbx
+#Source hive and target progres schema, table and columns details
+spark.source.sql 
+spark.source.columns 
+spark.pond.allColumns 
+spark.pond.database shipdw
+spark.source.primaryKeyColumns 
+spark.pond.table hvtb_mart_ship_activity_revenue_summary_fact
+spark.target.final_collist 
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_ship_activity_revenue_summary_fact
+spark.target.location /data/apps/nbx/mart/hvtb_mart_ship_activity_revenue_summary_fact
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename ship_activity_revenue_summary_fact
+spark.tableType fact
+spark.frameworkEnv ship
+spark.ship.code VAL
+

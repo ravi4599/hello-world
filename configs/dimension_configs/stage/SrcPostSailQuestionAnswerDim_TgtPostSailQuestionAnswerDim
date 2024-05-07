@@ -1,0 +1,39 @@
+spark.src.config.id SrcPostSailQuestionAnswerDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env stage
+spark.target.config.id TgtPostSailQuestionAnswerDim
+spark.parent.id SrcPostSailQuestionAnswerDim-TgtPostSailQuestionAnswerDim
+
+spark.target.ops.table.format   org.apache.phoenix.spark
+spark.target.ops.table.mode   overwrite
+spark.target.enablerops_table   HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+spark.table.type dim
+
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+
+spark.source.location /data/core/PostSailorSurveyShore/QD/
+spark.source.columns src_question_id,variable_id,question_text,Type,category,answer_code,answer_code_text,batchtime
+
+spark.pond.allColumns question_answer_id as pond_question_answer_id,src_question_id as pond_src_question_id,variable_id as pond_variable_id,question_text as pond_question_text,Type as pond_Type,cast(category as varchar(50)) as pond_category,answer_code as pond_answer_code,answer_code_text as pond_answer_code_text,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.surrogate_key.column question_answer_id
+spark.pond.database vv_db
+spark.pond.table hvtb_mart_postvoyage_survey_question_answer_dim
+spark.target.schema vv_db
+spark.target.table hvtb_mart_postvoyage_survey_question_answer_dim
+spark.source.primaryKeyColumns src_question_id,variable_id,answer_code
+
+spark.target.final_collist  cast(final_view.question_answer_id as bigint)as question_answer_id, cast(final_view.src_question_id as varchar(50))as src_question_id, cast(final_view.variable_id as varchar(50))as variable_id, cast(final_view.question_text as varchar(500))as question_text,cast(final_view.type as varchar(50))as Type,cast(final_view.category as varchar(50)) as category, cast(final_view.answer_code as int)as answer_code, cast(final_view.answer_code_text as varchar(500))as answer_code_text, cast(final_view.load_dt as timestamp)as load_dt, cast(final_view.upd_dt as timestamp)as upd_dt, cast(final_view.primaryhash as string)as primaryhash, cast(final_view.md5_hash as string)as md5_hash
+
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_postvoyage_survey_question_answer_dim
+spark.target.location s3://vv-staging-emr-cluster/data/core/seaware/hvtb_mart_postvoyage_survey_question_answer_dim
+spark.redshift.schema seaware
+spark.redshift.tablename postvoyage_survey_question_answer_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.landing.location s3://vv-staging-emr-cluster/data/landing/hvtb_lnd_nepa_postvoyage_question

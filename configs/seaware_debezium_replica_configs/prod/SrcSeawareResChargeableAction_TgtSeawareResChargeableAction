@@ -1,0 +1,32 @@
+spark.kafkabrokers prodkafka1.gcp.virginvoyages.com:9092,prodkafka2.gcp.virginvoyages.com:9092,prodkafka3.gcp.virginvoyages.com:9092
+spark.kafka.zookeeper prodkafka1.gcp.virginvoyages.com:2181
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic dbz.sw.SEAWARE.RES_CHARGEABLE_ACTION
+spark.snapshot.table shipdw.hbtb_dbz_snapdate
+spark.metadata.con.format jdbc
+spark.metadata.offset.mode Append
+spark.metadata.offset.table shipdw.hbtb_streaming_ingestion_offset
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.snpsht.table.mode overwrite
+spark.src.personOffSet earliest
+spark.src.config.id SrcSeawareResChargeableAction
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.ship.code SHORE
+spark.target.config.id TgtSeawareResChargeableAction
+spark.target.lnd.table vv_db.hvtb_nbx_lnd_sw_rpl_res_chargeable_action
+spark.target.parse.table vv_db.hvtb_nbx_parse_sw_rpl_res_chargeable_action
+#spark.source.columns ACTION_ID, ENTITY_TYPE, ENTITY_ID, RES_ACTION_TYPE, ACTION_TIMESTAMP, IS_ADDED_MANUALLY, IS_FINAL, FINAL_TIMESTAMP,op,ts_ms,voyageid,Batchtime,Part_Date
+spark.source.columns ACTION_ID, ENTITY_TYPE, ENTITY_ID, RES_ACTION_TYPE, ACTION_TIMESTAMP, IS_ADDED_MANUALLY, IS_PAID,PAID_TIMESTAMP,DESIGNATED_PAYMENT_CODE,IS_PAID_SET_MANUALLY,op,ts_ms,voyageid,Batchtime,Part_Date
+spark.final.query select ACTION_ID, ENTITY_TYPE, ENTITY_ID, RES_ACTION_TYPE, CAST(ACTION_TIMESTAMP/1000000 as timestamp) as ACTION_TIMESTAMP, IS_ADDED_MANUALLY, IS_FINAL, CAST(FINAL_TIMESTAMP/1000000 as timestamp) as FINAL_TIMESTAMP,op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date
+spark.hadoop.hive.execution.engine mr
+
+spark.stop.flag Y
+
+spark.stop.trgFile Y
+spark.trgFileName hdfs://prd-nbx-gcp-dp-15-hive/data/streamingtriggers/SrcSeawareResChargeableAction_TgtSeawareResChargeableAction.trg

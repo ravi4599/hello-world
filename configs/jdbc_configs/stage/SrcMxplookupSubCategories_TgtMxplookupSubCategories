@@ -1,0 +1,21 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:sqlserver://10.12.1.243:1442;database=MXP
+spark.src.user Capgemini
+spark.src.password Nskh#c5v3y&7
+spark.src.con.driver com.microsoft.sqlserver.jdbc.SQLServerDriver
+spark.src.config.id SrcMxplookupSubCategories
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtMxplookupSubCategories
+spark.target.location s3://vv-staging-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_Lookup_Sub_Categories
+spark.target.hive.table shipdw.hvtb_lnd_mxp_Lookup_Sub_Categories
+spark.target.table shipdw.hvtb_lnd_mxp_Lookup_Sub_Categories
+spark.src.table.query MXP.dbo.Lookup_Sub_Categories
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.condition.column LAST_CHANGED
+spark.source.columns LOOKUP_SUB_CATEGORY_ID, LOOKUP_SUB_CATEGORY_NAME, LOOKUP_MAIN_CATEGORY_ID, SHOW_DISPLAY_CODE, PAGE_INDEX, LOOKUP_TYPE, CREATED, LAST_CHANGED, CHANGED, GUID, CREATED_BY_ID, SHOW_IMAGE, CREATED_AT_ID, LOOKUP_SUB_CATEGORY_ALIAS_NAME, SHOW_ALIAS_NAME, SHOW_LOOKUP_TEXT_1, SHOW_LOOKUP_TEXT_2, UPLOAD_TO_E_COMMERCE, LAST_CHANGE_LOG_ID
+spark.ship.code SHORE
+

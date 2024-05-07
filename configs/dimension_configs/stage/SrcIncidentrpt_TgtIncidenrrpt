@@ -1,0 +1,15 @@
+spark.src.config.id SrcIncidentrpt
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtIncidentrpt
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.redshift.schema shipdw
+
+

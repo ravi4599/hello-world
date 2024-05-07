@@ -1,0 +1,34 @@
+spark.src.config.id SrcForecastVersionLkp
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtForecastVersionLkp
+spark.parent.id SrcRevenueForecast-TgtRevenueForecast
+spark.hadoop.hive.execution.engine mr
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.source.sql select distinct rkpf.forecast_version as forecast_version_desc,batchtime,part_date from vv_db.hvtb_nbx_landing_revenue_kpi_plan_forecast_upload as rkpf
+spark.source.columns forecast_version_desc
+spark.pond.allColumns forecast_version_id as pond_forecast_version_id,forecast_version_desc as pond_forecast_version_desc,etl_ld_status as pond_etl_ld_status,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.target.final_collist final_view.forecast_version_id as forecast_version_id,final_view.forecast_version_desc as forecast_version_desc,final_view.insert_update_flag as etl_ld_status,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash
+spark.surrogate_key.column forecast_version_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_forecastversion_lkp
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_forecastversion_lkp
+spark.source.primaryKeyColumns forecast_version_desc
+spark.target.temp gs://vv-prod-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_forecastversion_lkp
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_forecastversion_lkp
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname sw_forecastversion_lkp_tmp
+spark.bq.permtblname sw_forecastversion_lkp
+spark.bq.viewname seaware.sw_forecastversion_lkp
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+

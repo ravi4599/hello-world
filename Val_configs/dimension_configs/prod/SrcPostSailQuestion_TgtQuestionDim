@@ -1,0 +1,32 @@
+spark.src.config.id SrcPostSailQuestion
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtQuestionDIm
+spark.parent.id SrcPostSailQuestion-TgtQuestionDIm-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.location s3://vv-dev-emr-cluster/data/data/apps/nbx/Dim/config/postcruise_QD_20200319_134500.txt
+spark.source.columns src_question_id,batchtime,category, answer_code_max, answer_code_min, variable_id, Type, Start, Finish, question_text, answer_code, answer_label, answer_code_min_text, answer_code_max_text
+spark.pond.allColumns question_id as pond_question_id,src_question_id as pond_src_question_id,variable_id as pond_variable_id,question_text as pond_question_text,Type as pond_Type,category as pond_category,answer_code_min as pond_answer_code_min,answer_code_max as pond_answer_code_max,answer_code_min_text as pond_answer_code_min_text,answer_code_max_text as pond_answer_code_max_text,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column question_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_postvoyage_survey_questions_dim
+spark.postgresql.schema vv_db
+spark.target.table 
+spark.source.primaryKeyColumns src_question_id,variable_id
+spark.target.final_collist cast(final_view.question_id as bigint)as question_id, cast(final_view.src_question_id as varchar(50))as src_question_id, cast(final_view.variable_id as varchar(50))as variable_id, cast(final_view.question_text as varchar(500))as question_text, cast(final_view.type as varchar(50))as type,final_view.category, cast(final_view.answer_code_min as int)as answer_code_min, cast(final_view.answer_code_max as int)as answer_code_max, cast(final_view.answer_code_min_text as varchar(500))as answer_code_min_text, cast(final_view.answer_code_max_text as varchar(500))as answer_code_max_text, cast(final_view.load_dt as timestamp)as load_dt, cast(final_view.upd_dt as timestamp)as upd_dt, cast(final_view.primaryhash as string)as primaryhash, cast(final_view.md5_hash as string)as md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_nbx_core_postvoyage_survey_questions_dim
+spark.target.location s3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_postvoyage_survey_questions_dim
+spark.postgresql.schema seaware
+spark.postgresql.tablename postvoyage_survey_questions_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+

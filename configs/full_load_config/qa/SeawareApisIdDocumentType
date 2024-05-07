@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.APIS_ID_DOCUMENT_TYPE
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT RECORD_ID, ID_DOCUMENT_TYPE, ID_DOCUMENT_NAME, COMMENTS, NOAD_DOCUMENT_CODE, SW_ID_DOCUMENT_TYPE FROM SEAWARE.APIS_ID_DOCUMENT_TYPE)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_apis_id_document_type
+
+spark.src.con.fetchSize 100000
+
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_apis_id_document_type/
+
+spark.hadoop.hive.execution.engine mr

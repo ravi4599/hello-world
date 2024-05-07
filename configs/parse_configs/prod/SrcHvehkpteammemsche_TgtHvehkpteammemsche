@@ -1,0 +1,19 @@
+spark.source.table select * from shipdw.hvtb_lnd_vxp_housekeeping_team_member_schedule
+spark.target.table shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule
+spark.placeSection.target.table shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule_section
+spark.placeDeck.target.table shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule_placedeck
+spark.src.config.id SrcHveteammemschedule
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtHveteammemschedule
+spark.parent.id SrcKfkhkpteammemsche-TgtHvehkpteammemsche
+spark.metadata.offset.table shipdw.hbtb_nbx_kafka_streaming_offset
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.con.format jdbc
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.hadoop.hive.execution.engine mr
+

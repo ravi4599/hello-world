@@ -1,0 +1,39 @@
+#------------------# 
+#------META DATA CONFIG-----#						
+spark.src.config.id SrcMxpPositionFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtMxpPositionFact
+spark.parent.id SrcMxpPosition-TgtMxpPosition
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+#-------------------------# 
+spark.postgresql.database prodnbx
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename person_position_fact
+#------Query Propery-----#
+spark.source.sql select position_id, position_valid_from as position_valid_from_timestamp, position_valid_to as position_valid_to_timestamp, batchtime, part_date from shipdw.hvtb_parse_mxp_position
+spark.source.person.booking.sql select person_booking_id as pbooking_person_booking_id, position_id as pbooking_position_id from shipdw.hvtb_parse_mxp_person_booking group by person_booking_id, position_id
+spark.source.person.dim.sql select person_skey as person_dim_person_skey, booking_id as person_dim_booking_id from shipdw.hvtb_mart_dim_person
+spark.source.position.dim.sql select position_skey as position_dim_position_skey, position_id as position_dim_position_id from shipdw.hvtb_mart_dim_position
+spark.source.columns person_skey, position_skey, position_valid_from_timestamp, position_valid_to_timestamp, batchtime, part_date
+spark.pond.allColumns person_skey as pond_person_skey, position_skey as pond_position_skey, position_valid_from_timestamp as pond_position_valid_from_timestamp, position_valid_to_timestamp as pond_position_valid_to_timestamp, load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash, part_dt as pond_part_dt
+spark.target.final_collist final_view.person_skey, final_view.position_skey, final_view.position_valid_from_timestamp, final_view.position_valid_to_timestamp, final_view.load_dt, final_view.upd_dt, final_view.primaryhash, final_view.md5_hash, final_view.part_dt
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_person_position
+spark.target.schema shipdw									
+spark.source.primaryKeyColumns person_skey,position_skey
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_fact_person_position
+spark.target.location /data/apps/nbx/mart/hvtb_mart_fact_person_position
+spark.redshift.schema Hive_schema_stg
+spark.tableType FACT
+spark.frameworkEnv ship
+spark.factType Accu
+spark.scdtype type1
+spark.ship.code VAL
+

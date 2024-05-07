@@ -1,0 +1,12 @@
+spark.source.table select * from shipdw.hvtb_lnd_vxp_loca_locationevent
+spark.target.table shipdw.hvtb_lnd_vxp_loca_locationevent
+spark.src.config.id SrcParselocationevent
+spark.voyage.id SC2002269NCR 
+spark.tgt.env Stage
+spark.target.config.id TgtParselocationevent
+spark.parent.id SrcKfklocationevent-TgtHvlocationevent
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.kafka.zookeeper 10.7.12.61:2181

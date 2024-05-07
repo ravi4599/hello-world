@@ -1,0 +1,32 @@
+spark.src.config.id	SrcSailorSurveyQuestionDim 
+spark.voyage.id	SC2002269NCR 
+spark.tgt.env Prod
+spark.target.config.id TgtSailorSurveyQuestionDim
+spark.parent.id	SrcSailorReviewAsk-TgtSailorReviewAsk 
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.columns src_question_id,question_text,master_question,category,Type,master_location,Is_PrimaryQuestion,Is_ClosingQuestion,batchtime,part_date
+spark.pond.allColumns question_skey as pond_question_skey,src_question_id as pond_src_question_id,question_text as pond_question_text,master_question as pond_master_question,category as pond_category,Type as pond_Type,master_location as pond_master_location,Is_PrimaryQuestion as pond_Is_PrimaryQuestion,Is_ClosingQuestion as pondIs_ClosingQuestion,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column question_skey
+spark.pond.database	shipdw 
+spark.pond.table hvtb_mart_shipboard_survey_questions_dim
+spark.target.schema	shipdw 
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename shipboard_survey_questions_dim
+spark.source.primaryKeyColumns src_question_id,master_location
+spark.target.final_collist final_view.question_skey as question_skey,final_view.src_question_id as src_question_id,final_view.question_text as question_text,final_view.master_question as master_question,final_view.category as category ,final_view.Type as Type,final_view.master_location as master_location,final_view.Is_PrimaryQuestion as Is_PrimaryQuestion,final_view.Is_ClosingQuestion as Is_ClosingQuestion,final_view.load_dt ,final_view.upd_dt ,final_view.primaryhash ,final_view.md5_hash
+spark.target.temp /data/apps/nbx/hive/temp/hvtb_mart_shipboard_survey_questions_dim
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_shipboard_survey_questions_dim/
+spark.target.schema	hive_schema_stg 
+spark.postgres.tablename shipboard_survey_questions_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+

@@ -1,0 +1,28 @@
+spark.kafkabrokers 10.7.3.103:9092,10.7.11.112:9092,10.7.12.61:9092
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic dbz.sw.SEAWARE.RES_CHARGEABLE_ACTION
+spark.src.personOffSet earliest
+spark.src.config.id SrcSeawareResChargableAction
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtSeawareResChargableAction
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_res_chargeable_action
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_res_chargeable_action
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.kafka.zookeeper 10.7.12.61:2181
+
+spark.source.columns ACTION_ID, ENTITY_TYPE, ENTITY_ID, RES_ACTION_TYPE, ACTION_TIMESTAMP, IS_ADDED_MANUALLY, IS_FINAL, FINAL_TIMESTAMP,op,ts_ms,voyageid,Batchtime,Part_Date
+
+spark.final.query select ACTION_ID, ENTITY_TYPE, ENTITY_ID, RES_ACTION_TYPE, CAST(ACTION_TIMESTAMP/1000000 as timestamp) as ACTION_TIMESTAMP, IS_ADDED_MANUALLY, IS_FINAL, CAST(FINAL_TIMESTAMP/1000000 as timestamp) as FINAL_TIMESTAMP,op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date
+

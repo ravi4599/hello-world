@@ -1,0 +1,16 @@
+spark.source.static.columns responseid,respid,status,interview_start,interview_start_time,interview_end,interview_end_time,last_touched,last_touched_time,lastcomplete,lastcomplete_time,email,emailAddress,CountryId,Datebehaviour,Time,MemberId,OptOutLink,ExternalTargetGroupId,ExternalTargetGroupName,TargetGroupNameFromFile,City,Address,PurchaseAmount,VisitId,CandidateId,InternalTargetGroupId,SampleId,CandidateHash,clientId,FILE_GENERATION_DATE,SHIPCODE,SHIPNAME,VOYAGEID,VOYAGE_START,VOYAGE_END,ITINERARY_PORTS,SHOREX_NAME,QFlag,RespStatus,src,Id,ForeignId,HQCountry,l,ErrorMessage_1,ErrorMessage_2,ErrorMessage_3,ErrorMessage_4,ErrorMessage_5,ErrorMessage_6,ErrorMessage_7,ErrorMessage_8,ErrorMessage_9,Session,IPAddress,Beginning_time,Beginning_Date,BussXX,Week,month,year,UserAgent,BrowserV,BrowserT,BrowserOS,BrowserFeatures,IsMobile,RenderingVersion,HQTrack_1,HQTrack_2,ClientName,LOI,Incentive,HQSpeeder_1,HQStraightLiners_1,End_time,End_Date,intdur,intdurMinutes,file_name,etl_load_dt,batchtime,part_date
+spark.source.postvoyage.resp.hdfs.postvoyage.file /data/core/PostSailorSurveyShore/PostCruise
+spark.source.postvoyage.resp.hdfs.remi.file /data/core/PostSailorSurveyShore/Remi
+spark.parse.static.table vv_db.hvtb_parse_postvoyage_static_responses
+spark.parse.dynamic.table vv_db.hvtb_parse_postvoyage_dynamic_responses
+
+spark.api.env Qa
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.tgt.env Qa
+spark.hadoop.hive.execution.engine mr

@@ -1,0 +1,20 @@
+spark.source.table select * from shipdw.hvtb_lnd_go_venue_availability
+spark.target.venue.table shipdw.hvtb_parse_mxp_gospark_venue
+spark.target.venuedetails.table shipdw.hvtb_parse_mxp_gospark_venue_details
+spark.target.mealdata.table shipdw.hvtb_parse_mxp_gospark_venue_mealperiod
+spark.target.Availability_data.table shipdw.hvtb_parse_mxp_gospark_venue_availability
+spark.src.config.id SrcGosparkVenue
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtGosparkVenue
+spark.parent.id SrcGoVenueAvailKafka-TgtGoVenuAvailHive
+spark.metadata.offset.table shipdw.hbtb_nbx_kafka_streaming_offset
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.con.format jdbc
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.hadoop.hive.execution.engine mr
+

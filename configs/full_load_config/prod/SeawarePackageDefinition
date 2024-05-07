@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.PACKAGE_DEFINITION
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT PACKAGE_ID, PACKAGE_CODE, VACATION_DATE, PACKAGE_TYPE, SAIL_ID, SEASON_CODE, GEOG_AREA_CODE, IS_ACTIVE, COMMENTS, SORT_SEQN, SHOREX_MODE, SHOREX_TIMING, INITIAL_STATUS, ROUTE_CODE, PACKAGE_NAME, SAIL_SEGMENTS, SAIL_DAYS_OVERRIDE, POINTS_SAIL_SEGMENTS FROM SEAWARE.PACKAGE_DEFINITION)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_package_definition
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/PACKAGE_DEFINITION
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_package_definition/
+
+spark.hadoop.hive.execution.engine mr

@@ -1,0 +1,56 @@
+spark.kafkabrokers 10.7.3.103:9092,10.7.11.112:9092,10.7.12.61:9092 
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+
+spark.mpx.consumer spark-consumer-100
+
+spark.src.kafkatopic dbz.sw.SEAWARE.HOUSEHOLD_ADDRESS
+
+#spark.src.kafkatopic  test-debezium
+
+spark.src.personOffSet earliest
+
+spark.src.config.id SrcSeawareHouseholdAddress
+
+spark.voyage.id SC2002269NCR
+
+spark.tgt.env Stage
+
+spark.target.config.id TgtSeawareHouseholdAddress
+
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_household_address
+
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_household_address
+
+ 
+
+ 
+
+#spark.target.location s3://vv-staging-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_household_address
+
+#spark.target.parse.query select * from vv_db_mig.hvtb_nbx_landing_sw_rpl_household_address
+
+ 
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.kafka.zookeeper 10.7.12.61:2181
+
+ 
+
+spark.source.columns HOUSEHOLD_ID,SEQ_NUMBER,ADDRESS_TYPE,ADDRESS_LINE1,ADDRESS_LINE2,ADDRESS_CITY,STATE_CODE,ZIP,COUNTRY_CODE,IS_ADDRESS_MAILING,IS_ADDRESS_SHIPPING,DATE_FROM,DATE_TO,ARE_DATES_EVERY_YEAR,COMMENTS,HOUSEHOLD_ADDR_ID,ADDRESS_LINE3,ADDRESS_LINE4,ADDRESS_ESSENTIAL,CAN_CONTACT,op,ts_ms,voyageid,Batchtime,Part_Date
+
+ 
+
+#spark.temp.view temp_res_head
+
+ 
+
+spark.final.query select HOUSEHOLD_ID,SEQ_NUMBER,ADDRESS_TYPE,ADDRESS_LINE1,ADDRESS_LINE2,ADDRESS_CITY,STATE_CODE,ZIP,COUNTRY_CODE,IS_ADDRESS_MAILING,IS_ADDRESS_SHIPPING,CAST(DATE_FROM/1000000 as timestamp) as DATE_FROM,CAST(DATE_TO/1000000 as timestamp) as DATE_TO,ARE_DATES_EVERY_YEAR,COMMENTS,HOUSEHOLD_ADDR_ID,ADDRESS_LINE3,ADDRESS_LINE4,ADDRESS_ESSENTIAL,CAN_CONTACT,op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date

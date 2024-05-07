@@ -1,0 +1,32 @@
+spark.src.config.id SrcFolioSaleDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtFolioSaleDim
+spark.parent.id SrcShrFolioItemParse-TgtShrFolioItemParse-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.sql select voyageid as voyageid,referencenbr as sales_id,location as location,accountlinetype as line_type, accountlinestatus as line_Status,accountlinedescription line_description,batchtime as batchtime,part_date as part_date from shipdw.hvtb_parse_folio_vperson_account_detail where quickcode in (select category_value from shipdw.hvtb_mart_lkp_revenue_category_rel)
+spark.source.columns voyageid,sales_id,sale_detail_src,sales_operatornr,sales_receiptnr,sales_checkstatus,location,line_type,line_Status,line_description
+spark.pond.allColumns sale_detail_skey as pond_sale_detail_skey,voyage_id as pond_voyage_id,sale_id as pond_sale_id,sale_detail_src as pond_sale_detail_src,sale_operator_num as pond_sale_operator_num,receipt_number as pond_receipt_number, check_status as pond_check_status, location as pond_location, load_dt as pond_load_dt,line_type as pond_line_type, line_Status as pond_line_Status,line_description as pond_line_description,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+spark.surrogate_key.column sale_detail_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_sale_detail
+spark.source.primaryKeyColumns sales_id
+spark.scdtype type1
+spark.frameworkEnv ship
+spark.tableType DIMENSION
+spark.target.final_collist sale_detail_skey,  final_view.voyageid as voyage_id,  final_view.sales_id as sale_id, NVL(final_view.sale_detail_src ,'N/A')as sale_detail_src, NVL(cast(final_view.sales_operatornr as int),0) as sale_operator_num , NVL(final_view.sales_receiptnr,'N/A') as receipt_number,NVL(final_view.sales_checkstatus,'N/A') as  check_status,NVL( final_view.location,'N/A') as location,NVL(final_view.line_type,'N/A') as line_type,NVL(final_view.line_Status,'N/A') as line_Status,NVL(final_view.line_description,'N/A') as line_description,load_dt, upd_dt, primaryhash, md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_sale_detail
+spark.target.location /data/apps/nbx/mart/hvtb_mart_dim_sale_detail
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename sale_detail_dim
+ 
+spark.ship.code VAL
+

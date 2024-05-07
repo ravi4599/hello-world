@@ -1,0 +1,16 @@
+spark.src.config.id SrcIncidentrpt
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtIncidentrpt
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+
+
+

@@ -1,0 +1,39 @@
+spark.src.config.id SrcHotelgroupReqDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtHotelgroupReqDim
+spark.parent.id SrcSeawareGroupHotelRequest-TgtSeawareGroupHotelRequest
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.source.sql SELECT current_timestamp as rec_start_dttm,case when ghr.op = 'd' then current_timestamp else to_timestamp('9999-12-31 00:00:00') end as rec_end_dttm,ghr.record_id as SRC_HOTEL_GROUP_REQ_ID, ghr.group_id AS SRC_GROUP_ID, ghr.effective_date AS EFFECTIVE_DATE, ghr.stay_date_from AS START_DATE, ghr.stay_date_to AS END_DATE, ghr.hotel_request_type AS REQUEST_TYPE, ghr.occupancy AS OCCUPANCY, ghr.quantity AS QUANTITY, ghr.n_of_guests AS N_OF_GUESTS, ghr.city_code AS CITY_CODE, ghr.hotel_id AS HOTEL_ID, ghr.hotel_category AS HOTEL_CATEGORY, ghr.hotel_room_category AS ROOM_CATEGORY, ghr.hotel_room_type AS ROOM_TYPE, ghr.hotel_space_type AS HOTEL_SPACE_TYPE,CASE WHEN hotel_request_type = 'LAND/SEA' THEN 'Y' ELSE 'N' end  AS IS_LAND_COMPONENT,ghr.batchtime as batchtime,ghr.part_date as part_date FROM (SELECT * FROM (SELECT record_id,group_id,effective_date,stay_date_from,stay_date_to,hotel_request_type,occupancy,quantity,n_of_guests,city_code,hotel_id,hotel_category,hotel_room_category,hotel_room_type,hotel_space_type,op,batchtime,part_date, row_number() over (partition by group_id,hotel_request_type order by effective_date desc) as rn from vv_db.hvtb_parse_sw_rpl_group_hotel_request *whereclause*) gh WHERE gh.rn=1) ghr
+
+spark.source.columns src_hotel_group_req_id,src_group_id,effective_date,start_date,end_date,request_type,occupancy,quantity,n_of_guests,city_code,hotel_id,hotel_category,room_category,room_type,hotel_space_type,is_land_component
+
+spark.pond.allColumns hotel_group_req_id as pond_hotel_group_req_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,src_hotel_group_req_id as pond_src_hotel_group_req_id,src_group_id as pond_src_group_id,effective_date as pond_effective_date,start_date as pond_start_date,end_date as pond_end_date,request_type as pond_request_type,occupancy as pond_occupancy,quantity as pond_quantity,n_of_guests as pond_n_of_guests,city_code as pond_city_code,hotel_id as pond_hotel_id,hotel_category as pond_hotel_category,room_category as pond_room_category,room_type as pond_room_type,hotel_space_type as pond_hotel_space_type,is_land_component as pond_is_land_component,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.surrogate_key.column hotel_group_req_id
+spark.pond.database	vv_db 
+spark.pond.table hvtb_nbx_core_sw_hotel_group_req_dim
+spark.target.schema	vv_db 
+spark.source.primaryKeyColumns src_group_id,request_type
+spark.scdtype type1
+
+spark.target.final_collist final_view.hotel_group_req_id,final_view.src_hotel_group_req_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.src_group_id,final_view.effective_date,final_view.start_date,final_view.end_date,final_view.request_type,final_view.occupancy,final_view.quantity,final_view.n_of_guests,final_view.city_code,final_view.hotel_id,final_view.hotel_category,final_view.room_category,final_view.room_type,final_view.hotel_space_type,final_view.is_land_component,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp gs://vv-prod-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_hotel_group_req_dim
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_hotel_group_req_dim
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_hotel_group_request_dim_tmp
+spark.bq.permtblname seaware_hotel_group_request_dim
+spark.bq.viewname seaware.seaware_hotel_group_request_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

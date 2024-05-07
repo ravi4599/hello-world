@@ -1,0 +1,25 @@
+spark.src.config.id SrcHvParseErrorReportingSeawareWearables
+spark.voyage.id SC2002269NCR
+spark.tgt.env QA
+spark.target.config.id TgtHvParseHvErrorReportingSeawareWearables
+spark.parent.id SrcKfkErrorReportingSeawareWearables-TgtHvErrorReportingSeawareWearables
+spark.source.table select * from shipdw.hvtb_lnd_error_reporting_seaware_wearables
+spark.target.errorreservation.table shipdw.hvtb_parse_errreservation_reporting_seaware_wearables
+spark.target.errordetails.table shipdw.hvtb_parse_errdetails_reporting_seaware_wearables
+spark.target.errorguestdetails.table shipdw.hvtb_parse_errguestdetails_reporting_seaware_wearables
+spark.target.interem.table shipdw.hvtb_parse_error_reporting_wearable
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.ship.code Shore
+spark.coalesce.count 4
+spark.metadata.offset.table shipdw.hbtb_nbx_kafka_streaming_offset
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.con.format jdbc
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.hadoop.hive.execution.engine mr
+

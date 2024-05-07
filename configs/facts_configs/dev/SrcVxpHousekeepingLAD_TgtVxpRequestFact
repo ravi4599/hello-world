@@ -1,0 +1,51 @@
+spark.src.config.id SrcVxpHousekeepingLAD
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtVxpRequestFact
+spark.parent.id SrcHvRequests-TgtHvRequests
+spark.api.env dev
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.ing.type Fact
+#query
+spark.source.sql  select public_id, ship_code, voyage_skey, request_created_datetime, request_detail_skey, venue_skey, request_assigned_person_skey, request_started_datetime, request_completed_datetime, request_cancelled_datetime, request_assigned_datetime, request_at_risk_datetime, request_overdue_datetime, request_time_taken_seconds, request_type_sla_duration, request_type_duration, request_type_at_risk_duration, voyage_id, batchtime, part_dt  from  (select *, row_number () over (partition by request_created_datetime order by batchtime desc,voyage_start_date asc) as rn  from  (select requests.public_id, requests.ship_code,  CASE WHEN requests.voyage_number IS NULL THEN voyage_dim1.voyage_skey WHEN requests.voyage_number IS NOT NULL THEN voyage_dim.voyage_skey END as voyage_skey, COALESCE(voyage_dim.voyage_start_date,voyage_dim1.voyage_start_date) as voyage_start_date,  requests.created as request_created_datetime,  NVL(request_detail.request_detail_skey,- 1 ) as request_detail_skey, NVL(dim_venue.venue_skey,- 1 ) as venue_skey, NVL(person_dim.person_skey,- 1 )as request_assigned_person_skey, requests.started_at as request_started_datetime, requests.completed_at as request_completed_datetime, requests.cancelled_at as request_cancelled_datetime, requests.assigned_at as request_assigned_datetime, requests.at_risk_at as request_at_risk_datetime, requests.overdue_at as request_overdue_datetime, unix_timestamp(requests.completed_at) - unix_timestamp(requests.started_at) as request_time_taken_seconds, requests_types.sla_duration as request_type_sla_duration, requests_types.request_duration as request_type_duration, requests_types.at_risk_duration as request_type_at_risk_duration, requests.VoyageId as voyage_id, requests.batchtime as batchtime, requests.part_date as part_dt from(select * from ( select * from ( select id ,public_id ,CASE WHEN shipcode IS NULL THEN 'SC' ELSE shipcode END as ship_code ,place_id ,description ,created ,priority ,request_type ,place_deck_id ,place_section_id ,assigned ,created_by ,loyalty ,started_at ,completed_at ,assigned_at ,at_risk_at ,overdue_at ,cancelled_at ,voyage_number ,VoyageId ,batchtime ,part_date ,row_number() over(partition by public_id order by batchtime desc) rn from shipdw.hvtb_parse_vxp_housekeeping_requests_lad ) where rn = 1)requests )requests left join shipdw.hvtb_parse_vxp_housekeeping_request_types requests_types on requests.request_type = requests_types.id  left join ( select voyage_number, voyage_skey, ship_code, voyage_start_date, voyage_end_date, src_active_flag, src_deleted_flag, voyage_id from ( select voyage_number, voyage_skey, ship_code, voyage_start_date, voyage_end_date, src_active_flag, src_deleted_flag, voyage_id, row_number() over (partition by cruise_id order by upd_dt desc) rn from shipdw.hvtb_mart_dim_voyage where src_active_flag = true and src_deleted_flag = false) where rn = 1) voyage_dim on (requests.voyage_number = voyage_dim.voyage_number) left join ( select * from ( select * , row_number() over(partition by global_venue_id order by id desc) rn from shipdw.hvtb_parse_vxp_locationcon_venues ) where rn = 1) venues on requests.place_id = venues.id left join shipdw.hvtb_mart_dim_venue dim_venue on venues.global_venue_id = dim_venue.venue_id left join shipdw.hvtb_mart_dim_request_detail request_detail on request_detail.request_id = requests.public_id left join ( select * from ( select teammemberid, teammembernumber, row_number() over(partition by teammemberid order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_dxpcore_teammember)teammember where teammember.rn = 1) team on requests.assigned = team.teammemberid left join ( select person_skey, person_id  from ( select person_skey, person_id, reservationguest_guid, row_number() over (partition by person_id order by booking_departure_date desc) as rn from shipdw.hvtb_mart_dim_person) where rn = 1) person_dim on team.teammembernumber = person_dim.person_id  left join  ( select voyage_number, voyage_skey, ship_code, voyage_start_date, voyage_end_date, src_active_flag, src_deleted_flag, voyage_id from ( select voyage_number, voyage_skey, ship_code, voyage_start_date, voyage_end_date, src_active_flag, src_deleted_flag, voyage_id, row_number() over (partition by cruise_id order by upd_dt desc) rn from shipdw.hvtb_mart_dim_voyage where src_active_flag = true and src_deleted_flag = false) where rn = 1) voyage_dim1 on (to_date(requests.created) between to_date(voyage_dim1.voyage_start_date) and to_date(voyage_dim1.voyage_end_date) AND requests.ship_code = voyage_dim1.ship_code) ) request) request1 where rn = 1 
+
+spark.source.columns voyage_id,voyage_skey,ship_code,request_detail_skey,venue_skey,request_assigned_person_skey,request_created_datetime,request_started_datetime,request_completed_datetime,request_cancelled_datetime,request_assigned_datetime,request_at_risk_datetime,request_overdue_datetime,request_time_taken_seconds,request_type_sla_duration,request_type_duration,request_type_at_risk_duration
+
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_request
+spark.target.table request_fact
+
+spark.pond.allColumns voyage_id as pond_voyage_id,voyage_skey as pond_voyage_skey,ship_code as pond_ship_code,request_detail_skey as pond_request_detail_skey,venue_skey as pond_venue_skey,request_assigned_person_skey as pond_request_assigned_person_skey,request_created_datetime as pond_request_created_datetime,request_started_datetime as pond_request_started_datetime,request_completed_datetime as pond_request_completed_datetime,request_cancelled_datetime as pond_request_cancelled_datetime,request_assigned_datetime as pond_request_assigned_datetime,request_at_risk_datetime as pond_request_at_risk_datetime,request_overdue_datetime as pond_request_overdue_datetime,request_time_taken_seconds as pond_request_time_taken_seconds,request_type_sla_duration as pond_request_type_sla_duration,request_type_duration as pond_request_type_duration,request_type_at_risk_duration as pond_request_type_at_risk_duration,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+
+spark.target.final_collist final_view.voyage_id,final_view.ship_code,final_view.voyage_skey,final_view.request_detail_skey,final_view.venue_skey,final_view.request_assigned_person_skey,final_view.request_created_datetime,final_view.request_started_datetime,final_view.request_completed_datetime,final_view.request_cancelled_datetime,final_view.request_assigned_datetime,final_view.request_at_risk_datetime,final_view.request_overdue_datetime,final_view.request_time_taken_seconds,final_view.request_type_sla_duration,final_view.request_type_duration,final_view.request_type_at_risk_duration,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_fact_request
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_request
+spark.tableType FACT
+spark.frameworkEnv shore
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname request_fact_tmp
+spark.bq.permtblname request_fact
+spark.bq.viewname    shipdw.request_fact
+
+
+spark.factType   Accu
+spark.source.primaryKeyColumns voyage_skey,request_detail_skey
+
+#----------------------LAD--------------------------------# 
+spark.ladjob.flag true
+spark.lad.srctablekey public_id
+spark.lad.srctable shipdw.hvtb_parse_vxp_housekeeping_requests
+spark.lad.tgttable shipdw.hvtb_parse_vxp_housekeeping_requests_lad
+spark.lad.columns voyage_skey,request_detail_skey
+spark.ladremoval.flag true
+

@@ -1,0 +1,48 @@
+spark.src.config.id SrcSalesKonami
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtRevenueFact
+spark.parent.id SrcKonamiDailyPtnRtg-TgtKonamiDailyPtnRtg
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.table.type fact
+spark.redshift.url jdbc:redshift://10.3.0.120:5439/qanbxpub
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.source.sql select 'Client' as srcReferenceType,'VXP-Guest' as tgtReferenceType,cast(ptnid as string)as sourceID,'N/A' as booking_reference_number,itinerary_skey, voyage_skey,dim_voyage.ship_code as ship_code,'KONAMI' as source_type,voyage_number as voyage_id,sale_detail_skey,pos_item_skey,folio_item_skey,cast(ptnid as string)as ptnid,itinerary_skey,outlet_skey,activity_skey,sale_date_skey,sale_time_skey,device_skey,time_on_device_seconds,avg_wager_amount,casino_game_dph,theoritical_winnings,sale_quantity,item_list_price_amount,debit_amount,credit_amount,tax_amount,discount_amount,discount_value,cost_of_goods,manual_adjustment_amount,total_collected_sales_amount, total_shared_revenue_amount   from  ((select 'SC' as ship_code,dim_dev.device_skey,konami_src.voyage_id,ptnid,dateinserted , -1 as sale_detail_skey,   -1 as pos_item_skey, -1 as folio_item_skey,   -1 as activity_skey, 0 as sale_time_skey, NVL(dd.date_id, -1) as sale_date_skey, devid, timeondevsec as time_on_device_seconds,avgwager as avg_wager_amount,gamedph as casino_game_dph,theowin as theoritical_winnings, 0 as sale_quantity, 0 as item_list_price_amount, 0 as tax_amount, 0 as discount_amount, 0 as discount_value,0 as cost_of_goods, 0 as manual_adjustment_amount, itinerary_skey, totbuyin as debit_amount, totwalkwith as  credit_amount, totbuyin-totwalkwith-0 as total_shared_revenue_amount, totbuyin-totwalkwith as total_collected_sales_amount,1 as outlet_srcjoin_key from shipdw.hvtb_parse_konami_vw_odbc_dailyptnrtg  konami_src  left join  shipdw.hvtb_mart_dim_itinerary dim_itinerary on (dim_itinerary.src_deleted_flag ==False and dim_itinerary.src_active_flag == True and to_date(konami_src.dateinserted)==date(dim_itinerary.itinerary_day_date)) left join shipdw.hvtb_mart_dim_date dd on to_date(konami_src.dateinserted) = dd.`date`   left join shipdw.hvtb_mart_dim_device dim_dev on(konami_src.devid==dim_dev.device_id)      *whereclause*)  Konami_Sales  left join  (select outlet_skey, 1 as outlet_dimjoin_key from shipdw.hvtb_mart_dim_outlet where outlet_name='Casino') outlet_dim  on(Konami_Sales.outlet_srcjoin_key==outlet_dim.outlet_dimjoin_key)) left join shipdw.hvtb_mart_dim_voyage dim_voyage on  (src_deleted_flag ==False and src_active_flag == True and to_date(Konami_Sales.dateinserted) between dim_voyage.voyage_start_date and dim_voyage.voyage_end_date)     
+spark.persondimsource.sql select UPPER(dim.person_guid) as person_guid,count_person.booking_cruise_number,person_count as guest_count,voyage.voyage_length from shipdw.hvtb_mart_dim_person dim inner join  (select count(person_guid) as person_count,booking_cruise_number from shipdw.hvtb_mart_dim_person  where  person_type = '1'  group by hvtb_mart_dim_person.booking_cruise_number) count_person  on(count_person.booking_cruise_number==dim.booking_cruise_number)  inner join shipdw.hvtb_mart_dim_voyage voyage on   (dim.booking_cruise_number == voyage.voyage_number)
+spark.source.columns source_type, voyage_id, sale_detail_skey, pos_item_skey, folio_item_skey, person_skey, ship_code,voyage_skey,itinerary_skey, outlet_skey, activity_skey, sale_date_skey, sale_time_skey, device_skey, venue_skey, charge_skey, wearable_skey, time_on_device_seconds, avg_wager_amount, casino_game_dph, theoritical_winnings, booking_reference_number, sale_quantity, item_list_price_amount, debit_amount, credit_amount, tax_amount, discount_amount, discount_value, cost_of_goods, manual_adjustment_amount, total_collected_sales_amount, total_collected_sales_ap, total_shared_revenue_amount, total_shared_revenue_ap, load_dt as load_dt, upd_dt as upd_dt, part_dt as part_dt
+spark.pond.allColumns pond_source_type, pond_voyage_id, pond_sale_detail_skey, pond_pos_item_skey, pond_folio_item_skey, pond_person_skey,pond_ship_code,pond_voyage_skey, pond_itinerary_skey, pond_outlet_skey, pond_activity_skey, pond_sale_date_skey, pond_sale_time_skey, pond_device_skey, pond_venue_skey,  pond_charge_skey,  pond_wearable_skey, pond_time_on_device_seconds, pond_avg_wager_amount, pond_casino_game_dph, pond_theoritical_winnings, pond_booking_reference_number, pond_sale_quantity, pond_item_list_price_amount, pond_debit_amount, pond_credit_amount, pond_tax_amount, pond_discount_amount, pond_discount_value, pond_cost_of_goods, pond_manual_adjustment_amount, pond_total_collected_sales_amount, pond_total_collected_sales_ap, pond_total_shared_revenue_amount, pond_total_shared_revenue_ap, load_dt as pond_load_dt, upd_dt as pond_upd_dt, part_dt as pond_part_dt
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_revenue
+spark.target.schema shipdw
+spark.target.final_collist voyage_id, NVL(sale_detail_skey, -1)  as sale_detail_skey, NVL(pos_item_skey, -1)as pos_item_skey, NVL(folio_item_skey, -1)as folio_item_skey, NVL(person_skey, -1)as person_skey,ship_code,NVL(voyage_skey,-1)as voyage_skey, NVL(itinerary_skey, -1)as itinerary_skey, NVL(cast(outlet_skey as bigint), -1) as outlet_skey, NVL(activity_skey, -1) as activity_skey, NVL(cast(sale_date_skey as bigint), -1) as sale_date_skey, NVL(cast(sale_time_skey as bigint), -1) as sale_time_skey, NVL(device_skey,-1) as device_skey, -1 as venue_skey, NVL(charge_skey,-1) as charge_skey,NVL(wearable_skey,-1) as wearable_skey, time_on_device_seconds, avg_wager_amount, casino_game_dph, theoritical_winnings, booking_reference_number, cast(sale_quantity as int) as sale_quantity, cast(item_list_price_amount as decimal(16,2)) as item_list_price_amount, cast(debit_amount as decimal(16,2)) as debit_amount, cast(credit_amount as decimal(16,2)) as credit_amount, cast(tax_amount as decimal(16,2)) as tax_amount, cast(discount_amount as decimal(16,2)) as discount_amount, cast(discount_value as decimal(16,2)) as discount_value,  cast(cost_of_goods as decimal(16,2)) as cost_of_goods, cast(manual_adjustment_amount as decimal(16,2)) as manual_adjustment_amount, cast(total_collected_sales_amount as decimal(16,2)) as total_collected_sales_amount, cast(total_collected_sales_ap as decimal(16,2)) as total_collected_sales_ap, total_shared_revenue_amount, total_shared_revenue_ap, source_type, load_dt, upd_dt, part_dt
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_fact_revenue
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_revenue
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename ship_revenue_fact
+spark.scdtype type1
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.personcreated.seconds 10
+spark.personcreated.personOffSet latest
+spark.personcreated.username a02f3532-86ea-4c59-bc0a-ac7b47a73a37
+spark.personcreated.password HV6CvL7evpjhgYSY
+spark.personcreated.authorization Basic YTAyZjM1MzItODZlYS00YzU5LWJjMGEtYWM3YjQ3YTczYTM3OkhWNkN2TDdldnBStageGdZU1k=
+spark.personcreated.consumer spark-consumer-31
+spark.personcreated.kafkatopic salesforce.sailor
+spark.personcreated.format org.apache.phoenix.spark
+spark.personcreated.mode overwrite
+spark.personcreated.table hbtb_nbx_sailor_tribes
+spark.personcreated.readhbasezkurl 10.7.3.177:2181/hbase-unsecure
+spark.personcreated.offsettable HBTB_NBX_KAFKA_STREAMING_OFFSET
+spark.personcreated.oauthurl  https://Stage.virginvoyages.com/svc/identityaccessmanagement-service/oauth/token?grant_type=client_credentials
+spark.personcreated.personurl  https://Stage.virginvoyages.com/svc/xref-api/v1/types/findByName/Person
+spark.personcreated.findalltypes  https://Stage.virginvoyages.com/svc/xref-api/v1/types?page=-1&size=-1
+spark.personcreated.findbymasteridurl  https://Stage.virginvoyages.com/svc/xref-api/v1/references/search/findByMaster?masterID=
+spark.personcreated.findbynativesource  https://Stage.virginvoyages.com/svc/xref-api/v1/references/search/findByNativeSourceIdValueAndType
+spark.personcreated.masterURL  https://Stage.virginvoyages.com/svc/xref-api/v1/references/search/findByMaster?masterID=
+spark.personcreated.addreferenceURL  https://Stage.virginvoyages.com/svc/xref-api/v1/references
+spark.api.env Stage

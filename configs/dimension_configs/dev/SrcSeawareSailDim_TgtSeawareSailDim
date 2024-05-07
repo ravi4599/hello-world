@@ -1,0 +1,54 @@
+spark.src.config.id SrcSeawareSailDim
+spark.voyage.id	SC2002269NCR
+spark.tgt.env dev
+spark.target.config.id TgtSeawareSailDim
+spark.parent.id	SrcSeawareSailHeader-TgtSeawareSailHeader
+
+spark.hadoop.hive.execution.engine mr
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.source.sql select sh.sail_id as src_sail_id, cast(datediff(sh.sail_date_to,sh.sail_date_from) as int) as sail_days, sh.route_code as sail_route_code, sh.port_from as sail_port_from, sh.port_to as sail_port_to, sh.geog_area_code as sail_geog_area_code, sh.dep_ref_id, sh.arr_ref_id, sa_act1.sail_event_date_time as sail_date_from, sa_act.sail_event_date_time as sail_date_to, sh.is_active, shipdim.ship_id, sh.is_fake, sh.BatchTime as BatchTime, sh.Part_Date as Part_Date, sh.ts_ms as ts_ms_sh, sa_act.ts_ms as ts_ms_sa_act, sa_act1.ts_ms as ts_ms_sa_act1 from (select * from (select sail_id,sail_date_to,sail_date_from,route_code,port_from,port_to,geog_area_code,dep_ref_id,arr_ref_id,is_active,is_fake,BatchTime,Part_Date,ship_code,ts_ms,row_number() over(partition by arr_ref_id order by ts_ms desc) rn from vv_db.hvtb_parse_sw_rpl_sail_header) where rn=1) sh left join (select * from (select sail_event_date_time,dep_arr_ref_id,ts_ms,row_number() over(partition by dep_arr_ref_id order by ts_ms desc)rn from vv_db.hvtb_parse_sw_rpl_sail_activity) where rn=1) sa_act on(sh.arr_ref_id == sa_act.dep_arr_ref_id) inner join (select * from (select sail_event_date_time,ts_ms,dep_arr_ref_id ,row_number() over(partition by dep_arr_ref_id order by ts_ms desc)rn from vv_db.hvtb_parse_sw_rpl_sail_activity ) where rn=1) sa_act1 on (sh.dep_ref_id == sa_act1.dep_arr_ref_id) left join vv_db.hvtb_nbx_core_sw_ship_dim shipdim on shipdim.ship = sh.ship_code
+
+spark.source.columns src_sail_id,sail_days,sail_route_code,sail_port_from,sail_port_to,sail_geog_area_code,dep_ref_id,arr_ref_id,sail_date_from,sail_date_to,is_active,ship_id,is_fake
+
+spark.pond.allColumns sail_id as pond_sail_id, rec_start_dttm as pond_rec_start_dttm, rec_end_dttm as pond_rec_end_dttm, src_sail_id as pond_src_sail_id, sail_days as pond_sail_days, sail_route_code as pond_sail_route_code, sail_port_from as pond_sail_port_from, sail_port_to as pond_sail_port_to, sail_geog_area_code as pond_sail_geog_area_code, dep_ref_id as pond_dep_ref_id, arr_ref_id as pond_arr_ref_id, sail_date_from as pond_sail_date_from, sail_date_to as pond_sail_date_to, is_active as pond_is_active, ship_id as pond_ship_id, is_fake as pond_is_fake, etl_ld_status as pond_etl_ld_status, load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash,scd_hash as pond_scd_hash
+
+spark.surrogate_key.column sail_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_sail_dim
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_sail_dim
+spark.source.primaryKeyColumns src_sail_id
+
+spark.target.final_collist final_view.sail_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.src_sail_id,final_view.sail_days,final_view.sail_route_code,final_view.sail_port_from,final_view.sail_port_to,final_view.sail_geog_area_code,final_view.dep_ref_id,final_view.arr_ref_id,final_view.sail_date_from,final_view.sail_date_to,final_view.is_active,final_view.ship_id,final_view.is_fake,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_sail_dim
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_sail_dim
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_sail_dim_tmp
+spark.bq.permtblname seaware_sail_dim
+spark.bq.viewname seaware.seaware_sail_dim
+
+spark.scdtype type2
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage
+   
+##=============SCD2 Config Details ==============  
+
+spark.source.srcDateColumn src_date
+spark.scd.columns sail_days,sail_route_code,sail_port_from,sail_port_to,sail_geog_area_code,dep_ref_id,arr_ref_id,sail_date_from,sail_date_to,is_active,is_fake
+
+spark.scdtype type2
+
+# all source columns as alias ( id_new,amount_new,oppo_new )along with all audit columns
+spark.source.updateReq sail_id,rec_start_dttm,rec_end_dttm,src_sail_id_new,sail_days_new,sail_route_code_new,sail_port_from_new,sail_port_to_new,sail_geog_area_code_new,dep_ref_id_new,arr_ref_id_new,sail_date_from_new,sail_date_to_new,is_active_new,ship_id_new,is_fake_new,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+

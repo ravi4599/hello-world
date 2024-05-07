@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.AIR_AMADEUS_LOG
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT MESSAGE_ID, RES_ID, "ACTION", SUCCESS, REQUEST, RESPONSE, SENT_AT, RESPONDED_AT, SECS, ERROR_MESSAGE, HAS_ACS_ERROR_MSGS, REQUEST_ID FROM SEAWARE.AIR_AMADEUS_LOG)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_air_amadeus_log
+
+spark.src.con.fetchSize 100000
+
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_air_amadeus_log/
+
+spark.hadoop.hive.execution.engine mr

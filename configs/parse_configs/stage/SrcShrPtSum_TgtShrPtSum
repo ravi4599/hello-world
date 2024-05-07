@@ -1,0 +1,11 @@
+spark.source.table select * from shipdw.hvtb_lnd_konami_vw_odbc_dailyptsum
+spark.target.table shipdw.hvtb_parse_konami_vw_odbc_dailyptsum
+spark.src.config.id SrcKonamiPtSum
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtKonamiPtSum
+spark.parent.id SrcKDailyPtSumIng-TgtKDailyPtSumIng-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.4.100.154/hbase-unsecure

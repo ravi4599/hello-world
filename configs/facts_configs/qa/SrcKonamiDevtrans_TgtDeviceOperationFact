@@ -1,0 +1,66 @@
+#------META DATA CONFIG-----#						 
+
+
+spark.src.config.id SrcKonamiDevtrans
+spark.voyage.id SC2002269NCR
+spark.tgt.env qa
+spark.target.config.id TgtDeviceOperationFact 
+spark.parent.id Srcasinoshifttblstat-Tgtcasinoshifttblstat
+
+spark.frameworkEnv shore
+spark.ing.type Fact
+
+
+
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=!Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+
+#------Query Propery-----#
+
+spark.source.sql select * from (select open_transaction_id,closed_transaction_id,device_closed_dt,device_start_dt,nvl(game_skey,-1) as game_skey,voyage_skey, ship_code, device_skey, device_id, game_date_time, batchtime, voyage_id, part_dt from (select open_transaction_id,closed_transaction_id,device_closed_dt,device_start_dt,GAME_SKEY,VOYAGE_SKEY, voyage_start_date, SHIP_CODE, DEVICE_SKEY, row_number () over  (partition by game_date_time,device_skey order by voyage_start_date desc) as rn, device_id, GAME_DATE_TIME, batchtime, voyage_id, part_dt from (select open_transaction_id,closed_transaction_id,device_closed_dt,device_start_dt,GAME_SKEY,VOYAGE_SKEY, voyage_start_date, SHIP_CODE, DEVICE_SKEY, device_id, GAME_DATE_TIME, batchtime, voyage_id, part_dt from ( select NVL(voyage_dim.VOYAGE_SKEY , - 1) as VOYAGE_SKEY, voyage_dim.voyage_start_date, emc.* from( select tblstat.OPENTRANSID as open_transaction_id,tblstat.CLOSETRANSID as closed_transaction_id,devtranscls.lastmoddate as device_closed_dt,devtransop.lastmoddate as device_start_dt,gamedim.GAME_SKEY as GAME_SKEY,case when game_site.gstname = 'Virgin Voyages Scarlet Lady' then 'SC' else '-1' end as SHIP_CODE, NVL(device_dim.DEVICE_SKEY , - 1) as DEVICE_SKEY,tblstat.DEVID as device_id, cast(tblstat.dateinserted as timestamp) as GAME_DATE_TIME, tblstat.batchtime as batchtime , tblstat.voyageid as voyage_id, tblstat.part_date as part_dt from ( select   ems_tal.DATEINSERTED ,ems_tal.OPENTRANSID,ems_tal.CLOSETRANSID, ems_tal.DEVID , ems_tal.GAMEID , ems_tal.GSTID, ems_tal.LASTMODDATE,ems_tal.VoyageId , ems_tal.BatchTime , ems_tal.ShipCode , ems_tal.Part_Date from ( select   DATEINSERTED , DEVID , GAMEID , GSTID  , OPENTRANSID , CLOSETRANSID , ROW_NUMBER () OVER (PARTITION by DEVID, GSTID, DATEINSERTED order by LASTMODDATE desc) as rn , VoyageId , BatchTime , ShipCode , LASTMODDATE,Part_Date from shipdw.hvtb_parse_konami_ems_vw_tal_shifttblstat) ems_tal where rn = 1) tblstat left join shipdw.hvtb_parse_konami_vw_odbc_gamesite game_site on tblstat.gstid = game_site.gstid left join  shipdw.hvtb_mart_dim_game gamedim on gamedim.game_id = tblstat.gameid    left join ( select   dev_trans.lastmoddate,dev_trans.devid ,dev_trans.transid from ( select lastmoddate, devid , transid, ROW_NUMBER () OVER (PARTITION by DEVID, GSTID, DATEINSERTED order by LASTMODDATE desc) as rn from shipdw.hvtb_parse_konami_vw_tal_devtrans) dev_trans where rn = 1) devtranscls on tblstat.CLOSETRANSID=devtranscls.transid and tblstat.devid=devtranscls.devid left join ( select   op.lastmoddate,op.devid ,op.transid from ( select   lastmoddate,devid , transid, ROW_NUMBER () OVER (PARTITION by DEVID, GSTID, DATEINSERTED order by LASTMODDATE desc) as rn from shipdw.hvtb_parse_konami_vw_tal_devtrans) op where rn = 1) devtransop on tblstat.OPENTRANSID=devtransop.transid and tblstat.devid=devtransop.devid  join shipdw.hvtb_parse_konami_vw_odbc_devicedata odbc on tblstat.devid = odbc.devid left join shipdw.hvtb_mart_dim_device device_dim on tblstat.DEVID = device_dim.device_id ) emc  left join  (select VOYAGE_SKEY,voyage_start_date,voyage_end_date,SHIP_CODE from shipdw.hvtb_mart_dim_voyage where src_active_flag = true and src_deleted_flag = false) voyage_dim on ((to_date(emc.GAME_DATE_TIME) between to_date(voyage_dim.voyage_start_date) and to_date(voyage_dim.voyage_end_date) and voyage_dim.ship_code = emc.ship_code) )  ) ems )ems1 ) ems2 where rn = 1) ems
+ 
+ 
+
+
+
+spark.source.columns voyage_id,ship_code,voyage_skey,device_skey,game_skey,game_date_time,open_transaction_id,closed_transaction_id,device_start_dt,device_closed_dt
+
+spark.pond.allColumns voyage_id as pond_voyage_id,ship_code as pond_ship_code,voyage_skey as pond_voyage_skey,device_skey as pond_device_skey,game_skey as pond_game_skey,game_date_time as pond_game_date_time,open_transaction_id as pond_open_transaction_id,closed_transaction_id as pond_closed_transaction_id,device_start_dt as pond_device_start_dt ,device_closed_dt as pond_device_closed_dt, load_dt as pond_load_dt,upd_dt as pond_upd_dt,part_dt as pond_part_dt
+				 
+
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_device_operation
+
+
+
+spark.target.final_collist final_view.voyage_id ,final_view.voyage_skey,final_view.ship_code,final_view.device_skey,final_view.game_skey,final_view.game_date_time,final_view.open_transaction_id,final_view.closed_transaction_id,final_view.device_start_dt,final_view.device_closed_dt,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.part_dt as part_dt
+
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_fact_device_operation
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_fact_device_operation
+
+
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.factType Accu
+spark.scdtype type1
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname device_operation_fact_tmp
+spark.bq.permtblname device_operation_fact
+spark.bq.viewname    shipdw.device_operation_fact
+
+#----------------------LAD--------------------------------# 
+spark.ladjob.flag true
+spark.lad.srctablekey SHIFTID
+spark.lad.srctable shipdw.hvtb_parse_konami_ems_vw_tal_shifttblstat
+spark.lad.tgttable shipdw.hvtb_parse_konami_ems_vw_tal_shifttblstat_stat_lad
+spark.lad.columns ship_code,device_skey,game_date_time,voyage_skey,game_skey
+spark.ladremoval.flag false
+#----------------------------------------------------------# 

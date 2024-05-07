@@ -1,0 +1,39 @@
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.src.config.id SrcDiningReserPrefSpeclNeedLad
+spark.target.config.id TgtDiningReserPrefSpeclNeedFactLad
+spark.parent.id SrcvxpResSplNeed-TgtvxpResSplNeed
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.lad.file true
+spark.source.columns voyage_id,person_skey,voyage_skey,ship_code,dining_reservation_detail_skey,dining_reservation_preference_skey,preference_value
+spark.pond.allColumns voyage_id as pond_voyage_id,person_skey as pond_person_skey,voyage_skey as pond_voyage_skey,ship_code as pond_ship_code,dining_reservation_detail_skey as pond_dining_reservation_detail_skey,dining_reservation_preference_skey as pond_dining_reservation_preference_skey,preference_value as pond_preference_value,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_dining_reservation_preference
+spark.postgresql.schema shipdw
+spark.target.table dining_reservation_preference_fact
+spark.source.primaryKeyColumns person_skey,dining_reservation_detail_skey,dining_reservation_preference_skey
+spark.target.final_collist final_view.voyage_id,final_view.person_skey,final_view.voyage_skey,final_view.ship_code,final_view.dining_reservation_detail_skey,final_view.dining_reservation_preference_skey,final_view.preference_value,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_fact_dining_reservation_preference
+spark.target.location /data/apps/nbx/mart/hvtb_mart_fact_dining_reservation_preference
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename dining_reservation_preference_fact
+spark.tableType FACT
+spark.frameworkEnv ship
+spark.factType Accu
+#----------------------LAD--------------------------------# 
+spark.ladjob.flag true
+spark.lad.srctablekey public_id
+spark.lad.srctable shipdw.hvtb_parse_vxp_table_management_reservations_reservationspecialneed
+spark.lad.tgttable shipdw.hvtb_parse_vxp_table_management_reservations_reservationspecialneed_lad
+spark.lad.columns person_skey,dining_reservation_detail_skey,dining_reservation_preference_skey
+spark.ladremoval.flag true
+#----------------------------------------------------------# 
+

@@ -1,0 +1,3 @@
+spark.target.temptablename vv_db_temp.hvtb_nbx_staging_sw_reservation_dim
+spark.target.tgttablename vv_db_temp.hvtb_nbx_core_sw_reservation_dim
+spark.target.coalesceval 4

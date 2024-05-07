@@ -1,0 +1,36 @@
+spark.src.config.id SrcChatQueueDetailDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.target.config.id TgtChatQueueDetailDim
+spark.parent.id SrcParseZulipSupQueue-TgtParseZulipSupQueue
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.table.type dim
+spark.source.sql select NVL(A.VoyageId, -1) as voyage_id, A.id as chat_queue_id,B.iam_user_id, A.subject as chat_subject, case when A.status=1 then 'New' when A.status=2 then 'In Progess' when A.status=3 then 'Resolved' else null end as chat_status,A.loyalty_level, A.BatchTime, A.Part_Date from (select zs.id,zs.subject,zs.status,zs.loyalty_level,zs.sailor_id,zs.VoyageId,zs.BatchTime,zs.Part_Date from (select *, row_number() over (partition by id order by Batchtime desc) rn  from shipdw.hvtb_parse_zulip_zerver_supportqueue)zs where zs.rn = 1) A left join (select zu.id,zu.iam_user_id from (select *, row_number() over (partition by id order by BatchTime desc) rn  from shipdw.hvtb_parse_zulip_zerver_userprofile) zu where zu.rn = 1) B on A.sailor_id=B.id
+spark.source.columns voyage_id,chat_queue_id,iam_user_id,chat_subject,chat_status,loyalty_level
+spark.pond.allColumns chat_queue_detail_skey as pond_chat_queue_detail_skey,voyage_id as pond_voyage_id,chat_queue_id as pond_chat_queue_id,iam_user_id as pond_iam_user_id,chat_subject as pond_chat_subject,chat_status as pond_chat_status,loyalty_level as pond_loyalty_level,load_dt as pond_load_dt,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+spark.surrogate_key.column chat_queue_detail_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_chat_queue_detail
+spark.target.schema shipdw
+spark.target.table chat_queue_detail_dim
+spark.source.primaryKeyColumns chat_queue_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.target.final_collist chat_queue_detail_skey,final_view.voyage_id,final_view.chat_queue_id,final_view.iam_user_id,final_view.chat_subject,final_view.chat_status,final_view.loyalty_level,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_chat_queue_detail
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_chat_queue_detail
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname chat_queue_detail_dim_tmp
+spark.bq.permtblname chat_queue_detail_dim
+spark.bq.viewname shipdw.chat_queue_detail_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

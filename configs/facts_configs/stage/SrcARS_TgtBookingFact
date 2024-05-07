@@ -1,0 +1,31 @@
+spark.src.config.id SrcARS
+spark.voyage.id SC1912065NCM
+spark.tgt.env Stage
+spark.target.config.id TgtBookingFact
+spark.parent.id SrcArsActivityParse-TgtArsActivityParse-SC1912065NCM 
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.table.type fact
+spark.redshift.url jdbc:redshift://10.3.0.120:5439/qanbxpub
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.source.sql spark.source.sql select    NVL(from_unixtime(UNIX_TIMESTAMP(Cast(concat(split(startdatetime,'T')[0],' ',split(startdatetime,'T')[1])as timestamp)), 'YYYY-MM-dd HH:mm:ss'),'1900-01-01') as start_date_time,NVL(from_unixtime(UNIX_TIMESTAMP(Cast(concat(split(enddatetime,'T')[0],' ',split(enddatetime,'T')[1])as timestamp)), 'YYYY-MM-dd HH:mm:ss'),'1900-01-01') as end_date_time,   NVL(dim_activity.activity_skey,-1) as activity_skey, NVL(activity_slot_skey,-1) as activity_slot_skey, NVL(dim_booking_detail.booking_detail_skey,-1) as booking_detail_skey, NVL(dim_vendor.vendor_skey,-1) as vendor_skey,  activityBookingId,ars_booking.personid,activityslotcode, activityCode,bookedByPersonId,payeePersonId,bookingAmountPaid, bookingAmountPending, refundAmountPaid, refundAmountPending, NVL(dim_voyage.voyage_skey,-1) as voyage_skey, ars_booking.voyageid as voyage_id, ars_booking.batchtime,ars_booking.partdate as part_date, count_person.personid_count as number_of_people from shipdw.hvtb_parse_ars_booking ars_booking inner join (select personid ,count(personid) as personid_count from shipdw.hvtb_parse_ars_booking group by personid) count_person on(ars_booking.personid==count_person.personid) left join shipdw.hvtb_mart_dim_activity dim_activity on (ars_booking.activitycode==dim_activity.activity_code) left join shipdw.hvtb_mart_dim_activity_slot dim_activity_slot on(ars_booking.activityslotcode==dim_activity_slot.activity_slot_code) left join shipdw.hvtb_mart_dim_voyage dim_voyage on(ars_booking.voyagenumber==dim_voyage.voyage_number) left join  shipdw.hvtb_mart_dim_booking_detail dim_booking_detail on(ars_booking.activitybookingid==dim_booking_detail.booking_id) left join  (select activity_id,activity_code,vendor_skey from (select vendorid,activity_id,activity_code  from shipdw.hvtb_parse_ars_shore_activity_vendor activity  group by activity_id,activity_code,vendorid)activity inner join shipdw.hvtb_mart_dim_vendor vendor on  (activity.vendorid==vendor.vendor_id) ) dim_vendor on(trim(dim_vendor.activity_code)==trim(ars_booking.activitycode)) *whereclause* 
+spark.source.columns voyage_id,booking_detail_skey,person_skey,voyage_skey,activity_skey,activity_slot_skey,vendor_skey,booked_by_person_skey,paid_by_person_skey,number_of_people,booking_paid_amount,booking_remaining_amount,refund_paid_amount,refund_remaining_amount,batchtime,partdate,start_date_time,end_date_time
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_booking
+spark.target.schema shipdw
+spark.target.final_collist voyage_id, booking_detail_skey, NVL(person_skey,-1) as person_skey,NVL(voyage_skey,-1) as voyage_skey,activity_skey, activity_slot_skey,vendor_skey,NVL(booked_by_person_skey,-1)as booked_by_person_skey, NVL(paid_by_person_skey,-1) as paid_by_person_skey, number_of_people, booking_paid_amount, booking_remaining_amount, refund_paid_amount, refund_remaining_amount,start_date_time,end_date_time, load_dt, upd_dt, part_dtspark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_fact_booking
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_booking
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename booking_fact
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.xref.env Stage
+spark.xref.oauthurl https://*env*.virginvoyages.com/svc/identityaccessmanagement-service/oauth/token?grant_type=client_credentials
+spark.xref.password vAr6nd87KWQbrE9S
+spark.xref.authorization Basic YTAyZjM1MzItODZlYS00YzU5LWJjMGEtYWM3YjQ3YTczYTM3OnZBcjZuZDg3S1dRYnJFOVM=
+spark.xref.username a02f3532-86ea-4c59-bc0a-ac7b47a73a37
+spark.xref.findalltypes https://*env*.virginvoyages.com/svc/xref-api/v1/types?page=-1&size=-1
+spark.xref.findByTypeAndTargetType https://*env*.virginvoyages.com/svc/xref-api/v1/references/search/findByTypeAndTargetType

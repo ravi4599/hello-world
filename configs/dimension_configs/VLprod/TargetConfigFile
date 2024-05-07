@@ -1,0 +1,7 @@
+Key Value
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+ 
+spark.ship.code VAL
+

@@ -1,0 +1,29 @@
+#source postgres database,table and connection details
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148:5432/table_management
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.table public.voyages
+spark.src.con.driver org.postgresql.Driver
+#Unique constant for Batchid
+spark.src.config.id SrcVxpTableMgmtGuestsPreferenceType
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtVxpTableMgmtGuestsPreferenceType
+#Metadata Hbase table and connection details
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+#target hdfs table location with hive table and column details
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_table_management_guests_preferencetype
+spark.target.hive.table shipdw.hvtb_lnd_vxp_table_management_guests_preferencetype
+spark.source.columns addeddate,public_id,code,dxp_id,name,active,addedby,lastmodifiedby,lastmodifieddate
+spark.tz.columns addeddate,lastmodifieddate
+spark.src.table.query "guests_preferencetype"
+spark.condition.column lastmodifieddate
+spark.source.zone EST
+#Prod cluster details
+spark.kafka.zookeeper 10.101.220.213:2181
+spark.ship.code VAL
+

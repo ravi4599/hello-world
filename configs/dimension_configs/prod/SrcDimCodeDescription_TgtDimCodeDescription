@@ -1,0 +1,33 @@
+spark.src.config.id SrcDimCodeDescription
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtDimCodeDescription
+spark.parent.id SrcHvVxpDxpStatusType-TgtHvVxpDxpStatusType
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.table.type dim
+spark.source.sql select 'Person_Status' as code_type,st.code as code,lang.resourcevalue as code_value,st.batchtime as batchtime,st.voyageid as voyage_id,st.part_date as part_date from (select * from (select code,isdeleted,namekey,batchtime,voyageid,part_date,row_number() over(partition by code order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_dxp_statustype where isdeleted != true ) where rn=1 ) st left join (select * from (select resourcevalue,resourcekey,row_number() over(partition by resourcekey order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_dxp_languageresource) where rn=1) lang on lang.resourcekey=st.namekey *whereclause*
+spark.source.columns voyage_id,code_type,code,code_value,batchtime,part_date
+spark.pond.allColumns voyage_id as pond_voyage_id,code_skey as pond_code_skey,code_type as pond_code_type, code as pond_code, code_value as pond_code_value,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column code_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_code_description
+spark.target.table codedescriptiondim
+spark.source.primaryKeyColumns code_type,code
+spark.target.final_collist final_view.code_skey,final_view.voyage_id ,final_view.code_type,final_view.code,final_view.code_value,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_code_description
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_code_description
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname codedescriptiondim_tmp
+spark.bq.permtblname codedescriptiondim
+spark.bq.viewname shipdw.codedescriptiondim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

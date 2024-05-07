@@ -1,0 +1,54 @@
+spark.src.config.id   SrcMXPAddress
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   staging
+spark.target.config.id   TgtAddressFact
+spark.parent.id   SrcMxpPersonAddress-TgtMxpPersonAddress
+
+   
+spark.target.ops.table.format   org.apache.phoenix.spark
+spark.target.ops.table.mode   overwrite
+spark.target.enablerops_table   HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+   
+spark.table.type   fact
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.pond.database   shipdw
+spark.pond.table   hvtb_mart_fact_person_address
+spark.target.schema   shipdw
+
+
+spark.target.temp   s3://vv-staging-emr-cluster/data/temp/hvtb_mart_fact_person_address
+spark.target.location   s3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_person_address
+spark.redshift.schema   Hive_schema_stg
+spark.redshift.tablename   person_address_fact
+spark.tableType   FACT
+spark.frameworkEnv   shore
+
+
+
+   
+
+  
+spark.pond.allColumns voyage_id as pond_voyage_id, person_skey as pond_person_skey, address_skey as pond_address_skey, src_deleted_flag as pond_src_deleted_flag,load_dt as pond_load_dt, upd_dt as pond_upd_dt, part_dt as pond_part_dt
+     
+spark.target.final_collist voyage_id,person_skey,address_skey,src_deleted_flag, load_dt, upd_dt, part_dt
+   
+spark.source.sql select person_address_id,part_date,batchtime,NVL(person_skey,-1) as person_skey, NVL(address_skey,-1) as address_skey, address.voyage_id, src_deleted_flag from (select Part_Date as part_date,BatchTime as batchtime,VoyageId as voyage_id,REC_DELETED as src_deleted_flag,PERSON_ID,PERSON_ADDRESS_ID from (select Part_Date,BatchTime, REC_DELETED,VoyageId,PERSON_ID,PERSON_ADDRESS_ID,row_number() over(partition by PERSON_ADDRESS_ID order by LAST_CHANGED desc) as rn from shipdw.hvtb_parse_mxp_person_address)addr where addr.rn=1)address left join shipdw.hvtb_mart_dim_address dim_address on(dim_address.address_id == address.person_address_id)left join shipdw.hvtb_mart_dim_person dim_person on(dim_person.person_id == address.person_id) *whereclause*
+
+spark.source.columns person_address_id,voyage_id,person_skey,address_skey,src_deleted_flag,load_dt as load_dt,upd_dt as upd_dt,part_dt as part_dt
+  
+#-------------- LAD ----------------------------------------------------------#
+
+spark.ladjob.flag true
+spark.lad.srctablekey person_address_id
+
+spark.lad.srctable shipdw.hvtb_parse_mxp_person_address
+spark.lad.columns address_skey,person_skey
+spark.ladremoval.flag false 
+
+   
+
+   

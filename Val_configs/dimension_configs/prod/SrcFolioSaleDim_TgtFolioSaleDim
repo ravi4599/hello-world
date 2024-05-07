@@ -1,0 +1,32 @@
+spark.src.config.id SrcFolioSaleDim
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtFolioSaleDim
+spark.parent.id SrcShrFolioItemParse-TgtShrFolioItemParse
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+#spark.source.sql select voyageid as voyageid,referencenbr as sales_id,location as location,accountlinetype as line_type, accountlinestatus as line_Status,accountlinedescription line_description ,batchtime as batchtime,part_date as part_date from ( select quickcode,voyageid,referencenbr,location,accountlinetype,accountlinestatus,accountlinedescription,batchtime,part_date from(select quickcode,voyageid,referencenbr,location,accountlinetype,accountlinestatus,accountlinedescription,batchtime,part_date,row_number() over(partition by referencenbr order by businessday) as rn from  shipdw.hvtb_parse_folio_vperson_account_detail)folio where folio.rn=1)folio_dim where quickcode in (select quick_code from shipdw.hvtb_mart_dim_quickcode)
+
+spark.source.sql select per.voyageid as voyage_id,per.PERSON_ACCOUNT_DETAIL_ID as sales_id ,'FOLIO' as sale_detail_src,'N/A' as sale_operator_num,'N/A' as receipt_number,'N/A' as check_status,cruise.cruise_number as sales_voyagenumber,orgstr.ORG_STRUCTURE_NAME as location,syslkp.SYS_LOOKUP_ITEM_NAME as line_type,CASE WHEN per.STATUS_ID = 3 THEN 'Voided' ELSE '' END as line_Status,per.ACCOUNT_RECORD_DESCRIPTION as line_description,per.REC_DELETED as src_deleted_flag,per.batchtime as batchtime,per.part_date as part_date,'N/A' as sale_group_description from (select * from (select voyageid,batchtime,part_date,PERSON_ACCOUNT_DETAIL_ID,STATUS_ID,ACCOUNT_RECORD_DESCRIPTION,REC_DELETED,period_id,org_structure_id,ACCOUNT_RECORD_TYPE_ID,ORG_UNIT_QUICK_CODE,row_number() over (partition by person_account_detail_id order by last_changed desc) rn  from shipdw.hvtb_parse_mxp_person_account_items where ORG_UNIT_QUICK_CODE in (select category_value from shipdw.hvtb_mart_lkp_revenue_category_rel where category_type = 'FOLIO_QUICKCODE')) pac where pac.rn = 1 ) per left join (select * from (select cruise_number,CRUISE_ID,row_number() over (partition by CRUISE_ID order by last_changed desc) rn  from shipdw.hvtb_parse_mxp_cruise) cr where cr.rn = 1)cruise on per.period_id = cruise.cruise_id left join (select * from (select ORG_STRUCTURE_NAME,org_structure_id ,row_number() over (partition by ORG_STRUCTURE_ID order by last_changed desc) rn  from shipdw.hvtb_parse_mxp_org_structure) org where org.rn = 1)orgstr on per.org_structure_id = orgstr.org_structure_id left join (select * from (select SYS_LOOKUP_ID,SYS_LOOKUP_ITEM_NAME,SYS_LOOKUP_CATEGORY_ID,row_number() over (partition by SYS_LOOKUP_ITEMS_ID order by last_changed desc) rn  from shipdw.hvtb_parse_mxp_sys_lookup_items  where SYS_LOOKUP_ACTIVE = 1)sys where sys.rn = 1)syslkp on per.ACCOUNT_RECORD_TYPE_ID = syslkp.SYS_LOOKUP_ID inner join (select * from (select SYS_LOOKUP_CATEGORY_ID ,SYS_LOOUP_CATEGORY_NAME,row_number() over (partition by SYS_LOOKUP_CATEGORY_ID order by last_changed desc) rn  from shipdw.hvtb_parse_mxp_sys_lookup_categories where SYS_LOOUP_CATEGORY_NAME = 'Account Line Type')syscat where syscat.rn = 1)syscatlkp on syslkp.SYS_LOOKUP_CATEGORY_ID = syscatlkp.SYS_LOOKUP_CATEGORY_ID
+spark.source.columns voyage_id,batchtime,part_date,sales_id,sale_detail_src,sale_operator_num,receipt_number,check_status,sales_voyagenumber,location,line_type,line_Status,line_description,src_deleted_flag,sale_group_description
+
+spark.pond.allColumns sale_detail_skey as pond_sale_detail_skey, voyage_id as pond_voyage_id, sale_id as pond_sale_id, sale_operator_num as pond_sale_operator_num, sale_detail_src as pond_sale_detail_src,receipt_number as pond_receipt_number,check_status as pond_check_status,sales_voyagenumber as pond_sales_voyagenumber,location as pond_location,line_type as pond_line_type, line_status as pond_line_status,line_description as pond_line_description,src_deleted_flag as pond_src_deleted_flag,sale_group_description as pond_sale_group_description,load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+spark.surrogate_key.column sale_detail_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_sale_detail
+spark.source.primaryKeyColumns sales_id
+spark.scdtype type1
+spark.frameworkEnv ship
+spark.tableType DIMENSION
+spark.target.final_collist sale_detail_skey,final_view.voyage_id as voyage_id,final_view.sales_id as sale_id, final_view.sale_detail_src as sale_detail_src,cast(final_view.sale_operator_num as int) as sale_operator_num,cast(final_view.receipt_number as int) as receipt_number,final_view.check_status as  check_status,final_view.sales_voyagenumber as sales_voyagenumber,final_view.location as location,final_view.line_type as line_type,final_view.line_Status as line_Status,final_view.line_description as line_description,final_view.src_deleted_flag as src_deleted_flag,final_view.sale_group_description,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_sale_detail
+spark.target.location /data/apps/nbx/mart/hvtb_mart_dim_sale_detail
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename sail_detail_dim

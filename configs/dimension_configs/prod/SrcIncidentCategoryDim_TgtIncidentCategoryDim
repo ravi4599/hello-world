@@ -1,0 +1,47 @@
+spark.src.config.id SrcIncidentCategoryDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtIncidentCategoryDim
+spark.parent.id SrcHvVxpDxpIncidentCategory-TgtHvVxpDxpIncidentCategory
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.table.type dim
+spark.hadoop.hive.execution.engine mr
+
+
+
+
+spark.source.sql select cat.incidentcategoryid as incident_category_id, cat.code as incident_category_code, cat.departmentcode as incident_category_dept_code, cat.namekey as incident_category_name, cat.dueinterval as incident_category_due_interval, cat.severity as incident_category_severity, pcat.code as incident_parent_category_code, pcat.namekey as incident_parent_category_name, cat.priority as incident_category_priority,cast(collect_set(typ.namekey) as string) as incident_category_types, cat.isactive as src_active_flg, cat.isdeleted as src_deleted_flg, cat.VoyageId as voyage_id , cat.ShipCode , cat.batchtime, cat.Part_date FROM (select * from (select incidentcategoryid,parentincidentcategoryid,code,departmentcode,namekey,dueinterval,severity,priority,isactive,isdeleted,VoyageId,ShipCode,batchtime,Part_date, row_number() over (partition by incidentcategoryid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_dxp_incidentcategory *whereclause*) where rn = 1 ) cat left join (select * from(select code,namekey,incidentcategoryid,row_number() over (partition by incidentcategoryid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_dxp_incidentcategory ) where rn = 1 ) pcat on cat.parentincidentcategoryid = pcat.incidentcategoryid join (select * from (select incidentcategoryid,incidentcategorytypeid,incidentcategorymapid,row_number() over (partition by incidentcategorymapid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_dxp_incidentcategorymap ) where rn =1 ) map on map.incidentcategoryid = cat.incidentcategoryid join (select * from(select namekey,incidentcategorytypeid,row_number() over (partition by incidentcategorytypeid order by lastmodifieddate desc)rn from shipdw.hvtb_parse_vxp_dxp_incidentcategorytype ) where rn = 1 ) typ on typ.incidentcategorytypeid = map.incidentcategorytypeid group by incident_category_id, incident_category_code, incident_category_dept_code, incident_category_name, incident_category_due_interval, incident_category_severity, incident_parent_category_code, incident_parent_category_name, incident_category_priority, src_active_flg, src_deleted_flg, voyage_id, cat.ShipCode,cat.batchtime,cat.Part_date
+
+
+#spark.source.sql select cat.incidentcategoryid as incident_category_id, cat.code as incident_category_code, cat.departmentcode as incident_category_dept_code, cat.namekey as incident_category_name, cat.dueinterval as incident_category_due_interval, cat.severity as incident_category_severity, pcat.code as incident_parent_category_code, pcat.namekey as incident_parent_category_name, cat.priority as incident_category_priority,cast(collect_set(typ.namekey) as string) as incident_category_types, cat.isactive as src_active_flg, cat.isdeleted as src_deleted_flg, cat.VoyageId as voyage_id , cat.ShipCode , cat.batchtime, cat.Part_date FROM (select * from (select incidentcategoryid,parentincidentcategoryid,code,departmentcode,namekey,dueinterval,severity,priority,isactive,isdeleted,VoyageId,ShipCode,batchtime,Part_date, row_number() over (partition by incidentcategoryid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_dxp_incidentcategory ) where rn = 1 ) cat left join (select * from(select code,namekey,incidentcategoryid,row_number() over (partition by incidentcategoryid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_dxp_incidentcategory ) where rn = 1 ) pcat on cat.parentincidentcategoryid = pcat.incidentcategoryid join (select * from (select incidentcategoryid,incidentcategorytypeid,incidentcategorymapid,row_number() over (partition by incidentcategorymapid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_dxp_incidentcategorymap ) where rn =1 ) map on map.incidentcategoryid = cat.incidentcategoryid join (select * from(select namekey,incidentcategorytypeid,row_number() over (partition by incidentcategorytypeid order by lastmodifieddate desc)rn from shipdw.hvtb_parse_vxp_dxp_incidentcategorytype ) where rn = 1 ) typ on typ.incidentcategorytypeid = map.incidentcategorytypeid group by incident_category_id, incident_category_code, incident_category_dept_code, incident_category_name, incident_category_due_interval, incident_category_severity, incident_parent_category_code, incident_parent_category_name, incident_category_priority, src_active_flg, src_deleted_flg, voyage_id, cat.ShipCode,cat.batchtime,cat.Part_date
+
+spark.source.columns incident_category_id,incident_category_code,incident_category_dept_code,incident_category_name,incident_category_due_interval,incident_category_severity,incident_parent_category_code,incident_parent_category_name,incident_category_priority,incident_category_types,src_active_flg,src_deleted_flg
+spark.surrogate_key.column incident_category_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_incident_category
+spark.pond.allColumns voyage_id  as pond_voyage_id,incident_category_skey as pond_incident_category_skey,incident_category_id as pond_incident_category_id,incident_category_code as pond_incident_category_code,incident_category_dept_code as pond_incident_category_dept_code,incident_category_name as pond_incident_category_name,incident_category_due_interval as pond_incident_category_due_interval,incident_category_severity as pond_incident_category_severity,incident_parent_category_code as pond_incident_parent_category_code,incident_parent_category_name as pond_incident_parent_category_name,incident_category_priority as pond_incident_category_priority,incident_category_types as pond_incident_category_types,src_active_flg as pond_src_active_flg,src_deleted_flg as pond_src_deleted_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.target.schema shipdw
+spark.target.table incident_category_dim
+spark.source.primaryKeyColumns incident_category_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.target.final_collist final_view.voyage_id,incident_category_skey,final_view.incident_category_id,final_view.incident_category_code,final_view.incident_category_dept_code,final_view.incident_category_name,final_view.incident_category_due_interval,final_view.incident_category_severity,final_view.incident_parent_category_code,final_view.incident_parent_category_name,final_view.incident_category_priority,final_view.incident_category_types,final_view.src_active_flg,final_view.src_deleted_flg,load_dt,upd_dt,primaryhash,md5_hash 
+
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+
+
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_incident_category
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_incident_category
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname incident_category_dim_tmp
+spark.bq.permtblname incident_category_dim
+spark.bq.viewname shipdw.incident_category_dim

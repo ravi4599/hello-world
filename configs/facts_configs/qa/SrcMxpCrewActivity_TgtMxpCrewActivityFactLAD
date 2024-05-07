@@ -1,0 +1,40 @@
+spark.src.config.id SrcMxpCrewActivitylad
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.api.env Qa
+spark.target.config.id TgtMxpCrewActivityFactlad
+spark.parent.id SrcMxpPersonSchedules-TgtMxpPersonSchedules
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.ing.type Fact
+spark.source.columns voyage_id,ship_code,org_unit_skey,crew_activity_detail_skey,person_skey,is_actuals,activity_skey,schedule_activity_day,schedule_activity_datetime_from,schedule_activity_datetime_to,schedule_activity_duration_hours,is_deleted,is_actual_activity_confirmed,is_actual_activity_approved
+spark.lad.file true
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_crew_activity
+spark.target.table crew_activity_fact
+spark.pond.allColumns voyage_id as pond_voyage_id,ship_code as pond_ship_code,org_unit_skey as pond_org_unit_skey,crew_activity_detail_skey as pond_crew_activity_detail_skey,person_skey as pond_person_skey,is_actuals as pond_is_actuals,activity_skey as pond_activity_skey,schedule_activity_day as pond_schedule_activity_day,schedule_activity_datetime_from as pond_schedule_activity_datetime_from,schedule_activity_datetime_to as pond_schedule_activity_datetime_to,schedule_activity_duration_hours as pond_schedule_activity_duration_hours,is_deleted as pond_is_deleted,is_actual_activity_confirmed as pond_is_actual_activity_confirmed,is_actual_activity_approved as pond_is_actual_activity_approved,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+spark.target.final_collist final_view.voyage_id,final_view.ship_code,final_view.org_unit_skey,final_view.crew_activity_detail_skey,final_view.person_skey,final_view.is_actuals,final_view.activity_skey,final_view.schedule_activity_day,final_view.schedule_activity_datetime_from,final_view.schedule_activity_datetime_to,final_view.schedule_activity_duration_hours,final_view.is_deleted,final_view.is_actual_activity_confirmed,final_view.is_actual_activity_approved,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_fact_crew_activity
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_fact_crew_activity
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname crew_activity_fact_tmp
+spark.bq.permtblname crew_activity_fact
+spark.bq.viewname shipdw.crew_activity_fact
+spark.factType Accu
+spark.source.primaryKeyColumns crew_activity_detail_skey,is_actuals
+#----------------------LAD--------------------------------# 
+spark.ladjob.flag true
+spark.lad.srctablekey guid
+spark.lad.srctable shipdw.hvtb_parse_mxp_person_schedules
+spark.lad.tgttable shipdw.hvtb_parse_mxp_person_schedules_lad
+spark.lad.columns crew_activity_detail_skey
+spark.ladremoval.flag true
+spark.hadoop.hive.execution.engine mr
+

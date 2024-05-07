@@ -1,0 +1,27 @@
+spark.kafkabrokers 10.15.2.58:9092,10.15.12.38:9092,10.15.13.172:9092
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic dbz.sw.SEAWARE.PACKAGE_TYPE_VENDOR_LINK
+spark.src.personOffSet earliest
+spark.src.config.id SrcSeawarePackageTypeVendorlnk
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtSeawarePackageTypeVendorlnk
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_package_type_vendor_link
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_package_type_vendor_link
+
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.15.2.206:2181/hbase-unsecure
+spark.kafka.zookeeper 10.15.2.58:2181
+spark.source.columns  record_id,package_type,vendor_id,date_from,date_to,comments,op,ts_ms,voyageid,Batchtime,Part_Date
+
+spark.final.query select record_id,package_type,vendor_id,CAST(date_from/1000000 as timestamp) as date_from,CAST(date_to/1000000 as timestamp) as date_to,comments,op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date

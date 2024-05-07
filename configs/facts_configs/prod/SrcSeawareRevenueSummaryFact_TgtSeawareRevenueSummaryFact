@@ -1,0 +1,62 @@
+spark.src.config.id SrcSeawareRevenueSummaryFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtSeawareRevenueSummaryFact
+#spark.parent.id
+ 
+
+ 
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+ 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+ 
+spark.metadata.con.driver=org.postgresql.Driver
+ 
+
+ 
+spark.ing.type Fact
+
+ 
+spark.source.sql SELECT CURRENT_TIMESTAMP() AS snapshot_time ,rev_fact.res_id AS res_id ,coalesce(rev_fact.ship_id, - 1) AS ship_id ,coalesce(rev_fact.agency_id, - 1) AS agency_id ,coalesce(rev_fact.agent_id, - 1) AS agent_id ,coalesce(rev_fact.sail_id, - 1) AS sail_id ,coalesce(rel.guest_id, - 1) AS guest_id ,coalesce(rev_fact.currency, 0) AS currency ,coalesce(rev_fact.currency_rate, 0) AS currency_rate ,coalesce(rev_fact.amount, 0) AS amount ,coalesce(rev_fact.voyage_amount, 0) AS voyage_amount ,coalesce(rev_fact.taxes_and_fees, 0) AS taxes_and_fees ,coalesce(rev_fact.voyage_protect, 0) AS voyage_protect ,coalesce(rev_fact.addon_fare, 0) AS addon_fare ,coalesce(rev_fact.shorex_fare, 0) AS shorex_fare ,coalesce(rev_fact.com_protected, 0) AS com_protected ,coalesce(inv_dtl.invoice_total, 0) AS invoice_total ,coalesce(inv_dtl.invoice_paid, 0) AS invoice_paid ,coalesce(inv_dtl.gross_due, 0) AS gross_due ,coalesce(inv_dtl.net_due, 0) AS net_due ,coalesce(inv_dtl.com_total, 0) AS com_total ,coalesce(inv_dtl.com_paid, 0) AS com_paid ,coalesce(inv_dtl.com_bas_total, 0) AS com_bas_total ,coalesce(inv_dtl.com_bon_total, 0) AS com_bon_total ,coalesce(inv_dtl.charge_total, 0) AS charge_total ,coalesce(inv_dtl.grand_total, 0) AS grand_total FROM vv_db.hvtb_nbx_core_sw_reservation_dim rd JOIN ( SELECT fact.snapshot_date AS snapshot_date ,fact.res_id AS res_id ,fact.ship_id ,fact.sail_id ,fact.agency_id ,fact.agent_id ,fact.currency ,fact.currency_rate ,sum(fact.amount) AS amount ,sum(CASE WHEN invoice_item_type = 'VOYAGE FARE' THEN amount ELSE 0 END) AS voyage_amount ,sum(CASE WHEN invoice_item_type = 'TAXES & FEES' THEN amount ELSE 0 END) AS taxes_and_fees ,sum(CASE WHEN invoice_item_type = 'INSURANCE' THEN amount ELSE 0 END) AS voyage_protect ,sum(CASE WHEN pricelkp.price_area = 'ADDON' THEN amount ELSE 0 END) AS addon_fare ,sum(CASE WHEN invoice_item_type = 'SHORE THINGS' THEN amount ELSE 0 END) AS shorex_fare ,sum(CASE WHEN ( invoice_item_type = '' OR invoice_item_type IS NULL ) THEN amount ELSE 0 END) AS com_protected FROM vv_db.hvtb_nbx_core_sw_revenue_fact fact LEFT JOIN vv_db.hvtb_nbx_core_sw_invoice_item_type_lkp inv ON fact.invoice_item_type_id = inv.invoice_item_type_id LEFT JOIN vv_db.hvtb_nbx_core_sw_price_area_lkp pricelkp ON fact.price_area_id = pricelkp.price_area_id WHERE fact.snapshot_date in ( SELECT max(snapshot_date) FROM vv_db.hvtb_nbx_core_sw_revenue_fact ) GROUP BY fact.snapshot_date ,fact.res_id ,fact.ship_id ,fact.sail_id ,fact.agency_id ,fact.agent_id ,fact.currency ,fact.currency_rate ) rev_fact ON rev_fact.res_id = rd.res_id LEFT JOIN vv_db.hvtb_nbx_core_sw_res_guest_rel rel ON rel.res_id = rd.res_id AND rel.guest_seqn = 1 LEFT JOIN ( SELECT entity_id AS res_id ,sum(CASE WHEN param_name = 'INVOICE_TOTAL' THEN param_value ELSE 0 END) AS invoice_total ,sum(CASE WHEN param_name = 'INVOICE_PAID' THEN param_value ELSE 0 END) AS invoice_paid ,sum(CASE WHEN param_name = 'GROSS_DUE' THEN param_value ELSE 0 END) AS gross_due ,sum(CASE WHEN param_name = 'NET_DUE' THEN param_value ELSE 0 END) AS net_due ,sum(CASE WHEN param_name = 'COM_TOTAL' THEN param_value ELSE 0 END) AS com_total ,sum(CASE WHEN param_name = 'COM_PAID' THEN param_value ELSE 0 END) AS com_paid ,sum(CASE WHEN param_name = 'COM_BAS_TOTAL' THEN param_value ELSE 0 END) AS com_bas_total ,sum(CASE WHEN param_name = 'COM_BON_TOTAL' THEN param_value ELSE 0 END) AS com_bon_total ,sum(CASE WHEN param_name = 'CHARGE_TOTAL' THEN param_value ELSE 0 END) AS charge_total ,sum(CASE WHEN param_name = 'GRAND_TOTAL' THEN param_value ELSE 0 END) AS grand_total FROM ( SELECT * FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY record_id ORDER BY batchtime DESC)rn FROM vv_db.hvtb_parse_sw_rpl_acc_invoice_detail ) WHERE rn = 1) aid WHERE aid.entity_type = 'RES' AND aid.record_id = ( SELECT max(record_id) FROM ( SELECT * FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY record_id ORDER BY batchtime DESC)rn FROM vv_db.hvtb_parse_sw_rpl_acc_invoice_detail ) WHERE rn = 1) aid_max WHERE aid.entity_id = aid_max.entity_id AND aid.param_name = aid_max.param_name AND aid_max.entity_type = 'RES' ) GROUP BY entity_id ) inv_dtl ON rd.src_res_id = inv_dtl.res_id
+ 
+spark.source.columns snapshot_time,res_id,ship_id,agent_id,agency_id,sail_id,guest_id,currency,currency_rate,amount,voyage_amount,taxes_and_fees,voyage_protect,addon_fare,shorex_fare,com_protected,invoice_total,invoice_paid,gross_due,net_due,com_total,com_paid,com_bas_total,com_bon_total,charge_total,grand_total
+
+ 
+spark.pond.allColumns snapshot_time as pond_snapshot_time,res_id as pond_res_id,ship_id as pond_ship_id,agent_id as pond_agent_id,agency_id as pond_agency_id,sail_id as pond_sail_id,guest_id as pond_guest_id,currency as pond_currency,currency_rate as pond_currency_rate,amount as pond_amount,voyage_amount as pond_voyage_amount,taxes_and_fees as pond_taxes_and_fees,voyage_protect as pond_voyage_protect,addon_fare as pond_addon_fare,shorex_fare as pond_shorex_fare,com_protected as pond_com_protected,invoice_total as pond_invoice_total,invoice_paid as pond_invoice_paid,gross_due as pond_gross_due,net_due as pond_net_due,com_total as pond_com_total,com_paid as pond_com_paid,com_bas_total as pond_com_bas_total,com_bon_total as pond_com_bon_total,charge_total as pond_charge_total,grand_total as pond_grand_total,load_dt as pond_load_dt, upd_dt as pond_upd_dt,snapshot_date as pond_snapshot_date
+
+ 
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_revenue_summary_fact
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_revenue_summary_fact
+
+ 
+spark.source.primaryKeyColumns res_id,sail_id
+
+ 
+spark.target.final_collist final_view.snapshot_time ,final_view.res_id,final_view.ship_id ,final_view.agent_id,final_view.agency_id ,final_view.sail_id,final_view.guest_id,final_view.currency ,final_view.currency_rate ,final_view.amount ,final_view.voyage_amount ,final_view.taxes_and_fees ,final_view.voyage_protect ,final_view.addon_fare ,final_view.shorex_fare ,final_view.com_protected ,final_view.invoice_total ,final_view.invoice_paid ,final_view.gross_due ,final_view.net_due ,final_view.com_total ,final_view.com_paid ,final_view.com_bas_total ,final_view.com_bon_total ,final_view.charge_total ,final_view.grand_total ,final_view.load_dt , final_view.upd_dt ,final_view.snapshot_date
+
+ 
+
+ 
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_nbx_core_sw_revenue_summary_fact
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_revenue_summary_fact
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_revenue_summary_fact_tmp
+spark.bq.permtblname seaware_revenue_summary_fact
+spark.bq.viewname seaware.seaware_revenue_summary_fact
+spark.tableType FACT
+spark.frameworkEnv shore 
+
+ 
+#------SNAPSHOT SPECIFIC-----#
+spark.factType SNAPSHOT
+spark.partition.column snapshot_date
+
+ 
+spark.hadoop.hive.execution.engine mr
+

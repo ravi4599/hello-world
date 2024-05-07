@@ -1,0 +1,44 @@
+spark.src.config.id Srccrm_convdefdialog_daily_metric_dim
+spark.voyage.id	SC2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.hadoop.hive.execution.engine mr
+spark.target.config.id tgtcrm_convdefdialog_daily_metric_dim
+spark.parent.id	SrcSFDCConvDefDialogDailyMetric-TgtSFDCConvDefDialogDailyMetric
+
+spark.table.type dim
+spark.hadoop.hive.execution.engine mr
+spark.table.type dim
+spark.metadata.con.format jdbc	
+	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.source.sql select * from (select * from (select daily.Name,daily.SessionEndType,daily.SessionTransferType,daily.StaticChoiceValue,daily.Value,daily.CreatedDate,daily.LastModifiedDate,daily.IsDeleted,daily.batchtime as batchtime,daily.Part_date as Part_date,row_number()over(partition by Name order by CreatedDate desc) as rn from vv_db.hvtb_parse_sfdc_conv_def_dialog_daily_metric daily ) add where add.rn=1)
+spark.source.columns Name,SessionEndType,SessionTransferType,StaticChoiceValue,Value,CreatedDate,LastModifiedDate,IsDeleted
+spark.pond.allColumns convdefdialogdailymetric_skey as pond_convdefdialogdailymetric_skey,Name as pond_Name,SessionEndType as pond_SessionEndType,SessionTransferType as pond_SessionTransferType,StaticChoiceValue as pond_StaticChoiceValue,Value as pond_Value,CreatedDate as pond_CreatedDate,LastModifiedDate as pond_LastModifiedDate,IsDeleted as pond_IsDeleted,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.surrogate_key.column convdefdialogdailymetric_skey  
+spark.pond.database vv_db
+spark.pond.table  hvtb_nbx_mart_crm_convdefdialog_daily_metric
+spark.target.schema vv_db
+spark.target.table  hvtb_nbx_mart_crm_convdefdialog_daily_metric
+spark.source.primaryKeyColumns Name
+
+spark.scdtype   type1
+spark.frameworkEnv   shore
+spark.tableType DIMENSION
+
+spark.target.final_collist final_view.convdefdialogdailymetric_skey,final_view.Name,final_view.SessionEndType,final_view.SessionTransferType,final_view.StaticChoiceValue,final_view.Value,final_view.CreatedDate,final_view.LastModifiedDate,final_view.IsDeleted,load_dt,upd_dt,primaryhash,md5_hash
+
+spark.target.temp   gs://vv-prod-nbx-cluster/data/temp/hvtb_nbx_mart_crm_convdefdialog_daily_metric
+spark.target.location   gs://vv-prod-nbx-cluster/data/mart/hvtb_nbx_mart_crm_convdefdialog_daily_metric
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname hvtb_nbx_core_crm_convdefdialog_daily_metric_dim_tmp
+spark.bq.permtblname hvtb_nbx_core_crm_convdefdialog_daily_metric_dim
+spark.bq.viewname crm.hvtb_nbx_core_crm_convdefdialog_daily_metric_dim

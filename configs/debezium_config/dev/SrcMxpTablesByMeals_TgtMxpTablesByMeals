@@ -1,0 +1,23 @@
+spark.kafkabrokers 10.59.1.30:9092,10.59.1.31:9092,10.59.1.32:9092
+spark.kafka.zookeeper 10.59.1.30:2181,10.59.1.31:2181,10.59.1.32:2181
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic qa-shore-dbz.mxp.dbo.Tables_By_Meals
+spark.snapshot.table shipdw.hbtb_dbz_snapdate
+spark.src.config.id SrcMxpTablesByMeals
+spark.tgt.env DEV
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtMxpTablesByMeals
+spark.target.lnd.table shipdw.hvtb_lnd_mxp_Tables_By_Meals
+spark.target.parse.table shipdw.hvtb_parse_mxp_Tables_By_Meals
+spark.ship.code SHORE
+spark.metadata.con.format jdbc
+spark.metadata.offset.mode Append
+spark.metadata.offset.table shipdw.hbtb_streaming_ingestion_offset
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.snpsht.table.mode overwrite
+

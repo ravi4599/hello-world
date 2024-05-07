@@ -1,0 +1,20 @@
+spark.source.table select * from shipdw.hvtb_lnd_mxp_ship_pos_mxp_sales_stream_mxp
+spark.target.salesitem.table shipdw.hvtb_parse_mxp_pos_sales
+spark.target.checkdetails.table shipdw.hvtb_parse_mxp_ship_pos_sales_checkdetails
+spark.target.costgood.table shipdw.hvtb_parse_mxp_Ship_Pos_Sales_CostOfGood
+spark.salesitem.target.location /data/apps/nbx/hive/parsing/hvtb_parse_mxp_pos_sales
+spark.cdetails.target.location /data/apps/nbx/hive/parsing/hvtb_parse_mxp_ship_pos_sales_checkdetails
+spark.goods.target.location /data/apps/nbx/hive/parsing/hvtb_parse_mxp_Ship_Pos_Sales_CostOfGood
+spark.src.config.id SrcShpPosSales
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtShpPOsSales
+spark.parent.id SrcMXPPosSales-TgtMXPPosSales
+spark.target.offset.mode overwrite
+spark.target.offset.table SHIP.HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+

@@ -1,0 +1,52 @@
+spark.src.config.id SrcGoEventDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtGoEventDim
+spark.parent.id SrcGosparkEvent-TgtGosparkEvent
+
+
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.table.type dim
+
+
+#spark.source.sql   select event.pl_sailing as voyage_id,event.pl_id as event_id ,event.pl_template as template_id,event.pl_name as event_name ,cast(concat(cast(event.pl_date as date),' ',concat(event.pl_starttime_hour,':',event.pl_starttime_minute)) as timestamp) as event_start_time,cast(event.pl_duration as int) as event_duration_minutes,cast(event.pl_date as date) as event_date,event.pl_location as event_location,cast(event.pl_inventory as int) as event_capacity,cast(event.pl_inventoryid as boolean) as event_inventoried_flg,cast(event.pl_hidden as boolean) as event_hidden_flg,cast(event.pl_vip as boolean) as event_vip_flg ,venu.venue_skey as venue_skey, cast(case when event.pl_action like 'delete' then 'true' else 'false' end  as boolean) as event_deleted_flg ,event.batchtime,event.part_date from (select * from (select * ,row_number() over ( partition by pl_id order by ts desc) as rn from shipdw.hvtb_parse_gospark_event )event where rn = 1) event left outer join (select * from (select *,  row_number() over (partition by venue_id order by upd_dt desc ) as rn from shipdw.hvtb_mart_dim_venue) venu  where rn =1) venu on (event.pl_venue=venu.venue_id)
+
+spark.source.sql   select event.pl_sailing as voyage_id,event.pl_id as event_id ,event.pl_template as template_id,event.pl_name as event_name ,cast(concat(cast(event.pl_date as date),' ',concat(event.pl_starttime_hour,':',event.pl_starttime_minute)) as timestamp) as event_start_time,cast(event.pl_duration as int) as event_duration_minutes,cast(event.pl_date as date) as event_date,event.pl_location as event_location,cast(event.pl_inventory as int) as event_capacity,cast(event.pl_inventoryid as boolean) as event_inventoried_flg,cast(event.pl_hidden as boolean) as event_hidden_flg,cast(event.pl_vip as boolean) as event_vip_flg ,venu.venue_skey as venue_skey, cast(case when event.pl_action like 'delete' then 'true' else 'false' end  as boolean) as event_deleted_flg ,event.batchtime,event.part_date from (select * from (select pl_sailing,pl_id,pl_template,pl_name,pl_date,pl_starttime_hour,pl_starttime_minute,pl_duration,pl_location,pl_inventory,pl_inventoryid,pl_hidden,pl_vip,pl_action,pl_venue,batchtime,part_date,ts,row_number() over ( partition by pl_id order by ts desc) as rn from shipdw.hvtb_parse_gospark_event *whereclause*)event where rn = 1) event left join (select * from (select venue_skey,venue_id,upd_dt,  row_number() over (partition by venue_id order by upd_dt desc ) as rn from shipdw.hvtb_mart_dim_venue) venu  where rn =1) venu on (event.pl_venue=venu.venue_id)
+
+spark.source.columns   voyage_id,event_id,template_id,event_name,event_start_time,event_duration_minutes,event_date,venue_skey,event_location,event_capacity,event_inventoried_flg,event_hidden_flg,event_vip_flg,event_deleted_flg
+
+
+spark.pond.allColumns   event_skey as pond_event_skey,voyage_id as pond_voyage_id,event_id as pond_event_id,template_id as pond_template_id,event_name as pond_event_name,event_start_time as pond_event_start_time,event_duration_minutes as pond_event_duration_minutes, event_date as pond_event_date,venue_skey as pond_venue_skey,event_location as pond_event_location,event_capacity as pond_event_capacity,event_inventoried_flg as pond_event_inventoried_flg,event_hidden_flg as pond_event_hidden_flg,event_vip_flg as pond_event_vip_flg,event_deleted_flg as pond_event_deleted_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+
+
+spark.surrogate_key.column event_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_event
+spark.target.schema shipdw
+spark.target.table voyage_dim
+#spark.source.primaryKeyColumns event_id,voyage_id
+spark.source.primaryKeyColumns event_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+
+spark.target.final_collist   final_view.event_skey,final_view.voyage_id,final_view.event_id,final_view.template_id,final_view.event_name,final_view.event_start_time,final_view.event_duration_minutes,final_view.event_date,final_view.venue_skey,final_view.event_location,final_view.event_capacity,final_view.event_inventoried_flg,final_view.event_hidden_flg,final_view.event_vip_flg,final_view.event_deleted_flg,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_event
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_event
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname event_dim_tmp
+spark.bq.permtblname event_dim
+spark.bq.viewname shipdw.event_dim
+spark.tableType DIMENSION
+spark.hadoop.hive.execution.engine mr
+
+
+

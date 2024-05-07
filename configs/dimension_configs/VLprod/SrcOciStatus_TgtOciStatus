@@ -1,0 +1,31 @@
+spark.parent.id SrcOciStatus
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtOciStatus
+spark.parent.id SrcRTSOciStatusDetail-TgtRTSOciStatusDetail-SC1912065NCM
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.columns guestid,reservationnumber,precruiseinfo_transportationtypecode,batchtime,VoyageID
+spark.pond.allColumns vxp_guest_id as pond_vxp_guest_id,src_res_id as pond_src_res_id,rts_transfer_response as pond_rts_transfer_response,VoyageID as pond_VoyageID,rts_id as pond_rts_id,guest_Id as pond_guest_Id,client_id as pond_client_id,res_id as pond_res_id,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column rts_id
+spark.pond.database vv_db
+spark.pond.table hvtb_mart_dim_rts_oci_statusdetail
+spark.source.primaryKeyColumns guestid
+spark.target.final_collist rts_id,final_view.guestid as vxp_guest_id,final_view.reservationnumber as src_res_id,final_view.guest_id,final_view.client_id,final_view.res_id,final_view.PreCruiseInfo_TransportationTypeCode as rts_transfer_response,final_view.VoyageID,load_dt, upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_rts_oci_statusdetail
+spark.target.location /data/apps/nbx/mart/hvtb_mart_dim_rts_oci_statusdetail
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename rts_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+ 
+spark.ship.code VAL
+

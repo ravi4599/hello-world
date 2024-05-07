@@ -1,0 +1,18 @@
+spark.target.passvalue Sailing2020
+spark.target.kafka.batch.size 16384
+spark.target.kafka.topic shp2shr-vxp-dxpcore.voyage
+spark.src.table shipdw.hvtb_lnd_vxp_dxp_voyage
+spark.target.coalesce.value 10
+spark.src.config.id SrcHvVxpDxpVoyage
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtKfkVxpDxpVoyage
+spark.parent.id SrcVxpDxpVoyage-TgtVxpDxpVoyage
+spark.isfullrefresh yes
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.isfullrefresh yes
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.kafka.zookeeper 10.102.220.205:2181
+spark.tgt.env Prod
+

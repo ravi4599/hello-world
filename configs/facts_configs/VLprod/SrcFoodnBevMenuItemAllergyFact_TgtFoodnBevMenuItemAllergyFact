@@ -1,0 +1,33 @@
+#PROD cluster and hive details
+#Unique constant for Batchid and Parentid details
+spark.src.config.id SrcFoodnBevMenuItemAllergy
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtFoodnBevMenuItemAllergyFact
+spark.parent.id SrcVXPfoodandbevmenuitemallergy-TgtVXPfoodandbevmenuitemallergy-SC2002269NCR
+#Metadata Hbase table and connection details
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+#PROD postgress database details
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.database prodnbx
+#Source hive and target progres schema, table and columns details
+spark.source.sql select menudim.menu_item_skey,allergydim.allergy_skey,menuitemparse.voyageId as voyage_id,false as src_deleted_flg,menuitemparse.batchtime,menuitemparse.part_date from shipdw.hvtb_lnd_vxp_foodandbeverage_menuitemallergy menuitemparse left join shipdw.hvtb_mart_dim_menu_item menudim on menuitemparse.menuitemid = menudim.menu_item_id left join shipdw.hvtb_mart_dim_allergy allergydim on menuitemparse.allergyid = allergydim.allergy_id  *whereclause*
+spark.source.columns voyage_id,menu_item_skey,allergy_skey,src_deleted_flg
+spark.pond.allColumns pond_voyage_id,pond_menu_item_skey,pond_allergy_skey,pond_src_deleted_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt,part_date as pond_part_date
+spark.pond.database shipdw
+spark.source.primaryKeyColumns voyage_id,menu_item_skey,allergy_skey
+spark.pond.table hvtb_mart_menuitem_allergy_fact
+spark.target.final_collist voyage_id as voyage_id,NVL(menu_item_skey,-1) as menu_item_skey,NVL(allergy_skey,-1) as allergy_skey,src_deleted_flg as src_deleted_flg,load_dt,upd_dt,part_date
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_menuitem_allergy_fact
+spark.target.location /data/apps/nbx/mart/hvtb_mart_menuitem_allergy_fact
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename menuitem_allergy_fact
+spark.tableType fact
+spark.frameworkEnv ship
+spark.ship.code VAL
+

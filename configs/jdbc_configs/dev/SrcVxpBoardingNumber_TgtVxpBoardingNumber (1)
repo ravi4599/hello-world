@@ -1,0 +1,27 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.58.10.21:5432/dxpcore
+spark.src.user pgreadaccessuser
+spark.src.password TRk1JhJn1SstFUnCZ2Xx
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVxpBoardingNumber
+spark.tgt.env DEV
+spark.ing.type Ingestion
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpBoardingNumber
+spark.target.table shipdw.hvtb_lnd_vxp_boardingnumber
+spark.src.table.query "boardingnumber"
+spark.condition.column lastmodifieddate
+spark.source.columns boardingnumberid,shipcode,voyagenumber,slotnumber,boardingslotstarttime,boardingslotendtime,effectivefromdate, effectivetodate,boardingnumber,expectedguestcount,isenabled,isactive,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby,isreserved
+spark.source.query boardingnumberid,shipcode,voyagenumber,slotnumber,substr(cast(boardingslotstarttime as string),-8) as boardingslotstarttime,substr(cast(boardingslotendtime as string),-8) as boardingslotendtime,effectivefromdate, effectivetodate,boardingnumber,expectedguestcount,isenabled,isactive,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby,isreserved
+spark.ship.code SHORE
+ 
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.target.hive.table shipdw.hvtb_lnd_vxp_boardingnumber
+spark.target.location gs://vv-dev-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_boardingnumber
+

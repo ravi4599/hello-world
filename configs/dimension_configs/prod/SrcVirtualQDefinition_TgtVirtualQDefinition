@@ -1,0 +1,35 @@
+spark.src.config.id SrcVirtualQDefinition
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtVirtualQDefinition
+spark.parent.id SrcHvVirtualQDef-TgtHvVirtualQDef
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.api.env Prod
+spark.table.type dim
+spark.target.schema shipdw
+spark.target.table hvtb_mart_dim_virtual_queue_definition
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname virtual_queue_definition_dim_tmp
+spark.bq.permtblname virtual_queue_definition_dim
+spark.bq.viewname shipdw.virtual_queue_definition_dim
+spark.source.sql select NVL(A.VoyageId, -1) as voyage_id, A.virtualqueuedefinitionid as virtual_queue_definition_id, A.virtualqueuedefinitionname as virtual_queue_definition_name, A.isdeleted as src_deleted_flg, A.BatchTime, A.Part_Date from (select * from (select *, row_number() over (partition by virtualqueuedefinitionid order by lastmodifieddate desc) rn  from shipdw.hvtb_parse_vxp_dxp_virtualqueuedefinition) where rn = 1) A
+spark.source.columns voyage_id,virtual_queue_definition_id,virtual_queue_definition_name,src_deleted_flg
+spark.pond.allColumns virtual_queue_definition_skey as pond_virtual_queue_definition_skey,voyage_id as pond_voyage_id,virtual_queue_definition_id as pond_virtual_queue_definition_id,virtual_queue_definition_name as pond_virtual_queue_definition_name,src_deleted_flg as pond_src_deleted_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+spark.surrogate_key.column virtual_queue_definition_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_virtual_queue_definition
+spark.source.primaryKeyColumns virtual_queue_definition_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+spark.target.final_collist virtual_queue_definition_skey,final_view.voyage_id,final_view.virtual_queue_definition_id,final_view.virtual_queue_definition_name,final_view.src_deleted_flg,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_virtual_queue_definition
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_virtual_queue_definition
+spark.hadoop.hive.execution.engine mr
+

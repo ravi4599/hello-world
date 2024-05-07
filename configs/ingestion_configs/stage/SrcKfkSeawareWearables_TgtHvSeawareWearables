@@ -1,0 +1,30 @@
+spark.kafkabrokers 10.7.3.103:9092,10.7.11.112:9092,10.7.12.61:9092
+spark.kafka.zookeeper 10.7.12.61:2181
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+
+
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic stage-shore-seaware.wearables
+spark.src.personOffSet earliest
+spark.streaming.kafka.maxRatePerPartition 50
+
+
+
+spark.src.config.id SrcKfkSeawareWearables
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtHvSeawareWearables
+spark.target.location s3://vv-staging-emr-cluster/data/landing/hvtb_lnd_seaware_wearables
+spark.target.hive.table shipdw.hvtb_lnd_seaware_wearables
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.ship.code SHORE
+

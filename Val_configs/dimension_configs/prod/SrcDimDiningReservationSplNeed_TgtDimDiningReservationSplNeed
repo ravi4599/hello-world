@@ -1,0 +1,34 @@
+spark.src.config.id SrcDimDiningReservationSplNeed
+spark.voyage.id	SC2002269NCR 
+spark.tgt.env Prod
+spark.ing.type Dim
+spark.target.config.id TgtDimDiningReservationSplNeed
+spark.parent.id	SrcvxpResSplNeed-TgtvxpResSplNeed 
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.sql SELECT  rs.voyageId AS voyage_id, "" AS type, rs.code AS code, s.name AS description, rs.batchtime AS batchtime, rs.Part_Date AS Part_Date FROM (SELECT * FROM (SELECT *, row_number() OVER(PARTITION BY code ORDER BY lastmodifieddate DESC, batchtime DESC) rn FROM shipdw.hvtb_parse_vxp_table_management_reservations_reservationspecialneed) WHERE rn=1) rs LEFT JOIN (SELECT public_id, addeddate, addedby, lastmodifieddate, lastmodifiedby, code, VoyageId, ShipCode, name FROM (SELECT *, row_number() OVER(PARTITION BY code,name ORDER BY lastmodifieddate DESC,batchtime DESC) rn FROM shipdw.hvtb_parse_vxp_table_management_guests_specialneedtype) WHERE rn=1) s ON rs.code = s.code
+spark.source.columns voyage_id,type,code,description,batchtime
+spark.pond.allColumns voyage_id AS pond_voyage_id,dining_reservation_preference_skey AS pond_dining_reservation_preference_skey,type AS pond_type,code AS pond_code,description AS pond_description,load_dt AS pond_load_dt,upd_dt AS pond_upd_dt,primaryhash AS pond_primaryhash,md5_hash AS pond_md5_hash
+spark.surrogate_key.column dining_reservation_preference_skey
+spark.pond.database	shipdw 
+spark.pond.table hvtb_mart_dim_dining_reservation_preference
+spark.target.schema	shipdw 
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename dining_reservation_preference_dim
+spark.source.primaryKeyColumns type,code
+spark.target.final_collist final_view.voyage_id,final_view.dining_reservation_preference_skey,final_view.type,final_view.code,final_view.description,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_dining_reservation_preference
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_dining_reservation_preference
+spark.target.schema	Hive_schema_stg 
+spark.postgres.tablename dining_reservation_preference_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+

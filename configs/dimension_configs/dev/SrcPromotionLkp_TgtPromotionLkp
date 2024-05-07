@@ -1,0 +1,42 @@
+spark.src.config.id SrcPromotionLkp
+spark.voyage.id	SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtPromotionLkp
+spark.parent.id	SrcSeawarePapMaster-TgtSeawarePapMaster
+spark.hadoop.hive.execution.engine mr
+
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+#spark.source.sql select NVL(promo_lkp.pap_code,-1) as promo_code, promo_lkp.promo_group as promo_group, promo_lkp.pap_name as promo_name,promo_lkp.batchtime as batchtime, promo_lkp.Part_date as Part_date from (select * from (select *, row_number()over(partition by pap_id order by ts_ms desc) as rn from vv_db.hvtb_parse_sw_rpl_pap_master *whereclause*) pap where pap.rn=1) promo_lkp
+
+spark.source.sql select NVL(promo_lkp.pap_code,-1) as promo_code, NVL(promo_lkp.promo_group ,'') as promo_group, promo_lkp.pap_name as promo_name,promo_lkp.batchtime as batchtime, promo_lkp.Part_date as Part_date from (select * from (select *, row_number()over(partition by pap_id order by ts_ms desc) as rn from vv_db.hvtb_parse_sw_rpl_pap_master *whereclause*) pap where pap.rn=1) promo_lkp
+
+spark.source.columns promo_code,promo_group,promo_name
+spark.pond.allColumns promotion_id as pond_promotion_id,promo_code as pond_promo_code, promo_group as pond_promo_group,promo_name as pond_promo_name, etl_ld_status as pond_etl_ld_status, load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+
+spark.surrogate_key.column promotion_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_promotion_lkp
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_promotion_lkp
+spark.source.primaryKeyColumns promo_code,promo_group,promo_name
+spark.target.final_collist final_view.promotion_id as promotion_id ,final_view.promo_code as promo_code,final_view.promo_group as promo_group,final_view.promo_name as promo_name,final_view.etl_ld_status as etl_ld_status,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt, final_view.primaryhash as primaryhash, final_view.md5_hash as md5_hash
+spark.target.temp gs://vv-dev-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_promotion_lkp
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_promotion_lkp
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_promotion_lkp_tmp
+spark.bq.permtblname seaware_promotion_lkp
+spark.bq.viewname shipdw.seaware_promotion_lkp
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage

@@ -1,0 +1,49 @@
+spark.src.config.id SrcHotelLkp
+spark.voyage.id SC2002269NCR
+spark.tgt.env dev
+spark.target.config.id TgtHotelLkp
+spark.parent.id SrcSeawareHotel-TgtSeawareHotel
+
+
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+spark.source.sql   select hotel.hotel_id,current_timestamp as rec_start_dttm,current_timestamp() - INTERVAL 1 SECOND as rec_end_dttm,hotel.hotel_code,hotel.hotel_name,hotel.hotel_type,hotel.is_active,hotel.hotel_rating,hotel_address.address_type,hotel_address.address_line1,hotel_address.address_line2,hotel_address.address_line3,hotel_address.address_line4,hotel_address.address_city,hotel_address.state_code,hotel_address.zip,hotel_address.country_code,hotel.batchtime, hotel.part_date as part_date from (select * from (select *, row_number()over(partition by hotel_id order by hotel_id desc) as rn from vv_db.hvtb_parse_sw_rpl_hotel ) where rn=1 ) as hotel left join vv_db.hvtb_nbx_parse_sw_rpl_hotel_address hotel_address on hotel.hotel_id = hotel_address.hotel_id where hotel_address.address_type='PRIMARY'
+
+
+spark.source.columns   hotel_id,rec_start_dttm,rec_end_dttm,hotel_code,hotel_name,hotel_type,is_active,hotel_rating,address_type,address_line1,address_line2,address_line3,address_line4,address_city,state_code,zip,country_code
+
+
+spark.pond.allColumns   hotel_id as pond_hotel_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,hotel_code as pond_hotel_code,hotel_name as pond_hotel_name,hotel_type as pond_hotel_type,is_active as pond_is_active ,hotel_rating as pond_hotel_rating ,address_type as pond_address_type,address_line1 as pond_address_line1,address_line2 as pond_address_line2,address_line3 as pond_address_line3,address_line4 as pond_address_line4,address_city as pond_address_city,state_code as pond_state_code,zip as pond_zip ,country_code as pond_country_code,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+
+
+spark.surrogate_key.column hotel_id
+spark.pond.database vv_db
+spark.pond.table hvtb_mart_seware_hotel_lkp
+spark.source.primaryKeyColumns hotel_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+
+spark.target.final_collist   final_view.hotel_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.hotel_code,final_view.hotel_name,final_view.hotel_type,final_view.is_active,final_view.hotel_rating,final_view.address_type,final_view.address_line1,final_view.address_line2,final_view.address_line3,final_view.address_line4,final_view.address_city,final_view.state_code,final_view.zip,final_view.country_code,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_seware_hotel_lkp
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_seware_hotel_lkp
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seware_hotel_lkp_tmp
+spark.bq.permtblname seware_hotel_lkp
+spark.bq.viewname seaware.seware_hotel_lkp
+
+spark.hadoop.hive.execution.engine mr
+
+
+
+

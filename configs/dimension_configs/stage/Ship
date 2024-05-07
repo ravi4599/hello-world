@@ -1,0 +1,4 @@
+spark.query select ship_code AS Ship_Code,ship_name AS Ship_Name,ship_id AS Registry_Code,ship_registry AS Registry_Description,ship_built_date AS Built_Date,ship_crew_size AS Crew_Size,ship_pax_capacity AS Pax_Capacity,ship_cruising_speed Cruising_Speed,ship_max_speed AS Max_Speed,ship_length AS Length,ship_beam AS Beam,ship_tonnage AS Tonnage from vv_db.hvtb_nbx_landing_sw_rpl_ship where ship_code IN ('SC', 'VL')
+spark.temp s3://agency-flat-files-stage/temp
+spark.location s3://agency-flat-files-stage/
+spark.filename _SCVL_ship

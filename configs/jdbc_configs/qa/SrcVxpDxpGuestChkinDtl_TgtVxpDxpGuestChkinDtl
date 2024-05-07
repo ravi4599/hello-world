@@ -1,0 +1,28 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.56.10.6/dxpcore
+spark.src.user pgreadaccessuser
+spark.src.password vzwQArHubFzpEyoL1st7
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVxpDxpGuestChkinDtl
+spark.tgt.env QA
+spark.ing.type Ingestion
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpDxpGuestChkinDtl
+spark.target.table shipdw.hvtb_lnd_vxp_dxp_guestcheckindetail
+spark.target.hive.table shipdw.hvtb_lnd_vxp_dxp_guestcheckindetail
+spark.src.table.query "guestcheckindetail"
+spark.condition.column lastmodifieddate
+spark.source.columns guestcheckindetailid,boardinggroupnumber,pregnancyweeks,guestidentificationid,isidverified,isdocumentsretained,isphotoverified,iscashagreementgiven,iscruisecontractsigned,ismanualdocumentsverified,guestdigitalsignaturemediaitemid,addeddate,addedby,lastmodifieddate,lastmodifiedby,isguestbookletneeded,islegalguardiantravelling,cruisecontractsignedbyreservationguestid,ischildregistrationoptout,ispaymentpolicyaccepted,iscruisecontractsignedatpartylevel,selectedsecurityphotomediaitemid,selectedprofilephotomediaitemid,additionalidentificationdocumenttypecode,signedcruisecontractversion,isdocumentscollected,additionalidentificationid,loggedinuserid,loggedinusername,loggedinusermodifieddate,isusresidence,isoptedforesta,documenttypecode,isitineraryrulesapplied,pregnancyweeksaddeddate,cruisecontractsigneddate,signedhealthcontractversion,healthcontractsignedbyreservationguestid,healthcontractsigneddate,cruisecontractsignedid,isfittotravel,isdocumentphotocopied,cruisecontractsignedbyemailid,isminorauthformcollected,iscruisewellcontractsigned,cruisewellcontractsignedby,signedcruisewellcontractversion,cruisewellcontractsigneddate,cruisewellcontractsignedid,cruisewellcontractsignedbyemail,isthermalcheckpassed,thermalcheckdate,iscovidtestpassed,covidtestdate,healthcontractsignedby,ishealthpaperformcollected,iscruisecontractformcollected,healthsignaturemediaitemid
+spark.tz.columns addeddate,lastmodifieddate,loggedinusermodifieddate,cruisewellcontractsigneddate,thermalcheckdate,covidtestdate
+spark.ship.code SHORE
+ 
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.target.location gs://vv-cert-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_dxp_guestcheckindetail
+spark.hadoop.hive.execution.engine mr
+

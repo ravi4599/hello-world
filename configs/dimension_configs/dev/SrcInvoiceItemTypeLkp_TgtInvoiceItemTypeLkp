@@ -1,0 +1,38 @@
+spark.src.config.id SrcInvoiceItemTypeLkp
+spark.voyage.id	SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtInvoiceItemTypeLkp
+spark.parent.id	SrcSeawareInvoiceItemType-TgtSeawareInvoiceItemType
+
+spark.table.type   dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.source.sql select distinct invtype.invoice_item_type as invoice_item_type , invsubtype.invoice_item_subtype as invoice_item_subtype, invtype.batchtime as batchtime, invtype.Part_date as Part_date from (select * from (select * ,row_number ()over (partition by invoice_item_type_id order by ts_ms desc) as rn from vv_db.hvtb_parse_sw_rpl_invoice_item_type *whereclause*)inv where inv.rn=1) invtype left join vv_db.hvtb_parse_sw_rpl_invoice_item_subtype invsubtype on invtype.invoice_item_type = invsubtype.invoice_item_type union (select distinct invoice_item_type,null as invoice_item_subtype,batchtime,Part_Date from vv_db.hvtb_parse_sw_rpl_invoice_item_type)
+spark.source.columns invoice_item_type,invoice_item_subtype
+spark.pond.allColumns invoice_item_type_id as pond_invoice_item_type_id, invoice_item_type as pond_invoice_item_type,invoice_item_subtype as pond_invoice_item_subtype, etl_ld_status as pond_etl_ld_status, load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+
+spark.surrogate_key.column invoice_item_type_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_invoice_item_type_lkp
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_invoice_item_type_lkp
+spark.source.primaryKeyColumns invoice_item_type,invoice_item_subtype
+spark.target.final_collist final_view.invoice_item_type_id as invoice_item_type_id,final_view.invoice_item_type as invoice_item_type,final_view.invoice_item_subtype as invoice_item_subtype,final_view.etl_ld_status as etl_ld_status,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt, final_view.primaryhash as primaryhash, final_view.md5_hash as md5_hash
+spark.target.temp gs://vv-dev-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_invoice_item_type_lkp
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_invoice_item_type_lkp
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_invoice_item_type_lkp_tmp
+spark.bq.permtblname seaware_invoice_item_type_lkp
+spark.bq.viewname shipdw.seaware_invoice_item_type_lkp
+
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage

@@ -1,0 +1,25 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:sqlserver://10.12.1.243:1442;database=MXP_POS
+spark.src.user Capgemini
+spark.src.password Nskh#c5v3y&7
+spark.src.con.driver com.microsoft.sqlserver.jdbc.SQLServerDriver
+spark.src.table MXP_POS.dbo.VVirgin_Items_Ordered
+spark.src.config.id SrcMxpPosVVirginItemsOrdered
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtMxpPosVVirginItemsOrdered
+spark.target.location s3://vv-staging-emr-cluster/data/landing/hvtb_lnd_mxp_pos_vvirgin_items_ordered
+spark.target.hive.table shipdw.hvtb_lnd_mxp_pos_vvirgin_items_ordered
+spark.target.table shipdw.hvtb_lnd_mxp_pos_vvirgin_items_ordered
+spark.src.table.query (select * from MXP_POS.dbo.VVirgin_Items_Ordered) as VVirgin_Items_Ordered
+spark.condition.column POSSaleID
+spark.hive.table.maxid (select max(POSSaleID) from shipdw.hvtb_lnd_mxp_pos_vvirgin_items_ordered)
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.stop.flag N
+spark.source.columns CrewID,POSSaleID,PLUNr,ItemName,ItemGroup,ItemCategory,ItemOrderedAtTime,ItemServedAtTime,LocationCode,CheckStatus,TableID
+spark.source.query CrewID,POSSaleID,PLUNr,ItemName,ItemGroup,ItemCategory,ItemOrderedAtTime,ItemServedAtTime,LocationCode,CheckStatus,TableID
+spark.ship.code SHORE
+

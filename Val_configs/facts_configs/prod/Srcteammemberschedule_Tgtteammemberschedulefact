@@ -1,0 +1,40 @@
+#------------------# 
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+#------META DATA CONFIG-----#						
+spark.src.config.id Srcteammemberschedule
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.api.env prod
+spark.target.config.id Tgtteammemberschedulefact
+spark.parent.id SrcHveteammemschedule-TgtHveteammemschedule
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+#-------------------------# 
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.database prodnbx
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename teammember_schedule_fact
+#------Query Propery-----#
+#spark.source.sql select voyage_id, ship_code, voyage_skey,person_skey,venue_skey,schedule_date_skey,schedule_date, schedule_day_period,team_member_role,batchtime,part_date from(select NVL(voyage_dim.voyage_number,'N/A') as voyage_id, NVL(voyage_dim.ship_code,'N/A') as ship_code, NVL(voyage_dim.voyage_skey ,-1) as voyage_skey, NVL(person_dim.person_skey,-1) as  person_skey, NVL(venue_dim.venue_skey, -1) as venue_skey, NVL(date_dim.date_id, -1) as schedule_date_skey, tms.tms_date as schedule_date, tms.day_period as schedule_day_period, tms.team_member_role as team_member_role, tms.batchtime as batchtime, tms.part_date as part_date  from ( select * from (select public_id,team_member_id,tms_date,day_period,team_member_role,batchtime,part_date, row_number() over(partition by team_member_id  order by tms_date desc,batchtime desc )as rn from shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule)team_member where team_member.rn=1) tms  left join  (select * from(select teammembernumber,teammemberid ,row_number() over(partition by teammemberid order by lastmodifieddate desc )as rn from shipdw.hvtb_parse_vxp_dxpcore_teammember)vxp_team where vxp_team.rn=1 ) tm on (tm.teammemberid == tms.team_member_id)  left join  shipdw.hvtb_mart_dim_person person_dim on(person_dim.person_external_id == tm.teammembernumber)  left join  (select * from(select place_section_ids ,public_id,row_number() over(partition by public_id order by batchtime desc )as rn from shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule_section)schedule_section where schedule_section.rn=1) sections on(sections.public_id ==tms.public_id)  left join  (select * from(select id,row_number() over(partition by id order by batchtime desc )as rn from shipdw.hvtb_parse_vxp_locationconstruct_tags)ocationconstruct_tags where ocationconstruct_tags.rn=1) tags on (tags.id ==sections.place_section_ids) left join  (select * from(select venue_id,tag_id,row_number() over(partition by tag_id order by  batchtime desc )as rn from shipdw.hvtb_parse_vxp_locationconstruct_venue_tags)venue_tags where venue_tags.rn=1) ventags on (ventags.tag_id == tags.id)  left join  (select * from(select id,global_venue_id,row_number() over(partition by global_venue_id order by batchtime desc,id desc )as rn from shipdw.hvtb_parse_vxp_locationcon_venues)venues where venues.rn=1) venue on (ventags.venue_id == venue.id) left join  shipdw.hvtb_mart_dim_venue venue_dim on (venue_dim.venue_id == venue.global_venue_id) left join  shipdw.hvtb_mart_dim_date date_dim on(date_dim.`date` == tms.tms_date) left join  shipdw.hvtb_mart_dim_voyage voyage_dim on (tms.tms_date between voyage_dim.voyage_start_date and voyage_dim.voyage_end_date) )Schedulefact
+spark.source.sql select voyage_id, ship_code, voyage_skey, person_skey, venue_skey, schedule_date_skey, schedule_date, schedule_day_period, team_member_role, batchtime, part_date from ( select NVL(voyage_dim.voyage_number, 'N/A') as voyage_id, NVL(voyage_dim.ship_code, 'N/A') as ship_code, NVL(voyage_dim.voyage_skey , -1) as voyage_skey, NVL(person_dim.person_skey, -1) as person_skey, NVL(venue_dim.venue_skey, -1) as venue_skey, NVL(date_dim.date_id, -1) as schedule_date_skey, tms.tms_date as schedule_date, tms.day_period as schedule_day_period, tms.team_member_role as team_member_role, tms.batchtime as batchtime, tms.part_date as part_date from ( select * from ( select public_id, team_member_id, tms_date, day_period, team_member_role, batchtime, part_date, row_number() over(partition by team_member_id order by tms_date desc, batchtime desc )as rn from shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule)team_member where team_member.rn = 1) tms left join ( select * from ( select teammembernumber, teammemberid , row_number() over(partition by teammemberid order by lastmodifieddate desc )as rn from shipdw.hvtb_parse_vxp_dxpcore_teammember)vxp_team where vxp_team.rn = 1 ) tm on (tm.teammemberid == tms.team_member_id) left join shipdw.hvtb_mart_dim_person person_dim on (person_dim.person_external_id == tm.teammembernumber) left join ( select * from ( select place_section_ids , team_member_id, public_id, row_number() over(partition by public_id,team_member_id,place_section_ids order by modified_at desc )as rn from shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule_section)schedule_section where schedule_section.rn = 1) sections on (sections.public_id == tms.public_id) left join ( select * from ( select id, row_number() over(partition by id order by batchtime desc )as rn from shipdw.hvtb_parse_vxp_locationconstruct_tags)ocationconstruct_tags where ocationconstruct_tags.rn = 1) tags on (tags.id == sections.place_section_ids) left join ( select * from ( select venue_id, tag_id, row_number() over(partition by tag_id order by batchtime desc )as rn from shipdw.hvtb_parse_vxp_locationconstruct_venue_tags)venue_tags where venue_tags.rn = 1) ventags on (ventags.tag_id == tags.id) left join ( select * from ( select id, global_venue_id, row_number() over(partition by global_venue_id order by batchtime desc, id desc )as rn from shipdw.hvtb_parse_vxp_locationcon_venues)venues where venues.rn = 1) venue on (ventags.venue_id == venue.id) left join shipdw.hvtb_mart_dim_venue venue_dim on (venue_dim.venue_id == venue.global_venue_id) left join shipdw.hvtb_mart_dim_date date_dim on (date_dim.`date` == tms.tms_date) left join shipdw.hvtb_mart_dim_voyage voyage_dim on (tms.tms_date between voyage_dim.voyage_start_date and voyage_dim.voyage_end_date) )Schedulefact
+
+spark.source.columns voyage_id,ship_code,voyage_skey,person_skey,venue_skey,schedule_date_skey,schedule_date,schedule_day_period,team_member_role,batchtime
+spark.pond.allColumns voyage_id as pond_voyage_id,ship_code as pond_ship_code,voyage_skey as pond_voyage_skey,person_skey as pond_person_skey,venue_skey as pond_venue_skey,schedule_date_skey as pond_schedule_date_skey,schedule_date as pond_schedule_date,schedule_day_period as pond_schedule_day_period,team_member_role as pond_team_member_role,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt									
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_teammember_schedule
+spark.target.schema shipdw									
+spark.source.primaryKeyColumns person_skey,voyage_skey,schedule_date_skey
+spark.target.final_collist final_view.voyage_id as voyage_id,final_view.ship_code as ship_code,final_view.voyage_skey as voyage_skey,final_view.person_skey as person_skey,final_view.venue_skey as venue_skey,final_view.schedule_date_skey as schedule_date_skey,final_view.schedule_date as schedule_date,final_view.schedule_day_period as schedule_day_period,final_view.team_member_role as team_member_role,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash,final_view.part_dt as part_dt
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_fact_teammember_schedule
+spark.target.location /data/apps/nbx/mart/hvtb_mart_fact_teammember_schedule
+spark.redshift.schema Hive_schema_stg
+spark.tableType FACT
+spark.frameworkEnv ship
+spark.factType Accu
+spark.scdtype type1
+

@@ -1,0 +1,50 @@
+#------META   DATA CONFIG-----#
+spark.src.config.id SrcPOSFactDiningRerservationItem
+spark.voyage.id VAL2002269NCR 
+spark.tgt.env Prod
+spark.target.config.id TgtPOSFactDiningRerservationItem
+spark.parent.id SrcMxpReservations-TgtMxpReservations
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ing.type Fact
+#-------------------------#
+spark.source.sql SELECT reservation_id, NVL(voyage_id, -1) AS voyage_id ,NVL(voyage_skey, -1) AS voyage_skey ,NVL(ship_code, -1) AS ship_code ,NVL(dining_reservation_detail_skey, -1) AS dining_reservation_detail_skey ,NVL(dining_menu_skey, - 1) AS dining_menu_skey ,NVL(dining_menu_item_skey, -1) AS dining_menu_item_skey ,NVL(sale_detail_dim_skey, -1) AS sale_detail_dim_skey ,NVL(pos_item_skey, - 1) AS pos_item_skey ,dining_item_ordered_datetime ,dining_item_served_datetime ,(unix_timestamp(dining_item_served_datetime) - unix_timestamp(dining_item_ordered_datetime)) AS dining_item_fulfillment_time_in_seconds ,meal_period_name ,dining_guest_order_status ,batchtime ,part_date FROM ( SELECT res.guid AS guid ,res.reservation_id AS reservation_id ,res.voyageid AS voyage_id ,voyage_dim.voyage_skey AS voyage_skey ,org_units.org_unit_abbreviation AS ship_code ,detail_dim.dining_reservation_detail_skey AS dining_reservation_detail_skey ,cast(NULL AS INT) AS dining_menu_skey ,cast(NULL AS INT) AS dining_menu_item_skey ,sale_detail_dim.sale_detail_skey AS sale_detail_dim_skey ,pos_item_dim.item_skey AS pos_item_skey ,check_details.rec_created AS dining_item_ordered_datetime ,checks.sales_time AS dining_item_served_datetime ,lookup_items.lookup_item_name AS meal_period_name ,( CASE WHEN guest_orders.guest_order_status_id = 1 THEN 'open' WHEN guest_orders.guest_order_status_id = 3 THEN 'closed' ELSE guest_orders.guest_order_status_id END ) AS dining_guest_order_status ,res.batchtime AS batchtime ,res.part_date AS part_date FROM ( SELECT * FROM ( SELECT reservation_id ,org_unit_id ,reservation_from_date ,guid ,table_by_meal_id ,reservation_seated_at ,voyageid ,last_changed ,batchtime ,part_date ,row_number() OVER ( PARTITION BY reservation_id ,table_by_meal_id ORDER BY last_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_reservations_lad ) WHERE rn = 1 ) res INNER JOIN ( SELECT * FROM shipdw.hvtb_parse_mxp_cruise ORDER BY created ASC ) cruise ON res.org_unit_id = cruise.org_unit_id AND cruise.deleted = 0 AND cruise.Cruise_Type = 'C' AND res.reservation_from_date BETWEEN cruise.start_date AND cruise.end_date INNER JOIN ( SELECT * FROM ( SELECT org_unit_id ,last_changed ,org_unit_abbreviation ,row_number() OVER ( PARTITION BY org_unit_id ORDER BY last_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_org_units ) WHERE rn = 1 ) org_units ON res.org_unit_id = org_units.org_unit_id LEFT JOIN shipdw.hvtb_mart_dim_dining_reservation_detail detail_dim ON upper(res.guid) = upper(detail_dim.dining_reservation_id) LEFT JOIN ( SELECT * FROM ( SELECT table_by_meal_id ,last_changed ,rec_deleted ,org_structure_table_id ,meals_by_date_id ,row_number() OVER ( PARTITION BY table_by_meal_id ORDER BY last_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_tables_by_meals ) WHERE rn = 1 ) tables_by_meals ON res.table_by_meal_id = tables_by_meals.table_by_meal_id AND tables_by_meals.rec_deleted = 0 LEFT JOIN ( SELECT * FROM ( SELECT meals_by_date_id ,rec_deleted ,menu_id ,meal_to_time ,meal_date ,meal_type_id ,last_changed ,org_cost_center_id ,row_number() OVER ( PARTITION BY meals_by_date_id ORDER BY last_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_meals_by_date ) WHERE rn = 1 ) meals_by_date ON tables_by_meals.meals_by_date_id = meals_by_date.meals_by_date_id AND meals_by_date.rec_deleted = 0 INNER JOIN ( SELECT * FROM ( SELECT org_cost_center_id ,org_cost_center_pos_code ,last_changed ,row_number() OVER ( PARTITION BY org_cost_center_id ORDER BY last_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_org_cost_centers ) WHERE rn = 1 ) org_cost_centers ON meals_by_date.org_cost_center_id = org_cost_centers.org_cost_center_id LEFT JOIN ( SELECT * FROM ( SELECT org_structure_table_id ,table_number ,last_changed ,row_number() OVER ( PARTITION BY org_structure_table_id ORDER BY last_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_org_structure_tables ) WHERE rn = 1 ) org_structure_tables ON tables_by_meals.org_structure_table_id = org_structure_tables.org_structure_table_id LEFT JOIN ( SELECT * FROM ( SELECT check_id ,table_nr ,rec_changed ,sales_time ,row_number() OVER ( PARTITION BY table_nr ORDER BY rec_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_checks ) WHERE rn = 1 ) checks ON checks.table_nr = org_structure_tables.table_number LEFT JOIN ( SELECT * FROM ( SELECT location_code ,rec_changed ,row_number() OVER ( PARTITION BY location_code ORDER BY rec_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_pos_sales_outlets ) WHERE rn = 1 ) sales_outlets ON org_cost_centers.org_cost_center_pos_code = sales_outlets.location_code LEFT JOIN ( SELECT * FROM ( SELECT table_by_meal_id ,last_changed ,guest_no ,guest_order_status_id ,guest_order_id ,row_number() OVER ( PARTITION BY table_by_meal_id ORDER BY last_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_guest_orders ) WHERE rn = 1 ) guest_orders ON tables_by_meals.table_by_meal_id = guest_orders.table_by_meal_id INNER JOIN ( SELECT * FROM ( SELECT lookup_item_id ,last_changed ,lookup_item_name ,row_number() OVER ( PARTITION BY lookup_item_id ORDER BY last_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_lookup_items ) WHERE rn = 1 ) lookup_items ON meals_by_date.meal_type_id = lookup_items.lookup_item_id LEFT JOIN ( SELECT * FROM ( SELECT voyage_skey ,voyage_number ,voyage_id ,voyage_start_date ,voyage_end_date ,ship_code ,upd_dt ,row_number() OVER ( PARTITION BY voyage_number ,ship_code ORDER BY upd_dt DESC ) rn FROM shipdw.hvtb_mart_dim_voyage WHERE src_active_flag = true AND src_deleted_flag = false ) WHERE rn = 1 ) voyage_dim ON voyage_dim.voyage_number = cruise.cruise_number LEFT JOIN ( SELECT * FROM ( SELECT check_id ,plu_id ,rec_changed ,rec_created ,rec_deleted ,row_number() OVER ( PARTITION BY check_id ORDER BY rec_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_check_details ) WHERE rn = 1 ) check_details ON checks.check_id = check_details.check_id AND check_details.rec_deleted = 0 AND check_details.rec_created BETWEEN res.reservation_seated_at AND ( CASE guest_orders.guest_order_status_id WHEN 3 THEN guest_orders.last_changed ELSE to_timestamp((unix_timestamp(meal_to_time) - unix_timestamp(cast(meal_to_time AS DATE))) + unix_timestamp(meal_date)) END ) LEFT JOIN shipdw.hvtb_mart_dim_sale_detail sale_detail_dim ON checks.check_id = sale_detail_dim.sale_id LEFT JOIN ( SELECT * FROM ( SELECT plu_id ,plu_nr ,rec_changed ,row_number() OVER ( PARTITION BY plu_id ORDER BY rec_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_plu_items ) WHERE rn = 1 ) plu_items ON check_details.plu_id = plu_items.plu_id LEFT JOIN shipdw.hvtb_mart_dim_pos_item pos_item_dim ON plu_items.plu_nr = pos_item_dim.item_plu_number ) 
+
+spark.source.columns voyage_id,voyage_skey,ship_code,dining_reservation_detail_skey,dining_menu_skey,dining_menu_item_skey,sale_detail_dim_skey,pos_item_skey,dining_item_ordered_datetime,dining_item_served_datetime,dining_item_fulfillment_time_in_seconds,meal_period_name,dining_guest_order_status
+
+spark.pond.allColumns voyage_id as pond_voyage_id,voyage_skey as pond_voyage_skey,ship_code as pond_ship_code,dining_reservation_detail_skey as pond_dining_reservation_detail_skey,dining_menu_skey as pond_dining_menu_skey,dining_menu_item_skey as pond_dining_menu_item_skey,sale_detail_dim_skey as pond_sale_detail_dim_skey,pos_item_skey as pond_pos_item_skey,dining_item_ordered_datetime as pond_dining_item_ordered_datetime,dining_item_served_datetime as pond_dining_item_served_datetime,dining_item_fulfillment_time_in_seconds as pond_dining_item_fulfillment_time_in_seconds,meal_period_name as pond_meal_period_name,dining_guest_order_status as pond_dining_guest_order_status,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_dining_reservation_item
+spark.source.primaryKeyColumns  voyage_skey,ship_code,dining_reservation_detail_skey,sale_detail_dim_skey,pos_item_skey
+spark.table.type   fact	
+spark.target.schema   hive_schema_stg
+spark.target.table dining_reservation_item_fact
+
+spark.target.final_collist final_view.voyage_id,final_view.voyage_skey,final_view.ship_code,final_view.dining_reservation_detail_skey,final_view.dining_menu_skey,final_view.dining_menu_item_skey,final_view.sale_detail_dim_skey,final_view.pos_item_skey,final_view.dining_item_ordered_datetime,final_view.dining_item_served_datetime,final_view.dining_item_fulfillment_time_in_seconds,final_view.meal_period_name,final_view.dining_guest_order_status,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+spark.target.temp /data/apps/nbx/hive/temp/hvtb_mart_fact_dining_reservation_item
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_fact_dining_reservation_item
+spark.postgresql.database prodnbx
+spark.postgresql.url jdbc:postgresql://10.101.220.144:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename dining_reservation_item_fact
+spark.tableType FACT
+spark.frameworkEnv ship
+spark.factType Accu
+
+
+
+#----------------------LAD--------------------------------#
+spark.ladjob.flag true
+spark.lad.srctablekey reservation_id
+spark.lad.srctable shipdw.hvtb_parse_mxp_reservations
+spark.lad.tgttable shipdw.hvtb_parse_mxp_reservations_lad
+spark.lad.columns voyage_skey,dining_reservation_detail_skey
+spark.ladremoval.flag true 
+
+#----------------------------------------------------------#

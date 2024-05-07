@@ -1,0 +1,33 @@
+spark.src.config.id SrcCTISkillDimension
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtCTISkillDimension
+spark.parent.id SrcCTISkillParser-TgtCTISkillParser
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.table.type dim
+spark.api.env Prod
+spark.campaigndim.sql select src_campaign_id as cti_campaign_dim_campaignId, cti_campaign_skey as cti_campaign_dim_cti_campaign_skey from vv_db.hvtb_nbx_core_cti_campaign_dim
+spark.source.columns skillid,skillname,mediatypeid,mediatypename,campaignid,isactive,requiredisposition,isoutbound,scriptid,scriptname,initialpriority,maxpriority,servicelevelthreshold,servicelevelgoal,etl_load_dt,batchtime,part_date
+spark.pond.allColumns cti_skill_skey as pond_cti_skill_skey,src_skill_id as pond_src_skill_id,skill_name as pond_skill_name,mediaTypeId as pond_mediaTypeId,mediaTypeName as pond_mediaTypeName,cti_campaign_skey as pond_cti_campaign_skey,is_active_flg as pond_is_active_flg,require_disposition_flg as pond_require_disposition_flg,is_outbound_flg as pond_is_outbound_flg,script_id as pond_script_id,script_name as pond_script_name,initial_priority as pond_initial_priority,max_priority as pond_max_priority,service_level_threshold as pond_service_level_threshold,service_level_goal as pond_service_level_goal,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.target.ctiskill.table vv_db.hvtb_parse_cti_skill
+spark.surrogate_key.column cti_skill_skey
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_cti_skill_dim
+spark.source.primaryKeyColumns skillid
+spark.target.final_collist cti_skill_skey,final_view.skillid as src_skill_id,final_view.skillname as skill_name,final_view.mediatypeid as mediatypeid,final_view.mediatypename as mediatypename,final_view.campaignid as cti_campaign_skey,final_view.isactive as is_active_flg,final_view.requiredisposition as require_disposition_flg,final_view.isoutbound as is_outbound_flg,final_view.scriptid as script_id,final_view.scriptname as script_name,final_view.initialpriority as initial_priority,final_view.maxpriority as max_priority,final_view.servicelevelthreshold as service_level_threshold,final_view.servicelevelgoal as service_level_goal,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp gs://vv-qa-nbx-cluster/data/core/temp/hvtb_nbx_core_cti_skill_dim
+spark.target.location gs://vv-qa-nbx-cluster/data/core/seaware/hvtb_nbx_core_cti_skill_dim
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname cti_skill_dim_tmp
+spark.bq.permtblname cti_skill_dim
+spark.bq.viewname seaware.cti_skill_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+

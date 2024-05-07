@@ -1,0 +1,29 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:sqlserver://10.12.1.243:1442;database=MXP
+spark.src.user Capgemini
+spark.src.password Nskh#c5v3y&7
+spark.src.con.driver com.microsoft.sqlserver.jdbc.SQLServerDriver
+spark.src.table.query MXP.dbo.VScheduling_Activities
+ 
+spark.src.config.id SrcMxpScheduleActivities
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtMxpScheduleActivities
+
+
+spark.source.columns ActivityID, ActivityCode, ActivityName, ActivityType, ActivityColor, ActivityIsOvertime, ActivityIsNotAllowedOffsite, ACTIVE, REC_DELETED
+
+spark.source.query ActivityID, ActivityCode, ActivityName, ActivityType, ActivityColor, ActivityIsOvertime, ActivityIsNotAllowedOffsite, ACTIVE, REC_DELETED
+
+spark.hive.table.maxid select max(activityid) from shipdw.hvtb_lnd_mxp_scheduling_activities
+spark.condition.column ActivityID
+spark.target.location s3://vv-staging-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_scheduling_activities
+spark.target.hive.table shipdw.hvtb_lnd_mxp_scheduling_activities
+spark.target.table shipdw.hvtb_lnd_mxp_scheduling_activities
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.ship.code SHORE
+

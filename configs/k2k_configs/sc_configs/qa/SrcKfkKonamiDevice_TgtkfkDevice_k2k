@@ -1,0 +1,2 @@
+spark.hadoop.hive.execution.engine mr
+

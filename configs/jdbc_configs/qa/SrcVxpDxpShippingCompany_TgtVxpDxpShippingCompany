@@ -1,0 +1,29 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.56.10.6/dxpcore
+spark.src.user pgreadaccessuser
+spark.src.password vzwQArHubFzpEyoL1st7
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVxpDxpShippingCompany
+spark.tgt.env QA
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpDxpShippingCompany
+spark.target.location gs://vv-cert-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_shipping_company
+spark.target.hive.table vv_db.hvtb_lnd_vxp_shipping_company
+spark.target.table vv_db.hvtb_lnd_vxp_shipping_company
+spark.src.table.query "shippingcompany"
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=!Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.condition.column lastmodifieddate
+spark.source.columns shippingcompanyid,name,trackingurl,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby
+spark.source.query shippingcompanyid,name,trackingurl,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby
+#spark.tz.columns property to change all the timestampz columns to UTC
+spark.tz.columns addeddate,lastmodifieddate
+spark.source.zone EST
+spark.ship.code SHORE
+spark.hadoop.hive.execution.engine mr
+

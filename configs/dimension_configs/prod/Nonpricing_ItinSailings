@@ -1,0 +1,25 @@
+spark.query select sh.sail_id as Sail_ID, sh.sail_code as Sail_Code, pd.package_type as Package_Type, sh.route_code as Route_Code, sh.ship_code as Ship, DATEDIFF(sh.sail_date_to, sh.sail_date_from) as Days, sh.sail_date_from as Sail_Start, sh.sail_date_to as Sail_End, sh.port_from as Port_From, sh.port_to as Port_To, sh.is_fake as Fake, sh.is_active as Active, sh.season_code as Season, sh.sail_status as Status from (select * from (select *,row_number() over(partition by sail_id order by ts_ms desc) as rn from vv_db.hvtb_parse_sw_rpl_sail_header) p where p.rn=1) sh join vv_db.hvtb_nbx_core_sw_package_dim pd on pd.src_sail_id = sh.sail_id and pd.package_class = 'VOYAGE' and pd.rec_end_dttm = '9999-12-31 00:00:00' where sh.ship_code in ('SC', 'VL') and sh.is_fake = 'N' and sh.is_active = 'Y' and sh.sail_status = 'BK'
+
+#spark.query select sh.sail_id AS Sail_ID, sh.sail_code AS Sail_Code, pd.package_type AS Package_Type,sh.route_code AS Route_Code, sh.ship_code AS Ship,DATEDIFF(sh.sail_date_to, sh.sail_date_from) AS Days, sh.sail_date_from as Sail_Start, sh.sail_date_to AS Sail_End,sh.port_from AS Port_From, sh.port_to AS Port_To, sh.is_fake AS Fake, sh.is_active AS Active, sh.season_code AS Season,sh.sail_status AS Status from vv_db.hvtb_parse_sw_rpl_sail_header sh join vv_db.hvtb_nbx_core_sw_package_dim pd on pd.src_sail_id=sh.sail_id and pd.package_class='VOYAGE' and pd.rec_end_dttm = '9999-12-31 00:00:00' where sh.ship_code IN ('SC', 'VL') and sh.is_fake = 'N' and sh.is_active = 'Y' and sh.sail_status = 'BK'
+#spark.temp gs://vv-prod-nbx-cluster/test_nonpricing/test/temp/
+spark.temp gs://agency-flatfiles/temp/
+spark.location gs://agency-flatfiles
+spark.filename VV_itinerary_sailings
+spark.prefix_with_date false
+spark.sql.codegen.wholeStage false
+spark.manageExecution.dayOftheWeek Wed,Thu
+spark.hadoop.hive.execution.engine mr
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.frameworkEnv shore
+spark.table.type dim
+#spark.talend.processName 'jSWPackageDim','jSWStgRPL_SAIL_HEADER'
+spark.src.config.id SrcNonpricingItinSailings
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtNonpricingItinSailings
+

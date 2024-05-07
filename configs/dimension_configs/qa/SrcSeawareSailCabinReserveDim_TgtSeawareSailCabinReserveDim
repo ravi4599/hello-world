@@ -1,0 +1,35 @@
+spark.src.config.id SrcSeawareSailCabinReservedim
+spark.voyage.id sc2002269ncr
+spark.tgt.env QA
+spark.api.env QA
+spark.target.config.id TgtSeawareSailCabinReservedim
+spark.parent.id SrcSeawareSailHeader-TgtSeawareSailHeader
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.source.sql select current_timestamp as rec_start_dttm,current_timestamp() - INTERVAL 1 SECOND as rec_end_dttm,r.cabin_number,sail_id as src_sail_id,r.reserve_type,r.comments as reserve_comments,rt.allows_booking as is_reserve_allows_booking,rt.is_restricted as is_reserve_restricted,rt.is_sail_reserve,rt.comments as reserve_type_comments,h.batchtime from (select * from (select record_id,cabin_number,dep_ref_id,arr_ref_id,reserve_type,comments,batchtime,row_number() over(partition by record_id order by batchtime desc) as rn from vv_db.hvtb_parse_sw_rpl_ship_cabin_reserve) p where p.rn=1) r join (select * from (select sail_id,dep_ref_id,arr_ref_id,batchtime,row_number() over (partition by dep_ref_id,arr_ref_id order by batchtime desc) as rn from vv_db.hvtb_parse_sw_rpl_sail_header) q where q.rn=1) h on r.dep_ref_id = h.dep_ref_id and r.arr_ref_id = h.arr_ref_id left join (select * from (select allows_booking,is_restricted,is_sail_reserve,reserve_type,comments,row_number() over (partition by record_id order by batchtime desc) as rn from vv_db.hvtb_parse_sw_rpl_cabin_reserve_type) s where s.rn=1) rt on r.reserve_type = rt.reserve_type
+spark.source.columns cabin_number,src_sail_id,reserve_type,reserve_comments,is_reserve_allows_booking,is_reserve_restricted ,is_sail_reserve,reserve_type_comments
+spark.pond.allColumns sail_cabin_reserve_id as pond_sail_cabin_reserve_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,cabin_number as pond_cabin_number,src_sail_id as pond_src_sail_id,reserve_type as pond_reserve_type,reserve_comments as pond_reserve_comments,is_reserve_allows_booking as pond_is_reserve_allows_booking,is_reserve_restricted as pond_is_reserve_restricted, is_sail_reserve as pond_is_sail_reserve,reserve_type_comments as pond_reserve_type_comments,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.target.final_collist final_view.sail_cabin_reserve_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.cabin_number,final_view.src_sail_id,final_view.reserve_type,final_view.reserve_comments,final_view.is_reserve_allows_booking,final_view.is_reserve_restricted,final_view.is_sail_reserve,final_view.reserve_type_comments,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.surrogate_key.column sail_cabin_reserve_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_sail_cabin_reserve_dim
+spark.source.primaryKeyColumns cabin_number,src_sail_id
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_sail_cabin_reserve_dim
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_nbx_core_sw_sail_cabin_reserve_dim
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_nbx_core_sw_sail_cabin_reserve_dim
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seware_sail_cabin_reserve_dim_tmp
+spark.bq.permtblname seware_sail_cabin_reserve_dim
+spark.bq.viewname seaware.seware_sail_cabin_reserve_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

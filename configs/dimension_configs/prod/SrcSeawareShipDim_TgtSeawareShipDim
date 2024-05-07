@@ -1,0 +1,44 @@
+spark.src.config.id SrcSeawareShipDim 
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtSeawareShipDim
+spark.parent.id SrcSeawareShp-TgtSeawareShp
+ 
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+ 
+ 
+spark.source.sql select s.ship_code as ship,s.ship_name as ship_name,batchtime,part_date from (select * from (select ship_code,ship_name,batchtime,part_date,row_number()over(partition by ship_code order by ts_ms desc) as rn from vv_db.hvtb_nbx_parse_sw_rpl_ship *whereclause*) where rn=1 )s
+ 
+spark.source.columns ship,ship_name
+ 
+spark.pond.allColumns ship_id as pond_ship_id,ship as pond_ship,ship_name as pond_ship_name,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+ 
+spark.surrogate_key.column ship_id
+spark.pond.database	vv_db 
+spark.pond.table hvtb_nbx_core_sw_ship_dim
+spark.target.schema	vv_db 
+spark.source.primaryKeyColumns ship
+ 
+ 
+spark.target.final_collist final_view.ship_id,final_view.ship,final_view.ship_name,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash
+ 
+ 
+spark.target.temp gs://vv-prod-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_ship_dim
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_ship_dim
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_ship_dim_tmp 
+spark.bq.permtblname seaware_ship_dim
+spark.bq.viewname seaware.seaware_ship_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

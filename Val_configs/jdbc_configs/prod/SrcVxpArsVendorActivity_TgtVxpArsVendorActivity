@@ -1,0 +1,34 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148:5432/ars
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.con.driver org.postgresql.Driver
+spark.src.table public.vendoractivity
+
+#Unique constant for Batchid 
+spark.src.config.id SrcVxpArsVendorActivity
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtVxpArsVendorActivity
+
+#Metadbta Hbase table and connection details
+spark.tgt.env Prod
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+
+spark.src.table.query "vendoractivity"
+spark.condition.column lastmodifieddate
+
+#target hdfs table location with hive table and column details
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_ars_vendoractivity
+spark.target.hive.table shipdw.hvtb_lnd_vxp_ars_vendoractivity
+
+spark.source.columns vendoractivityid,vendorid,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby,referencecode
+
+spark.source.query vendoractivityid,vendorid,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby,referencecode
+
+spark.tz.columns addeddate,lastmodifieddate
+spark.source.zone EST
+spark.ship.code VAL

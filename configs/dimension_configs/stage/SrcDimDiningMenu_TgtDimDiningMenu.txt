@@ -1,0 +1,41 @@
+spark.src.config.id SrcDiningMenu
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stag
+spark.target.config.id TgtDiningMenu
+spark.parent.id SrcMxpVVirginReservations-TgtMxpVVirginReservations
+
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+spark.table.type dim
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename dining_menu_dim
+
+spark.source.sql select NVL(A.VoyageId, -1) as voyage_id, A.guid as dining_menu_id, A.menu_code as dining_menu_code, A.menu_name as dining_menu_name,A.rec_deleted as src_deleted_flag,A.active as src_active_flag, A.BatchTime, A.Part_Date from (select * from (select VoyageId,guid,menu_code,menu_name,rec_deleted,active,BatchTime,Part_Date, row_number() over (partition by guid order by ts_ms desc) rn  from shipdw.hvtb_parse_mxp_menus)A where rn = 1) A
+
+spark.source.columns   voyage_id,dining_menu_id,dining_menu_code,dining_menu_name,src_deleted_flag,src_active_flag
+
+spark.pond.allColumns   voyage_id as pond_voyage_id,dining_menu_skey as pond_dining_menu_skey,dining_menu_id as pond_dining_menu_id,dining_menu_code as pond_dining_menu_code,dining_menu_name as pond_dining_menu_name,src_deleted_flag as pond_src_deleted_flag,src_active_flag as pond_src_active_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+
+
+spark.surrogate_key.column dining_menu_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_dining_menu
+spark.source.primaryKeyColumns dining_menu_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+spark.target.final_collist final_view.voyage_id as voyage_id,dining_menu_skey,final_view.dining_menu_id as dining_menu_id,final_view.dining_menu_code as dining_menu_code,final_view.dining_menu_name as dining_menu_name,final_view.src_deleted_flag as src_deleted_flag,final_view.src_active_flag as src_active_flag,final_view.load_dt as load_dt ,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash
+spark.target.temp s3://vv-qa-emr-cluster/data/temp/hvtb_mart_dim_dining_menu
+spark.target.location s3://vv-qa-emr-cluster/data/mart/hvtb_mart_dim_dining_menu
+
+
+
+
+

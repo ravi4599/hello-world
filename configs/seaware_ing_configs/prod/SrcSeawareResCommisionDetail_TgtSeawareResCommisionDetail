@@ -1,0 +1,28 @@
+spark.kafkabrokers 10.15.2.58:9092,10.15.12.38:9092,10.15.13.172:9092 
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic dbz.sw.SEAWARE.RES_COMMISSION_DETAIL
+spark.src.personOffSet earliest
+spark.src.config.id SrcSeawareResCommisionDetail
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtSeawareResCommisionDetail
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_res_commission_detail
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_res_commission_detail
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.15.2.206:2181/hbase-unsecure
+spark.kafka.zookeeper 10.15.2.58:2181
+
+spark.source.columns RES_COMMISS_DETAIL_ID, RES_PACKAGE_ID, GUEST_ID, RES_ID, COMMISS_SOURCE, COMMISS_CODE, PERCENT, AMOUNT, INVOICE_ITEM_TYPE, COMMISS_FARE, IS_MANUAL_ADJUSTMENT, RES_PRODUCT_ID, INVOICE_HDR_ID, CLIENT_ID, GUEST_SEQN, AMOUNT_IN_HDR_CURR, AGENCY_ID, PAYOUT_DATE, GL_PROTOTYPE_ID,op,ts_ms,voyageid,Batchtime,Part_Date
+
+
+spark.final.query select RES_COMMISS_DETAIL_ID, RES_PACKAGE_ID, GUEST_ID, RES_ID, COMMISS_SOURCE, COMMISS_CODE, PERCENT, AMOUNT, INVOICE_ITEM_TYPE, COMMISS_FARE, IS_MANUAL_ADJUSTMENT, RES_PRODUCT_ID, INVOICE_HDR_ID, CLIENT_ID, GUEST_SEQN, AMOUNT_IN_HDR_CURR, AGENCY_ID,CAST(PAYOUT_DATE/1000000 as timestamp) as PAYOUT_DATE, GL_PROTOTYPE_ID,op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date

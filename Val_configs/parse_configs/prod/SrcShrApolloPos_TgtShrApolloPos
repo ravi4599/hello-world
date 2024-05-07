@@ -1,0 +1,13 @@
+spark.source.table select * from shipdw.hvtb_lnd_apollo_recipe_cost_by_voyage
+spark.target.table shipdw.hvtb_parse_apollo_poschange
+spark.src.config.id SrcShrApolloPosParse
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtShrApolloPosParse
+spark.parent.id SrcApolloPosIngest-TgtApolloPosIngest
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.kafka.zookeeper 10.101.220.213:2181
+

@@ -1,0 +1,51 @@
+spark.shipFlag N
+spark.debugFlag N
+spark.shore.seconds 30
+spark.target.coalesce.value 3
+spark.shipCodeColumn Shipcode
+spark.shipCode RS
+spark.src.voyageid RS2002269NCR
+
+
+spark.source.sslflag false
+
+
+spark.source.kafkabrokers p-res-kfk-app1.ahoy.virginvoyages.com:9092,p-res-kfk-app2.ahoy.virginvoyages.com:9092,p-res-kfk-app3.ahoy.virginvoyages.com:9092
+
+
+spark.source.consumer SrcKfkVxpTbleMgmSettingsStationRS_k2k-TgtHvVxpTbleMgmSettingsStationRS_k2k-100
+
+spark.source.topicname shp2shr-table_management.settings_station
+
+
+spark.src.table.type KAFKA
+spark.target.sslflag false
+spark.target.kafkabrokers prodkafka1.gcp.virginvoyages.com:9092,prodkafka2.gcp.virginvoyages.com:9092,prodkafka3.gcp.virginvoyages.com:9092
+
+spark.kafka.zookeeper 10.101.220.213:2181,10.101.220.214:2181,10.101.220.216:2181
+
+spark.target.topicname shp2shr-table_management.settings_station
+
+
+spark.src.config.id SrcKfkVxpTbleMgmSettingsStationRS_k2k
+spark.target.config.id TgtHvVxpTbleMgmSettingsStationRS_k2k
+spark.voyage.id RS2002269NCR
+spark.tgt.env Prod
+
+
+
+
+
+spark.metadata.offset.table shipdw.hbtb_nbx_kafka_streaming_offset
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.con.format jdbc
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.hadoop.hive.execution.engine mr
+spark.stop.flag Y
+
+spark.stop.trgFile Y
+spark.trgFileName hdfs://prd-nbx-gcp-dp-15-hive/data/streamingtriggers/SrcKfkVxpTbleMgmSettingsStation_TgtHvVxpTbleMgmSettingsStation_k2k.trg

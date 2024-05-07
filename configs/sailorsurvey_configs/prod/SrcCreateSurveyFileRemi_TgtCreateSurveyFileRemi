@@ -1,0 +1,39 @@
+spark.target.con.format jdbc
+spark.target.ops.table.mode=Append
+spark.target.ops.table shipdw.HBTB_NBX_VOYAGE_SAILORSURVEY
+spark.target.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.target.user postgres
+spark.target.password=!Setsail2022
+spark.target.con.driver=org.postgresql.Driver
+
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=!Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.source.primaryKeyColumns SELECTEDSAILINGGROUP_VOYAGEID,SELECTEDSAILINGGROUP_START,SELECTEDSAILINGGROUP_END
+
+spark.sailorsurvey.ManualFlag N
+spark.reservation.table.name HBTB_NBX_SEAWARE_RESERVATION
+spark.sailorsurvey.table.name HBTB_NBX_VOYAGE_SAILORSURVEY
+spark.voyage.table HBTB_NBX_VOYAGE_SAILORSURVEY
+spark.sailorsurvey.PostVygFlag N
+spark.sailorsurvey.FirstMtFlag N
+spark.sailorsurvey.RemiFlag Y
+spark.sailorsurvey.daysDelay 70
+spark.sailorsurvey.VoyageCode
+spark.sailorsurvey.ShipCode SC
+spark.sailorsurvey.template "nepa_reminiscence-survey"
+spark.sailorsurvey.tgtLocation hdfs://prd-nbx-gcp-dp-15-hive/data/core/SailorSurvey/RemiFTPFile/
+#spark.sailorsurvey.tgtLocation gs://vv-prod-nbx-cluster/data/core/SailorSurvey/RemiFTPFile
+spark.sailorsurvey.fileNamePrefix Virgin_Reminiscence
+spark.voyage.id  SC2002269NCR
+spark.src.config.id  SrcCreateSurveyFileRemi
+spark.target.config.id  TgtCreateSurveyFileRemi
+spark.tgt.env   Prod
+spark.sailorsurvey.promocode A
+spark.sailorsurvey.csvpath gs://vv-prod-nbx-cluster/data/mart/csv_output/*
+spark.hadoop.hive.execution.engine mr
+spark.sailorsurvey.removeclientid 0

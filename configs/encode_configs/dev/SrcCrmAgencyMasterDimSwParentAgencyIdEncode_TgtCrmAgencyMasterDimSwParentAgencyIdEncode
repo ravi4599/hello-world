@@ -1,0 +1,12 @@
+spark.src.config.id SrcCrmAgencyMasterDimSwParentAgencyIdEncode
+spark.tgt.env Dev
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtCrmAgencyMasterDimSwParentAgencyIdEncode
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.3.100.222:2181/hbase-unsecure
+
+spark.source.table vv_db.hvtb_nbx_core_crm_agency_master_dim
+spark.source.columns seaware_parent_agency_id
+spark.target.encode.table vv_db.hvtb_nbx_core_crm_agency_master_dim_seaware_parent_agency_id

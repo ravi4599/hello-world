@@ -1,0 +1,36 @@
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+
+spark.src.config.id SrcGameDim
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtGameDim
+
+spark.parent.id KonamiAllgame_Allgame
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+
+spark.table.type dim
+spark.postgresql.database prodnbx
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename game_dim
+
+spark.source.sql select voyageid as voyage_id,gameid as game_id,gamename as game_name,masterprom as game_master_prom,isbettype as game_is_bet_type_flag,batchtime,part_date from  (select * from (select voyageid,gameid,gamename,masterprom,cast(isbettype as boolean) as isbettype,lastmoddate,batchtime,part_date,row_number() over(partition by gameid order by lastmoddate desc) rn from shipdw.hvtb_lnd_konami_vw_tal_allgame) where rn=1)
+spark.source.columns voyage_id,game_id,game_name,game_master_prom,game_is_bet_type_flag
+spark.pond.allColumns voyage_id as pond_voyage_id,game_skey as pond_game_skey,game_id as pond_game_id,game_name as pond_game_name,game_master_prom as pond_game_master_prom,game_is_bet_type_flag as pond_game_is_bet_type_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_game
+spark.surrogate_key.column game_skey
+spark.source.primaryKeyColumns game_id
+
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_game
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_game
+spark.target.final_collist final_view.voyage_id,final_view.game_skey,final_view.game_id,final_view.game_name,final_view.game_master_prom,final_view.game_is_bet_type_flag,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship

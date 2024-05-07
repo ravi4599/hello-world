@@ -1,0 +1,27 @@
+spark.source.cticall.table vv_db.hvtb_nbx_landing_cti_call
+spark.source.cticallstate.table vv_db.hvtb_nbx_landing_cti_call_state_history
+spark.target.cticall.table vv_db.hvtb_parse_cti_call
+spark.target.cticallstate.table vv_db.hvtb_parse_cti_call_state_history
+spark.target.cticall.fact.table vv_db.hvtb_nbx_core_cti_call_fact
+spark.source.ctiskill.table vv_db.hvtb_nbx_landing_cti_skill
+spark.source.ctiskill.table.query select * from vv_db.hvtb_nbx_landing_cti_skill
+spark.target.ctiskill.table vv_db.hvtb_parse_cti_skill
+
+
+spark.src.config.id   SrcCTICallParser
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   dev
+spark.target.config.id   TgtCTICallParser
+spark.target.offset.mode overwrite
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.api.env dev
+
+

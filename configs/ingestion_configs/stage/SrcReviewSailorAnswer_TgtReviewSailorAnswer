@@ -1,0 +1,24 @@
+spark.kafkabrokers 10.9.100.157:9092,10.9.100.142:9092,10.9.100.37:9092
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.jks
+spark.passvalue Sailing2020
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic reviewanswer
+spark.src.personOffSet earliest
+spark.src.config.id SrcReviewSailorAnswer
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtReviewSailorAnswer
+spark.target.location s3://vv-staging-emr-cluster/data/landing/hvtb_lnd_onboard_sailor_reviewanswer
+spark.target.hive.table shipdw.hvtb_lnd_onboard_sailor_reviewanswer
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.kafka.zookeeper 10.9.100.157:2181
+spark.ship.code SHORE
+

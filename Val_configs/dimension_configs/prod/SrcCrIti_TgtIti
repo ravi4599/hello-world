@@ -1,0 +1,34 @@
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.src.config.id SrcCrIti
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtItinery
+spark.parent.id SrcMxpCruiseItinerary-TgtMxpCruiseItinerary
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.database prodnbx
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename itinerary_dim
+spark.table.type dim
+spark.source.sql select cr_iti.voyageid as voyage_id,cr_iti.CRUISE_ID as iti_cruise_id, cr.ACTIVE,cr.CRUISE_TYPE,cr.NEXT_CRUISE_ID as next_cruise_id,cr.CRUISE_NUMBER as voyage_number, cr_iti.CRUISE_ITINERARY_ID as itinerary_id, lower(cr_iti.GUID) as voyage_itinerary_guid, cr.CRUISE_DESCRIPTION as itinerary_name, cr_iti.DAY_OF_CRUISE as itinerary_day, cr.START_DATE   as itinerary_embark_dt, cast(date_add(cr.END_DATE,1) as timestamp) as itinerary_debark_dt, cr_iti.ETA as gangway_open_time, cr_iti.ETD as gangway_close_time, cr_iti.FWE as itinerary_departure_time, cr_iti.SBE as itinerary_arrival_time, cr_iti.AT_SEA  as itinerary_isSeaDay, cr_iti.ITINERARY_DATE as itinerary_day_date, case when cr.ACTIVE <> 1 or cr.cruise_type <> 'C' then false else true end as src_active_flag, case when cr.DELETED = 1 or cr_iti.DELETED = 1 then true else false end as src_deleted_flag,cr_iti.batchtime,cr_iti.part_date from (select * from (select *,row_number() over ( partition by cruise_itinerary_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_cruise_itinerary) where rn=1)cr_iti left join (select  ACTIVE,DELETED,CRUISE_ID,NEXT_CRUISE_ID,CRUISE_NUMBER,CRUISE_DESCRIPTION,CRUISE_TYPE,START_DATE,END_DATE from (select *,row_number() over ( partition by cruise_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_cruise where ACTIVE = 1) c where c.rn=1) cr on cr.CRUISE_ID = cr_iti.CRUISE_ID
+spark.iti.sql select  CRUISE_ID, DAY_OF_CRUISE,port_id,case when sorting_sequence is null then 1 else sorting_sequence end as sorting_sequence,DELETED from (select *,row_number() over ( partition by cruise_itinerary_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_cruise_itinerary) where rn=1
+spark.cruise.sql select  next_cruise_id from (select *,row_number() over ( partition by cruise_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_cruise where ACTIVE = 1 ) where rn=1
+spark.cities.sql select city_id,city_abbreviation from (select *,row_number() over ( partition by city_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_cities) where rn=1
+spark.source.columns voyage_id,voyage_number,itinerary_id,voyage_itinerary_guid,itinerary_name,itinerary_day,itinerary_embark_dt,itinerary_debark_dt,itinerary_embark_port_code,itinerary_debark_port_code,gangway_open_time,gangway_close_time,itinerary_departure_time,itinerary_arrival_time,itinerary_isSeaDay,itinerary_day_date,src_active_flag,src_deleted_flag
+spark.pond.allColumns itinerary_skey as pond_itinerary_skey,voyage_id as pond_voyage_id,voyage_number as pond_voyage_number,itinerary_id as pond_itinerary_id,voyage_itinerary_guid as pond_voyage_itinerary_guid,itinerary_name as pond_itinerary_name,itinerary_day as pond_itinerary_day,itinerary_embark_dt as pond_itinerary_embark_dt,itinerary_debark_dt as pond_itinerary_debark_dt,itinerary_embark_port_code as pond_itinerary_embark_port_code,itinerary_debark_port_code as pond_itinerary_debark_port_code,gangway_open_time as pond_gangway_open_time,gangway_close_time as pond_gangway_close_time,itinerary_departure_time as pond_itinerary_departure_time,itinerary_arrival_time as pond_itinerary_arrival_time,itinerary_isseaDay as pond_itinerary_isseaDay,itinerary_day_date as pond_itinerary_day_date,src_active_flag as pond_src_active_flag,src_deleted_flag as pond_src_deleted_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column itinerary_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_itinerary
+spark.target.table itinerary_dim
+spark.source.primaryKeyColumns itinerary_id
+spark.target.final_collist itinerary_skey,final_view.voyage_id as voyage_id,final_view.voyage_number as voyage_number,final_view.itinerary_id as itinerary_id,final_view.voyage_itinerary_guid as voyage_itinerary_guid,final_view.itinerary_name as itinerary_name,final_view.itinerary_day as itinerary_day,final_view.itinerary_embark_dt as itinerary_embark_dt,final_view.itinerary_debark_dt as itinerary_debark_dt,final_view.itinerary_embark_port_code as itinerary_embark_port_code,final_view.itinerary_debark_port_code as itinerary_debark_port_code,final_view.gangway_open_time as gangway_open_time,final_view.gangway_close_time as gangway_close_time,final_view.itinerary_departure_time as itinerary_departure_time,final_view.itinerary_arrival_time as itinerary_arrival_time,final_view.itinerary_isSeaDay as itinerary_isSeaDay,final_view.itinerary_day_date as itinerary_day_date,final_view.src_active_flag as src_active_flag,final_view.src_deleted_flag as src_deleted_flag,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_itinerary
+spark.target.location /data/apps/nbx/mart/hvtb_mart_dim_itinerary
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+

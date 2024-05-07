@@ -1,0 +1,26 @@
+spark.src.config.id SrcHvQuestionAnswerDim
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtKfkQuestionAnswerDim
+spark.parent.id SrcPostSailQuestionAnswerDim_TgtPostSailQuestionAnswerDim
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.15.2.206:2181/hbase-unsecure
+
+spark.target.kafka.batch.size 16384
+spark.target.kafka.topic Shp2Shr_questionanswerdim
+
+spark.src.table vv_db.hvtb_mart_postvoyage_survey_question_answer_dim
+spark.isfullrefresh yes
+spark.target.coalesce.value 10
+
+spark.target.sslkafkabrokers 10.15.2.58:9097,10.15.12.38:9097,10.15.13.172:9097
+spark.target.truststore /etc/script_keystore/dxp.kafka.client.truststore.jks
+spark.target.passvalue virgin*2020
+spark.target.keystore /etc/script_keystore/dxp.kafka.client.keystore.jks
+
+
+spark.kafkabrokers 10.15.2.58:9092,10.15.12.38:9092,10.15.13.172:9092
+spark.kafka.zookeeper 10.15.2.58:2181
+spark.ssl.enabled false

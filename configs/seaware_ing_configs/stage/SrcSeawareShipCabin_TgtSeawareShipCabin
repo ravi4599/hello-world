@@ -1,0 +1,28 @@
+spark.kafkabrokers 10.7.3.103:9092,10.7.11.112:9092,10.7.12.61:9092 
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic dbz.SEAWARE.SHIP_CABIN
+
+spark.src.personOffSet earliest
+spark.src.config.id SrcSeawareShipCabin
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtSeawareShipCabin
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_ship_cabin
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_ship_cabin
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.kafka.zookeeper 10.7.12.61:2181
+
+spark.source.columns SHIP_CODE,CABIN_NUMBER,CABIN_ID,DECK_NUMBER,CABIN_NAME,COMMENTS,IMAGE_ID,CABIN_RANK,FIREZONE_CODE,EXT_CABIN_ID,RECORD_ADDED_MANUALLY ,op,ts_ms,voyageid,Batchtime,Part_Date
+
+spark.final.query select SHIP_CODE,CABIN_NUMBER,CABIN_ID,DECK_NUMBER,CABIN_NAME,COMMENTS,IMAGE_ID,CABIN_RANK,FIREZONE_CODE,EXT_CABIN_ID,RECORD_ADDED_MANUALLY,op,CAST(ts_ms/1000000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date

@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.AGENCY
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT AGENCY_ID, AGENCY_NAME_TYPED, AGENCY_NAME, ARC_NUMBER, IATA_NUMBER, CLIA_NUMBER, IS_ACTIVE, IS_DOMESTIC, IS_INTERNAL, USE_GUEST_ADDR, COMMENTS, MARKETING_MSG, IS_GSA, CONSORTIUM_TYPE, IS_CONSORTIUM, AGENCY_TYPE, DEFAULT_CURRENCY, VENDOR_NUMBER, USE_DFLT_CONSORTIUM, BC_TYPE_ID, TAXPAYER_TYPE, TAXPAYER_NUMBER, CONTACT_NAME, WEB_ADDRESS, AGENCY_NAME_ESSENTIAL, FLOATING_DEPOSIT, LANGUAGE_CODE, OFFICE_CODE, AG_ENTITY_TYPE, IS_FAX_EMAIL_SECURED, ABTA_NUMBER, NOTIF_DFLT_DISTR_TYPE, TAXOWNER_NAME, INVOICING_NUMBER, AGENCY_CODE, FPR_AT_GROSS, INVOICING_IS_STOPPED, INVOICING_DELAY_UNTIL, INVOICING_ERROR_MSG, BALANCE_RECALC_ERROR_MSG, IS_WHITELABEL, VALID_CURRENCIES FROM SEAWARE.AGENCY)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_agency
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/ACC_TRANS_DETAIL
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_agency/
+
+spark.hadoop.hive.execution.engine mr

@@ -1,0 +1,4 @@
+
+spark.stop.trgFile Y
+spark.trgFileName hdfs://prd-nbx-gcp-dp-15-hive/data/streamingtriggers/SrcSeawareVendor_TgtSeawareVendor .trg
+spark.stop.flag Y

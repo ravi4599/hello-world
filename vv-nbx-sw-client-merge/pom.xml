@@ -1,0 +1,294 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.virginvoyages.sw_client_merge</groupId>
+	<artifactId>vv-nbx-sw-client-merge</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	     <spark.version>2.4.8</spark.version>
+		<!--<scala.version>2.12.10</scala.version>-->
+	</properties>
+   
+		<repositories>
+		<repository>
+			<id>confluent</id>
+			<url>http://packages.confluent.io/maven/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<dependencies>
+	
+	<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.2.8</version>
+</dependency>
+		
+		<!-- Avro Dependency -->
+
+	<!-- https://mvnrepository.com/artifact/org.apache.spark/spark-avro -->
+	<!-- <dependency>
+	    <groupId>org.apache.spark</groupId>
+	    <artifactId>spark-avro_2.12</artifactId>
+	    <version>2.4.8</version>
+	</dependency> -->
+	
+	<!-- https://mvnrepository.com/artifact/org.apache.spark/spark-hive -->
+			<dependency>
+			    <groupId>org.apache.spark</groupId>
+			    <artifactId>spark-hive_2.12</artifactId>
+			    <version>2.4.0</version>
+			    <scope>provided</scope>
+			</dependency> 
+		<dependency>
+			<groupId>com.virginvoyages.metadataframework</groupId>
+			<artifactId>virginvoyages_shore_metadata</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope> 
+			<!--<scope>system</scope>-->
+	 <!--<systemPath>C:\VV_GCP_Jars\virginvoyages_shore_metadata-0.0.1-SNAPSHOT-jar-with-dependencies.jar</systemPath>-->
+       	</dependency>
+				   <!-- https://mvnrepository.com/artifact/com.typesafe/config -->
+			<dependency>
+			    <groupId>com.typesafe</groupId>
+			    <artifactId>config</artifactId>
+			    <version>1.4.2</version>
+			</dependency>
+			
+		  <dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.8.1</version>
+				<scope>test</scope>
+			</dependency>
+
+ 		<!-- https://mvnrepository.com/artifact/org.apache.spark/spark-sql -->
+			<dependency>
+			    <groupId>org.apache.spark</groupId>
+			    <artifactId>spark-sql_2.12</artifactId>
+			    <version>2.4.8</version>
+			  </dependency>
+
+      <!-- YOUR_DEPENDENCIES -->
+
+		           <dependency>
+					<groupId>org.scala-lang</groupId>
+					<artifactId>scala-library</artifactId>
+					<version>2.12.10</version>
+		        	</dependency>
+			
+		<!-- https://mvnrepository.com/artifact/org.apache.spark/spark-core -->
+		<dependency>
+		    <groupId>org.apache.spark</groupId>
+		    <artifactId>spark-core_2.12</artifactId>
+		    <version>2.4.8</version>
+		</dependency>
+
+		<!-- Kafka Spark -->
+		
+		<!-- https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-kafka-0-10 -->
+			<dependency>
+			    <groupId>org.apache.spark</groupId>
+			    <artifactId>spark-streaming-kafka-0-10_2.12</artifactId>
+			    <version>2.4.8</version>
+			</dependency>
+
+       	<!-- https://mvnrepository.com/artifact/org.apache.spark/spark-streaming -->
+			<dependency>
+			    <groupId>org.apache.spark</groupId>
+			    <artifactId>spark-streaming_2.12</artifactId>
+			    <version>2.4.0</version>
+			</dependency>
+		 	<dependency>
+				<groupId>org.apache.kafka</groupId>
+				<artifactId>kafka_2.10</artifactId>
+				<version>0.10.2.2</version>
+				</dependency>
+
+<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-scala -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.module</groupId>
+		    <artifactId>jackson-module-scala_2.12</artifactId>
+		    <version>2.9.10</version>
+		</dependency>
+
+		<dependency>
+	        <groupId>com.fasterxml.jackson.dataformat</groupId>
+	        <artifactId>jackson-dataformat-xml</artifactId>
+	        <version>2.9.10</version>
+	    </dependency>
+
+	    <dependency>
+	        <groupId>com.fasterxml.jackson.core</groupId>
+	        <artifactId>jackson-core</artifactId>
+	        <version>2.9.10</version>
+	    </dependency>
+
+<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+			<dependency>
+			    <groupId>com.fasterxml.jackson.core</groupId>
+			    <artifactId>jackson-databind</artifactId>
+			    <version>2.9.10.6</version>
+			</dependency>
+
+
+		    <dependency>
+		        <groupId>com.fasterxml.jackson.core</groupId>
+		        <artifactId>jackson-annotations</artifactId>
+		        <version>2.9.10</version>
+		    </dependency>
+		    
+<!-- https://mvnrepository.com/artifact/com.thoughtworks.paranamer/paranamer -->
+			<dependency>
+			    <groupId>com.thoughtworks.paranamer</groupId>
+			    <artifactId>paranamer</artifactId>
+			    <version>2.8</version>
+			</dependency>
+
+
+	</dependencies>
+ 	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>assemble-all</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<fork>true</fork>
+					<!-- <executable>C:\Program Files\Java\jdk1.8.0_161\bin\javac</executable> -->
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>scala-maven-plugin</artifactId>
+				<version>3.2.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<!-- <goal>testCompile</goal> -->
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<args>
+						<!-- work-around for https://issues.scala-lang.org/browse/SI-8358 -->
+						<arg>-nobootcp</arg>
+					</args>
+				</configuration>
+			</plugin>
+
+			<!-- Nexus Deploy Plugin -->
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.1</version>
+				<executions>
+					<execution>
+						<id>default-deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.scala-tools
+										</groupId>
+										<artifactId>
+											maven-scala-plugin
+										</artifactId>
+										<versionRange>
+											[2.15.0,)
+										</versionRange>
+										<goals>
+											<goal>compile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											net.alchim31.maven
+										</groupId>
+										<artifactId>
+											scala-maven-plugin
+										</artifactId>
+										<versionRange>
+											[3.2.1,)
+										</versionRange>
+										<goals>
+											<goal>compile</goal>
+											<goal>testCompile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+
+
+</project>

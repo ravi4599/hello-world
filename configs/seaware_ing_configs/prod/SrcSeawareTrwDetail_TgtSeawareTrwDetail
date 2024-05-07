@@ -1,0 +1,56 @@
+spark.kafkabrokers 10.15.2.58:9092,10.15.12.38:9092,10.15.13.172:9092 
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+
+spark.mpx.consumer spark-consumer-100
+
+spark.src.kafkatopic dbz.SEAWARE.TRW_DETAIL
+
+#spark.src.kafkatopic  test-debezium
+
+spark.src.personOffSet earliest
+
+spark.src.config.id SrcSeawareTrwDetail
+
+spark.voyage.id SC2002269NCR
+
+spark.tgt.env Prod
+
+spark.target.config.id TgtSeawareTrwDetail
+
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_trw_detail
+
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_trw_detail
+
+ 
+
+ 
+
+#spark.target.location s3://vv-prod-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_trw_header
+
+#spark.target.parse.query select * from vv_db_mig.hvtb_nbx_landing_sw_rpl_trw_header
+
+ 
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.15.2.206:2181/hbase-unsecure
+spark.kafka.zookeeper 10.15.2.58:2181
+
+ 
+
+spark.source.columns TRW_DETAIL_ID,TRW_HEADER_ID,ENTITY_TYPE,ENTITY_ID,IS_MATCHED,COMMENTS,IS_MAIN,op,ts_ms,voyageid,Batchtime,Part_Date
+
+ 
+
+#spark.temp.view temp_res_head
+
+ 
+
+spark.final.query select TRW_DETAIL_ID,TRW_HEADER_ID,ENTITY_TYPE,ENTITY_ID,IS_MATCHED,COMMENTS,IS_MAIN,op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date

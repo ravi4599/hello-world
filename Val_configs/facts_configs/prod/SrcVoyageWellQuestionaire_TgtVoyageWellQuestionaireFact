@@ -1,0 +1,38 @@
+#PROD cluster and hive details
+#Unique constant for Batchid and Parentid details
+spark.src.config.id SrcVoyageWellQuestionaire
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtVoyageWellQuestionaireFact
+spark.parent.id SrcVxpDxpHealthDetail-TgtVxpDxpHealthDetail
+#Metadata Hbase table and connection details
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+#PROD postgress database details
+spark.postgresql.database prodnbx
+spark.table.type fact
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+#Source hive and target progres schema, table and columns details
+#spark.source.sql select voyage_id,voyage_well_answer,health_reservationguestid,healthquestioncode from (select distinct VoyageId as voyage_id,answer as voyage_well_answer,reservationguestid as health_reservationguestid,healthquestioncode,BatchTime,Part_Date from (select healthdetailid,reservationguestid,healthquestionid,answer,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby,healthquestioncode,VoyageId,BatchTime,Part_Date,row_number() over (partition by healthdetailid,reservationguestid order by lastmodifieddate desc) as row_num from shipdw.hvtb_parse_vxp_dxp_healthdetail) where row_num=1) *whereClause*
+spark.source.sql select dim_voyage.ship_code as ship_code, NVL(dim_voyage.voyage_skey,-1) as voyage_skey, NVL(dim_person.person_skey,-1) as person_skey, NVL(voyage_well_questionaire.voyage_well_question_skey,-1) as voyage_well_question_skey, healthdetail.answer as voyage_well_answer,reservationguest.voyage_id,reservationguest.batchtime,reservationguest.part_date from  (select reservationguestid, reservationid,lastmodifieddate,voyage_id,batchtime,part_date from (SELECT reservationguestid, reservationid,lastmodifieddate,batchtime,part_date ,VoyageId as voyage_id,row_number() over (partition by reservationid,reservationguestid order by lastmodifieddate desc) as rn FROM shipdw.hvtb_parse_vxp_reservationguest *whereclause* ) where rn=1) reservationguest  left join (select reservationguestid,healthquestioncode,answer,lastmodifieddate from (SELECT reservationguestid,healthquestioncode,answer,lastmodifieddate, row_number() over (partition by reservationguestid,healthquestioncode order by lastmodifieddate desc) as rn FROM shipdw.hvtb_parse_vxp_dxp_healthdetail) where rn=1) healthdetail ON (reservationguest.reservationguestid = healthdetail.reservationguestid)  left join (select reservationid,voyagenumber,lastmodifieddate from (SELECT reservationid,voyagenumber,lastmodifieddate, row_number() over (partition by reservationid order by lastmodifieddate desc) as rn FROM shipdw.hvtb_parse_vxp_reservation) where rn=1) reservation ON (reservationguest.reservationid = reservation.reservationid)  left join (select voyage_number,ship_code,voyage_skey from shipdw.hvtb_mart_dim_voyage where src_active_flag = true and src_deleted_flag = false) dim_voyage ON (reservation.voyagenumber = dim_voyage.voyage_number)  left join shipdw.hvtb_mart_dim_person dim_person ON (healthdetail.reservationguestid = dim_person.reservationguest_guid)  left join shipdw.hvtb_mart_dim_voyage_well_questionaire voyage_well_questionaire ON (healthdetail.healthquestioncode = voyage_well_questionaire.question_code)
+spark.source.columns voyage_id ,ship_code,voyage_skey,person_skey,voyage_well_question_skey,voyage_well_answer
+spark.pond.allColumns voyage_id as pond_voyage_id ,ship_code as pond_ship_code,voyage_skey as pond_voyage_skey,person_skey as pond_person_skey,voyage_well_question_skey as pond_voyage_well_question_skey,voyage_well_answer pond_voyage_well_answer,load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash, part_dt as pond_part_dt
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_voyage_well_questionaire
+spark.postgresql.schema shipdw
+spark.target.final_collist final_view.voyage_id,final_view.ship_code,NVL(final_view.voyage_skey,-1) as voyage_skey,NVL(final_view.person_skey,-1) as person_skey,NVL(final_view.voyage_well_question_skey,-1) as voyage_well_question_skey,final_view.voyage_well_answer,final_view.load_dt, final_view.upd_dt, final_view.primaryhash, final_view.md5_hash, final_view.part_dt
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_fact_voyage_well_questionaire
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_fact_voyage_well_questionaire
+#/data/apps/nbx/mart/hvtb_mart_fact_voyage_well_questionaire 
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename voyage_well_questionaire_fact
+spark.source.primaryKeyColumns voyage_well_question_skey,voyage_skey,person_skey
+spark.scdtype type1
+spark.tableType FACT
+spark.frameworkEnv ship
+spark.factType Accu
+

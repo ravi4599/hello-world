@@ -1,0 +1,31 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148:5432/location
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.table public.locationevent
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVxpLocaLocationevent
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtVxpLocaLocationevent
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_loca_locationevent
+spark.target.hive.table shipdw.hvtb_lnd_vxp_loca_locationevent
+spark.source.columns locationeventid,hostid,hosttype,capturedate,capturedateepoch,utcoffset,eventtype,structure,room,physicalcoordinate,geocoordinate,additionalinfo,addeddate,level,roomtags,logicalplace,closestsensor,
+spark.source.query locationeventid,hostid,hosttype,capturedate,capturedateepoch,utcoffset,eventtype,structure,room,physicalcoordinate,geocoordinate,additionalinfo,addeddate,level,roomtags,logicalplace,closestsensor
+spark.src.table.query (select * from locationevent where addeddate>= '2021-08-26 00:00:00' and addeddate <='2021-08-26 23:59:59' ) as locationevent
+#spark.parent.id SrcLocParent-TgtLocParent
+spark.flag.no 4
+spark.condition.column addeddate
+spark.tz.columns addeddate
+spark.source.zone EST
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+spark.network.timeout = 3600
+spark.executor.heartbeatInterval = 60
+spark.batch.starttime 2021-08-026T00:00:00
+spark.batch.endtime	 2021-08-026T15:59:59
+spark.batch.partdate 2021-08-27
+

@@ -1,0 +1,33 @@
+spark.kafkabrokers 10.7.3.103:9092,10.7.11.112:9092,10.7.12.61:9092 
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+
+spark.src.kafkatopic dbz.sw.SEAWARE.INVOICE_ITEM_TYPE
+spark.src.personOffSet earliest
+
+spark.src.config.id SrcSeawareInvoiceItemType
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtSeawareInvoiceItemType
+
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_invoice_item_type
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_invoice_item_type
+
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.kafka.zookeeper 10.7.12.61:2181
+
+spark.source.columns INVOICE_ITEM_TYPE,INVOICE_ITEM_TYPE_ID,COMMENTS,IS_COMMISSIONABLE,CAN_USE_FOR_CHARGES,ALWAYS_REFUNDABLE,USED_INTERNALLY,USED_FOR_AIR_DEVIATION,ALLOW_RATE_PROTECTION,	CHARGE_COMPONENT_CODE,CLASSIFICATION_FOR_GROUP,INCLUDE_IN_QUOTED_PRICE,USED_FOR_PROJECTIONS,USE_IN_PERFORMANCE_CALC,IS_MANUAL_ADJ_RESTRICTED,SUPPRESS_ZERO_AMOUNT,IS_DISCOUNT,op,ts_ms,voyageid,Batchtime,Part_Date 
+spark.final.query select INVOICE_ITEM_TYPE,INVOICE_ITEM_TYPE_ID,COMMENTS,IS_COMMISSIONABLE,CAN_USE_FOR_CHARGES,ALWAYS_REFUNDABLE,USED_INTERNALLY,USED_FOR_AIR_DEVIATION,ALLOW_RATE_PROTECTION,	CHARGE_COMPONENT_CODE,CLASSIFICATION_FOR_GROUP,INCLUDE_IN_QUOTED_PRICE,USED_FOR_PROJECTIONS,USE_IN_PERFORMANCE_CALC,IS_MANUAL_ADJ_RESTRICTED,SUPPRESS_ZERO_AMOUNT,IS_DISCOUNT,op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date
+
+
+

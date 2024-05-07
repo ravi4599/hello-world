@@ -1,0 +1,48 @@
+spark.src.config.id SrcPostSailQuestion
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtQuestionDIm
+spark.parent.id SrcPostSailQuestion-TgtQuestionDIm
+
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.table.type dim
+spark.api.env dev
+
+
+
+spark.source.location /data/core/PostSailorSurveyShore/QD
+
+spark.source.columns src_question_id,variable_id,question_text,is_postcruise,is_reminiscence,type,category,answer_code_min,answer_code_max,answer_code_min_text,answer_code_max_text,batchtime
+#src_question_id,batchtime,category, answer_code_max, answer_code_min, variable_id, Type, Start, Finish, question_text, answer_code, answer_label, answer_code_min_text, answer_code_max_text,is_postcruise,is_reminiscence
+spark.pond.allColumns question_id as pond_question_id,src_question_id as pond_src_question_id,variable_id as pond_variable_id,question_text as pond_question_text,is_postcruise as pond_is_postcruise,is_reminiscence as pond_is_reminiscence,Type as pond_Type,category as pond_category,answer_code_min as pond_answer_code_min,answer_code_max as pond_answer_code_max,answer_code_min_text as pond_answer_code_min_text,answer_code_max_text as pond_answer_code_max_text,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column question_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_postvoyage_survey_questions_dim
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_postvoyage_survey_questions_dim
+spark.source.primaryKeyColumns src_question_id,variable_id
+spark.target.final_collist  cast(final_view.question_id as bigint)as question_id, cast(final_view.src_question_id as varchar(50))as src_question_id, cast(final_view.variable_id as varchar(50))as variable_id, cast(final_view.question_text as varchar(500))as question_text,final_view.is_postcruise as is_postcruise,final_view.is_reminiscence as is_reminiscence, cast(final_view.type as varchar(50))as type,final_view.category, cast(final_view.answer_code_min as int)as answer_code_min, cast(final_view.answer_code_max as int)as answer_code_max, cast(final_view.answer_code_min_text as varchar(500))as answer_code_min_text, cast(final_view.answer_code_max_text as varchar(500))as answer_code_max_text, cast(final_view.load_dt as timestamp)as load_dt, cast(final_view.upd_dt as timestamp)as upd_dt, cast(final_view.primaryhash as string)as primaryhash, cast(final_view.md5_hash as string)as md5_hash
+spark.target.temp  gs://vv-dev-nbx-cluster/data/core/seaware/temp/hvtb_nbx_core_postvoyage_survey_questions_dim
+spark.target.location  gs://vv-dev-nbx-cluster/data/core/seaware/hvtb_nbx_core_postvoyage_survey_questions_dim
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname postvoyage_survey_questions_dim_tmp
+spark.bq.permtblname postvoyage_survey_questions_dim
+spark.bq.viewname seaware.postvoyage_survey_questions_dim
+
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.landing.location  gs://vv-dev-nbx-cluster/data/landing/hvtb_lnd_nepa_postvoyage_question
+
+
+

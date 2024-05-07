@@ -1,0 +1,39 @@
+spark.src.con.format jdbc
+spark.src.config.id SrcCompShopDisUs
+spark.tgt.env qa
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtCompShopDisUs
+
+
+
+spark.target.location gs://vv-cert-nbx-cluster/data/landing/pricing/hvtb_lnd_comp_shop_dis_us
+
+
+
+spark.target.table vv_db.hvtb_lnd_comp_shop_dis_us
+
+spark.api.env qa
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=!Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.source.zone EST
+spark.ship.code SHORE
+spark.hadoop.hive.execution.engine mr
+
+
+spark.input.inputfilepath gs://vv-cert-nbx-cluster/data/csv/pricing/COMP_SHOP_DIS_US.CSV
+
+########while writing spark.source.query no need write -->"from table name"--> as its already present in the scala code ###########
+
+spark.source.query select RateInquiryDate as rate_inquiry_date,SourceMarket as source_market,CruiseLineCode as cruise_line_code,ShipCode as ship_code,CruiseLineName as cruise_line_name,SourceShipName as source_ship_name,Website as website,`Cache Page Link` as cache_page_link,CabinType as cabin_type,`Cabin Category` as cabin_category,`Category Code` as category_code,SourceCurrency as source_currency,`Fare (Passenger) Type` as fare_passenger_type,`Taxes and Fees` as taxes_and_fees,CruiseType as cruise_type,CruiseDuration as cruise_duration,DisembarkDate as disembark_date,ShopFrequency as shop_frequency,EmbarkationDate as embarkation_date,SourceItineraryName as source_itinerary_name,EmbarkationPort as embarkation_port,EmbarkationPortUN_LOCODE as embarkationportun_locode,DisembarkationPort as disembarkation_port,DisembarkationPortUN_LOCODE as disembarkationportun_locode,ItineraryPortContent as itinerary_port_content,`Rate Type` as rate_type,`Tax Inclusive Rate PP` as tax_inclusive_rate_pp,`Tax Exclusive Rate PP` as tax_exclusive_rate_pp,`Available Offer` as available_offer,LastShopDate as last_shop_date,LastShoppedSubCategory as last_shopped_subcategory,Availability as availability,`Obstructed (Y/N)` as obstructed
+
+######### If aliasing and casting is not required only spark.source.columns can be used #########
+
+#spark.source.columns rate_inquiry_date,source_market,cruise_line_code,ship_code,cruise_line_name,source_ship_name,website,cache_page_link ,cabin_type,cabin_category,category_code,source_currency,fare_passenger_type,taxes_and_fees,cruise_type,cruise_duration,disembark_date ,shop_frequency,embarkation_date,source_itinerary_name,embarkation_port,embarkationportun_locode,disembarkation_port,disembarkationportun_locode,itinerary_port_content,rate_type,tax_inclusive_rate_pp,tax_exclusive_rate_pp,available_offer,last_shop_date,last_shopped_subcategory ,availability,obstructed 
+
+

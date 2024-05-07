@@ -1,0 +1,21 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://vv-stage-vxp-pgdb.cz4e2a1fysom.us-east-1.rds.amazonaws.com/table_management
+spark.src.user pgreadaccessuser
+spark.src.password mvsZ72sVq75KARjLhK9D
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVxpTblemngtResguest
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpTblemngtResguest
+spark.target.location s3://vv-staging-emr-cluster/data/landing/hvtb_lnd_vxp_table_management_res_reservationguest
+spark.target.hive.table shipdw.hvtb_lnd_vxp_table_management_res_reservationguest
+spark.target.table shipdw.hvtb_lnd_vxp_table_management_res_reservationguest
+spark.src.table.query "reservations_reservationguest"
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.condition.column lastmodifieddate
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.source.columns guest_id, is_main, addeddate, public_id, reservation_id, addedby, lastmodifiedby, lastmodifieddate
+spark.ship.code SHORE
+

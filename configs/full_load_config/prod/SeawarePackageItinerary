@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.PACKAGE_ITINERARY
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT ITIN_RECORD_ID, PACKAGE_TYPE, DAY_NUM_FROM, TIME_FROM, DAY_NUM_TO, TIME_TO, LOCATION_TYPE_FROM, LOCATION_CODE_FROM, LOCATION_TYPE_TO, LOCATION_CODE_TO, COMPONENT_TYPE, COMPONENT_CODE, COMPONENT_SUBCODE1, COMPONENT_SUBCODE2, COMPONENT_SUBCODE3, CAN_BE_EXCLUDED, IS_OPTIONAL, PACKAGE_LINKS_INCLUSIVE, COMMENTS, DESCRIPTION, SEQ_NUM, CITY_FROM, CITY_TO, OPTION_GROUP FROM SEAWARE.PACKAGE_ITINERARY)
+
+spark.parse.table seaware_oracle.hvtb_nbx_parse_sw_rpl_package_itinerary
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/PACKAGE_ITINERARY
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_nbx_parse_sw_rpl_package_itinerary/
+
+spark.hadoop.hive.execution.engine mr

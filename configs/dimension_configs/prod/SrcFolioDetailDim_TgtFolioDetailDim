@@ -1,0 +1,37 @@
+spark.src.config.id SrcFolioDetailDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtFolioDetailDim
+spark.parent.id SrcMxpPersonAccountItems-TgtMxpPersonAccountItems
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.table.type dim
+spark.target.schema shipdw
+spark.target.table folio_detail
+
+spark.source.sql select pat.voyageid as voyage_id, pat.person_account_detail_id as folio_detail_id, curr.currency_abb as currency_code, os.org_structure_name as location, sli.sys_lookup_item_name as line_type, (case when pat.status_id = 3 then 'Voided' else null END) as line_status, pat.account_record_description as line_description, pat.comment as sale_comment, pat.discount_comment as sale_discount_comment, (case when pat.rec_deleted = 1 then true else false end)as src_deleted_flag, pat.batchtime, pat.part_date from ( select * from ( select voyageid, person_account_detail_id, currency_id, status_id, account_record_description, comment, org_unit_quick_code, discount_comment, org_structure_id, account_record_type_id, rec_deleted, last_changed, batchtime, part_date, row_number() over(partition by person_account_detail_id order by last_changed desc) rn from shipdw.hvtb_parse_mxp_person_account_items *whereclause* ) where rn = 1) pat left join shipdw.hvtb_mart_lkp_revenue_category_rel rev_cat_lkp on (type='Quick Code' and pat.org_unit_quick_code = rev_cat_lkp.code) left join ( select * from ( select currency_abb, currency_id, last_changed, row_number() over(partition by currency_id order by last_changed desc)rn from shipdw.hvtb_parse_mxp_currencies) where rn = 1) curr on pat.currency_id = curr.currency_id left join ( select * from ( select org_structure_id, org_structure_name, last_changed, row_number() over(partition by org_structure_id order by last_changed desc) rn from shipdw.hvtb_parse_mxp_org_structure) where rn = 1) os on pat.org_structure_id = os.org_structure_id left join ( select * from ( select sys_lookup_items_id, sys_lookup_id, sys_lookup_active, sys_lookup_category_id, sys_lookup_item_name, last_changed, row_number() over(partition by sys_lookup_items_id order by last_changed desc)rn from shipdw.hvtb_parse_mxp_sys_lookup_items) where rn = 1) sli on (pat.account_record_type_id = sli.sys_lookup_id and sli.sys_lookup_active = 1) inner join ( select * from ( select sys_lookup_category_id, sys_looup_category_name, last_changed, row_number() over(partition by sys_lookup_category_id order by last_changed desc)rn from shipdw.hvtb_parse_mxp_sys_lookup_categories) where rn = 1) slc on (sli.sys_lookup_category_id = slc.sys_lookup_category_id and slc.sys_looup_category_name = 'Account Line Type')
+
+#spark.source.sql select pat.voyageid as voyage_id, pat.person_account_detail_id as folio_detail_id, curr.currency_abb as currency_code, os.org_structure_name as location, sli.sys_lookup_item_name as line_type, (case when pat.status_id = 3 then 'Voided' else null END) as line_status, pat.account_record_description as line_description, pat.comment as sale_comment, pat.discount_comment as sale_discount_comment, (case when pat.rec_deleted = 1 then true else false end)as src_deleted_flag, pat.batchtime, pat.part_date from ( select * from ( select voyageid, person_account_detail_id, currency_id, status_id, account_record_description, comment, org_unit_quick_code, discount_comment, org_structure_id, account_record_type_id, rec_deleted, last_changed, batchtime, part_date, row_number() over(partition by person_account_detail_id order by last_changed desc) rn from shipdw.hvtb_parse_mxp_person_account_items *whereclause* ) where rn = 1) pat left join shipdw.hvtb_mart_lkp_revenue_category_rel rev_cat_lkp on (category_type='FOLIO_QUICKCODE' and pat.org_unit_quick_code = rev_cat_lkp.category_value) left join ( select * from ( select currency_abb, currency_id, last_changed, row_number() over(partition by currency_id order by last_changed desc)rn from shipdw.hvtb_parse_mxp_currencies) where rn = 1) curr on pat.currency_id = curr.currency_id left join ( select * from ( select org_structure_id, org_structure_name, last_changed, row_number() over(partition by org_structure_id order by last_changed desc) rn from shipdw.hvtb_parse_mxp_org_structure) where rn = 1) os on pat.org_structure_id = os.org_structure_id left join ( select * from ( select sys_lookup_items_id, sys_lookup_id, sys_lookup_active, sys_lookup_category_id, sys_lookup_item_name, last_changed, row_number() over(partition by sys_lookup_items_id order by last_changed desc)rn from shipdw.hvtb_parse_mxp_sys_lookup_items) where rn = 1) sli on (pat.account_record_type_id = sli.sys_lookup_id and sli.sys_lookup_active = 1) inner join ( select * from ( select sys_lookup_category_id, sys_looup_category_name, last_changed, row_number() over(partition by sys_lookup_category_id order by last_changed desc)rn from shipdw.hvtb_parse_mxp_sys_lookup_categories) where rn = 1) slc on (sli.sys_lookup_category_id = slc.sys_lookup_category_id and slc.sys_looup_category_name = 'Account Line Type')
+spark.source.columns voyage_id,folio_detail_id,currency_code,location,line_type,line_status,line_description,sale_comment,sale_discount_comment,src_deleted_flag
+spark.pond.allColumns voyage_id as pond_voyage_id,folio_detail_skey as pond_folio_detail_skey,folio_detail_id as pond_folio_detail_id,currency_code as pond_currency_code,location as pond_location,line_type as pond_line_type,line_status as pond_line_status,line_description as pond_line_description,sale_comment as pond_sale_comment,sale_discount_comment as pond_sale_discount_comment,src_deleted_flag as pond_src_deleted_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column folio_detail_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_folio_detail
+spark.source.primaryKeyColumns folio_detail_id
+spark.target.final_collist final_view.voyage_id,final_view.folio_detail_skey,final_view.folio_detail_id,final_view.currency_code,final_view.location,final_view.line_type,final_view.line_status,final_view.line_description,final_view.sale_comment,final_view.sale_discount_comment,final_view.src_deleted_flag,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_folio_detail
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_folio_detail
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname foliodetaildim_tmp
+spark.bq.permtblname foliodetaildim
+spark.bq.viewname shipdw.foliodetaildim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

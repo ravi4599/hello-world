@@ -1,0 +1,37 @@
+spark.src.config.id SrcCrmAgencyHierarchyRel
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtCrmAgencyHierarchyRel
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr
+
+spark.pond.database vv_db
+spark.pond.table hvtb_mart_crm_agency_hierarchy_rel
+spark.target.schema vv_db
+spark.target.table crm_agency_hierarchy_rel
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_crm_agency_hierarchy_rel
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_crm_agency_hierarchy_rel
+spark.bq.schema Hive_schema_stg
+spark.bq.tablename crm_agency_hierarchy_rel
+spark.bq.view crm.crm_agency_hierarchy_rel
+
+
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+

@@ -1,0 +1,13 @@
+spark.src.config.id SrcSwHotelResReqDimHotelResReqIdEncode
+spark.tgt.env Prod
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtSwHotelResReqDimHotelResReqIdEncode
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.15.2.206:2181/hbase-unsecure
+
+spark.source.table vv_db.hvtb_nbx_core_sw_hotel_res_req_dim
+spark.source.columns hotel_res_req_id
+spark.target.encode.table vv_db.hvtb_nbx_core_sw_hotel_res_req_dim_hotel_res_req_id
+

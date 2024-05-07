@@ -1,0 +1,4 @@
+spark.target.s3ofrstdpath s3a://vv-staging-emr-cluster/data/core/seaware/guestdimhistory/guesthistone.parquet
+spark.target.s3soscndpath s3a://vv-staging-emr-cluster/data/core/seaware/guestdimhistory/guesthisttwo.parquet
+spark.target.temptablename vv_db.hvtb_nbx_core_sw_guest_dim_temp
+spark.target.tgttablename vv_db.hvtb_nbx_core_sw_guest_dim

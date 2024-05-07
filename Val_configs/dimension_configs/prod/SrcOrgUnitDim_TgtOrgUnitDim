@@ -1,0 +1,31 @@
+spark.src.config.id SrcOrgUnitDim
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtOrgUnitDim
+spark.parent.id SrcMxpOrgUnits-TgtMxpOrgUnits
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.database prodnbx
+spark.source.sql select NVL(A.VoyageId, -1) as voyage_id, A.org_unit_id as org_unit_id, A.org_unit_name as org_unit_name, A.org_unit_abbreviation as org_unit_abbreviation, A.BatchTime, A.Part_Date from (select * from (select *, row_number() over (partition by org_unit_id order by last_changed desc) rn  from shipdw.hvtb_parse_mxp_org_units) where rn = 1) A
+spark.source.columns voyage_id,org_unit_id,org_unit_name,org_unit_abbreviation
+spark.pond.allColumns org_unit_skey as pond_org_unit_skey,voyage_id as pond_voyage_id,org_unit_id as pond_org_unit_id,org_unit_name as pond_org_unit_name,org_unit_abbreviation as pond_org_unit_abbreviation,load_dt as pond_load_dt,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+spark.surrogate_key.column org_unit_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_org_unit
+spark.target.table org_unit_dim
+spark.source.primaryKeyColumns org_unit_id
+spark.target.final_collist org_unit_skey,final_view.voyage_id,final_view.org_unit_id,final_view.org_unit_name,final_view.org_unit_abbreviation,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_org_unit
+spark.target.location /data/apps/nbx/mart/hvtb_mart_dim_org_unit
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename org_unit_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+

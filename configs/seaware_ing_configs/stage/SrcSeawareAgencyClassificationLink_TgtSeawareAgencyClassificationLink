@@ -1,0 +1,30 @@
+spark.target.sslkafkabrokers q-lab-kfk-app1.nls.virginvoyages.com:9097,q-lab-kfk-app2.nls.virginvoyages.com:9097,q-lab-kfk-app3.nls.virginvoyages.com:9097
+spark.target.truststore /etc/script_keystore/kafka.server.0925.truststore.jks
+spark.target.keystore /etc/script_keystore/kafka.server.0925.keystore.jks
+spark.target.passvalue SetSail2020
+spark.kafkabrokers 10.2.52.146:9092,10.2.52.148:9092,10.2.52.162:9092
+spark.kafka.zookeeper 10.2.52.146:2181
+spark.debug.flag TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic shore-dbz.sw.SEAWARE.AGENCY_CLASSIFICATION_LINK           
+spark.src.personOffSet earliest
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.snapshot.table HBTB_DBZ_SNAPDATE
+
+spark.src.config.id SrcSeawareAgencyClassificationLink
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtSeawareAgencyClassificationLink
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+spark.target.lnd.table vv_db.hvtb_lnd_sw_rpl_agency_classification_link
+spark.target.parse.table vv_db.hvtb_parse_sw_rpl_agency_classification_link
+spark.ship.code SHORE
+spark.stop.flag Y
+spark.debug.flag true

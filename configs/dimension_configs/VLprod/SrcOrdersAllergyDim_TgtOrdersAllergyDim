@@ -1,0 +1,44 @@
+#------META DATA CONFIG-----#
+spark.src.config.id SrcOrdersAllergyDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtOrdersAllergyDim
+spark.parent.id SrcVXPfoodandbevallergy-TgtVXPfoodandbevallergy-SC2002269NCR
+spark.target.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.target.ops.table.format org.apache.phoenix.spark
+#-------------------------# 
+#------postgresql and hive-----#
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.database prodnbx
+#spark.postgresql.schema shipdw
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename allergy_dim
+#-------------------------# 
+#------Query Propery-----#
+#spark.source.sql select * from (select voyage_id, dining_reservation_id, booking_link_id, batchtime, part_date  from (SELECT NVL(voyageid,'N/A') as voyage_id, public_id as dining_reservation_id, external_id as booking_link_id, batchtime, part_date, ROW_NUMBER() over (Partition by public_id order by lastmodifieddate desc) as rn FROM shipdw.hvtb_parse_vxp_table_management_reservation)b where b.rn=1 )a
+spark.source.sql select p.VoyageId as voyage_id,p.BatchTime,'Table_Management' as source,cast(p.public_id as STRING) as allergy_id,null as parent_allergy_id, p.code as allergy_code, p.name as allergy_name, p.active as src_active_flg,p.Part_Date from shipdw.hvtb_parse_vxp_table_management_guests_preference p join shipdw.hvtb_parse_vxp_table_management_guests_preferencetype  pt on p.type_id = pt.public_id where pt.code='ALLERGEN' UNION select c.VoyageId as voyage_id,c.BatchTime,'Food_Bevarages' as source,c.allergyid as allergy_id,parentallergyid as parent_allergy_id, c.code as allergy_code, c.name as allergy_name, true as src_active_flg,c.Part_Date from shipdw.hvtb_parse_vxp_foodandbeverage_allergy c
+spark.source.columns voyage_id,BatchTime,source,allergy_id,parent_allergy_id,allergy_code,allergy_name,src_active_flg,Part_Date
+spark.pond.allColumns allergy_skey as pond_allergy_skey,voyage_id as pond_voyage_id,source as pond_source,allergy_id as pond_allergy_id,parent_allergy_id as pond_parent_allergy_id,allergy_code as pond_allergy_code,allergy_name as pond_allergy_name,src_active_flg as pond_src_active_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+spark.surrogate_key.column allergy_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_allergy
+spark.target.schema hive_schema_stg
+spark.target.table hvtb_mart_dim_allergy
+spark.source.primaryKeyColumns allergy_id
+spark.target.final_collist allergy_skey, final_view.voyage_id as voyage_id, final_view.source as source, final_view.allergy_id as allergy_id, final_view.parent_allergy_id as parent_allergy_id, final_view.allergy_code as allergy_code, final_view.allergy_name as allergy_name, final_view.src_active_flg as src_active_flg, load_dt, upd_dt, primaryhash, md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_allergy
+spark.target.location /data/apps/nbx/mart/hvtb_mart_dim_allergy
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+#-------------------------# 
+#------Common Property-----#
+#-------------------------# 
+ 
+spark.ship.code VAL
+

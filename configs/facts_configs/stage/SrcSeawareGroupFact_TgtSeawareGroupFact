@@ -1,0 +1,35 @@
+spark.src.config.id SrcSeawareGroupFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtSeawareGroupFact
+#spark.parent.id
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.ing.type Fact
+
+spark.source.sql SELECT CURRENT_TIMESTAMP() AS snapshot_time, COALESCE(gd.group_id, -1) AS group_id, COALESCE(inv.guest_seqn, -1) AS guest_seqn, COALESCE(pm.package_id, -1) AS package_id, COALESCE(invitm.invoice_item_type_id, -1) AS invoice_item_type_id, COALESCE(lkparea.price_area_id, -1) AS price_area_id, COALESCE(sh.ship_id, -1) AS ship_id, COALESCE(agent.agent_id, -1) AS agent_id, COALESCE(agency.agency_id, -1) AS agency_id, COALESCE(inv.promo_code, -1) AS promotion_id, COALESCE(addon_id, -1) AS addon_id, -1 AS cardeck_id, -1 AS shorex_id, COALESCE(hd.hotel_group_req_id, -1) AS hotel_group_req_id, COALESCE(sail.sail_id, -1) AS sail_id, COALESCE(( Round(inv.amount, 2) ), 0) AS amount, COALESCE(( Round(inv.commission_percent, 2) ), 0) AS commission_percent, inv.quantity AS quantity, COALESCE(grphdr.currency_code, 'USD') AS currency, COALESCE(grphdr.currency_rate, 0) AS currency_rate, sr.cabin_category AS cabin_category, cm.cabin_category_generic AS generic_category, CURRENT_DATE as snapshot_date FROM   vv_db.hvtb_parse_sw_rpl_group_invoice_item inv LEFT JOIN vv_db_mig.hvtb_nbx_parse_sw_rpl_group_booking grphdr ON inv.group_id = grphdr.group_id LEFT JOIN vv_db_mig.hvtb_nbx_core_sw_group_dim gd ON inv.group_id = gd.src_group_id AND To_date(gd.rec_end_dttm) = "9999-12-31" LEFT JOIN vv_db_mig.hvtb_nbx_core_sw_package_dim pm ON inv.package_id = pm.src_package_id AND To_date(pm.rec_end_dttm) = "9999-12-31" LEFT JOIN vv_db.hvtb_nbx_core_sw_invoice_item_type_lkp invitm ON inv.invoice_item_type = invitm.invoice_item_type AND ( CASE WHEN Length(inv.invoice_item_subtype) = 0 OR inv.invoice_item_subtype IS NULL THEN '-1' ELSE inv.invoice_item_subtype END ) = COALESCE(invitm.invoice_item_subtype, '-1') LEFT JOIN vv_db.hvtb_nbx_core_sw_price_area_lkp lkparea ON inv.price_area = lkparea.price_area LEFT JOIN vv_db.hvtb_nbx_core_sw_ship_dim sh ON grphdr.ship_code = sh.ship LEFT JOIN vv_db.hvtb_nbx_core_sw_agency_dim Agency ON grphdr.agency_id = Agency.src_agency_id AND To_date(agency.rec_end_dttm) = "9999-12-31" LEFT JOIN vv_db.hvtb_nbx_core_crm_agent_master_dim Agent ON grphdr.agency_id = Agent.seaware_agent_id__c AND To_date(agent.rec_end_dttm) = "9999-12-31" LEFT JOIN vv_db_mig.hvtb_nbx_parse_sw_rpl_sail_header slhdr ON grphdr.ship_code = slhdr.ship_code and grphdr.dep_ref_id = slhdr.dep_ref_id and grphdr.arr_ref_id = slhdr.arr_ref_id LEFT JOIN vv_db_mig.hvtb_nbx_core_sw_sail_dim sail ON slhdr.sail_id = sail.src_sail_id AND To_date(sail.rec_end_dttm) = "9999-12-31" LEFT JOIN vv_db.hvtb_nbx_core_sw_addon_lkp al ON case when inv.price_area='ADDON' then Nvl(inv.extended_info, '~') = Nvl(al.res_addon_code, '~') else 1<>1 end LEFT JOIN vv_db_mig.hvtb_nbx_core_sw_hotel_group_req_dim hd ON inv.group_hotel_req_id = hd.src_hotel_group_req_id LEFT JOIN vv_db_mig.hvtb_nbx_parse_sw_rpl_group_ship_request sr on inv.group_ship_req_id = sr.record_id LEFT JOIN (select cm.ship, cm.cabin_category, cm.cabin_category_generic from vv_db.hvtb_nbx_core_sw_cabin_master cm) as cm ON cm.cabin_category = sr.cabin_category and cm.ship = grphdr.ship_code WHERE  NOT EXISTS (select distinct dh.group_id, dg.guest_seqn from vv_db.hvtb_parse_sw_rpl_group_delegate_header dh join vv_db.hvtb_parse_sw_rpl_group_delegate_guest dg on dh.delegate_header_id =dg.delegate_header_id where dh.group_id = grphdr.group_id AND dg.guest_seqn = inv.guest_seqn)
+
+spark.source.columns snapshot_time,group_id,guest_seqn,package_id,invoice_item_type_id,price_area_id,ship_id,agent_id,agency_id,promotion_id,addon_id,cardeck_id,shorex_id,hotel_group_req_id,sail_id,amount,commission_percent,quantity,currency,currency_rate,cabin_category,generic_category,snapshot_date
+
+spark.pond.database vv_db_mig
+spark.pond.table hvtb_nbx_core_sw_group_fact
+spark.target.table seaware_group_fact
+
+spark.pond.allColumns snapshot_time as pond_snapshot_time,group_id as pond_group_id,guest_seqn as pond_guest_seqn,package_id as pond_package_id,invoice_item_type_id as pond_invoice_item_type_id,price_area_id as pond_price_area_id,ship_id as pond_ship_id,agent_id as pond_agent_id,agency_id as pond_agency_id,promotion_id as pond_promotion_id,addon_id as pond_addon_id,cardeck_id as pond_cardeck_id,shorex_id as pond_shorex_id,hotel_group_req_id as pond_hotel_group_req_id,sail_id as pond_sail_id,amount as pond_amount,commission_percent as pond_commission_percent,quantity as pond_quantity,currency as pond_currency,currency_rate as pond_currency_rate,cabin_category as pond_cabin_category,generic_category as pond_generic_category,load_dt as pond_load_dt,upd_dt as pond_upd_dt,snapshot_date as pond_snapshot_date
+
+spark.target.final_collist final_view.snapshot_time,final_view.group_id,final_view.guest_seqn,final_view.package_id,final_view.invoice_item_type_id,final_view.price_area_id,final_view.ship_id,final_view.agent_id,final_view.agency_id,final_view.promotion_id,final_view.addon_id,final_view.cardeck_id,final_view.shorex_id,final_view.hotel_group_req_id,final_view.sail_id,final_view.amount,final_view.commission_percent,final_view.quantity,final_view.currency,final_view.currency_rate,final_view.cabin_category,final_view.generic_category,final_view.load_dt,final_view.upd_dt,final_view.snapshot_date
+
+spark.source.primaryKeyColumns group_id
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_nbx_core_sw_group_fact
+spark.target.location s3://vv-staging-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_group_fact
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename seaware_group_fact 
+
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx_mig
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123

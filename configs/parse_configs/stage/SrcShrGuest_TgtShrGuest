@@ -1,0 +1,19 @@
+spark.source.table select * from shipdw.hvtb_lnd_mxp_ship_guest_mxp_guest
+spark.guest.persoon.target.table shipdw.hvtb_parse_mxp_shore_guest_person
+spark.guest.booking.target.table shipdw.hvtb_parse_mxp_shore_guest_booking         
+spark.guest.restriction.target.table  shipdw.hvtb_parse_mxp_shore_guest_restriction
+spark.guest.preference.target.table  shipdw.hvtb_parse_mxp_shore_guest_preference
+spark.guest.special.target.table  shipdw.hvtb_parse_mxp_shore_guest_specialrequest
+spark.guest.account.target.table shipdw.hvtb_parse_mxp_Shore_guest_account
+spark.guest.address.target.table shipdw.hvtb_parse_mxp_Shore_guest_address
+spark.src.config.id SrcShrGuest
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtShrGuest
+spark.parent.id  SrcMXPGuest-TgtMXPGuest-SC2002269NCR
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.4.100.154/hbase-unsecure

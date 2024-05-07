@@ -1,0 +1,18 @@
+spark.src.config.id SrcHvLocaConSims
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.ship.code SHORE
+spark.target.config.id TgtHvLocaConSims
+spark.parent.id SrcKfkLocaConSims-TgtHvLocaConSims
+spark.source.table shipdw.hvtb_lnd_vxp_locationconstruct_sims
+spark.target.table shipdw.hvtb_parse_vxp_locationconstruct_sims
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+
+

@@ -1,0 +1,30 @@
+#source postgres database,table and connection details
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148:5432/zulip
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.con.driver org.postgresql.Driver
+spark.src.table zulip.zerver_userprofile
+spark.tgt.env Prod
+#Unique constant for Batchid
+spark.src.config.id SrcZerverUserprofile
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtZerverUserprofile
+#Metadbta Hbase table and connection details
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.src.table.query zulip.zerver_userprofile
+spark.condition.column id
+spark.hive.table.maxid (select max(id) from shipdw.hvtb_lnd_zulip_zerver_userprofile )
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_zulip_zerver_userprofile
+spark.target.hive.table shipdw.hvtb_lnd_zulip_zerver_userprofile
+spark.source.columns id,password,last_login,is_superuser,email,is_staff,is_active,is_bot,date_joined,is_mirror_dummy,full_name,short_name,poer,last_poer_updater,api_key,enable_stream_desktop_notifications,enable_stream_audible_notifications,enable_desktop_notifications,enable_sounds,enable_offline_email_notifications,enable_offline_push_notifications,enable_digest_emails,last_reminder,rate_limits,default_all_public_streams,enter_sends ,twenty_four_hour_time ,avatar_source ,tutorial_status,onboarding_steps,alert_words,bot_owner_id,default_events_register_stream_id,default_sending_stream_id,realm_id,left_side_userlist,is_api_super_user,is_realm_admin,bot_type,default_language,tos_version,enable_online_push_notifications,pm_content_in_desktop_notifications,avatar_version,timezone,emojiset,last_active_message_id,long_term_idle ,high_contrast_mode ,enable_stream_push_notifications ,night_mode ,enable_stream_email_notifications ,realm_name_in_notifications ,translate_emoticons ,message_content_in_email_notifications ,is_guest ,dense_mode ,delivery_email,starred_message_counts ,is_billing_admin,enable_login_emails,notification_sound,fluid_layout_width,demote_inactive_streams,avatar_hash,desktop_icon_count_display,iam_user_id
+spark.source.query id,password,last_login,is_superuser,email,is_staff,is_active,is_bot,date_joined,is_mirror_dummy,full_name,short_name,poer,last_poer_updater,api_key,enable_stream_desktop_notifications,enable_stream_audible_notifications,enable_desktop_notifications,enable_sounds,enable_offline_email_notifications,enable_offline_push_notifications,enable_digest_emails,last_reminder,rate_limits,default_all_public_streams,enter_sends ,twenty_four_hour_time ,avatar_source ,tutorial_status,onboarding_steps,alert_words,bot_owner_id,default_events_register_stream_id,default_sending_stream_id,realm_id,left_side_userlist,is_api_super_user,is_realm_admin,bot_type,default_language,tos_version,enable_online_push_notifications,pm_content_in_desktop_notifications,avatar_version,timezone,emojiset,last_active_message_id,long_term_idle ,high_contrast_mode ,enable_stream_push_notifications ,night_mode ,enable_stream_email_notifications ,realm_name_in_notifications ,translate_emoticons ,message_content_in_email_notifications ,is_guest ,dense_mode ,delivery_email,starred_message_counts ,is_billing_admin,enable_login_emails,notification_sound,fluid_layout_width,demote_inactive_streams,avatar_hash,desktop_icon_count_display,iam_user_id
+#spark.tz.columns property to change all the timestampz columns to UTC
+spark.tz.columns last_login,date_joined,last_reminder
+spark.source.zone EST
+spark.ship.code VAL
+

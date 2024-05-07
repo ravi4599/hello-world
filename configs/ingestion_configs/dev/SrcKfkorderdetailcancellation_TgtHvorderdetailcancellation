@@ -1,0 +1,26 @@
+spark.kafkabrokers 10.59.1.30:9092,10.59.1.31:9092,10.59.1.32:9092
+spark.kafka.zookeeper 10.59.1.30:2181,10.59.1.31:2181,10.59.1.32:2181
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic shp2shr-dev-vxp-foodbeverage.orderdetailcancellation
+spark.src.personOffSet earliest
+spark.src.config.id SrcKfkorderdetailcancellation
+spark.voyage.id SC2002269NCR
+spark.tgt.env DEV
+spark.target.config.id TgtHvorderdetailcancellation
+spark.target.hive.table shipdw.hvtb_lnd_vxp_foodnbev_orderdetailcancellation
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.streaming.kafka.maxRatePerPartition 50
+spark.ship.code SHORE
+spark.metadata.con.format jdbc
+spark.metadata.offset.mode Append
+spark.metadata.offset.table shipdw.hbtb_streaming_ingestion_offset
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.ing.type Ingestion
+

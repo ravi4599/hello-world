@@ -1,0 +1,26 @@
+#Kafka PROD Cluster details
+spark.target.nonsslkafkabrokers 10.102.220.205:9094,10.102.220.206:9094,10.102.220.207:9094
+spark.ssl.enabled false
+spark.target.passvalue Sailing2020
+spark.target.kafka.batch.size 16384
+spark.src.table.type hive
+spark.target.kafka.topic shp2shr-vxp-dxpcore.virtualqueue
+#Hive Details
+spark.src.table shipdw.hvtb_lnd_vxp_dxp_virtualqueue
+spark.target.coalesce.value 10
+#Constants for metadata framework
+spark.src.config.id SrcVxpDcpVirtualQ
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtKfkDcpVirtualQ
+spark.parent.id SrcVxpDcpVirtQ-TgtVxpDcpVirtQ
+spark.isfullrefresh yes
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+#Hbase details
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+# Operational Config
+spark.oper.metadata.table.mode overwrite
+spark.oper.metadata.table HBTB_NBX_SHORETOSHIP_SYNC_VOYAGEOPS
+spark.tgt.env Prod
+

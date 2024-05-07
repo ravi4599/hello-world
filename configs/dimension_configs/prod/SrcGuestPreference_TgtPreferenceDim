@@ -1,0 +1,36 @@
+spark.src.config.id SrcGuestPreference
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtPreferenceDim
+spark.parent.id SrcMxpPersonPreferences-TgtMxpPersonPreferences
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.source.sql select  person_preference_id as preference_id, person_preference_type_id, person_id as person_id, person_preference_description as description, person_preference_comment as comment, last_changed as preference_upd_date, rec_deleted as src_deleted_flag,voyageid as voyage_id,batchtime,part_date  from (select *, row_number() over  (partition by person_preference_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_person_preferences *whereclause*) where rn=1
+spark.allergy.sql select lkp_itm.lookup_item_id ,lkp_itm.lookup_item_name as allergy,lkp_itm.display_code as allergy_code from (select * from (select *,row_number() over (partition by lookup_item_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_lookup_items where active =1) where rn=1)lkp_itm  join (select * from (select *,row_number() over (partition by lookup_sub_category_id order by last_changed) as rn from  shipdw.hvtb_parse_mxp_lookup_sub_categories) where rn=1)lkp_sub on lkp_itm.lookup_sub_category_id == lkp_sub.lookup_sub_category_id and lkp_sub.lookup_sub_category_name in ('Recipe Allergens')
+spark.prefCatgDf.sql select lkp_itm.lookup_item_id,lkp_itm.lookup_item_name as category,lkp_itm.display_code as preference_category_code from (select * from (select *,row_number() over (partition by lookup_item_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_lookup_items where active =1) where rn=1)lkp_itm  join (select * from (select *,row_number() over (partition by lookup_sub_category_id order by last_changed) as rn from  shipdw.hvtb_parse_mxp_lookup_sub_categories) where rn=1)lkp_sub on lkp_itm.lookup_sub_category_id == lkp_sub.lookup_sub_category_id and lkp_sub.lookup_sub_category_name in ('Preference Categories')
+spark.source.columns voyage_id,preference_id,person_id,preference_category_code,category,description,comment,allergy,allergy_code,preference_upd_date,src_deleted_flag
+spark.pond.allColumns preference_skey as pond_preference_skey,voyage_id as pond_voyage_id,preference_id as pond_preference_id,person_id as pond_person_id,preference_category_code as pond_preference_category_code,category as pond_category,description as pond_description,comment as pond_comment,allergy as pond_allergy,allergy_code as pond_allergy_code,preference_upd_date as pond_preference_upd_date,src_deleted_flag as pond_src_deleted_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column preference_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_preference
+spark.target.schema shipdw
+spark.target.table preference_dim
+spark.source.primaryKeyColumns preference_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+spark.target.final_collist preference_skey,final_view.voyage_id,final_view.preference_id,final_view.person_id,final_view.preference_category_code,final_view.category,final_view.description,final_view.comment,final_view.allergy,final_view.allergy_code,final_view.preference_upd_date,final_view.src_deleted_flag,final_view.load_dt,final_view.upd_dt, final_view.primaryhash,final_view.md5_hash
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_preference
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_preference
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname preference_dim_tmp
+spark.bq.permtblname preference_dim
+spark.bq.viewname shipdw.preference_dim
+spark.hadoop.hive.execution.engine mr
+

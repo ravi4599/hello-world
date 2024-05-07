@@ -1,0 +1,21 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.102.150.228:1521/emsvaldata.synkdb.com
+spark.src.user emstal
+spark.src.password Taluser1*
+spark.src.table EMS.VW_TAL_SHIFTTBLSTAT
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.src.config.id Srcasinoshifttblstat
+spark.voyage.id VAL2002269NCR
+spark.target.config.id Tgtcasinoshifttblstat
+spark.target.location /data/apps/nbx/hive/landing/konami/hvtb_lnd_konami_ems_vw_tal_shifttblstat
+spark.target.hive.table shipdw.hvtb_lnd_konami_ems_vw_tal_shifttblstat
+spark.src.table.query (select SHIFTID, DATEINSERTED, DEVID, GAMEID, GSTID, ASSETNUM, OPENTRANSID, CLOSETRANSID, YEAR, QUARTER, MONTH, WEEK, DAY, FYEAR, FQUARTER, FMONTH, OPENER, OPENER_ADJ, CLOSER, CLOSER_ADJ, FILL, FILL_ADJ, CREDIT, CREDIT_ADJ, ESTDROP, UNPOSTEDDROP, POSTEDDROP, MARKER, MARKER_ADJ, TBL_AUDIT_ADJ, CPV, FOD, VOUCHER, VARIANCEAMT, LASTMODDATE, LASTMODBY, TBLNETWIN, CPV_ADJ, TBLJP, TBLJP_ADJ, POSTEDDROP_PROMOCHIP, POSTEDDROP_OTHER, POSTEDDROP_PROMO_ADJ, POSTEDDROP_OTHER_ADJ  from EMS.VW_TAL_SHIFTTBLSTAT)
+spark.condition.column LASTMODDATE
+spark.source.columns SHIFTID,DATEINSERTED,DEVID,GAMEID,GSTID,ASSETNUM,OPENTRANSID,CLOSETRANSID,YEAR,QUARTER,MONTH,WEEK,DAY,FYEAR,FQUARTER,FMONTH,OPENER,OPENER_ADJ,CLOSER,CLOSER_ADJ,FILL,FILL_ADJ,CREDIT,CREDIT_ADJ,ESTDROP,UNPOSTEDDROP,POSTEDDROP,MARKER,MARKER_ADJ,TBL_AUDIT_ADJ,CPV,FOD,VOUCHER,VARIANCEAMT,LASTMODDATE,LASTMODBY,TBLNETWIN,CPV_ADJ,TBLJP,TBLJP_ADJ,POSTEDDROP_PROMOCHIP,POSTEDDROP_OTHER,POSTEDDROP_PROMO_ADJ,POSTEDDROP_OTHER_ADJ
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+

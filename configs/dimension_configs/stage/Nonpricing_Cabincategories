@@ -1,0 +1,28 @@
+spark.query select ship_code as Ship_Code,cabin_category as Category_Code,cabin_category_rank as Category_Rank, is_active as Active,cabin_capacity as Max_Category_Capacity, comments as Category_Name from vv_db.hvtb_nbx_landing_sw_rpl_cabin_category where ship_code IN ('SC', 'VL') and cabin_category NOT IN ('SCH', 'SCM', 'SCL', 'SAH', 'SAM', 'SAL')
+spark.temp s3://agency-flat-files-stage/temp
+spark.location s3://agency-flat-files-stage/
+spark.filename VV_cabin_categories
+spark.prefix_with_date false
+spark.sql.codegen.wholeStage false
+
+
+spark.manageExecution.dayOftheWeek Wed,Thu
+spark.mysql.db vv_metadata
+spark.mysql.login admin
+spark.mysql.password VirginAdmin9$
+spark.mysql.url jdbc:mysql://staging-talend-metadata.cluster-cz4e2a1fysom.us-east-1.rds.amazonaws.com:3306/vv_metadata
+spark.mysql.table load_job_status_log
+spark.mysql.driver com.mysql.jdbc.Driver
+spark.talend.processName 'jSWstgRPL_CABIN_CATEGORY'
+
+spark.src.config.id SrcNonpricingCabincat
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtNonpricingCabincat
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure

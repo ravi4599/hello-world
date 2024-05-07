@@ -1,0 +1,4 @@
+spark.query select cabinCategory.ship_code as Ship_Code, cabin.cabin_number as Cabin_Number, cabin.deck_number as Cabin_Deck_Number, cabinCategory.cabin_category as Cabin_Category, cabinCategory.category_capacity as Cabin_Capacity from vv_db.hvtb_nbx_landing_sw_rpl_ship_cabin cabin join vv_db.hvtb_nbx_landing_sw_rpl_cabin_category cabinCategory ON cabin.cabin_id = cabinCategory.cabin_category_id where cabinCategory.ship_code IN ('SC', 'VL')
+spark.temp s3://agency-flat-files-stage/temp
+spark.location s3://agency-flat-files-stage/
+spark.filename _SCVL_cabins

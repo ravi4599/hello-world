@@ -1,0 +1,53 @@
+spark.src.config.id SrcCrmConversationDefinitionSessionDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtCrmConversationDefinitionSessionDim
+spark.parent.id SrcSFDCConversationDefinitionSession-TgtSFDCConversationDefinitionSession
+
+ 
+spark.table.type dim
+spark.hadoop.hive.execution.engine mr
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.table.type dim
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.table.type dim
+spark.api.env Prod
+ 
+spark.source.sql SELECT c.id AS Id, c.ChannelType AS ChannelType, c.ConversationDefinitionId AS ConversationDefinitionId, eng.ConversationEngagementId AS src_livechattranscript_id, liv.caseid AS src_case_id, bv.VersionNumber AS VersionNumber, c.HasErrorLogs AS HasErrorLogs, c.IntegrationName AS IntegrationName, c.IntegrationType AS IntegrationType, c.Language AS LANGUAGE, c.SessionDuration AS SessionDuration, c.SessionEndType AS SessionEndType, c.SessionStartTime AS SessionStartTime, c.SessionStatus AS SessionStatus, c.SessionTransferResult AS SessionTransferResult, c.SessionTransferTargetType AS SessionTransferTargetType, c.SessionTransferType AS SessionTransferType, c.CreatedDate AS CreatedDate, c.LastModifiedDate AS LastModifiedDate, c.IsDeleted AS IsDeleted, batchtime, part_date FROM ( SELECT * FROM ( SELECT Id , ChannelType , ConversationDefinitionId , HasErrorLogs , IntegrationName , IntegrationType , LANGUAGE , SessionDuration , SessionEndType , SessionStartTime , SessionStatus , SessionTransferResult , SessionTransferTargetType , SessionTransferType , CreatedDate , LastModifiedDate , IsDeleted, batchtime, part_date, ROW_NUMBER() OVER ( PARTITION BY id ORDER BY lastmodifieddate DESC ) AS rn FROM vv_db.hvtb_parse_sfdc_definition_sesssion) WHERE rn = 1) c LEFT JOIN ( SELECT * FROM ( SELECT id, VersionNumber, lastmodifieddate, ROW_NUMBER() OVER ( PARTITION BY id ORDER BY lastmodifieddate DESC ) rn FROM vv_db.hvtb_parse_sfdc_bot_version ) WHERE rn = 1 ) bv ON c.ConversationDefinitionId = bv.Id  LEFT JOIN ( SELECT * FROM ( SELECT SessionId, ConversationEngagementId, lastmodifieddate, ROW_NUMBER() OVER ( PARTITION BY SessionId ORDER BY lastmodifieddate DESC ) rn FROM vv_db.hvtb_parse_sfdc_conv_def_session_engagement ) WHERE rn = 1 ) eng ON c.Id = eng.SessionId  LEFT JOIN ( SELECT * FROM ( SELECT id, caseid, lastmodifieddate, ROW_NUMBER() OVER ( PARTITION BY id ORDER BY lastmodifieddate DESC ) rn FROM vv_db.hvtb_parse_sfdc_livechattranscript ) WHERE rn = 1 ) liv ON eng.ConversationEngagementId = liv.id
+
+ 
+#spark.source.columns Id as Id,ChannelType as ChannelType,ConversationDefinitionId as ConversationDefinitionId,ConversationEngagementId AS src_livechattranscript_id,caseid AS src_case_id,VersionNumber as VersionNumber,HasErrorLogs as HasErrorLogs,IntegrationName as IntegrationName,IntegrationType as IntegrationType,Language as Language,SessionDuration as SessionDuration,SessionEndType as SessionEndType,SessionStartTime as SessionStartTime,SessionStatus as SessionStatus,SessionTransferResult as SessionTransferResult,SessionTransferTargetType as SessionTransferTargetType,SessionTransferType as SessionTransferType,CreatedDate as CreatedDate,LastModifiedDate as LastModifiedDate,IsDeleted as IsDeleted 
+
+spark.source.columns Id,ChannelType,ConversationDefinitionId,src_livechattranscript_id,src_case_id,VersionNumber,HasErrorLogs,IntegrationName,IntegrationType,Language,SessionDuration,SessionEndType,SessionStartTime,SessionStatus,SessionTransferResult,SessionTransferTargetType,SessionTransferType,CreatedDate,LastModifiedDate,IsDeleted
+
+spark.pond.allColumns convdefinition_session_skey as pond_convdefinition_session_skey,id as pond_id,ChannelType as pond_ChannelType,ConversationDefinitionId as pond_ConversationDefinitionId,src_livechattranscript_id as pond_src_livechattranscript_id,src_case_id as pond_src_case_id,VersionNumber as pond_VersionNumber,HasErrorLogs as pond_HasErrorLogs,IntegrationName as pond_IntegrationName,IntegrationType as pond_IntegrationType,Language as pond_Language,SessionDuration as pond_SessionDuration,SessionEndType as pond_SessionEndType,SessionStartTime as pond_SessionStartTime,SessionStatus as pond_SessionStatus,SessionTransferResult as pond_SessionTransferResult,SessionTransferTargetType as pond_SessionTransferTargetType,SessionTransferType as pond_SessionTransferType,CreatedDate as pond_CreatedDate,LastModifiedDate as pond_LastModifiedDate,IsDeleted as pond_IsDeleted,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.surrogate_key.column convdefinition_session_skey
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_crm_conversation_definition_session
+spark.pond.database vv_db
+spark.pond.table hvtb_mart_dim_conversation_definition_session
+spark.source.primaryKeyColumns id
+
+spark.target.final_collist final_view.convdefinition_session_skey,final_view.Id as Id,final_view.ChannelType,final_view.ConversationDefinitionId,final_view.src_livechattranscript_id,final_view.src_case_id,final_view.VersionNumber,final_view.HasErrorLogs,final_view.IntegrationName,final_view.IntegrationType,final_view.Language,final_view.SessionDuration,final_view.SessionEndType,final_view.SessionStartTime,final_view.SessionStatus,final_view.SessionTransferResult,final_view.SessionTransferTargetType,final_view.SessionTransferType,final_view.CreatedDate,final_view.LastModifiedDate,final_view.IsDeleted,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+
+ 
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_conversation_definition_session
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_conversation_definition_session
+
+ 
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname hvtb_nbx_core_crm_conversation_definition_session_tmp
+spark.bq.permtblname hvtb_nbx_core_crm_conversation_definition_session
+spark.bq.viewname crm.hvtb_nbx_core_crm_conversation_definition_session
+
+ 
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore

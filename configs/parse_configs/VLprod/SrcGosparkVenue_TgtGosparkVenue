@@ -1,0 +1,17 @@
+spark.source.table select * from shipdw.hvtb_lnd_go_venue_availability
+spark.target.venue.table shipdw.hvtb_parse_mxp_gospark_venue
+spark.target.venuedetails.table shipdw.hvtb_parse_mxp_gospark_venue_details
+spark.target.mealdata.table shipdw.hvtb_parse_mxp_gospark_venue_mealperiod
+spark.target.Availability_data.table shipdw.hvtb_parse_mxp_gospark_venue_availability
+spark.src.config.id SrcGosparkVenue
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtGosparkVenue
+spark.parent.id SrcGoVenueAvailKafka-TgtGoVenuAvailHive
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.kafka.zookeeper 10.101.220.213:2181
+spark.ship.code VAL
+

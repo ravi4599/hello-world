@@ -1,0 +1,42 @@
+spark.src.config.id SrcHvPostvoyageSailorSurveyRpt
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtKfkPostvoyageSailorSurveyRpt
+spark.parent.id SrcPostvoyageSailorSurveyRpt-TgtPostvoyageSailorSurveyRpt
+
+spark.metadata.con.format jdbc
+spark.metadata.offset.mode Append
+spark.metadata.offset.table shipdw.hbtb_streaming_ingestion_offset
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.ing.type Ingestion
+spark.hadoop.hive.execution.engine mr
+
+spark.target.kafka.batch.size 16384
+spark.target.kafka.topic Shr2Shp_postvoyagesailorsurveyrpt_VL
+
+spark.src.table vv_db.hvtb_nbx_core_postvoyage_sailor_survey_rpt
+spark.isfullrefresh yes
+spark.target.coalesce.value 10
+
+spark.kafkabrokers prodkafka1.gcp.virginvoyages.com:9092,prodkafka2.gcp.virginvoyages.com:9092,prodkafka3.gcp.virginvoyages.com:9092
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.kafka.zookeeper prodkafka1.gcp.virginvoyages.com:2181
+spark.ssl.enabled false
+
+spark.ship.code VL
+
+spark.kafkabrokers prodkafka1.gcp.virginvoyages.com:9092,prodkafka2.gcp.virginvoyages.com:9092,prodkafka3.gcp.virginvoyages.com:9092
+spark.kafka.zookeeper prodkafka1.gcp.virginvoyages.com:2181
+spark.ssl.enabled false
+
+spark.source.sql select * from vv_db.hvtb_nbx_core_postvoyage_sailor_survey_rpt *whereclause*
+
+### Use the below query for full load ###
+
+#spark.source.sql select * from vv_db.hvtb_nbx_core_postvoyage_sailor_survey_rpt where cast(sail_date_from as date) >= '2022-10-01' and ship_name = 'Scarlet Lady'

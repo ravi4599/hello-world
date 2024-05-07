@@ -1,0 +1,15 @@
+spark.source.table select * from shipdw.hvtb_lnd_tbl_mng_sh_meal_count
+spark.target.mealcount.table shipdw.hvtb_parse_tbl_mng_meal_count
+spark.target.dishes.table shipdw.hvtb_parse_tbl_mng_meal_count_dishes
+spark.src.config.id ShSrcMXPMealCountParse
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id ShTgtMXPMealCountParse
+spark.parent.id ShSrcMXPMealCount-ShTgtMXPMealCount
+spark.target.offset.mode overwrite
+spark.target.offset.table SHIP.HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+

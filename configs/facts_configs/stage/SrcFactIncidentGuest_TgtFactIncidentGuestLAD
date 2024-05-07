@@ -1,0 +1,45 @@
+spark.src.config.id SrcFactIncidentGuest
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtFactIncidentGuestLAD
+spark.parent.id SrcVxpDxpIncident-TgtVxpDxpIncident
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+spark.source.sql SELECT incdent.incidentid,vdim.voyage_id as voyage_id, incdent.propertyid as ship_code, NVL(vdim.voyage_skey,-1) as voyage_skey, NVL(incdent_dtl.incident_detail_skey,-1) as incident_detail_skey, NVL(pdim.person_skey,-1) as impacted_guest_person_skey from (SELECT * FROM (SELECT voyagenumber, incidentid,explode(split(impactedguest, ',')) as impacted_guest,propertyid,lastmodifieddate,batchtime,part_date, row_number() over (partition by incidentid,impactedguest order by lastmodifieddate desc)rn FROM shipdw.hvtb_parse_vxp_dxp_incident_lad))incdent LEFT JOIN (SELECT * FROM (SELECT voyage_id, voyage_skey,voyage_number,src_active_flag,src_deleted_flag,upd_dt, row_number() over(partition by voyage_number order by upd_dt desc)rn FROM shipdw.hvtb_mart_dim_voyage WHERE src_active_flag=true AND src_deleted_flag=false)where rn =1)vdim ON incdent.voyagenumber = vdim.voyage_number LEFT JOIN  (SELECT incident_id,incident_detail_skey FROM  shipdw.hvtb_mart_dim_incident_detail)incdent_dtl ON incdent.incidentid = incdent_dtl.incident_id LEFT JOIN (SELECT * FROM (SELECT person_skey,reservationguest_guid,upd_dt, row_number() over (partition by reservationguest_guid order by upd_dt desc)rn FROM shipdw.hvtb_mart_dim_person)where rn=1)pdim ON incdent.impacted_guest=pdim.reservationguest_guid
+
+spark.source.columns voyage_id,ship_code,voyage_skey,incident_detail_skey,impacted_guest_person_skey
+
+spark.pond.allColumns voyage_id as pond_voyage_id,ship_code as pond_ship_code,voyage_skey as pond_voyage_skey,incident_detail_skey as pond_incident_detail_skey ,impacted_guest_person_skey as pond_impacted_guest_person_skey,load_dt as pond_load_dt, upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash,part_dt as pond_part_dt
+
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_incident_guest
+spark.lad.file true
+
+spark.target.final_collist final_view.voyage_id,final_view.ship_code,final_view.voyage_skey,final_view.incident_detail_skey ,final_view.impacted_guest_person_skey ,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_fact_incident_guest
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_incident_guest
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.factType Accu
+spark.source.primaryKeyColumns incident_detail_skey,impacted_guest_person_skey
+
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename incident_guest_fact 
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+
+#----------------------LAD--------------------------------#
+spark.ladjob.flag true
+spark.lad.srctablekey incidentid
+spark.lad.srctable shipdw.hvtb_parse_vxp_dxp_incident
+spark.lad.tgttable shipdw.hvtb_parse_vxp_dxp_incident_lad
+spark.lad.columns incident_detail_skey,impacted_guest_person_skey
+spark.ladremoval.flag true 
+
+#----------------------------------------------------------#

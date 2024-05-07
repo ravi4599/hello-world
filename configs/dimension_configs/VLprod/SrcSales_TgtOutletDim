@@ -1,0 +1,37 @@
+#PROD Cluster info along with hive metadata info
+#constants need for metadata framework
+spark.src.config.id SrcSales
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtOutletDim
+spark.parent.id SrcMxpPosSalesOutlets-TgtMxpPosSalesOutlets
+#Hbase details
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+#Target Postgres database details
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.database devnbx
+#Details needed for framework to perform scd processing and data load into pond and postgres table
+spark.target.ops.table.mode overwrite
+spark.table.type dim
+spark.source.sql select sales_outlet_id as outlet_id,sales_outlet_name as outlet_name,voyageid,batchtime,part_date  from (select sales_outlet_id,sales_outlet_name,voyageid,batchtime,part_date,rn from (select  sales_outlet_id,sales_outlet_name,voyageid,batchtime,part_date ,row_number() over (partition by sales_outlet_id order by rec_created desc ) as rn  from shipdw.hvtb_parse_mxp_pos_sales_outlets sale )a where a.rn=1)outlet *whereclause*
+spark.source.columns outlet_id,outlet_name,voyageid
+spark.pond.allColumns outlet_id as pond_outlet_id,outlet_name as pond_outlet_name,voyageid as pond_voyageid,outlet_skey as pond_outlet_skey,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column outlet_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_outlet
+spark.source.primaryKeyColumns outlet_id
+spark.target.final_collist final_view.outlet_skey as outlet_skey,final_view.outlet_id as outlet_id,final_view.outlet_name as outlet_name,final_view.voyageid as voyage_id,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_outlet
+spark.target.location /data/apps/nbx/mart/hvtb_mart_dim_outlet
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename outlet_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+ 
+spark.ship.code VAL
+

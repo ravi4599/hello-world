@@ -1,0 +1,32 @@
+#source postgres database,table and connection details
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148:5432/ars
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.con.driver org.postgresql.Driver
+spark.src.table public.activitybooking
+#Unique constant for Batchid
+spark.src.config.id SrcVxpArsActivityBooking
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtVxpArsActivityBooking
+#Metadbta Hbase table and connection details
+spark.tgt.env Prod
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.src.table.query "activitybooking"
+spark.condition.column lastmodifieddate
+#target hdfs table location with hive table and column details
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_ars_activitybooking
+spark.target.hive.table shipdw.hvtb_lnd_vxp_ars_activitybooking
+spark.source.columns activitybookingid,bookinglinkid,externalbookingid,activitycode,status,cancellationreasonid,paymentstatus,bookingamountpaid,bookingamountpending,refundamountpending,refundamountpaid,waiverstatus,refundreasonid,notes,addtionalnotes,reservationnumber,activityslotcode,startdatetime,enddatetime,payeepersontypecode,payeepersonid,bookedbypersontypecode,bookedbypersonid,transactionid,isdeleted,addeddate,lastmodifieddate ,addedby,lastmodifiedby,isgifted,isgiftviewed,waiverversion,waivercode,waiversignedtime,cancelledbypersontypecode,cancelledbypersonid,cancellationreason,activitygroupcode,notesid,discountamount,discountunit,discountreason,discountreasonid,voyagenumber,type,bookingconstraint,transactionamount,currencycode,currencyrate,conflictbookingid,ticketprintcount,lastticketprintdatetime,extraguestcount,accesstype,waiversigntimeoffset,datacreateddate,datalastmodifieddate,datalastmodifiedby,contactpersonid,bookinglocation,bookingexpirytime,bookingsource,cancellationsource,cancellationdate
+
+spark.source.query activitybookingid,bookinglinkid,externalbookingid,activitycode,status,cancellationreasonid,paymentstatus,bookingamountpaid,bookingamountpending,refundamountpending,refundamountpaid,waiverstatus,refundreasonid,notes,addtionalnotes,reservationnumber,activityslotcode,startdatetime,enddatetime,payeepersontypecode,payeepersonid,bookedbypersontypecode,bookedbypersonid,transactionid,isdeleted,addeddate ,lastmodifieddate ,addedby,lastmodifiedby,isgifted,isgiftviewed,waiverversion,waivercode,waiversignedtime ,cancelledbypersontypecode,cancelledbypersonid,cancellationreason,activitygroupcode,notesid,discountamount,discountunit,discountreason,discountreasonid,voyagenumber,type,bookingconstraint,transactionamount,currencycode,currencyrate,conflictbookingid,ticketprintcount,lastticketprintdatetime,extraguestcount,accesstype,waiversigntimeoffset,datacreateddate,datalastmodifieddate,datalastmodifiedby,contactpersonid,bookinglocation,bookingexpirytime,bookingsource,cancellationsource,cancellationdate
+
+spark.tz.columns addeddate,lastmodifieddate
+spark.source.zone EST
+#QA cluster details
+spark.ship.code VAL
+

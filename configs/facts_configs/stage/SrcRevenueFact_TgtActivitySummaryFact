@@ -1,0 +1,27 @@
+spark.src.config.id SrcRevenueFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.target.config.id TgtRevenueSummaryFact
+spark.parent.id SrcDiningReservationDetailDim-TgtDiningReservationDetailDim-SC1912065NCM
+spark.same.parent yes
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.ing.type Fact
+
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_ship_activity_revenue_summary_fact
+spark.target.table 
+
+spark.target.temp s3://vv-qa-emr-cluster/data/temp/hvtb_mart_ship_activity_revenue_summary_fact
+spark.target.location s3://vv-qa-emr-cluster/data/apps/nbx/mart/hvtb_mart_ship_activity_revenue_summary_fact
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename 
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+
+

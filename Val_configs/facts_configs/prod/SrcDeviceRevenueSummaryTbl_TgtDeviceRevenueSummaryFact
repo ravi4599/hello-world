@@ -1,0 +1,4 @@
+spark.pond.database=shipdw 
+spark.pond.table=hvtb_temp_fact_ship_overview_device_revenue_summary 
+spark.target.table.loc=/data/apps/nbx/mart/hvtb_temp_fact_ship_overview_device_revenue_summary 
+

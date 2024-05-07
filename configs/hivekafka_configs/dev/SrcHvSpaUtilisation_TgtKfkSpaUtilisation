@@ -1,0 +1,24 @@
+spark.src.config.id SrcHvSpaUtilisation
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtKfkSpaUtilisation
+spark.parent.id SrcSpaUtilisation-TgtSpaUtilisation
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.3.100.222:2181/hbase-unsecure
+
+spark.target.kafka.batch.size 16384
+spark.target.kafka.topic shr2shp-dev-spa.utilisation
+
+spark.src.table shipdw.hvtb_lnd_spa_utilization
+spark.isfullrefresh yes
+spark.target.coalesce.value 10
+
+spark.target.sslkafkabrokers 10.9.100.157:9097,10.9.100.142:9097,10.9.100.37:9097
+spark.target.truststore /etc/script_keystore/dxp.kafka.client.truststore.jks
+spark.target.passvalue SetS@!l2o2o
+spark.target.keystore /etc/script_keystore/dxp.kafka.client.keystore.jks
+
+spark.kafkabrokers 10.9.100.157:9092,10.9.100.142:9092,10.9.100.37:9092
+spark.kafka.zookeeper 10.9.100.142:2181

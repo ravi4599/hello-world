@@ -1,0 +1,18 @@
+spark.source.table select * from shipdw.hvtb_lnd_vxp_housekeeping_housekeeper
+spark.target.table shipdw.hvtb_parse_vxp_housekeeping_housekeeper
+spark.src.config.id SrcParseHouseKeeper
+spark.voyage.id SC2002269NCR 
+spark.tgt.env stage
+spark.target.config.id TgtParseHouseKepper
+spark.parent.id SrcKfkhousekeeper-TgtHvhousekepper-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.kafka.zookeeper 10.7.12.61:2181
+
+
+
+
+
+

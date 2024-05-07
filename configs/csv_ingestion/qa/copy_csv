@@ -1,0 +1,6 @@
+spark.srcfile Entertainment.xlsx
+spark.input.srcpath gs://vv-qa-nbx-cluster/data/temp/csv_input/Entertainment.xlsx
+spark.input.tgtpath gs://vv-qa-nbx-cluster/data/temp/csv_output/
+spark.input.archivepath gs://vv-qa-nbx-cluster/data/temp/csv_archive/
+
+spark.hadoop.hive.execution.engine mr

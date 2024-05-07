@@ -1,0 +1,31 @@
+spark.src.con.format sfdc
+spark.src.salesforce.username vv_datascience_api@virginvoyages.com.prd
+spark.src.salesforce.password NBX022019
+spark.src.salesforce.endpoint https://login.salesforce.com/services/Soap/u/53.0
+spark.src.salesforce.version 53.0
+spark.src.config.id SrcSFDCLead
+spark.voyage.id SC2002269NCR
+
+spark.source.columns Age__c,AnnualRevenue,Citizenship__c,City,Company,ConvertedAccountId,ConvertedContactId,ConvertedDate,ConvertedOpportunityId,Country,CreatedById,CreatedDate,DB_Created_Date_without_Time__c,DB_Lead_Age__c,Description,DOB__c,DoNotCall,DoNotCallReason__c,Email,EmailBouncedDate,EmailBouncedReason,et4ae5__HasOptedOutOfMobile__c,et4ae5__Mobile_Country_Code__c,Facebook__c,Fax,FirstName,Gender__c,Hand_Raiser__c,HasOptedOutOfEmail,HasOptedOutOfFax,Id,Industry,Instagram__c,IsConverted,IsDeleted,IsUnreadByOwner,Known__c,LastActivityDate,LastModifiedById,LastModifiedDate,LastName,LastTransferDate,LeadSource,LegalFirstName__c,LegalLastName__c,MasterRecordId,MobilePhone,Name,NumberOfEmployees,NumberofVisitstoVVcom__c,Optin__c,OtherEmailAddress__c,OtherPhone__c,OwnerId,PartnerAccountId,Phone,PostalCode,PreferredName__c,Rating,Salutation,SnapChat__c,Social_Handle__c,State,Status,Street,SystemModstamp,Title,Twitter__c,Website,WorkPhone__c,CountryCode__c 
+
+spark.src.table.query SELECT Age__c,AnnualRevenue,Citizenship__c,City,Company,ConvertedAccountId,ConvertedContactId,ConvertedDate,ConvertedOpportunityId,Country,CreatedById,CreatedDate,DB_Created_Date_without_Time__c,DB_Lead_Age__c,Description,DOB__c,DoNotCall,DoNotCallReason__c,Email,EmailBouncedDate,EmailBouncedReason,et4ae5__HasOptedOutOfMobile__c,et4ae5__Mobile_Country_Code__c,Facebook__c,Fax,FirstName,Gender__c,Hand_Raiser__c,HasOptedOutOfEmail,HasOptedOutOfFax,Id,Industry,Instagram__c,IsConverted,IsDeleted,IsUnreadByOwner,Known__c,LastActivityDate,LastModifiedById,LastModifiedDate,LastName,LastTransferDate,LeadSource,LegalFirstName__c,LegalLastName__c,MasterRecordId,MobilePhone,Name,NumberOfEmployees,NumberofVisitstoVVcom__c,Optin__c,OtherEmailAddress__c,OtherPhone__c,OwnerId,PartnerAccountId,Phone,PostalCode,PreferredName__c,Rating,Salutation,SnapChat__c,Social_Handle__c,State,Status,Street,SystemModstamp,Title,Twitter__c,Website,WorkPhone__c,CountryCode__c FROM Lead   
+
+ 
+ 
+
+spark.src.condition.column LastModifiedDate
+ 
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtSFDCLead
+spark.target.hive.table vv_db.hvtb_lnd_sfdc_lead
+spark.target.table vv_db.hvtb_lnd_sfdc_lead
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr
+

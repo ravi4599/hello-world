@@ -1,0 +1,39 @@
+spark.src.config.id SrcVxpDiningTableDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.target.config.id TgtVxpDiningTableDim
+spark.parent.id SrcVxpTbleMgmSettingsTable-TgtVxpTbleMgmSettingsTable
+spark.frameworkEnv shore
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver
+
+#spark.source.sql select NVL(A.voyageid, -1) as voyage_id, A.public_id as dining_table_id, A.name as table_number, A.size as table_size, A.addeddate as table_created_utc, A.BatchTime, A.Part_Date from (select * from (select *, row_number() over (partition by public_id order by lastmodifieddate desc) rn  from shipdw.hvtb_parse_vxp_table_management_settings_table) where rn = 1) A where
+
+spark.source.sql select NVL(A.voyageid, -1) as voyage_id, A.public_id as dining_table_id, A.name as table_number, A.size as table_size, A.addeddate as table_created_utc,A.is_multiparty as is_multiparty,tt.addedby as system_clearing_table,ss.number as section_number, A.BatchTime, A.Part_Date from (select * from (select voyageid,public_id,name,size,addeddate,is_multiparty,BatchTime,Part_Date, row_number() over (partition by public_id order by lastmodifieddate desc) rn  from shipdw.hvtb_parse_vxp_table_management_settings_table) where rn = 1) A left join (select * from(select addedby,table_id,row_number() over(partition by table_id order by lastmodifieddate desc)rn from shipdw.hvtb_parse_vxp_table_management_tablestates_tablestate) where rn = 1)tt on tt.table_id = A.public_id left join (select * from (select table_id,station_id,row_number() over(partition by table_id order by lastmodifieddate desc)rn from shipdw.hvtb_parse_vxp_table_management_settings_stationTable) where rn =1)st on st.table_id = A.public_id left join (select * from(select public_id,number,row_number() over(partition by public_id order by lastmodifieddate desc)rn from shipdw.hvtb_parse_vxp_table_management_settings_station) where rn =1)ss on ss.public_id = st.station_id where
+
+spark.source.columns voyage_id,dining_table_id,table_number,table_size,table_created_utc,is_multiparty,system_clearing_table,section_number
+spark.pond.allColumns dining_table_skey as pond_dining_table_skey,voyage_id as pond_voyage_id,dining_table_id as pond_dining_table_id,table_number as pond_table_number,table_size as pond_table_size,table_created_utc as pond_table_created_utc,is_multiparty as pond_is_multiparty,system_clearing_table as pond_system_clearing_table,section_number as pond_section_number,load_dt as pond_load_dt,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+spark.surrogate_key.column dining_table_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_dining_table
+spark.target.schema shipdw
+spark.target.table dining_table_dim
+spark.source.primaryKeyColumns dining_table_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+spark.target.final_collist dining_table_skey,final_view.voyage_id,final_view.dining_table_id,final_view.table_number,final_view.table_size,final_view.table_created_utc,final_view.is_multiparty,final_view.system_clearing_table,final_view.section_number,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_dining_table
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_dining_table
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname dining_table_dim_tmp
+spark.bq.permtblname dining_table_dim
+spark.bq.viewname shipdw.dining_table_dim
+spark.hadoop.hive.execution.engine mr

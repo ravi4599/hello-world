@@ -1,0 +1,47 @@
+#------META   DATA CONFIG-----#
+spark.src.config.id SrcFactShipFolio
+spark.voyage.id SC2002269NCR 
+spark.tgt.env Stage
+spark.target.config.id TgtFactShipFolio
+spark.parent.id SrcMxpPersonAccountItems-TgtMxpPersonAccountItems
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.ing.type Fact
+#-------------------------#
+spark.source.sql SELECT person_account_detail_id,voyage_id, folio_detail_skey, folio_item_skey, person_skey, ship_code, voyage_skey, itinerary_skey, sale_date_skey, sale_time_skey, booking_reference_number, sale_quantity, debit_amount, credit_amount, discount_amount, NVL((((debit_amount-credit_amount)*sale_quantity)-discount_amount),0) as total_collected_sales_amount,batchtime,part_date FROM (SELECT accnt_item.person_account_detail_id as person_account_detail_id, accnt_item.voyageid as voyage_id,NVL(folio_detail_dim.folio_detail_skey, -1) as folio_detail_skey, NVL(dim_voyage.voyage_skey,-1) as voyage_skey, dim_voyage.ship_code as ship_code,NVL(folio_item.folio_item_skey, -1)as folio_item_skey, NVL(person_skey, -1) as person_skey, NVL(itinerary.itinerary_skey, -1) as itinerary_skey, NVL(dd.date_id, -1) as sale_date_skey, NVL(time_skey, -1) as sale_time_skey,accnt_item.external_reference as booking_reference_number, accnt_item.quantity as sale_quantity, NVL(accnt_item.credit_amount, 0) as credit_amount, NVL(accnt_item.debit_amount, 0) as debit_amount, NVL(accnt_item.discount_amount, 0) as discount_amount, accnt_item.batchtime as batchtime,accnt_item.part_date as part_date from (select * from (select voyageid,external_reference,quantity,credit_amount,debit_amount,discount_amount,org_unit_quick_code,person_account_detail_id,period_id,person_account_id,business_day,last_changed,batchtime,part_date,row_number() over (partition by person_account_detail_id order by last_changed desc) rn from shipdw.hvtb_parse_mxp_person_account_items *whereclause*)acc_item_tb where acc_item_tb.rn=1) accnt_item inner join shipdw.hvtb_mart_lkp_revenue_category_rel revenue_rel on ( category_type='FOLIO_QUICKCODE'and accnt_item.org_unit_quick_code==revenue_rel.category_value) left join (SELECT folio_detail_skey,folio_detail_id,src_deleted_flag FROM shipdw.hvtb_mart_dim_folio_detail WHERE src_deleted_flag=false) folio_detail_dim on ( accnt_item.person_account_detail_id == folio_detail_dim.folio_detail_id) left join shipdw.hvtb_mart_dim_folio_item folio_item on (accnt_item.org_unit_quick_code = folio_item.folio_item_quickcode) left join (select cruise_id,cruise_number from (select cruise_id,cruise_number,row_number() over (partition by cruise_id order by last_changed desc) rn from shipdw.hvtb_parse_mxp_cruise)cruise_tb where cruise_tb.rn=1) cruise on accnt_item.period_id=cruise.cruise_id left join (select person_account_id,person_id from (select person_account_id,person_id,row_number() over (partition by person_account_id order by last_changed desc) rn from shipdw.hvtb_parse_mxp_person_account)acc_tb where acc_tb.rn=1)account_tb on accnt_item.person_account_id=account_tb.person_account_id left join (select person_id from (select person_id,row_number() over (partition by person_id order by last_changed desc) rn from shipdw.hvtb_parse_mxp_persons)person_tb where person_tb.rn=1)persons on account_tb.person_id=persons.person_id left join (select person_booking_id,person_id,cruise_id,rec_deleted from(select person_booking_id,person_id,cruise_id,rec_deleted,row_number() over (partition by person_booking_id order by last_changed desc) rn from shipdw.hvtb_parse_mxp_person_booking)person_boking_tb where person_boking_tb.rn=1) person_booking on (person_booking.person_id=persons.person_id and cruise.cruise_id=person_booking.cruise_id and person_booking.rec_deleted=false) left join (select person_skey,booking_id,person_id,person_type from shipdw.hvtb_mart_dim_person) person_dim on (person_booking.person_booking_id==person_dim.booking_id and persons.person_id = person_dim.person_id) left join shipdw.hvtb_mart_dim_voyage dim_voyage on(dim_voyage.src_active_flag=TRUE and dim_voyage.src_deleted_flag=FALSE and cruise.cruise_number == dim_voyage.voyage_number) left join shipdw.hvtb_mart_dim_date dd on date(accnt_item.business_day) = dd.`date` left join shipdw.hvtb_nbx_core_time_dim dt on dt.second_of_day = hour(accnt_item.business_day)* 60 * 60 + minute(accnt_item.business_day)* 60 + second(accnt_item.business_day) left join (select src_active_flag,src_deleted_flag,voyage_number,itinerary_day_date,itinerary_skey from shipdw.hvtb_mart_dim_itinerary) itinerary on (itinerary.src_active_flag=True and itinerary.src_deleted_flag=False and itinerary.voyage_number == cruise.cruise_number and date(accnt_item.business_day) == date(itinerary.itinerary_day_date)))Folio_Fact
+
+spark.source.columns voyage_id,folio_detail_skey,folio_item_skey,person_skey,ship_code,voyage_skey,itinerary_skey,sale_date_skey,sale_time_skey,booking_reference_number,sale_quantity,debit_amount,credit_amount,discount_amount,total_collected_sales_amount
+
+spark.pond.allColumns voyage_id as pond_voyage_id,folio_detail_skey as pond_folio_detail_skey,folio_item_skey as pond_folio_item_skey,person_skey as pond_person_skey,ship_code as pond_ship_code,voyage_skey as pond_voyage_skey,itinerary_skey as pond_itinerary_skey,sale_date_skey as pond_sale_date_skey,sale_time_skey as pond_sale_time_skey,booking_reference_number as pond_booking_reference_number,sale_quantity as pond_sale_quantity,debit_amount as pond_debit_amount,credit_amount as pond_credit_amount,discount_amount as pond_discount_amount,total_collected_sales_amount as pond_total_collected_sales_amount,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_ship_folio
+spark.source.primaryKeyColumns  folio_detail_skey,person_skey
+spark.table.type   fact	
+spark.target.schema   hive_schema_stg
+spark.target.table ship_folio_fact
+
+spark.target.final_collist final_view.voyage_id,final_view.folio_detail_skey,final_view.folio_item_skey,final_view.person_skey,final_view.ship_code,final_view.voyage_skey,final_view.itinerary_skey,final_view.sale_date_skey,final_view.sale_time_skey,final_view.booking_reference_number,final_view.sale_quantity,final_view.debit_amount,final_view.credit_amount,final_view.discount_amount,final_view.total_collected_sales_amount,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_fact_ship_folio
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_ship_folio
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename ship_folio_fact
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.factType Accu
+
+#----------------------LAD--------------------------------#
+spark.ladjob.flag true
+spark.lad.srctablekey person_account_detail_id
+spark.lad.srctable shipdw.hvtb_parse_mxp_person_account_items
+spark.lad.tgttable shipdw.hvtb_parse_mxp_person_account_items_folio_lad
+spark.lad.columns folio_detail_skey,person_skey,voyage_skey,sale_date_skey,sale_time_skey
+spark.ladremoval.flag false 
+
+#----------------------------------------------------------#

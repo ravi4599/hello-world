@@ -1,0 +1,35 @@
+spark.src.config.id SrcSeawareTransferReqLkp
+spark.voyage.id	SC2002269NCR
+spark.tgt.env Qa
+spark.hadoop.hive.execution.engine mr
+spark.api.env Qa
+spark.target.config.id TgtSeawareTransferReqLkp
+spark.parent.id SrcTransferReqIng-TgtcTransferReqIng   
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.source.sql  select poin.point_of_interest,poin.address as poi_address,poin.city as poi_city,poin.zip as poi_zip,poin.batchtime as batchtime,poin.part_date as part_date from (select * from (select *, row_number()over(partition by point_of_interest order by batchtime desc) as rn from vv_db.hvtb_parse_point_of_interest)poi where poi.rn=1) poin 
+
+spark.source.columns point_of_interest,poi_address,poi_city,poi_zip
+spark.pond.allColumns transfer_request_poi_id as pond_transfer_request_poi_id,point_of_interest as pond_point_of_interest,poi_address as pond_poi_address, poi_city as pond_poi_city,poi_zip as pond_poi_zip,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column transfer_request_poi_id
+spark.pond.database vv_db
+spark.pond.table hvtb_mart_lkp_sw_transfer_request
+spark.source.primaryKeyColumns point_of_interest
+spark.target.final_collist final_view.transfer_request_poi_id,final_view.point_of_interest,final_view.poi_address,final_view.poi_city,final_view.poi_zip,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp gs://vv-cert-nbx-cluster/data/mart/seaware/temp/hvtb_mart_lkp_sw_transfer_request
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/seaware/hvtb_mart_lkp_sw_transfer_request
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname SEWARE_TRANSFER_REQUEST_POI_LKP_tmp
+spark.bq.permtblname SEWARE_TRANSFER_REQUEST_POI_LKP
+spark.bq.viewname seaware.SEWARE_TRANSFER_REQUEST_POI_LKP
+
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore

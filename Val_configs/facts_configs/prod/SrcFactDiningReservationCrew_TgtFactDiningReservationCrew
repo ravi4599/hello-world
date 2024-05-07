@@ -1,0 +1,44 @@
+#------META DATA CONFIG-----#
+spark.src.config.id SrcFactDiningReservationCrew
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtFactDiningReservationCrew
+spark.parent.id SrcMxpReservations-TgtMxpReservations
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ing.type Fact
+#-------------------------# 
+#spark.source.sql select mxp_res.reservation_id AS reservation_id,mxp_res.voyageid as voyage_id, NVL(vdim.voyage_skey,-1) as voyage_skey, NVL(detail_dim.dining_reservation_detail_skey, -1) as dining_reservation_detail_skey,	NVL(pdim.person_skey,-1) as served_by_skey, mxp_res.batchtime as batchtime, mxp_res.Part_Date as part_date from ( select * from ( select reservation_id, last_changed, guid, table_by_meal_id, voyageid, batchtime, part_date, row_number() over (partition by guid  order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_reservations) where rn = 1) mxp_res left join shipdw.hvtb_mart_dim_dining_reservation_detail detail_dim on lower(mxp_res.guid) = detail_dim.dining_reservation_id left join ( select * from ( select voyage_id, public_id, lastmodifieddate, row_number() over(partition by public_id order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_table_management_reservation) where rn = 1) reservations on reservations.public_id = lower(mxp_res.guid) left join ( select * from ( select public_id, code, lastmodifieddate, row_number() over(partition by public_id order by lastmodifieddate desc)rn from shipdw.hvtb_parse_vxp_table_management_voyages) where rn = 1)voyages on reservations.voyage_id = voyages.public_id left join ( select voyage_skey, voyage_number, voyage_id, voyage_start_date, voyage_end_date, ship_code from shipdw.hvtb_mart_dim_voyage where src_active_flag = true and src_deleted_flag = false) vdim on vdim.voyage_number = voyages.code left join ( select * from ( select table_by_meal_id, person_work_schedule_id, last_changed, row_number() over(partition by person_work_schedule_id,table_by_meal_id order by last_changed desc) rn from shipdw.hvtb_parse_mxp_person_schedule_tables) where rn = 1 ) pst on mxp_res.table_by_meal_id = pst.table_by_meal_id left join ( select * from ( select person_work_schedule_id, person_id, last_changed, row_number() over (partition by person_work_schedule_id order by last_changed desc ) rn from shipdw.hvtb_parse_mxp_person_work_schedules) where rn = 1) pws on pst.person_work_schedule_id = pws.person_work_schedule_id left join ( select * from ( select person_skey, person_id, reservationguest_guid, upd_dt, row_number() over (partition by person_id order by upd_dt desc)rn from shipdw.hvtb_mart_dim_person ) where rn = 1) pdim on cast(pws.person_id as string) = pdim.person_id *whereclause*
+spark.source.sql select * from (select mxp_res.reservation_id AS reservation_id,mxp_res.voyageid as voyage_id,NVL(vdim.voyage_skey,-1) as voyage_skey,NVL(detail_dim.dining_reservation_detail_skey,-1) as dining_reservation_detail_skey,	NVL(pdim.person_skey,-1) as served_by_skey,mxp_res.batchtime as batchtime,mxp_res.Part_Date as part_date from(select * from ( select reservation_id, last_changed, guid, table_by_meal_id, voyageid, batchtime, part_date, row_number() over (partition by guid order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_reservations) where rn = 1) mxp_res left join shipdw.hvtb_mart_dim_dining_reservation_detail detail_dim on lower(mxp_res.guid) = detail_dim.dining_reservation_id left join (select * from ( select voyage_id, public_id, lastmodifieddate, row_number() over(partition by public_id order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_table_management_reservation) where rn = 1) reservations on reservations.public_id = lower(mxp_res.guid) left join (select * from ( select public_id, code, lastmodifieddate, row_number() over(partition by public_id order by lastmodifieddate desc)rn from shipdw.hvtb_parse_vxp_table_management_voyages) where rn = 1) voyages on reservations.voyage_id = voyages.public_id left join (select voyage_skey, voyage_number, voyage_id, voyage_start_date, voyage_end_date, ship_code from shipdw.hvtb_mart_dim_voyagewhere src_active_flag = true and src_deleted_flag = false) vdim on vdim.voyage_number = voyages.code left join (select * from ( select table_by_meal_id, person_work_schedule_id, last_changed, row_number() over(partition by person_work_schedule_id,table_by_meal_id order by last_changed desc) rn from shipdw.hvtb_parse_mxp_person_schedule_tables) where rn = 1 ) pst on mxp_res.table_by_meal_id = pst.table_by_meal_id left join (select * from ( select person_work_schedule_id, person_id, last_changed, row_number() over (partition by person_work_schedule_id order by last_changed desc ) rn from shipdw.hvtb_parse_mxp_person_work_schedules) where rn = 1) pws on pst.person_work_schedule_id = pws.person_work_schedule_id left join (select * from ( select person_skey, person_id, reservationguest_guid, upd_dt, row_number() over (partition by person_id order by upd_dt desc)rn from shipdw.hvtb_mart_dim_person ) where rn = 1) pdim on cast(pws.person_id as string) = pdim.person_id) crew_fact *whereclause*
+spark.source.columns voyage_id,voyage_skey,dining_reservation_detail_skey,served_by_skey
+spark.pond.allColumns voyage_id as pond_voyage_id,voyage_skey as pond_voyage_skey,dining_reservation_detail_skey as pond_dining_reservation_detail_skey,served_by_skey as pond_served_by_skey,load_dt as pond_load_dt, upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash,part_dt as pond_part_dt
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_dining_reservation_crew
+spark.source.primaryKeyColumns voyage_skey,dining_reservation_detail_skey,served_by_skey
+spark.table.type fact
+spark.target.schema hive_schema_stg
+spark.target.table dining_reservation_crew_fact
+spark.lad.file false
+spark.target.final_collist final_view.voyage_id as voyage_id,final_view.voyage_skey as voyage_skey,final_view.dining_reservation_detail_skey as dining_reservation_detail_skey,final_view.served_by_skey as served_by_skey,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash,final_view.part_dt as part_dt
+spark.target.temp /data/apps/nbx/hive/temp/hvtb_mart_fact_dining_reservation_crew
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_fact_dining_reservation_crew
+spark.postgresql.database prodnbx
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename dining_reservation_crew_fact
+spark.tableType FACT
+spark.frameworkEnv ship
+spark.factType Accu
+#----------------------LAD--------------------------------# 
+spark.ladjob.flag true
+spark.lad.srctablekey reservation_id
+spark.lad.srctable shipdw.hvtb_parse_mxp_reservations
+spark.lad.tgttable shipdw.hvtb_parse_mxp_vvirgin_reservations_rescrew_lad
+spark.lad.columns voyage_skey,dining_reservation_detail_skey,served_by_skey
+spark.ladremoval.flag false
+#----------------------------------------------------------# 
+

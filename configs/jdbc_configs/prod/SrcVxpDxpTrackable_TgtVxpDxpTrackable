@@ -1,0 +1,29 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://vxpdb.gcp.virginvoyages.com/dxpcore
+spark.src.user pgreadaccessuser
+spark.src.password mvsZ72sVq75KARjLhK9D
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVxpDxpTrackable
+spark.tgt.env Prod
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpDxpTrackable
+spark.target.location gs://vv-prod-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_trackable
+spark.target.hive.table vv_db.hvtb_lnd_vxp_trackable
+spark.target.table vv_db.hvtb_lnd_vxp_trackable
+spark.src.table.query trackable
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.condition.column lastmodifieddate
+spark.source.columns trackableid,trackablelotid,rfid,companyname,uuid,major,minor,doorlockid,lastallocateddate,isdamaged,islost,addeddate,addedby,lastmodifieddate,lastmodifiedby,isdeleted,trackabletypeid,beaconid,statuscode
+spark.source.query trackableid,trackablelotid,rfid,companyname,uuid,major,minor,doorlockid,lastallocateddate,isdamaged,islost,addeddate,addedby,lastmodifieddate,lastmodifiedby,isdeleted,trackabletypeid,beaconid,statuscode
+#spark.tz.columns property to change all the timestampz columns to UTC
+spark.tz.columns addeddate,lastmodifieddate
+spark.source.zone EST
+spark.ship.code SHORE
+spark.hadoop.hive.execution.engine mr
+

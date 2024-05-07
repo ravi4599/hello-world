@@ -1,0 +1,21 @@
+
+spark.src.config.id SrcParseSFDCLiveChatTranscript
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtParseSFDCLiveChatTranscript
+spark.src.condition.column LastModifiedDate
+spark.src.partitionbyId.columns Id
+
+spark.source.table vv_db.hvtb_lnd_sfdc_livechattranscript
+spark.target.table vv_db.hvtb_parse_sfdc_livechattranscript
+
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr
+

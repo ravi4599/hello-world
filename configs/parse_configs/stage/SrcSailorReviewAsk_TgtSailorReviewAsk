@@ -1,0 +1,19 @@
+spark.source.table select * from shipdw.hvtb_lnd_onboard_sailor_reviewask
+spark.target.question.table shipdw.hvtb_parse_sailor_review_question
+spark.target.ask.table shipdw.hvtb_parse_sailor_review_ask
+
+spark.src.config.id SrcSailorReviewAsk
+spark.voyage.id  SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtSailorReviewAsk
+spark.parent.id SrcReviewSailorAsk-TgtReviewSailorAsk
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite 
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.4.100.154/hbase-unsecure
+spark.oauthurl https://Stage.virginvoyages.com/svc/identityaccessmanagement-service/oauth/token?grant_type=client_credentials
+spark.findByTypeAndTargetType https://Stage.virginvoyages.com/svc/xref-api/v1/references/search/findByTypeAndTargetType �
+spark.findalltypes https://Stage.virginvoyages.com/svc/xref-api/v1/types?page=-1&size=-1
+spark.username a02f3532-86ea-4c59-bc0a-ac7b47a73a37
+spark.password vAr6nd87KWQbrE9S
+spark.authorization Basic YTAyZjM1MzItODZlYS00YzU5LWJjMGEtYWM3YjQ3YTczYTM3OnZBcjZuZDg3S1dRYnJFOVM=

@@ -1,0 +1,46 @@
+spark.src.config.id SrcSeawareVoyageRel
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtSeawareVoyageRel
+spark.parent.id SrcSeawareTrwHeader_TgtSeawareTrwHeader
+spark.table.type dim
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+ 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+ 
+spark.source.sql SELECT vw_header_id, src_res_id, header_is_matched, vw_type, res_is_matched, is_main, batchtime, part_date, rec_start_dttm, rec_end_dttm FROM ( SELECT b.vw_header_id AS vw_header_id, b.entity_id AS src_res_id, a.is_matched AS header_is_matched, a.trw_type AS vw_type, b.is_matched AS res_is_matched, b.is_main AS is_main, a.batchtime AS batchtime, a.part_date AS part_date, current_timestamp AS rec_start_dttm, if(a.op='d',current_timestamp() - INTERVAL 1 SECOND,to_timestamp('9999-12-31')) AS rec_end_dttm FROM ( SELECT * FROM ( SELECT trw_header_id as vw_header_id, is_matched, trw_type, part_date, batchtime,op, ROW_NUMBER() OVER (PARTITION BY trw_header_id ORDER BY ts_ms DESC ) rn FROM vv_db.hvtb_parse_sw_rpl_trw_header) WHERE rn = 1 ) a LEFT JOIN ( SELECT * FROM ( SELECT entity_id, trw_header_id as vw_header_id, is_matched, is_main, entity_type, part_date, batchtime, ROW_NUMBER() OVER (PARTITION BY trw_header_id,entity_id ORDER BY ts_ms DESC ) rn FROM vv_db.hvtb_nbx_parse_sw_rpl_trw_detail ) WHERE rn = 1 ) b ON a.vw_header_id = b.vw_header_id AND b.entity_type='RES')a *whereclause*
+ 
+spark.source.columns vw_header_id,src_res_id,vw_type,header_is_matched,res_is_matched,is_main,batchtime
+
+spark.pond.allColumns voyage_with_rel_id as pond_voyage_with_rel_id,vw_header_id as pond_vw_header_id,src_res_id as pond_src_res_id,vw_type as pond_vw_type ,header_is_matched as pond_header_is_matched , res_is_matched as pond_res_is_matched,is_main as pond_is_main,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+ 
+spark.surrogate_key.column  voyage_with_rel_id
+spark.pond.database	vv_db
+ 
+spark.pond.table hvtb_mart_dim_sw_voyage_with_rel
+spark.target.schema	vv_db
+ 
+spark.source.primaryKeyColumns vw_header_id,src_res_id
+
+spark.target.final_collist final_view.voyage_with_rel_id as voyage_with_rel_id, final_view.vw_header_id as vw_header_id,final_view.src_res_id as src_res_id,final_view.vw_type as vw_type ,final_view.header_is_matched as header_is_matched , final_view.res_is_matched as res_is_matched,final_view.is_main as is_main, final_view.rec_start_dttm as rec_start_dttm,final_view.rec_end_dttm as rec_end_dttm,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash
+
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_nbx_core_sw_voyage_with_rel
+
+spark.target.location gs://vv-prod-nbx-cluster/data/core/seaware/hvtb_nbx_core_sw_voyage_with_rel 
+
+ 
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_voyage_with_rel_tmp
+spark.bq.permtblname seaware_voyage_with_rel
+spark.bq.viewname seaware.seaware_voyage_with_rel
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr

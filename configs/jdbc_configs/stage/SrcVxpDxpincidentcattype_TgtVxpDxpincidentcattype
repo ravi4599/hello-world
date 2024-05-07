@@ -1,0 +1,22 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://vv-stage-vxp-pgdb.cz4e2a1fysom.us-east-1.rds.amazonaws.com/dxpcore
+spark.src.user pgreadaccessuser
+spark.src.password mvsZ72sVq75KARjLhK9D
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVxpDxpincidentcattype
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpDxpincidentcattype
+spark.target.location s3://vv-staging-emr-cluster/data/landing/hvtb_lnd_vxp_dxp_incidentcategorytype
+spark.target.hive.table shipdw.hvtb_lnd_vxp_dxp_incidentcategorytype
+spark.target.table shipdw.hvtb_lnd_vxp_dxp_incidentcategorytype
+spark.src.table.query "incidentcategorytype"
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.condition.column lastmodifieddate
+spark.source.columns incidentcategorytypeid,code,namekey,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby
+spark.source.query incidentcategorytypeid,code,namekey,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby
+spark.ship.code SHORE
+

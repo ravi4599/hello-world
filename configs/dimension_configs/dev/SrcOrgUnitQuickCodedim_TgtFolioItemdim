@@ -1,0 +1,42 @@
+spark.src.config.id SrcOrgUnitQuickCode
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtFolioItem
+spark.parent.id SrcMxpOrgUnitQuickCodes-TgtMxpOrgUnitQuickCodes
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+
+spark.source.sql select orgunitquickcodes.voyageid as voyage_id, orgunitquickcodes.org_unit_quick_code_id as folio_item_quickcode_id, orgunitquickcodes.org_unit_quick_code as folio_item_quickcode, orgunitquickcodes.ORG_UNIT_QUICK_NAME as quickcode_name, orgunitquickcodes.BUSINESS_UNIT_ID, orgunitquickcodes.COST_CENTER_ID, orgunitquickcodes.ACCOUNT_ID, orgunitquickcodes.CREATED_AT_ID, orgunitquickcodes.CREATED_BY_ID, orgunitquickcodes.CREATED, orgunitquickcodes.LAST_CHANGED, orgunitquickcodes.GUID, orgunitquickcodes.ORG_UNIT_QUICK_TYPE, orgunitquickcodes.ACTIVE, orgunitquickcodes.ORG_STRUCTURE_ID, orgunitquickcodes.SETTLEMENT_REFERENCE_ID, orgunitquickcodes.POS_INTERFACE_CODE, orgunitquickcodes.ORG_UNIT_QUICK_CODE_SALES_PRICE, orgunitquickcodes.ALLOW_REFUND, orgunitquickcodes.NON_REFUNDABLE, org_units.org_unit_abbreviation as ship_code, orgunitquickcodes.product_code_id, lkp_product_code.DISPLAY_CODE as product_code_name, orgunitquickcodes.rec_deleted as src_deleted_flag, orgunitquickcodes.batchtime, orgunitquickcodes.Part_Date  from ( select * from ( select *, row_number() over (partition by org_unit_quick_code_id,org_unit_quick_code,org_unit_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_orgunitquickcodes) where rn = 1) orgunitquickcodes left join ( select * from ( select org_unit_id, org_unit_abbreviation, row_number() over (partition by org_unit_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_org_units) where rn = 1)org_units on orgunitquickcodes.org_unit_id = org_units.org_unit_id left join (select Lookup_Items.LOOKUP_ITEM_ID, Lookup_Items.LOOKUP_ITEM_NAME,  Lookup_Items.DISPLAY_CODE,Lookup_Sub_Categories.LOOKUP_SUB_CATEGORY_ID,Lookup_Sub_Categories.LOOKUP_SUB_CATEGORY_NAME from ( select * from ( select lookup_item_id, LOOKUP_ITEM_NAME, display_code, lookup_sub_category_id, rec_deleted, active, row_number() over (partition by lookup_item_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_lookup_items ) where rn = 1) Lookup_Items join ( select * from ( select *, row_number() over (partition by lookup_sub_category_id order by last_changed) as rn from shipdw.hvtb_parse_mxp_lookup_sub_categories) where rn = 1)Lookup_Sub_Categories on Lookup_Items.lookup_sub_category_id = Lookup_Sub_Categories.lookup_sub_category_id and Lookup_Sub_Categories.lookup_sub_category_name in ('Product Codes') where Lookup_Items.rec_deleted = false and Lookup_Items.active = true) lkp_product_code on orgunitquickcodes.PRODUCT_CODE_ID = lkp_product_code.LOOKUP_ITEM_ID where  orgunitquickcodes.org_unit_quick_code_id is not null order by ship_code,org_unit_quick_code_id
+
+
+spark.source.columns voyage_id,folio_item_quickcode_id,folio_item_quickcode,ship_code,quickcode_name,product_code_name,product_code_id,business_unit_id,cost_center_id,account_id,created_at_id,created_by_id,created,last_changed,guid,org_unit_quick_type,active,org_structure_id,settlement_reference_id,pos_interface_code,org_unit_quick_code_sales_price,allow_refund,non_refundable,src_deleted_flag
+
+spark.pond.allColumns voyage_id as pond_voyage_id, folio_item_skey AS pond_folio_item_skey,folio_item_quickcode_id as pond_folio_item_quickcode_id, folio_item_quickcode AS pond_folio_item_quickcode,ship_code AS pond_ship_code,quickcode_name AS pond_quickcode_name,product_code_name AS pond_product_code_name,product_code_id as pond_product_code_id,business_unit_id as pond_business_unit_id,cost_center_id as pond_cost_center_id,account_id as pond_account_id,created_at_id as pond_created_at_id,created_by_id as pond_created_by_id,created as pond_created,last_changed as pond_last_changed,guid as pond_guid,org_unit_quick_type as pond_org_unit_quick_type,active as pond_active,org_structure_id as pond_org_structure_id,settlement_reference_id as pond_settlement_reference_id,pos_interface_code as pond_pos_interface_code,org_unit_quick_code_sales_price as pond_org_unit_quick_code_sales_price,allow_refund as pond_allow_refund,non_refundable as pond_non_refundable,src_deleted_flag AS pond_src_deleted_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+
+spark.surrogate_key.column folio_item_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_folio_item
+spark.target.schema shipdw
+spark.target.table folio_item_dim
+
+spark.source.primaryKeyColumns folio_item_quickcode_id,folio_item_quickcode
+spark.target.final_collist final_view.voyage_id, folio_item_skey,final_view.folio_item_quickcode_id,final_view.folio_item_quickcode, final_view.ship_code, final_view.quickcode_name, final_view.product_code_name, final_view.product_code_id,final_view.business_unit_id,final_view.cost_center_id,final_view.account_id,final_view.created_at_id,final_view.created_by_id,final_view.created,final_view.last_changed,guid,final_view.org_unit_quick_type,final_view.active,final_view.org_structure_id,final_view.settlement_reference_id,final_view.pos_interface_code,final_view.org_unit_quick_code_sales_price,final_view.allow_refund,final_view.non_refundable,final_view.src_deleted_flag,load_dt,upd_dt,primaryhash,md5_hash
+
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_dim_folio_item
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_dim_folio_item
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname folio_item_dim_tmp
+spark.bq.permtblname folio_item_dim
+spark.bq.viewname shipdw.folio_item_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

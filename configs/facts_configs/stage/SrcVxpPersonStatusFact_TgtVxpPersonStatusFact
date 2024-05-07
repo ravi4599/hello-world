@@ -1,0 +1,45 @@
+spark.src.config.id SrcVxpPersonStatusFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtVxpPersonStatusFact
+spark.parent.id SrcVxpGuestmoderation-TgtVxpGuestmoderation
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+spark.table.type fact
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_person_status
+spark.target.schema shipdw
+
+
+
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_fact_person_status
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_person_status
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename person_status_fact
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.factType Accu
+
+
+spark.source.sql   select * , CASE WHEN rts_done_status = true and UPPER(moci_prevalidstatuscode)= 'APPROVED' Then 'Green' WHEN rts_done_status = true and UPPER(moci_prevalidstatuscode)= 'PENDING' Then 'Yellow' WHEN rts_done_status = true and UPPER(moci_prevalidstatuscode)= 'REJECTED' Then 'Red' WHEN rts_done_status = false Then 'Red' end  as aci_status_color from(select reserve.voyageid as voyage_id,NVL(dim_person.person_skey,-1)as person_skey, NVL(dim_voyage.voyage_skey,-1)as voyage_skey,NVL(dim_voyage.ship_code,'N/A')as ship_code,guestdetail.status as moderation_status  ,guestdetail.addeddate as moderation_addeddate,guestdetail.verificationstatuscode as verificationstatuscode,guestdetail.verificationstatuschangedate as verificationstatuschangedate,prevalidatestatuscode as moci_prevalidstatuscode ,case when upper(trim(personstatusrts.statustypecode)) = 'OC' and upper(personstatusrts.status) = 'COMPLETED' and personstatusrts.isdeleted = false then true  	ELSE false end as rts_done_status, 	 personstatusbs.status  as boarding_status,personstatustc.status  as terminal_checkin_status, 	case when upper(trim(personstatustc.statustypecode)) = 'TC' and upper(personstatustc.status) = 'COMPLETED' Then 'Green/Complete' 	when upper(trim(personstatustc.statustypecode)) = 'TC' and upper(personstatustc.status) = 'NOT_COMPLETED' Then 'Yellow/Pending'     else  'Red/Pending' end as terminal_checkin_status_color ,part_date,batchtime from  ( select * from ( select voyagenumber,reservationnumber,reservationid,voyageid,row_number() over (partition by reservationid order by lastmodifieddate desc) as rn from vv_db.hvtb_parse_vxp_reservation)rese where rese.rn=1 ) reserve left join ( select * from ( select reservationguestid,reservationid,row_number() over (partition by reservationguestid order by lastmodifieddate desc) as rn from vv_db.hvtb_parse_vxp_reservationguest)guest_reserve where guest_reserve.rn=1 ) reserv_guest on (upper(reserve.reservationid)=upper(reserv_guest.reservationid))  left join shipdw.hvtb_mart_dim_voyage dim_voyage on(reserve.voyagenumber=dim_voyage.voyage_number) left join ( select * from ( select prevalidatestatuscode,verificationstatuschangedate,verificationstatuscode,addeddate,status,reservationguestid,part_date,batchtime,row_number() over (partition by reservationguestid order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_guestmoderationdetail)mod where mod.rn=1 ) guestdetail on (upper(guestdetail.reservationguestid)=upper(reserv_guest.reservationguestid))  left join shipdw.hvtb_mart_dim_person dim_person on  (upper(guestdetail.reservationguestid)=upper(dim_person.reservationguest_guid))  left join ( select * from ( select statustypecode,status,isdeleted,personid,row_number() over (partition by personid order by lastmodifieddate desc) as rn from vv_db.hvtb_parse_vxp_personstatus)person_status where person_status.rn=1 )personstatus on(upper(personstatus.personid) = upper(guestdetail.reservationguestid)) left join ( select * from ( select statustypecode,status,isdeleted,personid,row_number() over (partition by personid order by lastmodifieddate desc) as rn from vv_db.hvtb_parse_vxp_personstatus where upper(trim(statustypecode)) = 'BS')person_status where person_status.rn=1 )personstatusbs on(upper(personstatusbs.personid) = upper(guestdetail.reservationguestid)) left join ( select * from ( select statustypecode,status,isdeleted,personid,row_number() over (partition by personid order by lastmodifieddate desc) as rn from vv_db.hvtb_parse_vxp_personstatus where upper(trim(statustypecode)) = 'OC')person_status where person_status.rn=1 )personstatusrts on(upper(personstatusrts.personid) = upper(guestdetail.reservationguestid)) left join ( select * from ( select statustypecode,status,isdeleted,personid,row_number() over (partition by personid order by lastmodifieddate desc) as rn from vv_db.hvtb_parse_vxp_personstatus where upper(trim(statustypecode)) = 'TC')person_status where person_status.rn=1 )personstatustc on(upper(personstatustc.personid) = upper(guestdetail.reservationguestid)))person_status_fact *whereclause*
+
+spark.source.columns   voyage_id,person_skey,voyage_skey,ship_code,moderation_status,moderation_addeddate,verificationstatuscode,verificationstatuschangedate,moci_prevalidstatuscode,rts_done_status,boarding_status,terminal_checkin_status,terminal_checkin_status_color,aci_status_color
+   
+   
+spark.pond.allColumns   voyage_id as pond_voyage_id,person_skey as pond_person_skey,voyage_skey as pond_voyage_skey,ship_code as pond_ship_code,moderation_status as pond_moderation_status,moderation_addeddate as pond_moderation_addeddate,verificationstatuscode as pond_verificationstatuscode,verificationstatuschangedate as pond_verificationstatuschangedate,moci_prevalidstatuscode as pond_moci_prevalidstatuscode,rts_done_status as pond_rts_done_status,boarding_status as pond_boarding_status,terminal_checkin_status as pond_terminal_checkin_status,terminal_checkin_status_color as pond_terminal_checkin_status_color,aci_status_color as pond_aci_status_color, load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash, part_dt as pond_part_dt
+   
+spark.pond.database   shipdw
+spark.pond.table   hvtb_mart_fact_person_status
+   
+   
+spark.source.primaryKeyColumns   person_skey,voyage_skey
+
+spark.target.final_collist   final_view.voyage_id as voyage_id,final_view.person_skey as person_skey,final_view.voyage_skey as voyage_skey,final_view.ship_code as ship_code,final_view.moderation_status as moderation_status,final_view.moderation_addeddate as moderation_addeddate,final_view.verificationstatuscode as verificationstatuscode,final_view.verificationstatuschangedate as verificationstatuschangedate,final_view.moci_prevalidstatuscode as moci_prevalidstatuscode,final_view.rts_done_status as rts_done_status,final_view.boarding_status as boarding_status,final_view.terminal_checkin_status as terminal_checkin_status,final_view.terminal_checkin_status_color as terminal_checkin_status_color,final_view.aci_status_color as aci_status_color,final_view.load_dt,final_view.upd_dt,final_view.primaryhash, final_view.md5_hash, final_view.part_dt
+

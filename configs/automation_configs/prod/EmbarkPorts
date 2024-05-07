@@ -1,0 +1,14 @@
+spark.temp gs://vv-prod-nbx-cluster/data/lkp/hvtb_lkp_embark_ports_temp
+
+spark.target.tgtpath gs://vv-prod-nbx-cluster/data/lkp/hvtb_lkp_embark_ports
+
+spark.target.location gs://vv-prod-nbx-cluster/data/temp/embark_data/embarkports
+
+
+spark.source.zone EST
+
+spark.ship.code SHORE
+
+spark.tgt.env prod
+
+spark.hadoop.hive.execution.engine mr

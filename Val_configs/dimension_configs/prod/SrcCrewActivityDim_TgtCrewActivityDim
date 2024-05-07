@@ -1,0 +1,32 @@
+spark.src.config.id SrcCrewActivityDim
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtCrewActivityDim
+spark.parent.id SrcMxpScheduleActivities-TgtMxpScheduleActivities
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.table.type dim
+spark.postgresql.database prodnbx
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+############################################################ 
+spark.source.sql select act.ActivityID as activity_id,act.ActivityName as activity_name,act.ActivityType as activity_type,act.ACTIVE as is_active,act.REC_DELETED as is_deleted, act.VoyageId as voyage_id, act.BatchTime , act.Part_date from (select * from (select ActivityID,ActivityName,ActivityType,ACTIVE,REC_DELETED,VoyageId, BatchTime,Part_date,row_number() over (partition by ActivityID order by BatchTime desc) rn  from shipdw.hvtb_parse_mxp_scheduling_activities *whereclause*) where rn = 1)act union select 999 as activity_id ,'Work' as activity_name,null as activity_type, true as is_active, false as is_deleted,'SC2002269NCR' as voyage_id,cast('9999-12-31 00:00:00' as timestamp) as BatchTime, cast('9999-12-31' as date) as Part_date
+spark.source.columns voyage_id,activity_id,activity_name,activity_type,is_active,is_deleted
+spark.pond.allColumns crew_activity_skey as pond_crew_activity_skey,voyage_id as pond_voyage_id,activity_id as pond_activity_id,activity_name as pond_activity_name,activity_type as pond_activity_type,is_active as pond_is_active,is_deleted as pond_is_deleted,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column crew_activity_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_crew_activity
+spark.source.primaryKeyColumns activity_name
+spark.target.final_collist crew_activity_skey,final_view.voyage_id as voyage_id,final_view.activity_id,final_view.activity_name,final_view.activity_type,final_view.is_active,final_view.is_deleted,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_crew_activity
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_crew_activity
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename crew_activity_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+############################################################# 
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+

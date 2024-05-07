@@ -1,0 +1,2 @@
+spark.target.s3secndpath  s3a://vv-staging-emr-cluster/data/core/seaware/guestdimhistory/guesthisttwo.parquet
+spark.target.s3frstpath s3a://vv-staging-emr-cluster/data/core/seaware/guestdimhistory/guesthistone.parquet

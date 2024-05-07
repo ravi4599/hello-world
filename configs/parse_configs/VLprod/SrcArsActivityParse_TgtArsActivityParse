@@ -1,0 +1,15 @@
+spark.source.table select * from shipdw.hvtb_lnd_ars_activity_search
+spark.target.activity.table shipdw.hvtb_parse_ars_activity_detail
+spark.target.slot.table shipdw.hvtb_parse_ars_activity_slot
+spark.target.vendor.table shipdw.hvtb_parse_ars_activity_vendor
+spark.src.config.id SrcArsActivityParse
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtArsActivityParse
+spark.parent.id SrcArsActivity-TgtArsActivity
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+

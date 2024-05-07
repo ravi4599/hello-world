@@ -1,0 +1,27 @@
+spark.src.con.format sfdc
+spark.src.salesforce.username vv_datascience_api@virginvoyages.com.dev
+spark.src.salesforce.password Capgemini2021CNOuIemj1be9a3h3AXJjHaf1
+spark.src.salesforce.endpoint https://virginvoyages--dev.my.salesforce.com/services/Soap/u/39.0
+spark.src.salesforce.version 39.0
+spark.src.config.id SrcSFDCNetwork
+spark.voyage.id SC2002269NCR
+
+spark.source.columns Id,Name
+
+spark.src.table.query SELECT Id,Name from Network  
+
+
+spark.src.condition.column LastModifiedDate
+
+spark.tgt.env Dev
+spark.api.env Dev
+spark.target.config.id TgtSFDCNetwork
+spark.target.hive.table vv_db.hvtb_lnd_sfdc_network
+spark.target.table vv_db.hvtb_lnd_sfdc_network
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.con.driver org.postgresql.Driver

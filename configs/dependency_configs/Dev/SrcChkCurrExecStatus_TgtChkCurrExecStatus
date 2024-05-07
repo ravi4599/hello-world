@@ -1,0 +1,26 @@
+spark.src.config.id SrcChkCurrExecStatus
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtChkCurrExecStatus
+spark.parent.id SrcNoneJob-TgtNoneJob
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.3.100.222:2181/hbase-unsecure
+spark.target.ops.table.mode overwrite
+
+spark.jobType spark
+spark.source.sparkbatchidList SrcOrgUnitDim-TgtOrgUnitDim,SrcCruise-TgtVoyage,SrcGuest-TgtPersonDim
+spark.source.talendbatchidList jSWReservationDim,jSWGuestDim,jSWSailDim,jSWResGuestRel
+
+spark.source.NoOfChecks 2
+spark.source.WaitTimeMinutes 2
+
+#job parameters for talend job 
+
+spark.src.con.format jdbc
+spark.src.con.url jdbc:mysql://dev-emr-hue-metastore.cluster-cbduemg5i5w8.us-east-1.rds.amazonaws.com/vv_metadata
+spark.src.user admin
+spark.src.password Adm1n!2017
+spark.src.table vv_metadata.load_job_status_log
+spark.src.con.driver com.mysql.jdbc.Driver

@@ -1,0 +1,40 @@
+spark.src.config.id SrcDiningMenuItem
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtDiningMenuItem
+spark.parent.id SrcMxpRecipeDishes-TgtMxpRecipeDishes
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.table.type dim
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename dining_menu_item_dim
+
+
+spark.source.columns voyage_id,dining_menu_item_code,dining_menu_item_name,dining_menu_item_group,dining_menu_item_category,dining_menu_item_sub_category
+
+spark.pond.allColumns voyage_id as pond_voyage_id,dining_menu_item_skey as pond_dining_menu_item_skey,dining_menu_item_code as pond_dining_menu_item_code,dining_menu_item_name as pond_dining_menu_item_name,dining_menu_item_group as pond_dining_menu_item_group,dining_menu_item_category as pond_dining_menu_item_category,dining_menu_item_sub_category as pond_dining_menu_item_sub_category,src_deleted_flag as pond_src_deleted_flag,src_active_flag as pond_src_active_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+
+spark.surrogate_key.column dining_menu_item_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_dining_menu_item
+spark.source.primaryKeyColumns dining_menu_item_code
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+spark.target.final_collist final_view.voyage_id,final_view.dining_menu_item_skey ,final_view.dining_menu_item_code,final_view.dining_menu_item_name,final_view.dining_menu_item_group,final_view.dining_menu_item_category,final_view.dining_menu_item_sub_category,final_view.src_deleted_flag,final_view.src_active_flag,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_dim_dining_menu_item
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_dining_menu_item
+
+
+
+
+

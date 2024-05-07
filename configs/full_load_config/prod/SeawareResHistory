@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.RES_HISTORY
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT RES_ID, TRANS_TIMESTAMP, PERFORMER, SUBJECT, SOURCE_CODE, EXTERNAL_USER_ID1, EXTERNAL_USER_ID2, COMMENTS, XML_PACK_MODE, RES_XML, RES_SUMMARY, CLIENT_ID, USER_TYPE, TRANS_ID, AGENT_ID, AGENCY_ID, USER_INITIATED FROM SEAWARE.RES_HISTORY)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_res_history
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/RES_HISTORY
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_res_history/
+
+spark.hadoop.hive.execution.engine mr

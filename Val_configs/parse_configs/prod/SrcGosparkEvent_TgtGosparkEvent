@@ -1,0 +1,15 @@
+spark.source.table select * from shipdw.hvtb_lnd_go_event
+spark.target.table shipdw.hvtb_parse_gospark_event
+spark.src.config.id SrcGosparkEvent
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtGosparkEvent
+spark.parent.id SrcGoEventKafka-TgtGoEventHive
+spark.target.offset.mode overwrite
+spark.target.offset.table SHIP.HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.kafka.zookeeper 10.101.220.213:2181
+spark.ship.code VAL

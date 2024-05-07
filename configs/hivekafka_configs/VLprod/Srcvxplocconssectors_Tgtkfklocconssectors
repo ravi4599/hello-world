@@ -1,0 +1,29 @@
+spark.target.sslkafkabrokers p-scl-kfk-app1.crew.virginvoyages.com:9097,p-scl-kfk-app2.crew.virginvoyages.com:9097,p-scl-kfk-app3.crew.virginvoyages.com:9097
+#spark.target.sslkafkabrokers 10.9.100.157:9092,10.9.100.142:9092,10.9.100.37:9092
+#spark.target.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+#spark.target.passvalue SetS@!l2o2o
+spark.target.keystore /home/nbx.service@ahoy.virginvoyages.com/jars/kafka_broker.keystore.jks
+spark.target.truststore /home/nbx.service@ahoy.virginvoyages.com/jars/kafka_broker.truststore.jks
+#spark.target.truststore /etc/script_keystore/dxp.kafka.client.truststore.jks
+spark.target.passvalue SetSail2020
+#spark.ship.keystore /data/apps/talend/shared/scripts/cap-bigdata-scripts-dev/config/dxp.kafka.client.keystore.jks
+spark.target.keystore /home/nbx.service@ahoy.virginvoyages.com/jars/kafka_broker.keystore.jks
+spark.target.kafka.batch.size 16384
+spark.src.table shipdw.hvtb_lnd_vxp_locationconstruct_sectors
+spark.target.coalesce.value 10
+spark.src.config.id SrcVxplocaconstructsectors
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtKfklocationconssectors
+spark.parent.id SrcVXPlocconssectors-TgtVXPlocconssectors
+spark.isfullrefresh yes
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.kafka.topic shp2shr-dev-vxp-locationconstruct.sectors
+spark.target.ops.table.mode overwrite
+spark.isfullrefresh yes
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+# Operational Config
+spark.oper.metadata.table.mode overwrite
+spark.oper.metadata.table HBTB_NBX_SHORETOSHIP_SYNC_VOYAGEOPS
+spark.ship.code VAL
+

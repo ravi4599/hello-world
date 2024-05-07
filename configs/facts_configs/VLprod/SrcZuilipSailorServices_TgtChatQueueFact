@@ -1,0 +1,31 @@
+spark.src.config.id SrcZuilipSailorServices
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtChatQueueFact
+spark.parent.id SrcZerverSupQueue-TgtZerverSupQueue
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.ing.type Fact
+spark.source.sql select NVL(voyage_dim.ship_code,'-1') as ship_code, NVL(voyage_dim.voyage_skey,-1) as voyage_skey, NVL(chat_q.chat_queue_detail_skey,-1) as chat_queue_detail_skey, NVL(person_dim.person_skey,-1) as person_skey, sq.created as queue_joined_datetime, sq.responded as queue_responded_datetime, sq.resolved as queue_resolved_datetime, case when sq.created is not null and sq.responded is not null then unix_timestamp(sq.responded) - unix_timestamp(sq.created) else null end as time_to_respond_seconds, case when sq.responded is not null and sq.resolved is not null then unix_timestamp(sq.resolved) - unix_timestamp(sq.responded) else null end as length_of_interaction_seconds, case when sq.resolved is not null and sq.created is not null then unix_timestamp(sq.resolved) - unix_timestamp(sq.created) else null end as time_in_queue_seconds, sq.VoyageId as voyage_id, sq.BatchTime , sq.Part_Date from (select * from (select *, row_number() over (partition by id order by batchtime desc) rn  from shipdw.hvtb_parse_zulip_zerver_supportqueue) where rn = 1) sq left join ( select * from (select *, row_number() over (partition by id order by batchtime desc) rn  from shipdw.hvtb_parse_zulip_zerver_userprofile) where rn = 1 )  up on sq.sailor_id = up.id left join shipdw.hvtb_parse_vxp_iam_userprofile iam_up on upper(iam_up.userid) = upper(up.iam_user_id) and iam_up.persontypecode = 'G' left join (select g.guestid, r.voyagenumber, rg.reservationguestid from (select * from (select *, row_number() over (partition by guestid order by lastmodifieddate desc) rn  from shipdw.hvtb_parse_vxp_dxp_guest) where rn = 1) g join (select * from (select *, row_number() over (partition by reservationguestid order by lastmodifieddate desc) rn  from shipdw.hvtb_parse_vxp_reservationguest) where rn = 1 ) rg on rg.guestid= g.guestid join (select * from (select *, row_number() over (partition by reservationid order by lastmodifieddate desc) rn  from shipdw.hvtb_parse_vxp_reservation) where rn = 1 ) r on rg.reservationid = r.reservationid )  rg_main on upper(iam_up.personid) = upper(rg_main.guestid) and  rg_main.voyagenumber = sq.voyage_number left join shipdw.hvtb_mart_dim_person person_dim on upper(rg_main.reservationguestid) = upper(person_dim.reservationguest_guid) left join shipdw.hvtb_mart_dim_voyage voyage_dim on sq.voyage_number = voyage_dim.voyage_number left join shipdw.hvtb_mart_dim_chat_queue_detail chat_q on sq.id = chat_q.chat_queue_id
+spark.source.columns voyage_id,ship_code,voyage_skey,chat_queue_detail_skey,person_skey,queue_joined_datetime,queue_responded_datetime,queue_resolved_datetime,time_to_respond_seconds,length_of_interaction_seconds,time_in_queue_seconds
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_chat_queue
+spark.target.table chat_queue_fact
+spark.pond.allColumns voyage_id as pond_voyage_id,ship_code as pond_ship_code,voyage_skey as pond_voyage_skey,chat_queue_detail_skey as pond_chat_queue_detail_skey,person_skey as pond_person_skey,queue_joined_datetime as pond_queue_joined_datetime,queue_responded_datetime as pond_queue_responded_datetime,queue_resolved_datetime as pond_queue_resolved_datetime,time_to_respond_seconds as pond_time_to_respond_seconds,length_of_interaction_seconds as pond_length_of_interaction_seconds,time_in_queue_seconds as pond_time_in_queue_seconds,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+spark.target.final_collist final_view.voyage_id as voyage_id,final_view.ship_code as ship_code,final_view.voyage_skey as voyage_skey,final_view.chat_queue_detail_skey as chat_queue_detail_skey,final_view.person_skey as person_skey,final_view.queue_joined_datetime as queue_joined_datetime,final_view.queue_responded_datetime as queue_responded_datetime,final_view.queue_resolved_datetime as queue_resolved_datetime,final_view.time_to_respond_seconds as time_to_respond_seconds,final_view.length_of_interaction_seconds as length_of_interaction_seconds,final_view.time_in_queue_seconds as time_in_queue_seconds,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash,final_view.part_dt as part_dt
+spark.target.temp /data/apps/nbx/hive/temp/hvtb_mart_fact_chat_queue
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_fact_chat_queue
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename chat_queue_fact
+spark.postgresql.database prodnbx
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.primaryKeyColumns chat_queue_detail_skey
+spark.factType Accu
+spark.tableType FACT
+spark.frameworkEnv ship
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+

@@ -1,0 +1,53 @@
+spark.src.config.id SrcSeawareResAddonRel
+spark.voyage.id	SC2002269NCR 
+spark.tgt.env QA
+spark.target.config.id TgtSeawareResAddonRel
+spark.parent.id	SrcSeawareResAddon-TgtSeawareResAddon 
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+
+
+
+
+spark.source.sql SELECT ao.res_addon_id as res_addon_id , NVL(pl.promotion_id,-1) as promotion_id, NVL(rd.res_id,-1) as res_id, NVL(gd.guest_id,-1) as guest_id, NVL(al.addon_id,-1) as addon_id, NVL(ao.quantity,-1) as quantity, NVL(ao.effective_date,null) as effective_date, NVL(ao.is_default,null) as is_default, NVL(ao.is_auto,null) as is_auto, NVL(ao.comments,null) as comments, NVL(ao.addon_status,null) as addon_status, NVL(ao.notes,null) as notes, NVL(ao.paid_date,null) as paid_date, NVL(ao.start_date,null) as start_date,NVL(ao.end_date,null) as end_date,current_timestamp as rec_start_dttm, (case when ao.op == 'd' then current_timestamp else to_timestamp('9999-12-31 00:00:00') end) as rec_end_dttm,ao.batchtime as batchtime,ao.part_date as part_date FROM ( select * from ( select res_addon_id,res_id,res_addon_code,guest_id, quantity, effective_date, is_default, is_auto, comments, addon_status, notes, paid_date,start_date,end_date,pap_code,op,batchtime,part_date,row_number() over(partition by res_addon_id order by effective_date desc) rn FROM vv_db.hvtb_parse_sw_rpl_res_addon *whereclause*) where rn = 1) ao JOIN vv_db.hvtb_nbx_core_sw_reservation_dim rd ON ao.res_id = rd.src_res_id AND rd.rec_end_dttm = '9999-12-31' JOIN vv_db.hvtb_nbx_core_sw_guest_dim gd ON ao.guest_id = gd.src_guest_id AND gd.rec_end_dttm = '9999-12-31' LEFT JOIN ( select * from ( select amenity_code,am_category,amenity_type,amenity_name, row_number() over(partition by record_id order by ts_ms desc) rn from vv_db.hvtb_parse_sw_rpl_am_code) where rn = 1) a ON ao.res_addon_code = a.AMENITY_CODE JOIN vv_db.hvtb_nbx_core_sw_addon_lkp al ON a.amenity_code = al.res_addon_code AND a.am_category = al.addon_category AND a.amenity_type = al.addon_type AND a.amenity_name = al.addon_name LEFT JOIN ( SELECT * FROM ( SELECT promotion_id,promo_code, ROW_NUMBER() OVER ( partition by promo_code ORDER by promotion_id DESC ) row_num FROM vv_db.hvtb_nbx_core_sw_promotion_lkp ) d WHERE row_num = 1 ) pl ON ao.pap_code = pl.promo_code
+
+
+#spark.source.sql SELECT ao.res_addon_id as res_addon_id , NVL(pl.promotion_id,null) as promotion_id, NVL(rd.res_id,null) as res_id, NVL(gd.guest_id,null) as guest_id, NVL(al.addon_id,null) as addon_id, NVL(ao.quantity,null) as quantity, NVL(ao.effective_date,null) as effective_date, NVL(ao.is_default,null) as is_default, NVL(ao.is_auto,null) as is_auto, NVL(ao.comments,null) as comments, NVL(ao.addon_status,null) as addon_status, NVL(ao.notes,null) as notes, NVL(ao.paid_date,null) as paid_date, current_timestamp as rec_start_dttm, (case when ao.op == 'd' then current_timestamp else to_timestamp('9999-12-31 00:00:00') end) as rec_end_dttm,ao.batchtime as batchtime,ao.part_date as part_date FROM ( select * from ( select res_addon_id,res_id,res_addon_code,guest_id, quantity, effective_date, is_default, is_auto, comments, addon_status, notes, paid_date,pap_code, op,batchtime,part_date,row_number() over(partition by res_addon_id order by effective_date desc) rn FROM vv_db.hvtb_parse_sw_rpl_res_addon *whereclause*) where rn = 1) ao JOIN vv_db.hvtb_nbx_core_sw_reservation_dim rd ON ao.res_id = rd.src_res_id AND rd.rec_end_dttm = '9999-12-31' JOIN vv_db.hvtb_nbx_core_sw_guest_dim gd ON ao.guest_id = gd.src_guest_id AND gd.rec_end_dttm = '9999-12-31' LEFT JOIN ( select * from ( select amenity_code,am_category,amenity_type,amenity_name, row_number() over(partition by record_id order by ts_ms desc) rn from vv_db.hvtb_parse_sw_rpl_am_code) where rn = 1) a ON ao.res_addon_code = a.AMENITY_CODE JOIN vv_db.hvtb_nbx_core_sw_addon_lkp al ON a.amenity_code = al.res_addon_code AND a.am_category = al.addon_category AND a.amenity_type = al.addon_type AND a.amenity_name = al.addon_name LEFT JOIN ( SELECT * FROM ( SELECT promotion_id,promo_code, ROW_NUMBER() OVER ( partition by promo_code ORDER by promotion_id DESC ) row_num FROM vv_db.hvtb_nbx_core_sw_promotion_lkp ) d WHERE row_num = 1 ) pl ON ao.pap_code = pl.promo_code
+
+
+
+
+spark.source.columns res_addon_id,res_id,guest_id,addon_id,quantity,rec_start_dttm,rec_end_dttm,effective_date,is_default,is_auto,promotion_id,comments,addon_status,notes,paid_date,start_date,end_date,batchtime,part_date
+
+
+spark.pond.allColumns src_res_addon_id as pond_src_res_addon_id,res_addon_id as pond_res_addon_id,res_id as pond_res_id,guest_id as pond_guest_id,addon_id as pond_addon_id,quantity as pond_quantity,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,effective_date as pond_effective_date,is_default as pond_is_default,is_auto as pond_is_auto,promotion_id as pond_promotion_id,comments as pond_comments,addon_status as pond_addon_status,notes as pond_notes,paid_date as pond_paid_date,start_date as pond_start_date,end_date as pond_end_date,etl_ld_status as pond_etl_ld_status,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.surrogate_key.column src_res_addon_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_res_addon_rel
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_res_addon_rel
+spark.source.primaryKeyColumns res_addon_id
+spark.scdtype type1
+
+
+spark.target.final_collist final_view.src_res_addon_id,cast(final_view.res_addon_id as int)as res_addon_id,final_view.res_id,final_view.guest_id,final_view.addon_id,final_view.quantity,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.effective_date,final_view.is_default,final_view.is_auto,cast(final_view.promotion_id as int),final_view.comments,final_view.addon_status,final_view.notes,final_view.paid_date,final_view.start_date,final_view.end_date,final_view.etl_ld_status,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+
+
+spark.target.temp gs://vv-cert-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_res_addon_rel
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_res_addon_rel
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_res_addon_rel_tmp
+spark.bq.permtblname seaware_res_addon_rel
+spark.bq.viewname seaware.seaware_res_addon_rel
+#spark.talent.dependencyflag true
+spark.load.frequency SW_rpl_daily
+spark.hadoop.hive.execution.engine mr
+

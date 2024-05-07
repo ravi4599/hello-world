@@ -1,0 +1,31 @@
+#source postgres database,table and connection details
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148:5432/ars
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.con.driver org.postgresql.Driver
+spark.src.table public.activityslot
+#Unique constant for Batchid
+spark.src.config.id SrcVxpArsActivitySlot
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtVxpArsActivitySlot
+#Metadbta Hbase table and connection details
+spark.tgt.env Prod
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.src.table.query "activityslot"
+spark.condition.column lastmodifieddate
+#target hdfs table location with hive table and column details
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_ars_activityslot
+spark.target.hive.table shipdw.hvtb_lnd_vxp_ars_activityslot
+spark.source.columns activityslotid, activityid, activitydetailid, startdatetime, enddatetime, status, isbookingstopped, iscancelled, iswaitlistenable,voyagenumber,isdeleted,addeddate,lastmodifieddate,addedby,lastmodifiedby,code,activitycode,capacityid,activitylocationid,name, minpartysize,maxpartysize,type,accesstype,lastmodifieddatetime,datacreateddate,datalastmodifieddate,datalastmodifiedby,crewonly
+spark.source.query activityslotid, activityid, activitydetailid, startdatetime, enddatetime, status, isbookingstopped, iscancelled, iswaitlistenable,voyagenumber,isdeleted,addeddate,lastmodifieddate,addedby,lastmodifiedby,code,activitycode,capacityid,activitylocationid,name, minpartysize,maxpartysize,type,accesstype,lastmodifieddatetime,datacreateddate,datalastmodifieddate,datalastmodifiedby,crewonly
+spark.tz.columns addeddate,lastmodifieddate
+spark.source.zone EST
+spark.ship.code VAL
+#cluster details
+spark.stop.flag N
+

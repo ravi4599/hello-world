@@ -1,0 +1,14 @@
+spark.src.config.id SrcShrArsBooking
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtShrArsBooking
+spark.parent.id SrcVXPArsBooking-TgtVXPArsBooking
+spark.ars_ingestion.table shipdw.hvtb_lnd_mxp_ship_ars_booking
+spark.arsbooking.target.table shipdw.hvtb_parse_ars_booking
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.kafka.zookeeper 10.101.220.213:2181
+spark.ship.code VAL
+

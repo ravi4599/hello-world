@@ -1,0 +1,32 @@
+spark.src.con.format sfdc
+spark.src.salesforce.username vv_datascience_api@virginvoyages.com.qa
+spark.src.salesforce.password Dec!1218gEw3temK8VJdeGLSCSjjlUszf
+spark.src.salesforce.endpoint https://virginvoyages--qa.my.salesforce.com/services/Soap/u/53.0
+spark.src.salesforce.version 53.0
+spark.src.config.id SrcSFDCLiveChatTranscript
+spark.voyage.id SC2002269NCR
+ 
+spark.source.columns id, caseid, leadid , name, createddate, starttime, endTime, waittime, abandoned, abandoned__c, status, chat_transferred__c, of_chat_transfers_request_cancelled__c, chat_accepted__c, chatduration, ownerid, contactid, lastmodifieddate, systemmodstamp,Answered_in_10__c,AverageResponseTimeOperator,AverageResponseTimeVisitor,Booking_Flow__c,Chats_Cancelled__c,RequestTime
+ 
+spark.src.table.query select id, caseid, leadid , name, createddate, starttime, endTime, waittime, abandoned, abandoned__c, status, chat_transferred__c, of_chat_transfers_request_cancelled__c, chat_accepted__c, chatduration, ownerid, contactid, lastmodifieddate, systemmodstamp,Answered_in_10__c,AverageResponseTimeOperator,AverageResponseTimeVisitor,Booking_Flow__c,Chats_Cancelled__c,RequestTime from livechattranscript    
+ 
+ 
+spark.src.condition.column LastModifiedDate
+ 
+spark.tgt.env Qa
+spark.api.env Qa
+spark.target.config.id TgtSFDCLiveChatTranscript
+spark.target.location s3://vv-dev-emr-cluster/data/landing/crm/hvtb_lnd_sfdc_livechattranscript
+spark.target.hive.table vv_db.hvtb_lnd_sfdc_livechattranscript
+spark.target.table vv_db.hvtb_lnd_sfdc_livechattranscript
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+ 
+ 
+spark.hadoop.hive.execution.engine mr
+

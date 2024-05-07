@@ -1,0 +1,35 @@
+spark.src.config.id SrcChargeDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env dev
+spark.target.config.id TgtChargeDim
+spark.parent.id SrcMxpPersonAcc-TgtMxpPersonAcc
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.table.type dim
+spark.source.columns voyage_id,charge_id,person_account_id,ship_code,person_id,person_skey,booking_id,src_deleted_flag
+spark.pond.allColumns voyage_id as pond_voyage_id,charge_skey as pond_charge_skey,charge_id as pond_charge_id,person_account_id as pond_person_account_id,ship_code as pond_ship_code,person_id as pond_person_id,person_skey as pond_person_skey,booking_id as pond_booking_id,src_deleted_flag as pond_src_deleted_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column charge_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_charge
+spark.target.schema shipdw
+spark.target.table charge_dim
+spark.pond.Columns voyage_id as pond_voyage_id,charge_skey as pond_charge_skey,charge_id as pond_charge_id,person_account_id as pond_person_account_id,ship_code as pond_ship_code,person_id as pond_person_id,person_skey as pond_person_skey,booking_id as pond_booking_id,src_deleted_flag as pond_src_deleted_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.source.primaryKeyColumns person_account_id,charge_id
+spark.pond.primaryKeyColumns person_account_id,charge_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.target.final_collist final_view.voyage_id,final_view.charge_skey,final_view.charge_id,final_view.person_account_id,final_view.ship_code,final_view.person_id,final_view.person_skey,final_view.booking_id,final_view.src_deleted_flag,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_dim_charge
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_dim_charge
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname charge_dim_tmp
+spark.bq.permtblname charge_dim
+spark.bq.viewname shipdw.charge_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore

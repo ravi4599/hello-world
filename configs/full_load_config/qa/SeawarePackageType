@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.PACKAGE_TYPE
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT PACKAGE_TYPE_ID, PACKAGE_TYPE, LAND_DAYS, SAIL_DAYS, COMMENTS, PRODUCT_TYPE, TC_PACKAGE_TYPE, LAND_DAYS_POST, IS_SHOREX, IS_SECONDARY, IS_ACTIVE, SHOREX_TIMING, EXTRA_SEAT_QUESTION, PRE_POST_MODE, PACKAGE_CLASS, SAIL_SEGMENTS, CAPACITY, ALLOW_SEGMENTS, PACKAGE_TYPE_NAME FROM SEAWARE.PACKAGE_TYPE)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_package_type
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/PACKAGE_TYPE
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_package_type/
+
+spark.hadoop.hive.execution.engine mr

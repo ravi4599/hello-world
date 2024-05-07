@@ -1,0 +1,28 @@
+spark.src.config.id SrcOrgUnitQuickCode
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtFolioItem
+spark.parent.id SrcMxpOrgUnitQuickCodes-TgtMxpOrgUnitQuickCodes
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.table.type dim
+spark.redshift.url jdbc:redshift://10.3.0.120:5439/qanbxpub
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.source.sql SELECT voyageid AS voyage_id, org_unit_quick_code AS folio_item_quickcode, shipcode AS ship_code, org_unit_abbreviation AS quickcode_name, display_code AS product_code_name, rec_deleted AS src_deleted_flag, batchtime, Part_Date FROM (SELECT * FROM (SELECT org_unit_quick_code, org_unit_id AS c_org_unit_id, voyageid, shipcode, product_code_id, rec_deleted, batchtime, Part_Date, row_number() over (partition by org_unit_quick_code order by last_changed desc) as rn FROM shipdw.hvtb_parse_mxp_orgunitquickcodes) WHERE rn = 1) LEFT JOIN (SELECT * FROM (SELECT org_unit_id, org_unit_abbreviation, row_number() over (partition by org_unit_id order by last_changed desc) as rn FROM shipdw.hvtb_parse_mxp_org_units) WHERE rn = 1) ON org_unit_id = c_org_unit_id LEFT JOIN (SELECT * FROM (SELECT lookup_item_id, display_code, row_number() over (partition by lookup_item_id order by last_changed desc) as rn FROM shipdw.hvtb_parse_mxp_lookup_items) WHERE rn = 1) ON product_code_id = lookup_item_id
+spark.source.columns voyage_id,folio_item_quickcode,ship_code,quickcode_name,product_code_name,src_deleted_flag
+spark.pond.allColumns voyage_id as pond_voyage_id, folio_item_skey AS pond_folio_item_skey, folio_item_quickcode AS pond_folio_item_quickcode,ship_code AS pond_ship_code,quickcode_name AS pond_quickcode_name,product_code_name AS pond_product_code_name,src_deleted_flag AS pond_src_deleted_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column folio_item_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_folio_item
+spark.source.primaryKeyColumns folio_item_quickcode
+spark.target.final_collist final_view.voyage_id, folio_item_skey, final_view.folio_item_quickcode, final_view.ship_code, final_view.quickcode_name, final_view.product_code_name, final_view.src_deleted_flag,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_dim_folio_item
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_folio_item
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename folio_item_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore

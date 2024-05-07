@@ -1,0 +1,43 @@
+#------META DATA CONFIG-----#
+spark.src.config.id SrcGLTransFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtGLTransFact
+spark.parent.id SrcSeawareGltrans-TgtSeawareGltrans
+spark.ing.type Fact
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+#------Query Propery-----#
+
+spark.source.sql select case when gltrans.trans_id is not null then transevt.trans_id when (gltrans.trans_id is null and gltrans.entity_type in ('RES','GRP')) then transevt2.trans_id else null end as trans_id ,cast(gltrans.trans_id as bigint) as src_trans_id, cast(gltrans.gl_trans_id as integer) as src_gl_trans_id, gltrans.gl_batch_id, cast(gltrans.gl_trans_amount as float) as gl_trans_amount, gltrans.trans_time_stamp, gltrans.comments, gltrans.full_dbt_gl, gltrans.full_crd_gl, gltrans.seq_number, gltrans.gl_trans_type, gltrans.entity_type, gltrans.gl_trans_source, gltrans.n_of_days, gltrans.entity_id, gltrans.period_id, gltrans.currency_code, case when gltrans.is_completed=1 then true else false end as is_completed , cast(gltrans.full_n_of_days as integer) as full_n_of_days , gltrans.orig_item_code, gltrans.orig_item_subcode, cast(gltrans.orig_item_rec_id as integer) as orig_item_rec_id , gltrans.dlgt_res_id, case when gltrans.is_last_for_trans =1 then true else false end as is_last_for_trans, gltrans.prorate_method, gltrans.trans_hist_id, to_date(gltrans.logical_date) as logical_date , gltrans.gl_package_id, gltrans.guest_id, gltrans.office_code, cast(gltrans.gl_trans_amount_base as float) as gl_trans_amount_base, cast(gltrans.exchange_rate as integer) as exchange_rate, gltrans.res_package_start_date, gltrans.res_package_end_date, gltrans.res_package_class, gltrans.gl_trans_base_currency, gltrans.coupon_id, gltrans.res_package_id, gltrans.orig_item_addcode, gltrans.reverse_accrual_period from (select * from (select *, row_number()over(partition by gl_trans_id order by ts_ms,lsn desc) as rn from vv_db.hvtb_parse_sw_rpl_gl_trans) glt where glt.rn=1) gltrans left join vv_db.hvtb_nbx_core_sw_transaction_evt transevt on gltrans.trans_id=transevt.src_trans_id left join vv_db.hvtb_nbx_core_sw_transaction_evt transevt2 on gltrans.orig_item_rec_id=transevt2.src_trans_id
+
+spark.source.columns trans_id,src_trans_id,src_gl_trans_id,gl_batch_id,gl_trans_amount,trans_time_stamp,comments,full_dbt_gl,full_crd_gl,seq_number,gl_trans_type,entity_type,gl_trans_source,n_of_days,entity_id,period_id,currency_code,is_completed,full_n_of_days,orig_item_code,orig_item_subcode,orig_item_rec_id,dlgt_res_id,is_last_for_trans,prorate_method,trans_hist_id,logical_date,gl_package_id,guest_id,office_code,gl_trans_amount_base,exchange_rate,res_package_start_date,res_package_end_date,res_package_class,gl_trans_base_currency,coupon_id,res_package_id,orig_item_addcode,reverse_accrual_period
+
+spark.pond.allColumns trans_id as pond_trans_id,src_trans_id as pond_src_trans_id,src_gl_trans_id as pond_src_gl_trans_id,gl_batch_id as pond_gl_batch_id,gl_trans_amount as pond_gl_trans_amount,trans_time_stamp as pond_trans_time_stamp,comments as pond_comments,full_dbt_gl as pond_full_dbt_gl,full_crd_gl as pond_full_crd_gl,seq_number as pond_seq_number,gl_trans_type as pond_gl_trans_type,entity_type as pond_entity_type,gl_trans_source as pond_gl_trans_source,n_of_days as pond_n_of_days,entity_id as pond_entity_id,entity_id as pond_entity_id,currency_code as pond_currency_code,is_completed as pond_is_completed,full_n_of_days as pond_full_n_of_days,orig_item_code as pond_orig_item_code,orig_item_subcode as pond_orig_item_subcode,orig_item_rec_id as pond_orig_item_rec_id,dlgt_res_id as pond_dlgt_res_id,is_last_for_trans as pond_is_last_for_trans,prorate_method as pond_prorate_method,trans_hist_id as pond_trans_hist_id,logical_date as pond_logical_date,gl_package_id as pond_gl_package_id,guest_id as pond_guest_id,office_code as pond_office_code,gl_trans_amount_base as pond_gl_trans_amount_base,exchange_rate as pond_exchange_rate,res_package_start_date as pond_res_package_start_date,res_package_end_date as pond_res_package_end_date,res_package_class as pond_res_package_class,gl_trans_base_currency as pond_gl_trans_base_currency,coupon_id as pond_coupon_id,res_package_id as pond_res_package_id,orig_item_addcode as pond_orig_item_addcode,reverse_accrual_period as pond_reverse_accrual_period,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+
+spark.target.final_collist final_view.trans_id as trans_id,final_view.src_trans_id as src_trans_id,final_view.src_gl_trans_id as src_gl_trans_id,final_view.gl_batch_id as gl_batch_id,final_view.gl_trans_amount as gl_trans_amount,final_view.trans_time_stamp as trans_time_stamp,final_view.comments as comments,final_view.full_dbt_gl as full_dbt_gl,final_view.full_crd_gl as full_crd_gl,final_view.seq_number as seq_number,final_view.gl_trans_type as gl_trans_type,final_view.entity_type as entity_type,final_view.gl_trans_source as gl_trans_source,final_view.n_of_days as n_of_days,final_view.entity_id as entity_id,final_view.period_id as period_id,final_view.currency_code as currency_code,final_view.is_completed as is_completed,final_view.full_n_of_days as full_n_of_days,final_view.orig_item_code as orig_item_code,final_view.orig_item_subcode as orig_item_subcode,final_view.orig_item_rec_id as orig_item_rec_id,final_view.dlgt_res_id as dlgt_res_id,final_view.is_last_for_trans as is_last_for_trans,final_view.prorate_method as prorate_method,final_view.trans_hist_id as trans_hist_id,final_view.logical_date as logical_date,final_view.gl_package_id as gl_package_id,final_view.guest_id as guest_id,final_view.office_code as office_code,final_view.gl_trans_amount_base as gl_trans_amount_base,final_view.exchange_rate as exchange_rate,final_view.res_package_start_date as res_package_start_date,final_view.res_package_end_date as res_package_end_date,final_view.res_package_class as res_package_class,final_view.gl_trans_base_currency as gl_trans_base_currency,final_view.coupon_id as coupon_id,final_view.res_package_id as res_package_id,final_view.orig_item_addcode as orig_item_addcode,final_view.reverse_accrual_period as reverse_accrual_period,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+												 
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_seaware_gl_trans
+spark.source.primaryKeyColumns src_gl_trans_id
+spark.table.type fact							
+spark.target.schema shipdw									
+spark.target.table seaware_gl_trans_fact
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_fact_seaware_gl_trans
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_fact_seaware_gl_trans
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_gl_trans_fact_tmp
+spark.bq.permtblname seaware_gl_trans_fact
+spark.bq.viewname seaware.seaware_gl_trans_fact
+spark.scdtype type1
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.factType Accu
+spark.hadoop.hive.execution.engine mr
+

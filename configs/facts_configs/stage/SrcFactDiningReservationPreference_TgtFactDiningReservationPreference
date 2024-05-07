@@ -1,0 +1,47 @@
+spark.src.config.id SrcFactDiningReservationPreference 
+spark.voyage.id SC2002269NCR
+spark.tgt.env stage
+spark.api.env stage
+spark.target.config.id TgtFactDiningReservationPreference
+spark.parent.id SrcvxpRespreference-TgtvxpRespreference 
+
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.ing.type Fact
+spark.source.columns   voyage_id,person_skey,voyage_skey,ship_code,dining_reservation_detail_skey,dining_reservation_preference_skey,preference_value
+spark.lad.file false
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_dining_reservation_preference
+spark.target.table dining_reservation_preference_fact 
+spark.source.primaryKeyColumns  person_skey,dining_reservation_detail_skey,dining_reservation_preference_skey
+spark.pond.allColumns   voyage_id as pond_voyage_id,person_skey as pond_person_skey,voyage_skey as pond_voyage_skey,ship_code as pond_ship_code,dining_reservation_detail_skey as pond_dining_reservation_detail_skey,dining_reservation_preference_skey as pond_dining_reservation_preference_skey,preference_value as pond_preference_value,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+
+spark.target.final_collist   final_view.voyage_id,final_view.person_skey,final_view.voyage_skey,final_view.ship_code,final_view.dining_reservation_detail_skey,final_view.dining_reservation_preference_skey,final_view.preference_value,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+
+spark.target.temp s3://vv-stage-emr-cluster/data/temp/hvtb_mart_fact_dining_reservation_preference
+spark.target.location s3://vv-stage-emr-cluster/data/mart/hvtb_mart_fact_dining_reservation_preference
+
+
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.factType   Accu
+spark.redshift.schema hive_schema_stg
+spark.redshift.tablename dining_reservation_preference_fact 
+
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+
+#----------------------LAD--------------------------------#
+spark.ladjob.flag true
+spark.lad.srctablekey public_id
+
+spark.lad.srctable shipdw.hvtb_parse_vxp_table_management_reservations_reservationpreference
+spark.lad.columns person_skey,dining_reservation_detail_skey,dining_reservation_preference_skey
+spark.ladremoval.flag false
+
+
+

@@ -1,0 +1,68 @@
+#------META   DATA CONFIG-----#
+spark.src.config.id SrcSessionFact
+spark.voyage.id SC2002269NCR 
+spark.tgt.env Stage
+spark.target.config.id TgtSessionFact
+spark.parent.id SrcParsesessionevent-TgtParsesessionevent
+
+ 
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.ing.type Fact
+#-------------------------#
+spark.source.sql select sessions.public_id,sessions.voyageid as voyage_id, nvl(vdim.voyage_skey,-1) as voyage_skey, nvl(itr.itinerary_skey,-1) as itinerary_skey, nvl(venue.venue_skey,-1) as venue_skey, nvl(time2.s_key,-1) as time_start_skey, nvl(time1.s_key,-1) as time_end_skey, nvl(dim_session.dining_session_skey,-1) as dining_session_skey, ceil((unix_timestamp(sessions.time_end)-unix_timestamp(sessions.time_start))/ settings.timeslot_duration) as number_of_timeslots,dim_dining_table.dining_table_skey as dining_table_skey, sessions.BatchTime as batchtime, sessions.Part_Date as part_date from ( select * from ( select public_id, settings_id, time_start, time_end, voyage_id, voyage_day_number, venue_id, voyageid, BatchTime, Part_Date, row_number() over (partition by public_id order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_table_management_sessions) vxp_session where rn = 1) sessions left join ( select * from ( select public_id, code, row_number () over (partition by public_id order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_table_management_voyages) voyage_vxp where rn = 1) voyages on (sessions.voyage_id = voyages.public_id) left join ( select voyage_number, voyage_skey, src_active_flag, src_deleted_flag from shipdw.hvtb_mart_dim_voyage where src_deleted_flag = false and src_active_flag = true) vdim on vdim.voyage_number = voyages.code left join (SELECT * FROM (SELECT itinerary_skey, itinerary_day, voyage_number, src_active_flag, src_deleted_flag, upd_dt, row_number() over(partition by voyage_number,itinerary_day order by upd_dt desc) rn from shipdw.hvtb_mart_dim_itinerary where src_deleted_flag = false and src_active_flag = true) where rn=1) itr on (itr.voyage_number = voyages.code and sessions.voyage_day_number = itr.itinerary_day) left join ( select * from ( select public_id, external_id, row_number () over (partition by public_id order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_table_management_venues) venue_vxp where rn = 1) venues on (sessions.venue_id = venues.public_id) left join shipdw.hvtb_mart_dim_venue venue on (venue.venue_id = venues.external_id) left join shipdw.hvtb_mart_dim_time time2 on (time2.timeofday = unix_timestamp(sessions.time_start)) left join shipdw.hvtb_mart_dim_time time1 on (time1.timeofday = unix_timestamp(sessions.time_end)) left join ( select * from ( select public_id, timeslot_duration, row_number () over (partition by public_id order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_table_management_settings) vxp_settings where rn = 1) settings on (sessions.settings_id = settings.public_id) left join ( select * from ( select public_id, settings_id, row_number () over (partition by public_id order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_table_management_settings_layout) vxp_settings where rn = 1) settings_layout on (sessions.settings_id = settings_layout.settings_id) left join ( select * from ( select public_id, layout_id, row_number () over (partition by layout_id order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_table_management_settings_table) vxp_settings where rn = 1) settings_table on (settings_layout.public_id = settings_table.layout_id) left join shipdw.hvtb_mart_dim_dining_table dim_dining_table on (settings_table.public_id = dim_dining_table.dining_table_id)  left join shipdw.hvtb_mart_dim_dining_session dim_session on (sessions.public_id = dim_session.dining_session_id)  *whereclause*
+
+ 
+
+spark.source.columns voyage_id,voyage_skey,itinerary_skey,venue_skey,time_start_skey,time_end_skey,dining_table_skey,dining_session_skey,number_of_timeslots,batchtime
+
+ 
+
+spark.pond.allColumns voyage_id as pond_voyage_id,voyage_skey as pond_voyage_skey,itinerary_skey as pond_itinerary_skey,venue_skey as pond_venue_skey,time_start_skey as pond_time_start_skey,time_end_skey as pond_time_end_skey,dining_session_skey as pond_dining_session_skey,number_of_timeslots as pond_number_of_timeslots,dining_table_skey as pond_dining_table_skey,load_dt as pond_load_dt, upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash,part_dt as pond_part_dt
+
+ 
+
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_dining_session
+spark.source.primaryKeyColumns  dining_session_skey,dining_table_skey
+spark.table.type   fact    
+spark.target.schema   hive_schema_stg
+spark.target.table dining_session_fact
+spark.lad.file false
+
+ 
+
+spark.target.final_collist final_view.voyage_id as voyage_id,final_view.voyage_skey as voyage_skey,final_view.itinerary_skey as itinerary_skey,final_view.venue_skey as venue_skey,final_view.dining_session_skey as dining_session_skey,final_view.time_start_skey as time_start_skey,final_view.time_end_skey as time_end_skey,final_view.number_of_timeslots as number_of_timeslots,final_view.dining_table_skey as dining_table_skey,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash,final_view.part_dt as part_dt
+
+ 
+
+
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_fact_dining_session
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_dining_session
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename incident_guest_fact 
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.factType Accu
+
+ 
+
+
+
+#----------------------LAD--------------------------------#
+spark.ladjob.flag true
+spark.lad.srctablekey public_id
+spark.lad.srctable shipdw.hvtb_parse_vxp_table_management_sessions
+spark.lad.tgttable shipdw.hvtb_parse_vxp_table_management_sessions_lad
+spark.lad.columns dining_session_skey,dining_table_skey
+spark.ladremoval.flag false 
+
+ 
+
+#----------------------------------------------------------#

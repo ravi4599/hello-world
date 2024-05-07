@@ -1,0 +1,29 @@
+spark.kafkabrokers npkafka1.gcpshore.virginvoyages.com:9092,npkafka2.gcpshore.virginvoyages.com:9092,npkafka3.gcpshore.virginvoyages.com:9092
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.flag TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic qa-shore-dbz.sw.SEAWARE.RES_GUEST
+spark.src.personOffSet earliest
+spark.kafka.zookeeper npkafka1.gcpshore.virginvoyages.com:2181
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.snapshot.table HBTB_DBZ_SNAPDATE
+
+spark.src.config.id SrcSeawareResGuest
+spark.tgt.env Qa
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtSeawareResGuest
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.4.100.154:2181/hbase-unsecure
+
+spark.target.lnd.table vv_db.hvtb_lnd_sw_rpl_res_guest
+spark.target.parse.table vv_db.hvtb_parse_sw_rpl_res_guest
+spark.ship.code SHORE
+spark.stop.flag N
+spark.debug.flag true

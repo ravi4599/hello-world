@@ -1,0 +1,24 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148:5432/housekeeping_service
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.table report.requests
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVXPRequest
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtVXPRequest
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_housekeeping_requests
+spark.target.hive.table shipdw.hvtb_lnd_vxp_housekeeping_requests
+spark.target.table shipdw.hvtb_lnd_vxp_housekeeping_requests
+spark.src.table.query (select * from report.requests) as requests
+spark.condition.column loadDate
+spark.hive.table.maxid select max(loadDate) from shipdw.hvtb_lnd_vxp_housekeeping_requests
+spark.source.columns cast(id as Long) as id,public_id,place_id,description,created,priority,request_type,place_deck_id,place_section_id,assigned,created_by,loyalty,started_at,completed_at,assigned_at,at_risk_at,overdue_at,cancelled_at,come_back_later_at,come_back_later_by,deleted,guests,voyage_number
+spark.source.query cast(id as Long) as id,public_id,place_id,description,created,priority,request_type,place_deck_id,place_section_id,assigned,created_by,loyalty,started_at,completed_at,assigned_at,at_risk_at,overdue_at,cancelled_at,come_back_later_at,come_back_later_by,deleted,guests,voyage_number
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VL
+

@@ -1,0 +1,46 @@
+spark.src.config.id SrcSeawareTransactionEvtdim
+spark.voyage.id	SC2002269NCR
+spark.tgt.env Dev
+spark.api.env Dev
+spark.hadoop.hive.execution.engine mr
+spark.target.config.id TgtSeawareTransactionEvtdim
+spark.parent.id	SrcSeawareAccTransDetail-TgtSeawareAccTransDetail
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.table.type dim
+
+spark.source.sql select main.*,rd.res_id,cd.coupon_id from (select a.trans_id AS src_trans_id,(CASE WHEN a.SOURCE_ENTITY_TYPE ='RES' then a.SOURCE_ENTITY_ID else case WHEN a.DEST_ENTITY_TYPE ='RES' THEN a.DEST_ENTITY_ID end end) as src_res_id ,a.trans_status AS trans_status, a.form_of_trans AS form_of_trans, a.trans_type AS trans_type, (case when a.SOURCE_ENTITY_TYPE ='RES' then a.DEST_ENTITY_TYPE else case when a.DEST_ENTITY_TYPE ='RES' then a.SOURCE_ENTITY_TYPE end end) as entity_type, (case when a.SOURCE_ENTITY_TYPE ='RES' then a.DEST_ENTITY_ID else case when a.DEST_ENTITY_TYPE ='RES' then a.SOURCE_ENTITY_ID end end) as entity_id,a.trans_time_stamp as trans_time_stamp, a.currency_trans as currency_trans, a.amount_full_trans as amount_full_trans, a.rate_transprice as rate_transprice, a.currency_price as currency_price, a.amount_full_price as amount_full_price, a.rate_pricebase as rate_pricebase, a.user_id as operator, a.external_ident as src_coupon_id,(case when a.SOURCE_ENTITY_TYPE='RES' then 'Y' else case when a.DEST_ENTITY_TYPE='RES' then 'N' end end) as is_dest_entity,a.ar_ap_due_date as ar_ap_due_date,a.batchtime as batchtime,a.part_date as part_date from (select * from (select trans_id,SOURCE_ENTITY_TYPE,SOURCE_ENTITY_ID,DEST_ENTITY_TYPE,DEST_ENTITY_ID,trans_status,form_of_trans,trans_type,trans_time_stamp,currency_trans,amount_full_trans,rate_transprice,currency_price,amount_full_price,rate_pricebase,user_id,external_ident,trans_group_id,ar_ap_due_date,batchtime,part_date,row_number() over(partition by trans_id order by ts_ms desc)rn from vv_db.hvtb_parse_sw_rpl_acc_trans_detail)where rn=1 and (SOURCE_ENTITY_TYPE='RES' or DEST_ENTITY_TYPE='RES')) a)main left join (select res_id,src_res_id from vv_db.hvtb_nbx_core_sw_reservation_dim where rec_end_dttm='9999-12-31') rd on main.src_res_id=rd.src_res_id left join (select coupon_id,src_coupon_id from vv_db.hvtb_nbx_core_sw_coupon_dim where rec_end_dttm='9999-12-31') cd on cd.src_coupon_id=main.src_coupon_id
+
+spark.source.columns trans_id, source_entity_type,dest_entity_type,source_entity_id, dest_entity_id, trans_status, form_of_trans, trans_type, trans_time_stamp, currency_trans, amount_full_trans, rate_transprice, currency_price, amount_full_price, rate_pricebase, user_id, external_ident,ar_ap_due_date
+
+spark.pond.allColumns trans_id as pond_trans_id, src_trans_id as pond_src_trans_id, res_id as pond_res_id, trans_status as pond_trans_status, form_of_trans as pond_form_of_trans, trans_type as pond_trans_type, entity_type as pond_entity_type, entity_id as pond_entity_id, trans_time_stamp as pond_trans_time_stamp, currency_trans as pond_currency_trans, amount_full_trans as pond_amount_full_trans, rate_transprice as pond_rate_transprice, currency_price as pond_currency_price, amount_full_price as pond_amount_full_price, rate_pricebase as pond_rate_pricebase, operator as pond_operator, coupon_id as pond_coupon_id, is_dest_entity as pond_is_dest_entity,ar_ap_due_date as pond_ar_ap_due_date,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.surrogate_key.column trans_id
+ spark.pond.database vv_db
+spark.pond.table  hvtb_nbx_core_sw_transaction_evt
+spark.target.schema vv_db
+spark.target.table  hvtb_nbx_core_sw_transaction_evt
+spark.source.primaryKeyColumns src_trans_id
+spark.scdtype   type1
+spark.frameworkEnv   shore
+
+spark.target.final_collist final_view.trans_id as trans_id , final_view.src_trans_id as src_trans_id, final_view.res_id as res_id, final_view.trans_status as trans_status, final_view.form_of_trans as form_of_trans, final_view.trans_type as trans_type, final_view.entity_type as entity_type, final_view.entity_id as entity_id, final_view.trans_time_stamp as trans_time_stamp, final_view.currency_trans as currency_trans, final_view.amount_full_trans as amount_full_trans, final_view.rate_transprice as rate_transprice, final_view.currency_price as currency_price, final_view.amount_full_price as amount_full_price, final_view.rate_pricebase as rate_pricebase, final_view.operator as operator, final_view.coupon_id as coupon_id, final_view.is_dest_entity as is_dest_entity,final_view.ar_ap_due_date as ar_ap_due_date,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash
+
+
+spark.scdtype   type1
+spark.tableType   DIMENSION
+spark.target.temp gs://vv-dev-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_transaction_evt
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_transaction_evt
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_transaction_evt_dim_tmp
+spark.bq.permtblname seaware_transaction_evt_dim
+spark.bq.viewname seaware.seaware_transaction_evt_dim
+spark.tableType DIMENSION
+
+

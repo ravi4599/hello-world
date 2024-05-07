@@ -1,0 +1,49 @@
+spark.src.config.id SrcCommissionTypeLkp
+spark.voyage.id	SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtCommissionTypeLkp
+spark.parent.id	SrcSeawareResCommisionDetail-TgtSeawareResCommisionDetail
+spark.hadoop.hive.execution.engine mr
+
+spark.table.type   dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+spark.source.sql select distinct commiss_code as commission_code, commiss_source as commission_source,batchtime as batchtime from (SELECT COMMISS_CODE,COMMISS_SOURCE,batchtime FROM (SELECT res_commiss_detail_id,COMMISS_CODE,COMMISS_SOURCE,ts_ms,batchtime,row_number() over (partition by res_commiss_detail_id order by ts_ms desc)rn FROM vv_db.hvtb_parse_sw_rpl_res_commission_detail) WHERE rn = 1) union (SELECT COMMISS_CODE,COMMISS_SOURCE,batchtime FROM (SELECT record_id,COMMISS_CODE,COMMISS_SOURCE,ts_ms,batchtime, row_number() over (partition by record_id order by ts_ms desc)rn FROM vv_db.hvtb_nbx_parse_sw_rpl_group_commission_detail) WHERE rn = 1) union (SELECT COMMISS_CODE,COMMISS_SOURCE,batchtime FROM (SELECT res_commiss_detail_id,COMMISS_CODE,COMMISS_SOURCE,ts_ms,batchtime, row_number() over (partition by res_commiss_detail_id order by ts_ms desc) rn FROM vv_db.hvtb_nbx_parse_sw_rpl_res_commission_cancel) WHERE rn = 1) union (SELECT 'STANDARD','MANUAL OR PROTECTED',batchtime FROM vv_db.hvtb_parse_sw_rpl_res_commission_detail) union (SELECT 'BONUS','MANUAL OR PROTECTED',batchtime FROM vv_db.hvtb_parse_sw_rpl_res_commission_detail) union (SELECT 'SECONDARY','MANUAL OR PROTECTED',batchtime FROM vv_db.hvtb_parse_sw_rpl_res_commission_detail) union (SELECT COMMISS_CODE,COMMISS_SOURCE,batchtime FROM (SELECT record_id,COMMISS_CODE,COMMISS_SOURCE,ts_ms,batchtime, row_number() over (partition by record_id order by ts_ms desc) rn FROM vv_db.hvtb_parse_sw_rpl_res_charge_commission) WHERE rn = 1)
+
+
+spark.source.columns commission_code,commission_source
+
+
+spark.pond.allColumns commission_type_id as pond_commission_type_id, commission_code as pond_commission_code,commission_source as pond_commission_source,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.surrogate_key.column commission_type_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_swrpl_commission_type_lkp
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_swrpl_commission_type_lkp
+spark.source.primaryKeyColumns commission_code,commission_source
+
+spark.target.final_collist final_view.commission_type_id as commission_type_id,final_view.commission_code as commission_code,final_view.commission_source as commission_source,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_nbx_core_swrpl_commission_type_lkp
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_swrpl_commission_type_lkp
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_commission_type_lkp_tmp
+spark.bq.permtblname seaware_commission_type_lkp
+spark.bq.viewname seaware.seaware_commission_type_lkp
+
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage
+
+
+

@@ -1,0 +1,42 @@
+spark.src.config.id SrcPersonLoyaltyDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.target.config.id TgtPersonLoyaltyDim
+spark.parent.id KonamiDailyPtSum-DailyPtSumIng
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.table.type dim
+
+
+
+spark.source.columns voyage_id,person_loyalty_id,person_id,person_card_type,person_card_status,person_card_level,person_card_color,person_card_color_value
+spark.pond.allColumns voyage_id as pond_voyage_id, person_loyalty_skey as pond_person_loyalty_skey, person_loyalty_id as pond_person_loyalty_id, person_id as pond_person_id, person_card_type as pond_person_card_type, person_card_status as pond_person_card_status, person_card_level as pond_person_card_level, person_card_color as pond_person_card_color, person_card_color_value as pond_person_card_color_value, load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+spark.surrogate_key.column   person_loyalty_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_personloyalty
+spark.target.schema shipdw
+spark.target.table person_loyalty_dim
+
+spark.pond.Columns   voyage_id as pond_voyage_id, person_loyalty_skey as pond_person_loyalty_skey, person_loyalty_id as pond_person_loyalty_id, person_id as pond_person_id, person_card_type as pond_person_card_type, person_card_status as pond_person_card_status, person_card_level as pond_person_card_level, person_card_color as pond_person_card_color, person_card_color_value as pond_person_card_color_value, load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+spark.source.primaryKeyColumns   person_loyalty_id
+spark.pond.primaryKeyColumns   person_loyalty_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.target.final_collist final_view.voyage_id,final_view.person_loyalty_skey,final_view.person_loyalty_id,final_view.person_id,final_view.person_card_type,final_view.person_card_status,cast(final_view.person_card_level as int) as person_card_level,cast(final_view.person_card_color as int) as person_card_color,final_view.person_card_color_value,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp  gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_personloyalty
+spark.target.location  gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_personloyalty
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname person_loyalty_dim_tmp
+spark.bq.permtblname person_loyalty_dim
+spark.bq.viewname shipdw.person_loyalty_dim
+
+spark.tableType DIMENSION
+spark.hadoop.hive.execution.engine mr

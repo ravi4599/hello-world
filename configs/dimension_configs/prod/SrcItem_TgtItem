@@ -1,0 +1,63 @@
+spark.src.config.id SrcItem
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtItem
+spark.parent.id SrcMxpPLUItems-TgtMxpPLUItems
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+
+
+spark.source.columns voyage_id,item_plu_number,item_name,item_plu_group_number,item_plu_group_name,item_plu_category_number,item_plu_category_name,ship_code,src_updated_datetime,src_deleted_flag,src_active_flag,item_plu_type
+
+
+
+
+spark.pond.allColumns voyage_id as pond_voyage_id,item_skey as pond_item_skey,item_plu_number as pond_item_plu_number,item_name as pond_item_name,item_plu_group_number as pond_item_plu_group_number,item_plu_group_name as pond_item_plu_group_name,item_plu_category_number as pond_item_plu_category_number,item_plu_category_name as pond_item_plu_category_name,ship_code as pond_ship_code,src_updated_datetime as pond_src_updated_datetime,src_deleted_flag as pond_src_deleted_flag,src_active_flag as pond_src_active_flag,item_plu_type as pond_item_plu_type,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+
+
+spark.surrogate_key.column item_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_pos_item
+spark.target.schema shipdw
+spark.target.table pos_item_dim
+spark.source.primaryKeyColumns item_plu_number
+
+spark.target.final_collist final_view.voyage_id,final_view.item_skey,cast(final_view.item_plu_number as string) as item_plu_number,final_view.item_name,cast(final_view.item_plu_group_number as string) as item_plu_group_number,final_view.item_plu_group_name,final_view.item_plu_category_number,final_view.item_plu_category_name,cast(final_view.ship_code as string) as ship_code,final_view.src_updated_datetime,final_view.src_deleted_flag,final_view.src_active_flag,final_view.item_plu_type,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+
+
+
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_pos_item
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_pos_item
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname pos_item_dim_tmp
+spark.bq.permtblname pos_item_dim
+spark.bq.viewname shipdw.pos_item_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+
+
+
+
+
+
+
+
+spark.source.sql select plu_items.voyageid as voyage_id,cast(plu_items.Plu_Nr as string)as item_plu_number,plu_items.Plu_Desc as item_name,cast(plu_groups.plu_group_nr as string) as item_plu_group_number,plu_groups.plu_group_desc as item_plu_group_name, plu_category.plu_categ_nr as item_plu_category_number,plu_category.plu_categ_desc as item_plu_category_name,cast(null as string) as ship_code, plu_items.Rec_Changed as src_updated_datetime,plu_items.rec_deleted as src_deleted_flag,plu_items.active as src_active_flag,plu_items.PLU_Type as item_plu_type,plu_items.batchtime,plu_items.part_date from ( select * from ( select voyageid,Plu_ID,Plu_Nr,Plu_Desc,PLU_Group_ID,Rec_Changed,rec_deleted,PLU_Type,active,batchtime,part_date,guid,row_number() over(partition by Plu_Nr order by ts_ms desc)rn from shipdw.hvtb_parse_mxp_plu_items where Plu_Nr is not null) where rn = 1)plu_items left join ( select * from ( select active, rec_deleted,PLU_Group_ID,plu_group_nr,plu_group_desc,plu_category_id,row_number() over(partition by PLU_Group_ID order by ts_ms desc)rn from shipdw.hvtb_parse_mxp_pos_plu_groups where rec_deleted = 0 and active = 1 ) where rn = 1)plu_groups ON (plu_items.PLU_Group_ID = plu_groups.PLU_Group_ID) left join ( select * from ( select plu_categ_id, plu_categ_nr,plu_categ_desc,rec_deleted,active,row_number() over(partition by plu_categ_id order by ts_ms desc)rn from shipdw.hvtb_parse_mxp_plu_categories where rec_deleted = 0 and active = 1) where rn = 1)plu_category ON plu_groups.plu_category_id = plu_category.plu_categ_id
+
+
+
+
+
+
+###spark.source.sql select plu_items.voyageid as voyage_id, cast(plu_items.Plu_Nr as string)as item_plu_number, plu_items.Plu_Desc as item_name, cast(plu_groups.plu_group_nr as string) as item_plu_group_number, plu_groups.plu_group_desc as item_plu_group_name, plu_category.plu_categ_nr as item_plu_category_number, plu_category.plu_categ_desc as item_plu_category_name, cast(null as string) as ship_code, plu_items.Rec_Changed as src_updated_datetime, plu_items.rec_deleted as src_deleted_flag, plu_items.active as src_active_flag, plu_items.batchtime, plu_items.part_date from ( select * from ( select voyageid, Plu_ID, Plu_Nr, Plu_Desc, PLU_Group_ID, Rec_Changed, rec_deleted, active, batchtime, part_date, guid, row_number() over(partition by Plu_Nr order by ts_ms desc)rn from shipdw.hvtb_parse_mxp_plu_items) where rn = 1)plu_items left join ( select * from ( select active, rec_deleted, PLU_Group_ID, plu_group_nr, plu_group_desc, plu_category_id, row_number() over(partition by PLU_Group_ID order by ts_ms desc)rn from shipdw.hvtb_parse_mxp_pos_plu_groups where rec_deleted = 0 and active = 1 ) where rn = 1)plu_groups ON (plu_items.PLU_Group_ID = plu_groups.PLU_Group_ID) left join ( select * from ( select plu_categ_id , plu_categ_nr, plu_categ_desc, rec_deleted, active, row_number() over(partition by plu_categ_id order by ts_ms desc)rn from shipdw.hvtb_parse_mxp_plu_categories where rec_deleted = 0 and active = 1) where rn = 1)plu_category ON plu_groups.plu_category_id = plu_category.plu_categ_id
+
+
+spark.hadoop.hive.execution.engine mr
+

@@ -1,0 +1,13 @@
+spark.src.config.id SrcSwAgencyDimSrcAgencyIdEncode
+spark.tgt.env Dev
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtSwAgencyDimSrcAgencyIdEncode
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.3.100.222:2181/hbase-unsecure
+
+spark.source.table vv_db.hvtb_nbx_core_sw_agency_dim
+spark.source.columns src_agency_id
+spark.target.encode.table vv_db.hvtb_nbx_core_sw_agency_dim_src_agency_id
+

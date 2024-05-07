@@ -1,0 +1,32 @@
+spark.kafkabrokers 10.15.2.58:9092,10.15.12.38:9092,10.15.13.172:9092
+spark.kafka.zookeeper 10.15.2.58:2181
+spark.target.zkurl 10.15.2.206:2181/hbase-unsecure
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+
+spark.src.kafkatopic dbz.SEAWARE.SHIP
+spark.src.personOffSet earliest
+
+spark.src.config.id SrcSeawareShp 
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtSeawareShp
+
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_ship
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_ship
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+
+
+spark.source.columns SHIP_ID,SHIP_CODE,SHIP_NAME,SHIP_REGISTRY,SHIP_BUILT_DATE,SHIP_CREW_SIZE,SHIP_PAX_CAPACITY,SHIP_CRUISING_SPEED,SHIP_MAX_SPEED,SHIP_LENGTH,SHIP_BEAM,SHIP_DRAUGHT,SHIP_TONNAGE,SHIP_STABILIZER,COMMENTS,IMAGE_ID,CRUISE_LINE_CODE,op,ts_ms,voyageid,Batchtime,Part_Date
+
+spark.final.query select SHIP_ID,SHIP_CODE,SHIP_NAME,SHIP_REGISTRY,CAST(SHIP_BUILT_DATE/1000000 as timestamp)as SHIP_BUILT_DATE,SHIP_CREW_SIZE,SHIP_PAX_CAPACITY,SHIP_CRUISING_SPEED,SHIP_MAX_SPEED,SHIP_LENGTH,SHIP_BEAM,SHIP_DRAUGHT,SHIP_TONNAGE,SHIP_STABILIZER,COMMENTS,IMAGE_ID,CRUISE_LINE_CODE, op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date
+

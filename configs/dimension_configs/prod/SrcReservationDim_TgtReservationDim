@@ -1,0 +1,69 @@
+spark.src.config.id   SrcReservationDim
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   Prod
+spark.api.env Prod
+spark.target.config.id   TgtReservationDim
+spark.parent.id   SrcSeawareResHeader-TgtSeawareResHeader
+spark.driver.maxResultSize=2048m
+   
+
+spark.table.type dim
+spark.hadoop.hive.execution.engine mr
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+
+
+  
+
+#spark.source.sql  select rh.res_id as src_res_id,rh.res_init_date,rh.res_guest_count,rh.res_mode,cx.cancellation_date,rh.res_status,perf.performer as operator,rh.res_type,ag.is_internal,rh.source_code,rp.effective_date,op.vip_status__c as vip_status,op.stagename as stage,op.bookingsource__c as booking_source,op.lastmodifiedbyid as last_modifiedby_id,case when rhtl.res_id is not null and rh.res_status='BK' then 'Y' else 'N' end as hotel_flag,sh.src_sail_id,agency.seaware_agency_id__c as seaware_agency_id,agent.seaware_agent_id__c as seaware_agent_id,case when tran.src_res_id is not null then 'Y' else 'N' end as opted_fvc,cc.case_name as cancellation_case,rh.group_id as src_group_id,rh.currency_code as currency,cast(rh.currency_rate as double),rh.batchtime as batchtime,rh.part_date as part_date,rh.ts_ms as ts_ms_rh,cx.ts_ms_cx,perf.ts_ms_perf,rp.ts_ms_rp,rhtl.ts_ms_rhtl,tran.ts_ms_tran,ag.ts_ms_ag,sh.ts_ms_sh,op.ts_ms_op,agency.ts_ms_agency,agent.ts_ms_agent,cc.ts_ms_cc   from vv_db.hvtb_parse_sw_rpl_res_header rh  left join (select res_id,event_timestamp as cancellation_date,ts_ms as ts_ms_cx from (select res_id,event_timestamp,ts_ms,row_number() over (partition by res_id order by ts_ms desc) rn from vv_db.hvtb_parse_sw_rpl_res_event where event_timestamp in (select min(event_timestamp) from vv_db.hvtb_parse_sw_rpl_res_event where new_status='CX' group by res_id) and new_status='CX') where rn=1) cx  on (rh.res_id=cx.res_id)  left join (select res_id,performer,ts_ms as ts_ms_perf from (select res_id,performer,ts_ms,row_number() over (partition by res_id order by ts_ms desc) rn from vv_db.hvtb_parse_sw_rpl_res_history where trans_timestamp in (select max(trans_timestamp) from vv_db.hvtb_parse_sw_rpl_res_history group by res_id)) where rn=1)perf on (rh.res_id=perf.res_id)   left join (select effective_date,res_id,ts_ms as ts_ms_rp from (select effective_date,res_id,ts_ms,row_number() over (partition by res_id order by ts_ms desc) rn from vv_db.hvtb_parse_sw_rpl_res_package where effective_date in (select  max(effective_date) as effective_date from vv_db.hvtb_parse_sw_rpl_res_package group by res_id)) where rn=1) rp on rh.res_id=rp.res_id   left join (select res_id,ts_ms as ts_ms_rhtl from (select res_id,ts_ms,row_number() over (partition by res_id order by ts_ms desc) rn from vv_db.hvtb_parse_sw_rpl_res_hotel_request where res_id in (select res_id from vv_db.hvtb_parse_sw_rpl_res_hotel_request group by res_id)) where rn=1) rhtl on rh.res_id = rhtl.res_id  left join (select case when a.source_entity_type='RES' then a.source_entity_id else case when a.dest_entity_type='RES' then  a.dest_entity_id end end as src_res_id,ts_ms as ts_ms_tran  from vv_db.hvtb_parse_sw_rpl_acc_trans_detail  a where (a.source_entity_type='RES' or a.dest_entity_type='RES') and a.form_of_trans='CPN' and a.trans_status in ('OK','PENDING REFUND') and a.trans_type in ('PMNT','REFUND')) tran on rh.res_id = tran.src_res_id  left join (select agency_id,is_internal,ts_ms as ts_ms_ag from vv_db.hvtb_parse_sw_rpl_agency ) ag on rh.agency_id=ag.agency_id  left join (select ship_code,dep_ref_id,arr_ref_id,sail_id as src_sail_id,ts_ms as ts_ms_sh from vv_db.hvtb_parse_sw_rpl_sail_header) sh on rh.ship_code=sh.ship_code and rh.dep_ref_id=sh.dep_ref_id and rh.arr_ref_id=sh.arr_ref_id   left join (select vip_status__c,stagename,bookingsource__c,lastmodifiedbyid,reservation_number__c,agencyname__c,agentname__c,load_data_timestamp as ts_ms_op from vv_db.hvtb_nbx_core_crm_opportunity) op on rh.res_id=op.reservation_number__c  left join (select cast(seaware_agency_id__c as int),id,rec_end_dttm,lastmodifieddate as ts_ms_agency from vv_db.hvtb_nbx_core_crm_agency_master_dim) agency on op.agencyname__c = agency.id and to_date(agency.rec_end_dttm) ='9999-12-31'   left join (select cast(seaware_agent_id__c as int),id,rec_end_dttm,load_dt as ts_ms_agent from vv_db.hvtb_nbx_core_crm_agent_master_dim) agent on op.agentname__c = agent.id and to_date(agent.rec_end_dttm) ='9999-12-31'  left join (select case_name,case_id,ts_ms as ts_ms_cc from vv_db.hvtb_parse_sw_rpl_cancellation_case) cc on rh.cancellation_case=cc.case_id
+  
+ 
+spark.source.sql SELECT rh.res_id AS src_res_id, rh.res_init_date, rh.res_guest_count, rh.res_mode, cx.cancellation_date, rh.res_status, perf.performer AS operator, rh.res_type, ag.is_internal, rh.source_code, rp.effective_date, op.vip_status__c AS vip_status, op.stagename AS stage, op.bookingsource__c AS booking_source, op.lastmodifiedbyid AS last_modifiedby_id, CASE WHEN rhtl.res_id IS NOT NULL AND rh.res_status='BK' THEN 'Y' ELSE 'N' END AS hotel_flag, sh.src_sail_id, agency.seaware_agency_id__c AS seaware_agency_id, agent.seaware_agent_id__c AS seaware_agent_id, CASE WHEN tran.src_res_id IS NOT NULL THEN 'Y' ELSE 'N' END AS opted_fvc, cc.case_name AS cancellation_case, rh.group_id AS src_group_id, rh.currency_code AS currency, CAST(rh.currency_rate AS double), rh.batchtime AS batchtime, rh.part_date AS part_date, rh.ts_ms AS ts_ms_rh, cx.ts_ms_cx, perf.ts_ms_perf, rp.ts_ms_rp, rhtl.ts_ms_rhtl, tran.ts_ms_tran, ag.ts_ms_ag, sh.ts_ms_sh, op.ts_ms_op, agency.ts_ms_agency, agent.ts_ms_agent, cc.ts_ms_cc FROM vv_db.hvtb_parse_sw_rpl_res_header rh LEFT JOIN ( SELECT res_id, event_timestamp AS cancellation_date, ts_ms AS ts_ms_cx FROM ( SELECT res_id, event_timestamp, ts_ms, ROW_NUMBER() OVER (PARTITION BY res_id ORDER BY ts_ms DESC,lsn DESC) rn FROM vv_db.hvtb_parse_sw_rpl_res_event WHERE event_timestamp IN ( SELECT MIN(event_timestamp) FROM vv_db.hvtb_parse_sw_rpl_res_event WHERE new_status='CX' GROUP BY res_id) AND new_status='CX') WHERE rn=1) cx ON (rh.res_id=cx.res_id) LEFT JOIN ( SELECT res_id, performer, ts_ms AS ts_ms_perf FROM ( SELECT res_id, performer, ts_ms, ROW_NUMBER() OVER (PARTITION BY res_id ORDER BY ts_ms DESC,lsn DESC) rn FROM vv_db.hvtb_parse_sw_rpl_res_history WHERE trans_timestamp IN ( SELECT MAX(trans_timestamp) FROM vv_db.hvtb_parse_sw_rpl_res_history GROUP BY res_id)) WHERE rn=1)perf ON (rh.res_id=perf.res_id) LEFT JOIN ( SELECT effective_date, res_id, ts_ms AS ts_ms_rp FROM ( SELECT effective_date, res_id, ts_ms, ROW_NUMBER() OVER (PARTITION BY res_id ORDER BY ts_ms DESC,lsn DESC) rn FROM vv_db.hvtb_parse_sw_rpl_res_package WHERE effective_date IN ( SELECT MAX(effective_date) AS effective_date FROM vv_db.hvtb_parse_sw_rpl_res_package GROUP BY res_id)) WHERE rn=1) rp ON rh.res_id=rp.res_id LEFT JOIN ( SELECT res_id, ts_ms AS ts_ms_rhtl FROM ( SELECT res_id, ts_ms, ROW_NUMBER() OVER (PARTITION BY res_id ORDER BY ts_ms DESC,lsn DESC) rn FROM vv_db.hvtb_parse_sw_rpl_res_hotel_request WHERE res_id IN ( SELECT res_id FROM vv_db.hvtb_parse_sw_rpl_res_hotel_request GROUP BY res_id)) WHERE rn=1) rhtl ON rh.res_id = rhtl.res_id LEFT JOIN ( SELECT CASE WHEN a.source_entity_type='RES' THEN a.source_entity_id ELSE CASE WHEN a.dest_entity_type='RES' THEN a.dest_entity_id END END AS src_res_id, ts_ms AS ts_ms_tran FROM vv_db.hvtb_parse_sw_rpl_acc_trans_detail a WHERE (a.source_entity_type='RES' OR a.dest_entity_type='RES') AND a.form_of_trans='CPN' AND a.trans_status IN ('OK', 'PENDING REFUND') AND a.trans_type IN ('PMNT', 'REFUND')) tran ON rh.res_id = tran.src_res_id LEFT JOIN ( SELECT agency_id, is_internal, ts_ms AS ts_ms_ag FROM vv_db.hvtb_parse_sw_rpl_agency ) ag ON rh.agency_id=ag.agency_id LEFT JOIN ( SELECT ship_code, dep_ref_id, arr_ref_id, sail_id AS src_sail_id, ts_ms AS ts_ms_sh FROM vv_db.hvtb_parse_sw_rpl_sail_header) sh ON rh.ship_code=sh.ship_code AND rh.dep_ref_id=sh.dep_ref_id AND rh.arr_ref_id=sh.arr_ref_id LEFT JOIN ( SELECT vip_status__c, stagename, bookingsource__c, lastmodifiedbyid, reservation_number__c, agencyname__c, agentname__c, load_data_timestamp AS ts_ms_op FROM vv_db.hvtb_nbx_core_crm_opportunity) op ON rh.res_id=op.reservation_number__c LEFT JOIN ( SELECT CAST(seaware_agency_id__c AS int), id, rec_end_dttm, lastmodifieddate AS ts_ms_agency FROM vv_db.hvtb_nbx_core_crm_agency_master_dim) agency ON op.agencyname__c = agency.id AND to_date(agency.rec_end_dttm) ='9999-12-31' LEFT JOIN ( SELECT CAST(seaware_agent_id__c AS int), id, rec_end_dttm, load_dt AS ts_ms_agent FROM vv_db.hvtb_nbx_core_crm_agent_master_dim) agent ON op.agentname__c = agent.id AND to_date(agent.rec_end_dttm) ='9999-12-31' LEFT JOIN ( SELECT case_name, case_id, ts_ms AS ts_ms_cc FROM vv_db.hvtb_parse_sw_rpl_cancellation_case) cc ON rh.cancellation_case=cc.case_id 
+
+
+spark.source.columns src_res_id,res_init_date,res_guest_count,res_mode,cancellation_date,res_status,operator,res_type,is_internal,source_code,effective_date,vip_status,stage,booking_source,last_modifiedby_id,hotel_flag,src_sail_id,seaware_agency_id,seaware_agent_id,agency_id,agent_id,sec_agency_id,sec_agent_id,opted_fvc,cancellation_case,src_group_id,currency,currency_rate
+   
+spark.pond.allColumns res_id as pond_res_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,src_res_id as pond_src_res_id,res_init_date as pond_res_init_date,res_guest_count as pond_res_guest_count,res_mode as pond_res_mode,cancellation_date as pond_cancellation_date,res_status as pond_res_status,operator as pond_operator,res_type as pond_res_type,is_internal as pond_is_internal,source_code as pond_source_code,effective_date as pond_effective_date,vip_status as pond_vip_status,stage as pond_stage,booking_source as pond_booking_source,last_modifiedby_id as pond_last_modifiedby_id,hotel_flag as pond_hotel_flag,src_sail_id as pond_src_sail_id,seaware_agency_id as pond_seaware_agency_id,seaware_agent_id as pond_seaware_agent_id,agency_id as pond_agency_id,agent_id as pond_agent_id,sec_agency_id as pond_sec_agency_id,sec_agent_id as pond_sec_agent_id,opted_fvc as pond_opted_fvc,cancellation_case as pond_cancellation_case,src_group_id as pond_src_group_id,currency as pond_currency,currency_rate as pond_currency_rate,etl_ld_status as pond_etl_ld_status,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,scd_hash as pond_scd_hash
+
+
+spark.target.final_collist   res_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.src_res_id,final_view.res_init_date,final_view.res_guest_count,final_view.res_mode,final_view.cancellation_date,final_view.res_status,final_view.operator,final_view.res_type,final_view.is_internal,final_view.source_code,final_view.effective_date,final_view.vip_status,final_view.stage,final_view.booking_source,final_view.last_modifiedby_id,final_view.hotel_flag,final_view.src_sail_id,final_view.seaware_agency_id,final_view.seaware_agent_id,final_view.agency_id,final_view.agent_id,final_view.sec_agency_id,final_view.sec_agent_id,final_view.opted_fvc,final_view.cancellation_case,final_view.src_group_id,final_view.currency,final_view.currency_rate,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash   
+   
+spark.surrogate_key.column  res_id
+spark.pond.database   vv_db
+spark.pond.table   hvtb_nbx_core_sw_reservation_dim
+spark.source.primaryKeyColumns   src_res_id
+spark.target.schema vv_db
+spark.target.table   hvtb_nbx_core_sw_reservation_dim
+
+spark.target.temp gs://vv-prod-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_reservation_dim
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_reservation_dim
+
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_reservation_dim_tmp
+spark.bq.permtblname seaware_reservation_dim
+spark.bq.viewname seaware.seaware_reservation_dim
+
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage
+
+
+#spark.talent.dependencyflag true
+spark.load.frequency SW_rpl_daily
+spark.scdtype type2
+   
+##=============SCD2 Config Details ==============  
+
+spark.source.srcDateColumn src_date
+spark.scd.columns res_init_date,res_guest_count,cancellation_date,res_status,operator,is_internal,effective_date,vip_status,stage,booking_source,last_modifiedby_id,src_sail_id,seaware_agency_id,seaware_agent_id,agency_id,agent_id,sec_agency_id,sec_agent_id,opted_fvc,cancellation_case,src_group_id,currency,currency_rate
+
+
+# all source columns as alias ( id_new,amount_new,oppo_new )along with all audit columns
+spark.source.updateReq res_id,rec_start_dttm,rec_end_dttm,src_res_id_new,res_init_date_new,res_guest_count_new,res_mode_new,cancellation_date_new,res_status_new,operator_new,res_type_new,is_internal_new,source_code_new,effective_date_new,vip_status_new,stage,booking_source_new,last_modifiedby_id_new,hotel_flag_new,src_sail_id_new,seaware_agency_id_new,seaware_agent_id_new,agency_id_new,agent_id_new,sec_agency_id_new,sec_agent_id_new,opted_fvc_new,cancellation_case_new,src_group_id_new,currency_new,currency_rate_new,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash

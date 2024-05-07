@@ -1,0 +1,39 @@
+spark.src.con.format jdbc
+spark.src.con.driver org.postgresql.Driver
+spark.src.con.url jdbc:postgresql://prod-apidbreplica.gcp.virginvoyages.com/P_AWS_XREF_DB
+spark.src.user vvadmin
+spark.src.password VvAdmin9$
+
+spark.src.config.id SrcXrefRefAudit
+spark.tgt.env QA
+spark.ing.type Ingestion
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtXrefRefAudit
+spark.src.table.query xref.reference_audit
+
+spark.target.lnd.table shipdw.hvtb_nbx_landing_xref_reference_audit
+spark.target.table shipdw.hvtb_nbx_landing_xref_reference_audit
+
+
+spark.target.temp gs://vv-cert-nbx-cluster/data/landing/xref/temp/hvtb_nbx_landing_xref_reference_audit
+spark.target.location gs://vv-cert-nbx-cluster/data/landing/xref/hvtb_nbx_landing_xref_reference_audit
+
+spark.target.hive.table shipdw.hvtb_nbx_landing_xref_reference_audit
+spark.source.columns reference_audit_id,reference_id,reference_type_id,native_source_id_value,master_id,event_type,event_timestamp,system_id,merge_id,source_master_id,op,ts_ms
+spark.source.query reference_audit_id,reference_id,reference_type_id,native_source_id_value,master_id,event_type,event_timestamp,system_id,merge_id,source_master_id,op,ts_ms
+
+
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.offset.mode Append
+spark.metadata.offset.table shipdw.hbtb_streaming_ingestion_offset
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr
+spark.stop.flag N
+spark.condition.column event_timestamp
+spark.ship.code SHORE
+

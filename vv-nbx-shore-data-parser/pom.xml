@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.virginvoyages.shore.mxp</groupId>
+	<artifactId>shore-data-parser</artifactId>
+	<packaging>pom</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>vv-nexus-snapshots</id>
+			<url>http://10.3.100.215:8081/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+
+	<modules>
+		<module>vv-nbx-data-parser-entity-hash</module>
+		<module>vv-nbx-data-parser-meal-count</module>
+		<module>vv-nbx-data-parser-mxp-pos-sales</module>
+		<module>vv-nbx-data-parser-onboard-sailor-reviewask</module>
+		<module>vv-nbx-data-parser-rts-statusdetail</module>
+		<module>vv-nbx-data-parser-seaware-wearables</module>
+		<module>vv-nbx-data-parser-swtovxp-wearable</module>
+		<module>vv-nbx-data-parser-vxp-idcrossreference</module>
+		<module>vv-nbx-data-parser-core-guest</module>
+		<module>vv-nbx-data-parser-agent</module>
+		<module>vv-nbx-data-parser-campaign</module>
+		<module>vv-nbx-data-parser-team</module>
+		<module>vv-nbx-data-parser-postvoyage-survey-responses</module>
+	    <module>vv-nbx-data-parser</module>
+		<module>vv-nbx-data-parser-onboard-sailor-reviewanswer</module>
+		<module>vv-nbx-data-parser-errorreporting-seaware-wearables</module>
+		<module>vv-nbx-data-parser-GoSpark-venue</module>
+		<module>vv-nbx-data-parser-seaware-wearables-rddfile-fromsftp</module>
+		<module>vv-nbx-data-parser-GoSpark-event</module>
+		<module>vv-nbx-data-parser-housekeeping-teammember-schedule</module>
+		<module>vv-nbx-data-parser-mxp-cruise</module>
+		<module>vv-nbx-data-parser-mxp-items</module>
+		<module>vv-nbx-data-parser-mxp-crew-schedule</module>
+		<module>vv-nbx-data-parser-apollo-pos-change</module>
+</modules>
+	<dependencies>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.1</version>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+

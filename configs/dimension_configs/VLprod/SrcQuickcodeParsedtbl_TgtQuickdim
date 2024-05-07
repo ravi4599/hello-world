@@ -1,0 +1,34 @@
+spark.src.config.id SrcQuickDim
+spark.voyage.id SC1912065NCM
+spark.tgt.env Prod
+spark.target.config.id TgtQuickDim
+spark.parent.id SrcMXPQuickcodeparse-TgtMXPQuickcodeparse-SC2002269NCR
+spark.source.columns quick_code_name,quick_code,voyage_id
+spark.pond.allColumns quickcode_skey as pond_quickcode_skey,quick_code_name as pond_quick_code_name,quick_code as pond_quick_code,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column quickcode_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_quickcode
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename hvtb_mart_dim_quickcode
+spark.source.primaryKeyColumns quick_code
+spark.target.final_collist final_view.quickcode_skey as quickcode_skey,final_view.quick_code as quick_code,final_view.quick_code_name as quick_code_name,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_quickcode
+spark.target.location /data/apps/nbx/mart/hvtb_mart_dim_quickcode
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+spark.source.columns quick_code_name,quick_code,voyage_id
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.database qanbx
+spark.target.table.format org.apache.phoenix.spark
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+#spark.target.enablerops_table ship.HBTB_STREAMING_INGESTION_OFFSET
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.quickcodeparsed.table shipdw.hvtb_parse_mxp_ship_quickcode
+ 
+spark.ship.code VAL
+

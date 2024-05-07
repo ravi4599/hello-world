@@ -1,0 +1,35 @@
+spark.src.config.id SrcGameDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtGameDim
+spark.parent.id KonamiAllgame_Allgame
+spark.table.type dim
+spark.target.schema shipdw
+spark.target.table game_dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.source.sql select voyageid as voyage_id,gameid as game_id,gamename as game_name,masterprom as game_master_prom,isbettype as game_is_bet_type_flag,batchtime,part_date from  (select * from (select voyageid,gameid,gamename,masterprom,cast(isbettype as boolean) as isbettype,lastmoddate,batchtime,part_date,row_number() over(partition by gameid order by lastmoddate desc) rn from shipdw.hvtb_parse_konami_vw_tal_allgame) where rn=1)
+spark.source.columns voyage_id,game_id,game_name,game_master_prom,game_is_bet_type_flag
+spark.pond.allColumns voyage_id as pond_voyage_id,game_skey as pond_game_skey,game_id as pond_game_id,game_name as pond_game_name,game_master_prom as pond_game_master_prom,game_is_bet_type_flag as pond_game_is_bet_type_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column game_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_game
+spark.source.primaryKeyColumns game_id
+spark.target.final_collist final_view.voyage_id,final_view.game_skey,final_view.game_id,final_view.game_name,final_view.game_master_prom,final_view.game_is_bet_type_flag,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_game
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_game
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname game_dim_tmp
+spark.bq.permtblname game_dim
+spark.bq.viewname shipdw.game_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

@@ -1,0 +1,21 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:sqlserver://10.12.1.243:1442;database=MXP
+spark.src.user Capgemini
+spark.src.password Nskh#c5v3y&7
+spark.src.con.driver com.microsoft.sqlserver.jdbc.SQLServerDriver
+spark.src.config.id SrcMxpPosition
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtMxpPosition
+spark.target.location s3://vv-staging-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_position
+spark.target.hive.table shipdw.hvtb_lnd_mxp_position
+spark.target.table shipdw.hvtb_lnd_mxp_position
+spark.src.table.query MXP.dbo.Positions
+spark.target.ops.table.format org.apache.phoenix.spark	
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.condition.column LAST_CHANGED
+spark.source.columns ROW_COUNTER, POSITION_ID, DEPARTMENT_ID, POSITION_NAME, POSITION_VALID_FROM, POSITION_VALID_TO, POSITION_COMMENT, ACTIVE, REC_DELETED, CREATED_BY_ID, CREATED_AT_ID, CREATED, CHANGED, LAST_CHANGED, GUID, REPORTING_CATEGORY_ID, APPRAISAL_TEMPLATE_ID, AIR_ACCOUNT_CODE_ID, POSITION_JOB_DESCRIPTION, APPRAISAL_TEMPLATE_BOC_ID, APPRAISAL_TEMPLATE_BOC_DAYS, APPRAISAL_TEMPLATE_EOC_ID, APPRAISAL_TEMPLATE_EOC_DAYS, APPRAISAL_TEMPLATE_ANNUAL_ID, APPRAISAL_TEMPLATE_ANNUAL_DATE, ENOAD_POSITION_ID, EDCS_POSITION_ID, POSITION_CODE, LAST_CHANGE_LOG_ID, ON_LINE_APPLICATION, FLEXIBLE_MANNING_PER_POSITION_COUNT, FLEXIBLE_MANNING_PER_POSITION_COUNT_TYPE, FLEXIBLE_MANNING_COUNTRY_NAVIGATION_TIME, EMPLOYEE_AGREEMENT_GROUP_ID, POSITION_SEQUENCE, MSWSE_POSITION_ID
+spark.ship.code SHORE
+

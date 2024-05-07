@@ -1,0 +1,21 @@
+spark.source.table select * from vv_db.hvtb_lnd_swtovxp_wearable
+
+spark.target.table shipdw.hvtb_parse_swtovxp_wearable_fulfillment
+spark.src.config.id SrcSwToVxpWearableFulfillment
+spark.voyage.id SC2002269NCR
+spark.tgt.env stage
+spark.target.config.id TgtSwToVxpWearableFulfillment
+spark.parent.id SrcKfkaWearable-TgtHvWearable
+ 
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite 
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.ship.code Shore
+
+
+
+
+
+
+

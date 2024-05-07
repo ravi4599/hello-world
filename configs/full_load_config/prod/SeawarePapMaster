@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.PAP_MASTER
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT PAP_CODE, PAP_ID, PRIORITY, PROGRAM_CURRENCY, AGENCY_DOMESTIC, PAP_TYPE, COMMENTS, PAP_NAME, EXTERNAL_RULES, IS_PRICE_PROGRAM, PROMO_GROUP, COUPON_CLASS, PRINT_CRUISE_FARE_AMOUNT, MANUAL_INPUT_VALUE_TYPE, IS_ACTIVE FROM SEAWARE.PAP_MASTER)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_pap_master
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/PAP_MASTER
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_pap_master/
+
+spark.hadoop.hive.execution.engine mr

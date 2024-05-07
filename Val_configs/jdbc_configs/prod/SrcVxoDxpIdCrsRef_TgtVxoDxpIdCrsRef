@@ -1,0 +1,31 @@
+#source postgres database,table and connection details
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148/dxpcore
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.con.driver org.postgresql.Driver
+#Unique constant for Batchid
+spark.src.config.id SrcVxoDxpIdCrsRef
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtVxoDxpIdCrsRef
+SrcVxoDxpIdCrsRef-TgtVxoDxpIdCrsRef 
+#Metadbta Hbase table and connection details
+spark.tgt.env Prod
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.src.table.query "idcrossreference"
+spark.condition.column lastmodifieddate
+#target hdfs table location with hive table and column details
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_parse_vxp_dxp_idcrossreference
+spark.target.hive.table shipdw.hvtb_parse_vxp_dxp_idcrossreference
+spark.source.columns idcrossreferenceid,idtypeid,idsourceid,idvalue,linkid,expirydate,additionaldetail,addeddate,addedby,lastmodifieddate,lastmodifiedby,isdeleted
+spark.source.query idcrossreferenceid,idtypeid,idsourceid,idvalue,linkid,expirydate,additionaldetail,addeddate,addedby,lastmodifieddate,lastmodifiedby,isdeleted
+#spark.tz.columns property to change all thez columns to UTC
+spark.tz.columns addeddate,lastmodifieddate
+spark.source.zone EST
+#PROD cluster details
+spark.ship.code VAL
+

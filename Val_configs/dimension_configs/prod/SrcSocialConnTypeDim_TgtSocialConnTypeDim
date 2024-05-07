@@ -1,0 +1,32 @@
+spark.src.config.id SrcSocialConnTypeDim
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtSocialConnTypDim
+spark.parent.id SrcVxpDxpPersonsocialcon-TgtVxpDxpPersonsocialcon
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.table.type dim
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.database prodnbx
+############################################################ 
+spark.source.sql select psc.VoyageId as voyage_id, psc.connectiontype as connection_type,psc.BatchTime as BatchTime, psc.Part_Date as Part_Date from ( select * from (select distinct connectiontype ,VoyageId,BatchTime,Part_Date, row_number() over(partition by personsocialconnectionid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_dxp_personsocialconnection *whereclause*) where rn = 1) psc
+spark.source.columns voyage_id,connection_type
+spark.pond.allColumns voyage_id as pond_voyage_id,connection_type_skey as pond_connection_type_skey,connection_type as pond_connection_type,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column connection_type_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_social_connection_type
+spark.source.primaryKeyColumns connection_type
+spark.target.final_collist final_view.voyage_id as voyage_id,final_view.connection_type_skey as connection_type_skey,final_view.connection_type as connection_type,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_social_connection_type
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_social_connection_type
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename social_connection_type_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+############################################################# 
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+

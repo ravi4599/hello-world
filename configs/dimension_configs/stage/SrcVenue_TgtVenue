@@ -1,0 +1,42 @@
+spark.src.config.id SrcVenue
+spark.voyage.id SC2002269NCR
+spark.tgt.env stage
+spark.target.config.id TgtVenue
+spark.parent.id SrcGosparkVenue-TgtGosparkVenue
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+spark.table.type dim
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+
+spark.source.columns voyage_id,venue_id,venue_name,venue_sector_name,data_src,density_threshold_1,density_threshold_2,ship_code
+
+spark.pond.allColumns venue_skey as pond_venue_skey,voyage_id as pond_voyage_id,venue_id as pond_venue_id,venue_name as pond_venue_name,venue_sector_name as pond_venue_sector_name,data_src as pond_data_src,density_threshold_1 as pond_density_threshold_1,density_threshold_2 as pond_density_threshold_2,ship_code as pond_ship_code,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+
+spark.surrogate_key.column venue_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_venue
+spark.target.schema shipdw
+spark.target.table venue_dim
+spark.source.primaryKeyColumns venue_id
+
+spark.target.final_collist venue_skey,final_view.voyage_id as voyage_id,final_view.venue_id as venue_id,final_view.venue_name as venue_name,final_view.venue_sector_name as venue_sector_name,final_view.data_src as data_src,final_view.density_threshold_1 as density_threshold_1,final_view.density_threshold_2 as density_threshold_2,final_view.ship_code as ship_code,final_view.load_dt as load_dt ,final_view.upd_dt as upd_dt ,final_view.primaryhash as primaryhash ,final_view.md5_hash as md5_hash
+
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_dim_venue
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_venue
+spark.temp s3://vv-staging-emr-cluster/data/temp1/hvtb_mart_dim_venue
+
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename venue_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+
+spark.source.sql SELECT parse.voyageid as voyage_id,parse.pl_id as venue_id,parse.pl_name as venue_name,dim.venue_sector_name as venue_sector_name,'SparkGO' as data_src, lkup.threshold1 as density_threshold_1,lkup.threshold2 as density_threshold_2,substr(vaparse.pl_shipcode,1,2) as ship_code,parse.batchtime,parse.part_date FROM (select * from (select voyageid,pl_id,pl_name,ts,batchtime,part_date,row_number() over ( partition by pl_id order by ts desc) as rn from shipdw.hvtb_parse_mxp_gospark_venue)a where a.rn=1) parse left join shipdw.hvtb_mart_dim_venue dim on (dim.venue_id == parse.pl_id) left join shipdw.hvtb_mart_lkp_venue_density_threshold lkup on (parse.pl_id == lkup.venue_id) left join (select * from (select pl_id,pl_shipcode,ts, row_number() over (partition by pl_id order by ts desc) as rn from shipdw.hvtb_parse_mxp_gospark_venue_availability)b where b.rn=1) vaparse on (vaparse.pl_id==parse.pl_id)
+
+#spark.source.sql select * from (Select venue_id, venue_name, voyage_id, 'SparkGO' as data_src, batchtime, part_date from (SELECT  pl_id as venue_id, pl_name as venue_name, voyageid  as voyage_id, batchtime, part_date, ts,ROW_NUMBER() over (Partition by pl_id order by ts desc) as rn FROM shipdw.hvtb_parse_mxp_shore_gospark_venue)a where a.rn=1)venue_dim

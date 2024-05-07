@@ -1,0 +1,40 @@
+#PROD Cluster info along with hive metadata info
+#constants need for metadata framework
+spark.src.config.id SrcGuestRestriction
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtRestrictionDim
+spark.parent.id SrcMxpCrewData-TgtMxpCrewData
+#Hbase details
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+#Target Postgres database details
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.database prodnbx
+#Details needed for framework to perform scd processing and data load into pond and postgres table
+spark.source.sql select VoyageId as voyage_id,person_id,restrictions_id,'' as restrictions_guid,restrictions_type,restrictions_category_id as categoryId,restrictions_category_code as category_code,restrictions_category as category,restrictions_comment as comment,restrictions_from_date as from_date,restrictions_to_date as to_date,false as deleted_flag,CAST('' as timestamp) as created_date,batchtime,part_date from shipdw.hvtb_parse_mxp_sailor_crew_data *whereclause*
+spark.source.columns voyage_id,person_id,restrictions_id,restrictions_type,categoryId,category_code,category,comment,from_date,to_date,batchtime
+spark.pond.allColumns restriction_skey as pond_restriction_skey,voyage_id as pond_voyage_id,person_id as pond_person_id,restrictions_id as pond_restrictions_id,restrictions_guid as pond_restrictions_guid,restrictions_type as pond_restrictions_type,categoryId as pond_categoryId,category_code as pond_category_code,category as pond_category,comment as pond_comment,from_date as pond_from_date,to_date as pond_to_date,deleted_flag as pond_deleted_flag,created_date as pond_created_date,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column restriction_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_restriction
+spark.target.table restriction_dim
+spark.source.primaryKeyColumns restrictions_id,person_id
+spark.scdtype type1
+spark.frameworkEnv ship
+spark.target.final_collist restriction_skey,final_view.voyage_id as voyage_id,final_view.person_id as person_id,final_view.restrictions_id as restrictions_id,final_view.restrictions_guid as restrictions_guid,final_view.restrictions_type as restrictions_type,final_view.categoryId as categoryId, final_view.category_code as category_code,final_view.category as category,final_view.comment as comment,final_view.from_date as from_date,final_view.to_date as to_date,final_view.deleted_flag as deleted_flag,final_view.created_date as created_date,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_restriction
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_restriction
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename restriction_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+ 
+spark.ship.code VAL
+

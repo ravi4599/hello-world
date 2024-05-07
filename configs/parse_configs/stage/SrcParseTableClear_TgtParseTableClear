@@ -1,0 +1,13 @@
+spark.source.table select * from shipdw.hvtb_lnd_tbl_table_clear
+spark.target.table shipdw.hvtb_parse_tbl_table_clear
+spark.src.config.id SrcParseTableClear
+spark.voyage.id SC2002269NCR 
+spark.tgt.env Stage
+spark.target.config.id TgtParseTableClear
+spark.parent.id SrcMXPTableClear-TgtMXPTableClear-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.4.100.154/hbase-unsecure
+spark.kafka.zookeeper 10.9.100.157:2181
+

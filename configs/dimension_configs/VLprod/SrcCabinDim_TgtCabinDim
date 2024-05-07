@@ -1,0 +1,36 @@
+spark.src.config.id	SrcCabinDim 
+spark.voyage.id	SC2002269NCR 
+spark.tgt.env Prod
+spark.target.config.id TgtCabinDim
+spark.parent.id	SrcMxpCrewData-TgtMxpCrewData 
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.database prodnbx
+#spark.source.sql SELECT dp.voyage_id as voyage_id, cast(gp.charge_id_accounts as string) as charge_id, gp.batchtime as batchtime, gp.partdate, dp.person_skey,dp.person_type FROM (select * from (select charge_id_accounts ,booking_id,batchtime, part_date as partdate, row_number() over (partition by booking_id order by last_modified_date desc ) as rn from shipdw.hvtb_parse_mxp_sailor_crew_data)crew_data where crew_data.rn=1  )gp LEFT JOIN shipdw.hvtb_mart_dim_person dp on ( gp.booking_id = dp.booking_id)
+spark.source.sql select VoyageId as voyage_id,cabin_number,ship_code,floor_name as cabin_floor_name,cabin_category,cabin_type,batchtime,Part_Date from (select * from (select VoyageId,cabin_number,ship_code,floor_name,cabin_category,cabin_type,batchtime, Part_Date, row_number() over (partition by cabin_number order by last_modified_date desc ) as rn from shipdw.hvtb_parse_mxp_sailor_crew_data) crew_data where crew_data.rn=1)
+spark.source.columns voyage_id,cabin_number,ship_code,cabin_floor_name,cabin_category,cabin_type,batchtime
+spark.pond.allColumns voyage_id as pond_voyage_id,cabin_skey as pond_cabin_skey,cabin_number as pond_cabin_number,ship_code as pond_ship_code,cabin_floor_name as pond_cabin_floor_name,cabin_category as pond_cabin_category,cabin_type as pond_cabin_type,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column cabin_skey
+spark.pond.database	shipdw 
+spark.pond.table hvtb_mart_dim_cabin
+spark.target.schema	shipdw 
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename cabin_dim
+spark.source.primaryKeyColumns cabin_number,ship_code
+spark.target.final_collist final_view.voyage_id,cabin_skey,final_view.cabin_number,final_view.ship_code,final_view.cabin_floor_name,final_view.cabin_category,final_view.cabin_type,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_cabin
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_cabin
+spark.target.schema	Hive_schema_stg 
+spark.postgres.tablename cabin_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+ 
+spark.ship.code VAL
+

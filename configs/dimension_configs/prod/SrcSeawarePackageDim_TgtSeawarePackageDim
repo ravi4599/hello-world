@@ -1,0 +1,51 @@
+spark.src.config.id SrcSeawarePackageDim
+spark.voyage.id SC2002269NCR 
+spark.tgt.env Prod
+spark.target.config.id TgtSeawarePackageDim
+spark.parent.id SrcSeawarePackageDefinition-TgtSeawarePackageDefinition 
+spark.table.type dim
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+#spark.source.sql select pd.package_id as src_package_id, pt.package_class, pt.product_type, pd.package_type, pd.package_code, pd.package_name, pd.sail_id as src_sail_id, pd.shorex_mode, pd.vacation_date, pd.shorex_timing, pd.geog_area_code, pd.season_code, pd.is_active, cast(vafv.number_value as int) as shorex_total_spots,cast(fv_min.number_value as int) as shorex_min_spots, pd.BatchTime as BatchTime, pd.Part_Date as Part_Date, pd.ts_ms as ts_ms_pd, pt.ts_ms as ts_ms_pt, vafv.ts_ms as ts_ms_vafv,fv_min.ts_ms as ts_ms_fv_min from  (select * from (select package_id,package_type,package_code,package_name,sail_id,shorex_mode,vacation_date,shorex_timing,geog_area_code,season_code,is_active,BatchTime,Part_Date,ts_ms,row_number() over(partition by package_type order by ts_ms desc) rn from vv_db.hvtb_parse_sw_rpl_package_definition *whereclause*)where rn=1) pd left join (select * from (select package_class,product_type,package_type,package_type_id,ts_ms,row_number() over(partition by package_type order by ts_ms desc) rn from vv_db.hvtb_parse_sw_rpl_package_type) where rn=1) pt on(pd.package_type=pt.package_type) left join (select * from(select number_value,ts_ms,record_id,row_type,field_name,row_number() over(partition by record_id order by ts_ms desc)rn from vv_db.hvtb_parse_sw_rpl_vcs_additional_field_value) where rn=1) vafv on vafv.record_id=pd.package_id and vafv.row_type='SHOREX_PACKAGE_DEFINITION' and vafv.field_name='COUNT' left join (select * from(select number_value,ts_ms,record_id,row_type,field_name,row_number() over(partition by record_id order by ts_ms desc)rn from vv_db.hvtb_parse_sw_rpl_vcs_additional_field_value) where rn=1) fv_min on fv_min.record_id=pt.package_type_id and fv_min.row_type='SHOREX_PACKAGE_TYPE' and fv_min.field_name='MINCAP'
+
+spark.source.sql select pd.package_id as src_package_id, pt.package_class, pt.product_type, pd.package_type, pd.package_code, pd.package_name, pd.sail_id as src_sail_id, pd.shorex_mode, pd.vacation_date, pd.shorex_timing, pd.geog_area_code, pd.season_code, pd.is_active, cast(vafv.number_value as int) as shorex_total_spots,cast(fv_min.number_value as int) as shorex_min_spots,cast(fv_max.number_value as int) as shorex_max_spots, pd.BatchTime as BatchTime, pd.Part_Date as Part_Date, pd.ts_ms as ts_ms_pd, pt.ts_ms as ts_ms_pt, vafv.ts_ms as ts_ms_vafv,fv_min.ts_ms as ts_ms_fv_min,fv_max.ts_ms as ts_ms_fv_max from  (select * from (select package_id,package_type,package_code,package_name,sail_id,shorex_mode,vacation_date,shorex_timing,geog_area_code,season_code,is_active,BatchTime,Part_Date,ts_ms,row_number() over(partition by package_id order by ts_ms desc,lsn desc) rn from vv_db.hvtb_parse_sw_rpl_package_definition where package_type !="")where rn=1) pd left join (select * from (select package_class,product_type,package_type,package_type_id,ts_ms,row_number() over(partition by package_type order by ts_ms desc,lsn desc) rn from vv_db.hvtb_parse_sw_rpl_package_type) where rn=1) pt on(pd.package_type=pt.package_type) left join (select * from(select number_value,ts_ms,record_id,row_type,field_name,row_number() over(partition by record_id,row_type,field_name order by ts_ms desc)rn from vv_db.hvtb_parse_sw_rpl_vcs_additional_field_value) where rn=1) vafv on vafv.record_id=pd.package_id and vafv.row_type='SHOREX_PACKAGE_DEFINITION' and vafv.field_name='COUNT' left join (select * from(select number_value,ts_ms,record_id,row_type,field_name,row_number() over(partition by record_id,row_type,field_name order by ts_ms desc)rn from vv_db.hvtb_parse_sw_rpl_vcs_additional_field_value) where rn=1) fv_min on fv_min.record_id=pt.package_type_id and fv_min.row_type='SHOREX_PACKAGE_TYPE' and fv_min.field_name='MINCAP' left join (select * from(select number_value,ts_ms,record_id,row_type,field_name,row_number() over(partition by record_id,row_type,field_name order by ts_ms desc)rn from vv_db.hvtb_parse_sw_rpl_vcs_additional_field_value) where rn=1) fv_max on fv_max.record_id=pt.package_type_id and fv_max.row_type='SHOREX_PACKAGE_TYPE' and fv_max.field_name='MAXCAP'
+
+
+spark.source.columns src_package_id,package_class,product_type,package_type,package_code,package_name,src_sail_id,shorex_mode,vacation_date,shorex_timing,geog_area_code,season_code,is_active,shorex_total_spots,shorex_min_spots,shorex_max_spots
+
+
+spark.pond.allColumns package_id as pond_package_id, rec_start_dttm as pond_rec_start_dttm, rec_end_dttm as pond_rec_end_dttm, src_package_id as pond_src_package_id, package_class as pond_package_class, product_type as pond_product_type, package_type as pond_package_type, package_code as pond_package_code, package_name as pond_package_name, src_sail_id as pond_src_sail_id, shorex_mode as pond_shorex_mode, vacation_date as pond_vacation_date, shorex_timing as pond_shorex_timing, geog_area_code as pond_geog_area_code, season_code as pond_season_code, is_active as pond_is_active, shorex_total_spots as pond_shorex_total_spots,shorex_min_spots as pond_shorex_min_spots,shorex_max_spots as pond_shorex_max_spots, etl_ld_status as pond_etl_ld_status, load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash,scd_hash as pond_scd_hash
+spark.surrogate_key.column package_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_package_dim
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_package_dim
+spark.source.primaryKeyColumns src_package_id
+spark.target.final_collist final_view.package_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.src_package_id,final_view.package_class,final_view.product_type,final_view.package_type,final_view.package_code,final_view.package_name,final_view.src_sail_id,final_view.shorex_mode,final_view.vacation_date,final_view.shorex_timing,final_view.geog_area_code,final_view.season_code,final_view.is_active,final_view.shorex_total_spots,final_view.shorex_min_spots,final_view.shorex_max_spots,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/seaware/hvtb_nbx_core_sw_package_dim
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_package_dim
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_package_dim_tmp
+spark.bq.permtblname seaware_package_dim
+spark.bq.viewname seaware.seaware_package_dim
+spark.scdtype type2
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage
+##=============SCD2 Config Details ==============
+spark.source.srcDateColumn src_date
+spark.scd.columns package_class,product_type,package_type,package_code,package_name,src_sail_id,shorex_mode,vacation_date,shorex_timing,geog_area_code,season_code,is_active,shorex_total_spots,shorex_min_spots,shorex_max_spots
+
+spark.scdtype type2
+
+spark.source.landingsql select package_id as src_package_id from vv_db.hvtb_parse_sw_rpl_package_definition where op='d'
+
+
+# all source columns as alias ( id_new,amount_new,oppo_new )along with all audit columns
+spark.source.updateReq package_id,rec_start_dttm,rec_end_dttm,src_package_id_new,package_class_new,product_type_new,package_type_new,package_code_new,package_name_new,src_sail_id_new,shorex_mode_new,vacation_date_new,shorex_timing_new,geog_area_code_new,season_code_new,is_active_new,shorex_total_spots_new,shorex_min_spots_new,shorex_max_spots_new,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+spark.hadoop.hive.execution.engine mr

@@ -1,0 +1,71 @@
+#------META   DATA CONFIG-----#
+spark.src.config.id   SrcOrderitem
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   Stage
+spark.api.env   Stage				 
+spark.target.config.id   TgtOrderitemfact
+spark.parent.id   Srcshrfoodnbevorder-Tgtshrfoodnbevorder
+spark.target.ops.table.format   org.apache.phoenix.spark
+spark.target.ops.table.mode   overwrite
+spark.target.enablerops_table   HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+#-------------------------#
+   
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+
+#------Query   Propery-----#
+#spark.source.sql   select * from (Select voyage_id, ship_code, voyage_skey,order_detail_skey,menu_item_skey,order_item_sequence,order_item_quantity,order_item_cancelled_quantity,orderitem_price,batchtime,part_date from (select NVL(O.voyageid,'N/A') as voyage_id, NVL(V.ship_code,'N/A') as ship_code, NVL(V.voyage_skey ,-1) as voyage_skey, NVL(cast(dim_orderdetail.order_detail_skey as bigint),-1) as order_detail_skey, NVL(cast(dim_menuitem.menu_item_skey as bigint),-1) as menu_item_skey, D.orderitemsequence as order_item_sequence, D.orderqty as order_item_quantity, C.cancelledquantity as order_item_cancelled_quantity, P.price as orderitem_price, D.BatchTime as batchtime, D.Part_Date as part_date from shipdw.hvtb_parse_vxp_foodnbev_order O left join shipdw.hvtb_mart_dim_voyage V  on(O.orderdate between V.voyage_start_date and V.voyage_end_date) left join shipdw.hvtb_mart_dim_order_detail dim_orderdetail on(dim_orderdetail.order_id==O.orderid) left join shipdw.hvtb_parse_vxp_foodnbev_orderdetail D on(D.orderid==O.orderid) left join shipdw.hvtb_mart_dim_menu_item dim_menuitem on(dim_menuitem.menu_item_id==D.menuitemid) left join shipdw.hvtb_parse_vxp_foodnbev_orderdetailcancel C on(C.orderdetailid==D.orderdetailid) left join shipdw.hvtb_parse_vxp_menuitemprice P on(P.menuitemid==D.menuitemid ) where O.status !=0 )a )orderitemfact
+
+
+#spark.source.sql   select * from (Select orderid,voyage_id, ship_code, voyage_skey,order_detail_skey,menu_item_skey,order_item_sequence,order_item_quantity,order_item_cancelled_quantity,orderitem_price,batchtime,part_date from (select order.orderid,NVL(order.voyageid,'N/A') as voyage_id, NVL(dim_voyage.ship_code,'N/A') as ship_code, NVL(dim_voyage.voyage_skey ,-1) as voyage_skey, NVL(cast(dim_orderdetail.order_detail_skey as bigint),-1) as order_detail_skey, NVL(cast(dim_menuitem.menu_item_skey as bigint),-1) as menu_item_skey, order_detail.orderitemsequence as order_item_sequence, order_detail.orderqty as order_item_quantity,order_cancel.cancelledquantity as order_item_cancelled_quantity, menuitemprice.price as orderitem_price, order.BatchTime as batchtime, order.Part_Date as part_date from  (select * from (select * , row_number() over(partition by orderid order by modifieddate desc) as rn    from shipdw.hvtb_parse_vxp_foodnbev_order )ordr where ordr.rn=1 ) order   left join (select * from (select * ,row_number ()over (partition by reservationguestid order by lastmodifieddate desc) as rn from vv_db.hvtb_parse_vxp_reservationguest)reguest where reguest.rn=1)   rguest on(UPPER(order.guestid) == UPPER(rguest.reservationguestid)) left join  ( select * from (select *, row_number() over (partition by reservationid order by lastmodifieddate desc) as rn from vv_db.hvtb_parse_vxp_reservation )reser where reser.rn=1 )    reserv     on(UPPER(rguest.reservationid)== UPPER(reserv.reservationid))left join  shipdw.hvtb_mart_dim_voyage dim_voyage on  (UPPER(reserv.voyagenumber)==UPPER(dim_voyage.voyage_number))   left join shipdw.hvtb_mart_dim_order_detail dim_orderdetail on(dim_orderdetail.order_id==order.orderid) left join ( select * from (select   * ,row_number() over(partition by orderid,orderdetailid order by lastmodifieddate desc) as rn  from shipdw.hvtb_parse_vxp_foodnbev_orderdetail)od where od.rn=1)order_detail on(order_detail.orderid==order.orderid) left join shipdw.hvtb_mart_dim_menu_item dim_menuitem on(dim_menuitem.menu_item_id==order_detail.menuitemid) left join (select * from (select * ,row_number() over (partition by orderdetailid order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_foodnbev_orderdetailcancel)oc where oc.rn=1) order_cancel on(order_cancel.orderdetailid==order_detail.orderdetailid) left join (select * from (select * , row_number() over (partition by price.menuitemid order by nvl(enddate,cast('2099-12-31' as date))desc,startdate desc ) as rn from shipdw.hvtb_parse_vxp_menuitemprice price)a where a.rn=1 ) menuitemprice on( order.orderdate between menuitemprice.startdate and NVL(menuitemprice.enddate,cast('2099-12-31' as date)) and menuitemprice.menuitemid==order_detail.menuitemid ) where order.status !=0 )a )orderitemfact *whereclause*
+
+spark.source.sql select * from (Select orderid,voyage_id, ship_code, voyage_skey,order_detail_skey,menu_item_skey,order_item_sequence,order_item_quantity,order_item_cancelled_quantity,orderitem_price,batchtime,part_date from (select order.orderid,NVL(order.voyageid,'N/A') as voyage_id, NVL(dim_voyage.ship_code,'N/A') as ship_code, NVL(dim_voyage.voyage_skey ,-1) as voyage_skey, NVL(cast(dim_orderdetail.order_detail_skey as bigint),-1) as order_detail_skey, NVL(cast(dim_menuitem.menu_item_skey as bigint),-1) as menu_item_skey, order_detail.orderitemsequence as order_item_sequence, order_detail.orderqty as order_item_quantity,order_cancel.cancelledquantity as order_item_cancelled_quantity, menuitemprice.price as orderitem_price, order_detail.BatchTime as batchtime, order_detail.Part_Date as part_date from  (select * from (select * , row_number() over(partition by orderid order by modifieddate desc) as rn    from shipdw.hvtb_parse_vxp_foodnbev_order )ordr where ordr.rn=1 ) order   left join (select * from (select * ,row_number ()over (partition by reservationguestid order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_reservationguest)reguest where reguest.rn=1)   rguest on(UPPER(order.guestid) == UPPER(rguest.reservationguestid)) left join  ( select * from (select *, row_number() over (partition by reservationid order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_reservation )reser where reser.rn=1 )    reserv     on(UPPER(rguest.reservationid)== UPPER(reserv.reservationid))left join  shipdw.hvtb_mart_dim_voyage dim_voyage on  (UPPER(reserv.voyagenumber)==UPPER(dim_voyage.voyage_number))   left join shipdw.hvtb_mart_dim_order_detail dim_orderdetail on(dim_orderdetail.order_id==order.orderid) left join ( select * from (select   * ,row_number() over(partition by orderid,menuitemid order by lastmodifieddate desc) as rn  from shipdw.hvtb_parse_vxp_foodnbev_orderdetail)od where od.rn=1)order_detail on(order_detail.orderid==order.orderid) left join shipdw.hvtb_mart_dim_menu_item dim_menuitem on(dim_menuitem.menu_item_id==order_detail.menuitemid) left join (select * from (select * ,row_number() over (partition by orderdetailid order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_foodnbev_orderdetailcancel)oc where oc.rn=1) order_cancel on(order_cancel.orderdetailid==order_detail.orderdetailid) left join (select * from (select * , row_number() over (partition by price.menuitemid order by nvl(enddate,cast('2099-12-31' as date))desc,startdate desc ) as rn from shipdw.hvtb_parse_vxp_foodandbeverage_menuitemprice price)a where a.rn=1 ) menuitemprice on( order.orderdate between menuitemprice.startdate and NVL(menuitemprice.enddate,cast('2099-12-31' as date)) and menuitemprice.menuitemid==order_detail.menuitemid ) where order.status !=0 )a )orderitemfact *whereclause*
+
+spark.source.columns   voyage_id,ship_code,voyage_skey,order_detail_skey,menu_item_skey,order_item_sequence,order_item_quantity,order_item_cancelled_quantity,orderitem_price,batchtime
+
+   
+spark.pond.allColumns   voyage_id as pond_voyage_id,ship_code as pond_ship_code,voyage_skey as pond_voyage_skey,order_detail_skey as pond_order_detail_skey,menu_item_skey as pond_menu_item_skey,order_item_sequence as pond_order_item_sequence,order_item_quantity as pond_order_item_quantity, order_item_cancelled_quantity as pond_order_item_cancelled_quantity,orderitem_price as pond_orderitem_price,load_dt as pond_load_dt, upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash,part_dt as pond_part_dt
+												   
+spark.pond.database   shipdw
+spark.pond.table   hvtb_mart_fact_orderitem
+spark.source.primaryKeyColumns   voyage_skey,order_detail_skey,menu_item_skey,order_item_sequence
+spark.table.type   fact							 
+spark.target.schema   shipdw									
+spark.target.table   orderitem_fact
+
+   
+spark.target.final_collist   final_view.voyage_id, final_view.ship_code, final_view.voyage_skey,final_view.order_detail_skey, final_view.menu_item_skey, final_view.order_item_sequence, final_view.order_item_quantity, final_view.order_item_cancelled_quantity, final_view.orderitem_price, final_view.load_dt, final_view.upd_dt, final_view.primaryhash, final_view.md5_hash,final_view.part_dt
+
+   
+spark.target.temp   s3://vv-staging-emr-cluster/data/temp/hvtb_mart_fact_orderitem
+spark.target.location   s3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_orderitem
+spark.redshift.schema   shipdw
+spark.redshift.schema   hive_schema_stg
+spark.redshift.tablename   orderitem_fact
+
+   
+spark.tableType   FACT
+spark.frameworkEnv   shore
+spark.factType   Accu
+
+#----------------------LAD--------------------------------#
+spark.ladjob.flag true
+spark.lad.srctablekey orderid
+
+spark.lad.srctable shipdw.hvtb_parse_vxp_foodnbev_order
+spark.lad.tgttable shipdw.hvtb_parse_vxp_foodnbev_order_orderitem_lad
+spark.lad.columns voyage_skey,order_detail_skey,menu_item_skey,order_item_sequence
+spark.ladremoval.flag false 
+
+
+
+#----------------------------------------------------------#
+
+
+
+
+
+

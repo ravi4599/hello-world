@@ -1,0 +1,36 @@
+spark.src.config.id SrcShrBookingDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.target.config.id TgtShrBookingDim
+spark.parent.id SrcHvActivitybooking-TgtHvActivitybooking
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.15.2.206:2181/hbase-unsecure
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.source.sql select bkng.activitybookingid as booking_id,bkng.bookinglinkid as booking_link_id, bkng.status as status,bkng.cancellationreason as cancellation_reason, bkng.waivercode as waiver_code , bkng.waiverstatus as waiver_status, bkng.paymentstatus as payment_status,bkng.reservationnumber as reservation_number ,bkng.isdeleted as src_deleted_flag,bkng.bookinglocation as booking_location_name,bkng.bookingsource as booking_source_name,bkng.voyageid as voyage_id, bkng.batchtime as batchtime,bkng.part_date as Part_date from (select * from (select activitybookingid,bookinglinkid,status,cancellationreason,waivercode,waiverstatus,paymentstatus,reservationnumber,isdeleted,bookinglocation,bookingsource,voyageid,batchtime,part_date,row_number() over (partition by activitybookingid order by lastmodifieddate desc) rn  from shipdw.hvtb_parse_vxp_ars_activitybooking) where rn = 1)bkng
+spark.source.columns booking_id,booking_link_id,status,cancellation_reason,waiver_code,waiver_status,payment_status,reservation_number,src_deleted_flag,booking_location_name,booking_source_name
+spark.pond.allColumns booking_detail_skey as pond_booking_detail_skey,voyage_id as pond_voyage_id,booking_id as pond_booking_id,booking_link_id as pond_booking_link_id,status as pond_status,cancellation_reason  as pond_cancellation_reason,waiver_code as pond_waiver_code,waiver_status as pond_waiver_status,payment_status as pond_payment_status,reservation_number as pond_reservation_number,src_deleted_flag as pond_src_deleted_flag,booking_location_name as pond_booking_location_name,booking_source_name as pond_booking_source_name,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column booking_detail_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_booking_detail
+spark.source.primaryKeyColumns booking_id
+spark.target.final_collist booking_detail_skey,final_view.voyage_id as voyage_id,final_view.booking_id as booking_id,final_view.booking_link_id,final_view.status as status,final_view.cancellation_reason as cancellation_reason,final_view.waiver_code as waiver_code,final_view.waiver_status as waiver_status,final_view.payment_status as payment_status,final_view.reservation_number as reservation_number,final_view.src_deleted_flag as src_deleted_flag, final_view.booking_location_name as booking_location_name,final_view.booking_source_name as booking_source_name,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_booking_detail
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_booking_detail
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname booking_detail_dim_tmp
+spark.bq.permtblname booking_detail_dim
+spark.bq.viewname shipdw.booking_detail_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

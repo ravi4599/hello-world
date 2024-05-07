@@ -1,0 +1,47 @@
+spark.src.config.id   SrcProtectedCommissionDetailFact
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   Dev
+spark.api.env   Dev	
+spark.target.config.id   TgtProtectedCommissionDetailFact
+spark.parent.id   SrcSeawareResProtectedCommission-TgtSeawareResProtectedCommission
+#spark.same.parent yes
+
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+spark.source.sql select current_date snapshot_date ,record_id, rd.res_id, commission_type_id commission_type_skey, cast(percent as double) commission_percent,cast(amount as double) commission_amount, cast(commiss_fare as double) commission_fare,payout_date commission_payout_date, is_manual_adjustment,current_timestamp etl_ld_dt from (select * from (select *,row_number() over(partition by record_id order by ts_ms desc) as rn from vv_db.hvtb_parse_sw_rpl_res_protected_commission) p where p.rn=1) rpc join vv_db.hvtb_nbx_core_sw_reservation_dim rd on rd.src_res_id = rpc.res_id and rd.rec_end_dttm like '999%' left join vv_db.hvtb_nbx_core_swrpl_commission_type_lkp ctl on ctl.commission_code = rpc.commiss_code and ctl.commission_source = rpc.commiss_source
+
+
+spark.source.columns snapshot_date,record_id,res_id,commission_type_skey,commission_percent,commission_amount,commission_fare,commission_payout_date,is_manual_adjustment
+
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_protected_commission_detail_fact
+spark.target.schema vv_db
+spark.table.type fact
+
+
+
+spark.pond.allColumns snapshot_date as pond_snapshot_date,record_id  as pond_record_id,res_id as pond_res_id,commission_type_skey as pond_commission_type_skey,commission_percent as pond_commission_percent,commission_amount as pond_commission_amount,commission_fare as pond_commission_fare,commission_payout_date as pond_commission_payout_date,is_manual_adjustment as pond_is_manual_adjustment,load_dt as pond_load_dt,upd_dt as pond_upd_dt
+
+spark.target.final_collist final_view.snapshot_date,final_view.record_id,final_view.res_id,final_view.commission_type_skey,final_view.commission_percent,final_view.commission_amount,final_view.commission_fare,final_view.commission_payout_date,final_view.is_manual_adjustment,final_view.load_dt,final_view.upd_dt
+
+
+
+spark.target.temp   gs://vv-dev-nbx-cluster/data/temp/hvtb_nbx_core_sw_protected_commission_detail_fact
+spark.target.location   gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_sw_protected_commission_detail_fact
+spark.tableType FACT
+spark.frameworkEnv shore
+
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname Sw_Protected_Commission_Detail_Fact_tmp
+spark.bq.permtblname Sw_Protected_Commission_Detail_Fact
+spark.bq.viewname    seaware.Protected_Commission_Detail_Fact
+spark.hadoop.hive.execution.engine mr
+

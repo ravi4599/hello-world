@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.AM_CODE
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT AMENITY_CODE, RECORD_ID, AM_CATEGORY, AMENITY_TYPE, PROVIDER_CODE, AMENITY_NAME, COMMENTS, USE_TAX, SUBCODE_MANDATORY, MANDATORY_BEFORE_DLV, CODE_ACTIVE, ADDON_RESTRICTED, ADDON_ORDER_BASIS, ADDON_INV_ITEM_TYPE, INCLUDE_IN_ORDER, INITIAL_STATUS, LINKED_CLUB_TYPE, LINKED_CLUB_LEVEL, COUPON_CLASS, MANUAL_PRICE, USE_AS_CLIENT_PREFER FROM SEAWARE.AM_CODE)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_am_code
+
+spark.src.con.fetchSize 100000
+
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_am_code/
+
+spark.hadoop.hive.execution.engine mr

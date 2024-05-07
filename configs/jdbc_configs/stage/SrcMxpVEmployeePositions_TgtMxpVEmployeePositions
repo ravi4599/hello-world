@@ -1,0 +1,27 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:sqlserver://10.12.1.243:1442;database=MXP
+spark.src.user Capgemini
+spark.src.password Nskh#c5v3y&7
+spark.src.con.driver com.microsoft.sqlserver.jdbc.SQLServerDriver
+spark.src.table.query MXP.dbo.VEmployeePositions
+ 
+spark.src.config.id SrcMxpVEmployeePositions
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtMxpVEmployeePositions
+
+spark.source.columns POSITION_ID,DEPARTMENT_ID,POSITION_NAME,DepartmentName,ReportingCategory,POSITION_VALID_FROM,POSITION_VALID_TO,ACTIVE,REC_DELETED
+spark.source.query POSITION_ID,DEPARTMENT_ID,POSITION_NAME,DepartmentName,ReportingCategory,POSITION_VALID_FROM,POSITION_VALID_TO,ACTIVE,REC_DELETED
+
+ 
+spark.target.location s3://vv-staging-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_vemployee_positions
+spark.target.hive.table shipdw.hvtb_lnd_mxp_vemployee_positions
+spark.target.table shipdw.hvtb_lnd_mxp_vemployee_positions
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.condition.column POSITION_VALID_FROM
+spark.ship.code SHORE
+

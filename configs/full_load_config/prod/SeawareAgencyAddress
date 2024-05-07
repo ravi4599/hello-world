@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.AGENCY_ADDRESS
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT AGENCY_ID, SEQ_NUMBER, ADDRESS_TYPE, ADDRESS_LINE1, ADDRESS_LINE2, ADDRESS_CITY, STATE_CODE, ZIP, COUNTRY_CODE, IS_ADDRESS_MAILING, IS_ADDRESS_SHIPPING, COMMENTS, AGENCY_ADDR_ID, ADDRESS_LINE3, ADDRESS_LINE4, ADDRESS_ESSENTIAL FROM SEAWARE.AGENCY_ADDRESS)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_agency_address
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/AGENCY_ADDRESS
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_agency_address/
+
+spark.hadoop.hive.execution.engine mr

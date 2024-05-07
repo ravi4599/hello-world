@@ -1,0 +1,29 @@
+spark.kafkabrokers 10.9.100.157:9092,10.9.100.142:9092,10.9.100.37:9092
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.flag TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic dev-shore-dbz.sw.SEAWARE.HOTEL_INV_ALLOCATION
+spark.src.personOffSet earliest
+spark.kafka.zookeeper 10.9.100.142:2181
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.snapshot.table HBTB_DBZ_SNAPDATE
+
+spark.src.config.id SrcSeawareHotelInvAllocation
+spark.tgt.env Dev
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtSeawareHotelInvAllocation
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.3.100.222:2181/hbase-unsecure
+
+spark.target.lnd.table vv_db.hvtb_lnd_sw_rpl_hotel_inv_allocation
+spark.target.parse.table vv_db.hvtb_parse_sw_rpl_hotel_inv_allocation
+spark.ship.code SHORE
+spark.stop.flag N
+spark.debug.flag true

@@ -1,0 +1,22 @@
+spark.src.config.id SrcSpaUtilisation
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtSpaUtilisation
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.15.2.206:2181/hbase-unsecure
+spark.pond.database shipdw
+spark.pond.table hvtb_lnd_spa_utilization
+spark.input.filepath s3://vv-prod-osw-spa-rpt/prod/*
+spark.input.processedfilepath s3://vv-prod-emr-cluster/data/landing/OSW-Spa-rpt/processedfile
+spark.input.originalfilepath s3://vv-prod-osw-spa-rpt/prod/
+spark.target.location s3://vv-prod-emr-cluster/data/landing/OSW-Spa-rpt/hvtb_lnd_spa_utilization
+spark.target.hive.table shipdw.hvtb_lnd_spa_utilization
+spark.target.table shipdw.hvtb_lnd_spa_utilization
+
+ 
+
+
+
+

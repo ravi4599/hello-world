@@ -1,0 +1,65 @@
+#Kafka shore to kafka ship sync config
+
+#Ship Side details-
+
+spark.ship.sslkafkabrokers 10.2.52.146:9092,10.2.52.148:9092,10.2.52.162:9092
+spark.ship.kafkabrokers 10.2.52.146:9092,10.2.52.148:9092,10.2.52.162:9092
+#spark.ship.truststore /data/apps/talend/shared/scripts/cap-bigdata-scripts-dev/config/dxp.kafka.client.truststore.jks
+#spark.ship.truststore /etc/script_keystore/dxp.kafka.client.truststore.jks
+#spark.ship.passvalue yellow*99
+#spark.ship.keystore  /data/apps/talend/shared/scripts/cap-bigdata-scripts-dev/config/dxp.kafka.client.keystore.jks
+#spark.ship.keystore  /etc/script_keystore/dxp.kafka.client.keystore.jks
+spark.ship.target.topic.name dev-ship-nbx-test
+
+#Shore Side Details - 
+
+spark.shore.seconds 20
+spark.shore.kafkabrokers 10.9.100.157:9097,10.9.100.142:9097,10.9.100.37:9097
+spark.shore.consumer  spark-shoretoship-consumer-final_data-test-12344-11
+spark.shore.passvalue SetS@!l2o2o
+spark.shore.source.topic.name dev-shore-nbx-shore-ship-sync.tribe-data-source
+#spark.shore.truststore /data/apps/talend/shared/scripts/cap-bigdata-scripts-dev/config/dxp.kafka.client.truststore.jks
+#spark.shore.keystore  /data/apps/talend/shared/scripts/cap-bigdata-scripts-dev/config/dxp.kafka.client.keystore.jks
+spark.shore.keystore  /etc/script_keystore/dxp.kafka.client.keystore.jks
+spark.shore.truststore /etc/script_keystore/dxp.kafka.client.truststore.jks
+spark.target.coalesce.value 3
+#Offset table details -
+
+spark.personcreated.format org.apache.phoenix.spark
+spark.personcreated.mode overwrite
+spark.personcreated.table hbtb_nbx_sailor_tribes 
+spark.personcreated.readhbasezkurl ip-10-3-100-222:2181/hbase-unsecure
+spark.personcreated.offsettable HBTB_NBX_KAFKA_STREAMING_OFFSET
+spark.kafka.zookeeper 10.9.100.157:2181
+
+#VoyageOPS table -
+
+spark.src.voyageid SCM2016N
+spark.src.srcConfig SrcTest
+spark.src.tgtConfig TgtSales
+spark.src.table.format org.apache.phoenix.spark
+spark.src.zkurl ip-10-3-100-222:2181/hbase-unsecure
+spark.voyageOperations.table HBTB_NBX_SHORETOSHIP_SYNC_VOYAGEOPS
+spark.src.table.type KAFKA
+
+# Operational Config
+spark.oper.metadata.table.mode overwrite
+spark.oper.metadata.table HBTB_NBX_SHORETOSHIP_SYNC_VOYAGEOPS
+
+
+
+
+
+# New Property
+spark.ship.source.topic.name test-shpshr-ship
+# qa-ship-pos-mxp.sales-stream
+spark.shore.target.topic.name testshp2shrSCVL
+#testshp2shr
+#test_SW
+#testshp2shrSC&VL
+#shp2shr-dev-mxp.pos-sales
+spark.kafkabrokers 10.2.52.146:9092,10.2.52.148:9092,10.2.52.162:9092
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100

@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.RES_PAYMENT_DUE_ITEM
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT RES_PAYMENT_DUE_ITEM_ID, PMNT_DUE_ITEM_TYPE, GUEST_ID, RES_ID, DUE_DATE, GRACE_PERIOD, AMOUNT, EXPIRATION_DATE, DESIGNATED_PAYMENT_CODE, IS_PAID, IS_PAID_SET_MANUALLY, MANUAL_FUNDS_DISTR, AMOUNT_PAID FROM SEAWARE.RES_PAYMENT_DUE_ITEM)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_res_payment_due_item
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/RES_PAYMENT_DUE_ITEM
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_res_payment_due_item/
+
+spark.hadoop.hive.execution.engine mr

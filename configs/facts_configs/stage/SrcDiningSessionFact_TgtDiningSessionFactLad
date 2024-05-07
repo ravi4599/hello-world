@@ -1,0 +1,52 @@
+#------META   DATA CONFIG-----#
+spark.src.config.id SrcSessionFact
+spark.voyage.id SC2002269NCR 
+spark.tgt.env Stage
+spark.target.config.id TgtSessionFactLad
+spark.parent.id SrcParsesettingstable-TgtParsesettingstable
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.ing.type Fact
+#-------------------------#
+spark.source.sql select sessions.voyageid as voyage_id ,nvl(vdim.voyage_skey,-1) as voyage_skey,nvl(itr.itinerary_skey,-1) as itinerary_skey,nvl(venue.venue_skey,-1) as venue_skey ,nvl(sessions.public_id,-1) as dining_session_skey, nvl(time.s_key,-1) as time_start_skey, nvl(time1.s_key,-1) as time_end_skey, ceil((unix_timestamp(sessions.time_end)-unix_timestamp(sessions.time_start))/settings.timeslot_duration) as number_of_timeslots from(  (select * from (select *, row_number() over (partition by public_id order by lastmodifieddate desc)rn from shipdw.hvtb_parse_vxp_table_management_sessions_lad)where rn=1) sessions left join shipdw.hvtb_parse_vxp_table_management_voyages voyages on sessions.voyage_id=voyages.public_id left join shipdw.hvtb_mart_dim_voyage vdim on vdim.voyage_number=voyages.code and vdim.src_deleted_flag = false and vdim.src_active_flag=true left join shipdw.hvtb_mart_dim_itinerary itr on itr.voyage_number = voyages.code and itr.src_deleted_flag=false and itr.src_active_flag=true and sessions.voyage_day_number =itr.itinerary_day left join shipdw.hvtb_parse_vxp_table_management_venues venues on sessions.venue_id = venues.public_id left join  shipdw.hvtb_mart_dim_venue venue on venue.venue_id = venues.external_id left join shipdw.hvtb_mart_dim_time time on  time.timeofday = unix_timestamp(sessions.time_start) left join  shipdw.hvtb_mart_dim_time time1 on time1.timeofday = unix_timestamp(sessions.time_end) left join shipdw.hvtb_parse_vxp_table_management_settings settings on 	sessions.settings_id = settings.public_id )  
+
+spark.source.columns voyage_id,itinerary_skey,venue_skey,dining_session_skey,time_start_skey,time_end_skey,number_of_timeslots,batchtime
+
+spark.pond.allColumns voyage_id as pond_voyage_id,voyage_skey as pond_voyage_skey,itinerary_skey as pond_itinerary_skey,venue_skey as pond_venue_skey,dining_session_skey as pond_dining_session_skey,time_start_skey as pond_time_start_skey,time_end_skey as pond_time_end_skey,number_of_timeslots as pond_number_of_timeslots,load_dt as pond_load_dt, upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash,part_dt as pond_part_dt
+
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_dining_session
+spark.source.primaryKeyColumns  venue_skey,dining_session_skey
+spark.table.type   fact	
+spark.target.schema   hive_schema_stg
+spark.target.table dining_session_fact
+spark.lad.file true
+
+spark.target.final_collist final_view.voyage_id,final_view.voyage_skey,final_view.itinerary_skey,final_view.venue_skey,final_view.dining_session_skey,final_view.time_start_skey,final_view.time_end_skey,final_view.number_of_timeslots,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+
+
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_fact_dining_session
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_dining_session
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename incident_guest_fact 
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.tableType FACT
+spark.frameworkEnv ship
+spark.factType Accu
+
+
+
+#----------------------LAD--------------------------------#
+spark.ladjob.flag true
+spark.lad.srctablekey settingstableid
+spark.lad.srctable shipdw.hvtb_parse_vxp_loca_locationevent
+spark.lad.tgttable shipdw.hvtb_parse_vxp_loca_locationevent_lad
+spark.lad.columns person_skey,venue_skey,event_skey
+spark.ladremoval.flag true 
+
+#----------------------------------------------------------#

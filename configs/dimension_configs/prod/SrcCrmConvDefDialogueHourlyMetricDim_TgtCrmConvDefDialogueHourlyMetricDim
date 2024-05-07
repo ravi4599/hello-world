@@ -1,0 +1,48 @@
+spark.src.config.id SrcCrmConvDefDialogueHourlyMetricDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtCrmConvDefDialogueHourlyMetricDim
+spark.parent.id SrcSFDCConvDefDialogHourlyMetric-TgtSFDCConvDefDialogHourlyMetric
+
+spark.metadata.con.format jdbc	
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.metadata.con.driver=org.postgresql.Driver
+spark.metadata.ops.table.mode=Append
+
+
+#spark.source.sql select hm.Id as id, hm.Article as Article, hm.ArticleName as ArticleName, hm.BotDefinitionName as BotDefinitionName, hm.ChannelType as ChannelType, hm.ConversationDefinitionId as ConversationDefinitionID, hm.DialogDefinitionId as DialogDefinitionId, hm.DialogDefinitionName as DialogDefinitionName, hm.Hour as Hour, hm.IntegrationType as IntegrationType, hm.IntegrationName as IntegrationName, hm.IsSuccessful as IsSuccessful, hm.Language as Language, hm.MetricDateTime as MetricDateTime, hm.MetricType as MetricType, hm.Name as Name, hm.ParentId as ConvDialogHourlyMetric_ParentId, hm.SessionEndType as SessionEndType, hm.SessionTransferType as SessionTransferType, hm.StaticChoiceValue as StaticChoiceValue, hm.Value as Value, hm.CreatedDate as CreatedDate, hm.LastModifiedDate as LastModifiedDate, hm.IsDeleted as IsDeleted from (select * from(select id, Article, ArticleName, BotDefinitionName, ChannelType, ConversationDefinitionId, DialogDefinitionId, DialogDefinitionName, hour, IntegrationType, IntegrationName, IsSuccessful, language, MetricDateTime, MetricType, Name, ParentId, SessionEndType, SessionTransferType, StaticChoiceValue, Value, CreatedDate, LastModifiedDate, IsDeleted,row_number() over (partition by id order by LastModifiedDate desc)rn from vv_db.hvtb_parse_sfdc_conv_def_dialog_hourly_metric) where rn = 1)hm _
+
+spark.source.sql select Id as id, Article as Article, ArticleName as ArticleName, BotDefinitionName as BotDefinitionName, ChannelType as ChannelType, ConversationDefinitionId as ConversationDefinitionID, DialogDefinitionId as DialogDefinitionId, DialogDefinitionName as DialogDefinitionName, Hour as Hour, IntegrationType as IntegrationType, IntegrationName as IntegrationName, IsSuccessful as IsSuccessful, Language as Language, MetricDateTime as MetricDateTime, MetricType as MetricType, Name as Name, ParentId as ConvDialogHourlyMetric_ParentId, SessionEndType as SessionEndType, SessionTransferType as SessionTransferType, StaticChoiceValue as StaticChoiceValue, Value as Value, CreatedDate as CreatedDate, LastModifiedDate as LastModifiedDate, IsDeleted as IsDeleted,batchtime as batchtime,part_date as part_date from (select * from(select id, Article, ArticleName, BotDefinitionName, ChannelType, ConversationDefinitionId, DialogDefinitionId, DialogDefinitionName, hour, IntegrationType, IntegrationName, IsSuccessful, language, MetricDateTime, MetricType, Name, ParentId, SessionEndType, SessionTransferType, StaticChoiceValue, Value, CreatedDate, LastModifiedDate, IsDeleted,batchtime,part_date,row_number() over (partition by id order by LastModifiedDate desc)rn from vv_db.hvtb_parse_sfdc_conv_def_dialog_hourly_metric) where rn = 1)
+
+
+spark.source.columns Id,Article,ArticleName,BotDefinitionName,ChannelType,ConversationDefinitionID,DialogDefinitionId,DialogDefinitionName,Hour,IntegrationType,IntegrationName,IsSuccessful,Language,MetricDateTime,MetricType,Name,ConvDialogHourlyMetric_ParentId,SessionEndType,SessionTransferType,StaticChoiceValue,Value,CreatedDate,LastModifiedDate,IsDeleted
+
+
+spark.pond.allColumns convdefdialoghourlymetric_skey as pond_convdefdialoghourlymetric_skey,id as pond_id, Article as pond_Article, ArticleName as pond_ArticleName, BotDefinitionName as pond_BotDefinitionName, ChannelType as pond_ChannelType, ConversationDefinitionID as pond_ConversationDefinitionID, DialogDefinitionId as pond_DialogDefinitionId, DialogDefinitionName as pond_DialogDefinitionName, Hour as pond_Hour, IntegrationType as pond_IntegrationType, IntegrationName as pond_IntegrationName, IsSuccessful as pond_IsSuccessful, Language as pond_Language, MetricDateTime as pond_MetricDateTime, MetricType as pond_MetricType, Name as pond_Name, ConvDialogHourlyMetric_ParentId as pond_ConvDialogHourlyMetric_ParentId, SessionEndType as pond_SessionEndType, SessionTransferType as pond_SessionTransferType, StaticChoiceValue as pond_StaticChoiceValue, Value as pond_Value, CreatedDate as pond_CreatedDate, LastModifiedDate as pond_LastModifiedDate, IsDeleted as pond_IsDeleted, load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+
+spark.surrogate_key.column convdefdialoghourlymetric_skey
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_crm_dim_conv_def_dialog_hourly_metric
+spark.source.primaryKeyColumns id
+
+spark.target.final_collist final_view.convdefdialoghourlymetric_skey,final_view.id, final_view.Article, final_view.ArticleName, final_view.BotDefinitionName, final_view.ChannelType, final_view.ConversationDefinitionID, final_view.DialogDefinitionId, final_view.DialogDefinitionName, final_view.Hour, final_view.IntegrationType, final_view.IntegrationName, final_view.IsSuccessful, final_view.Language, final_view.MetricDateTime, final_view.MetricType, final_view.Name, final_view.ConvDialogHourlyMetric_ParentId, final_view.SessionEndType, final_view.SessionTransferType, final_view.StaticChoiceValue, final_view.Value, final_view.CreatedDate, final_view.LastModifiedDate, final_view.IsDeleted, final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+
+ 
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_nbx_core_crm_dim_conv_def_dialog_hourly_metric
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_nbx_core_crm_dim_conv_def_dialog_hourly_metric
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname core_crm_conv_def_dialog_hourly_metric_dim_tmp
+spark.bq.permtblname core_crm_conv_def_dialog_hourly_metric_dim
+spark.bq.viewname crm.core_crm_conv_def_dialog_hourly_metric_dim
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+
+

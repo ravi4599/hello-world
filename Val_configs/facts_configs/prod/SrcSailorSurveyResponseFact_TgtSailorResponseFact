@@ -1,0 +1,31 @@
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.api.env prod
+spark.src.config.id SrcSailorSurveyResponseFact
+spark.target.config.id TgtSailorResponseFact
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.parent.id	SrcSailorReviewAnswer_TgtSailorReviewAnswer 
+spark.postgresql.database prodnbx
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.lad.file false
+spark.source.columns voyage_id,request_id,person_skey,org_unit_skey,voyage_skey,request_time,response_time,visit_time,location,question_skey,answer_rating,answer_text
+spark.pond.allColumns voyage_id as pond_voyage_id,request_id as pond_request_id,person_skey as pond_person_skey,org_unit_skey as pond_org_unit_skey,voyage_skey as pond_voyage_skey,request_time as pond_request_time,response_time as pond_response_time,visit_time as pond_visit_time,location as pond_location,question_skey as pond_question_skey,answer_rating as pond_answer_rating,answer_text as pond_answer_text,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_shipboard_survey_responses_fact
+spark.postgresql.schema shipdw
+spark.target.table shipboard_survey_responses_fact
+spark.source.primaryKeyColumns request_id,question_skey
+spark.target.final_collist final_view.voyage_id,final_view.request_id,final_view.person_skey,final_view.org_unit_skey,final_view.voyage_skey,cast(final_view.request_time as timestamp) as request_time,cast(final_view.response_time as timestamp) as response_time,cast(final_view.visit_time as timestamp) as visit_time,final_view.location,final_view.question_skey,cast(final_view.answer_rating as int) as answer_rating,final_view.answer_text,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_shipboard_survey_responses_fact
+spark.target.location /data/apps/nbx/mart/hvtb_mart_shipboard_survey_responses_fact
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename shipboard_survey_responses_fact
+spark.tableType FACT
+spark.frameworkEnv ship
+spark.factType Accu
+

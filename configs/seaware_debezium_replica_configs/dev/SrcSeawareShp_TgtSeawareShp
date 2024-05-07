@@ -1,0 +1,33 @@
+spark.kafkabrokers 10.59.1.30:9092,10.59.1.31:9092,10.59.1.32:9092
+spark.kafka.zookeeper 10.59.1.30:2181,10.59.1.31:2181,10.59.1.32:2181
+
+
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic dev-gcp-dbz-sw.SEAWARE.SHIP
+
+
+spark.src.config.id SrcSeawareShp 
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtSeawareShp
+
+spark.target.lnd.table vv_db.hvtb_nbx_lnd_sw_rpl_ship
+spark.target.parse.table vv_db.hvtb_nbx_parse_sw_rpl_ship
+spark.ship.code SHORE
+
+spark.snapshot.table shipdw.hbtb_dbz_snapdate
+spark.metadata.con.format jdbc
+spark.metadata.offset.mode Append
+spark.metadata.offset.table shipdw.hbtb_streaming_ingestion_offset
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.snpsht.table.mode overwrite
+
+spark.source.columns SHIP_ID,SHIP_CODE,SHIP_NAME,SHIP_REGISTRY,SHIP_BUILT_DATE,SHIP_CREW_SIZE,SHIP_PAX_CAPACITY,SHIP_CRUISING_SPEED,SHIP_MAX_SPEED,SHIP_LENGTH,SHIP_BEAM,SHIP_DRAUGHT,SHIP_TONNAGE,SHIP_STABILIZER,COMMENTS,IMAGE_ID,CRUISE_LINE_CODE,op,ts_ms,voyageid,Batchtime,Part_Date
+
+spark.final.query select SHIP_ID,SHIP_CODE,SHIP_NAME,SHIP_REGISTRY,CAST(SHIP_BUILT_DATE/1000000 as timestamp)as SHIP_BUILT_DATE,SHIP_CREW_SIZE,SHIP_PAX_CAPACITY,SHIP_CRUISING_SPEED,SHIP_MAX_SPEED,SHIP_LENGTH,SHIP_BEAM,SHIP_DRAUGHT,SHIP_TONNAGE,SHIP_STABILIZER,COMMENTS,IMAGE_ID,CRUISE_LINE_CODE, op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date
+

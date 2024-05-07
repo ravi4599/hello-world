@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.GROUP_INVOICE_ITEM
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT RECORD_ID, GROUP_ID, REC_SEQN, INVOICE_ITEM_TYPE, INVOICE_ITEM_SUBTYPE, QUANTITY, EFF_DATE, AMOUNT, TOTAL_AMOUNT, INVOICE_ITEM_SUBTYPE2, INVOICE_ITEM_SUBTYPE3, IS_MANUAL_ADJUSTMENT, PROMO_CODE, GROUP_SHIP_REQ_ID, GROUP_HOTEL_REQ_ID, GROUP_PACKAGE_ID, PACKAGE_ID, COMMISSION_PERCENT, DUMMY_RES_SEQN, GUEST_SEQN, PRICE_AREA, EXTENDED_INFO, GROUP_AMENITY_REQ_ID, GROUP_CARDECK_LEG_ID, GROUP_DINING_REQ_ID, GROUP_SHIP_ROOM_REQ_ID, PERCENT, N_OF_UNITS, PRICE_PER_UNIT, TOTAL_N_OF_UNITS FROM SEAWARE.GROUP_INVOICE_ITEM)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_group_invoice_item
+
+spark.src.con.fetchSize 100000
+
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_group_invoice_item/
+
+spark.hadoop.hive.execution.engine mr

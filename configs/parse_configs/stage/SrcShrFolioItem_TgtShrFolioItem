@@ -1,0 +1,11 @@
+spark.source.table select * from shipdw.hvtb_lnd_folio_vperson_account_detail
+spark.target.table shipdw.hvtb_parse_folio_vperson_account_detail
+spark.src.config.id SrcShrFolioItemParse
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtShrFolioItemParse
+spark.parent.id SrcFolio-TgtFolio-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite 
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.4.100.154/hbase-unsecure

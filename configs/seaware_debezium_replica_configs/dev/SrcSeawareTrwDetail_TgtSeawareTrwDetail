@@ -1,0 +1,58 @@
+
+spark.kafkabrokers 10.59.1.30:9092,10.59.1.31:9092,10.59.1.32:9092
+spark.kafka.zookeeper 10.59.1.30:2181,10.59.1.31:2181,10.59.1.32:2181
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic dev-gcp-dbz-sw.SEAWARE.TRW_DETAIL
+
+spark.snapshot.table shipdw.hbtb_dbz_snapdate
+spark.metadata.con.format jdbc
+spark.metadata.offset.mode Append
+spark.metadata.offset.table shipdw.hbtb_streaming_ingestion_offset
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.snpsht.table.mode overwrite
+
+spark.mpx.consumer spark-consumer-100
+
+#spark.src.kafkatopic  test-debezium
+
+spark.src.personOffSet earliest
+
+spark.src.config.id SrcSeawareTrwDetail
+
+spark.voyage.id SC2002269NCR
+
+spark.tgt.env dev
+
+spark.target.config.id TgtSeawareTrwDetail
+
+spark.target.lnd.table vv_db.hvtb_nbx_lnd_sw_rpl_trw_detail
+
+spark.target.parse.table vv_db.hvtb_nbx_parse_sw_rpl_trw_detail
+
+ 
+
+ 
+
+#spark.target.location s3://vv-prod-emr-cluster/data/parse/seaware/hvtb_nbx_parse_sw_rpl_trw_header
+
+#spark.target.parse.query select * from vv_db_mig.hvtb_nbx_landing_sw_rpl_trw_header
+
+ 
+
+
+ 
+
+spark.source.columns TRW_DETAIL_ID,TRW_HEADER_ID,ENTITY_TYPE,ENTITY_ID,IS_MATCHED,COMMENTS,IS_MAIN,op,ts_ms,voyageid,Batchtime,Part_Date
+
+ 
+
+#spark.temp.view temp_res_head
+
+ 
+
+spark.final.query select TRW_DETAIL_ID,TRW_HEADER_ID,ENTITY_TYPE,ENTITY_ID,IS_MATCHED,COMMENTS,IS_MAIN,op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date

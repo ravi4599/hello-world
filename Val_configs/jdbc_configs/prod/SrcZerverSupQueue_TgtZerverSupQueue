@@ -1,0 +1,29 @@
+#source postgres database,table and connection details
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148:5432/zulip
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.con.driver org.postgresql.Driver
+spark.src.table zulip.zerver_supportqueue
+#Unique constant for Batchid
+spark.src.config.id SrcZerverSupQueue
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtZerverSupQueue
+#Metadbta Hbase table and connection details
+spark.tgt.env Prod
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.src.table.query zulip.zerver_supportqueue
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_zulip_zerver_supportqueue
+spark.target.hive.table shipdw.hvtb_lnd_zulip_zerver_supportqueue
+spark.source.columns id,subject,status,sailor_id,stream_id,created,loyalty,responded,voyage_number,resolved,loyalty_level
+spark.source.query id,subject,status,sailor_id,stream_id,created,loyalty,responded,voyage_number,resolved,loyalty_level
+#spark.tz.columns property to change all the timestampz columns to UTC
+spark.tz.columns created,responded,resolved
+spark.source.zone EST
+#cluster details
+spark.ship.code VAL
+

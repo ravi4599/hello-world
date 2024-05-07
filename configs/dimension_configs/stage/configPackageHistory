@@ -1,0 +1,3 @@
+spark.target.temptablenamePack vv_db.hvtb_nbx_core_sw_package_dim_pack_temp
+spark.target.temptablenameShore vv_db.hvtb_nbx_core_sw_package_dim_shorex_temp
+spark.target.tgttablename vv_db.hvtb_nbx_core_sw_package_dim

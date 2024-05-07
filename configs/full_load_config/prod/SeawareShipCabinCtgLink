@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.SHIP_CABIN_CTG_LINK
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT RECORD_ID, SHIP_CODE, CABIN_NUMBER, CABIN_CATEGORY, EFF_SAIL_FROM, EFF_SAIL_TO, ROLLAWAY_BEDS, CABIN_CAPACITY, IS_ACTIVE, EXT_CABIN_CONTRACT_TYPE, ACCOUNT_NUMBER, CHILD_BEDS FROM SEAWARE.SHIP_CABIN_CTG_LINK)
+
+spark.parse.table seaware_oracle.hvtb_nbx_parse_sw_rpl_ship_cabin_ctg_link
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/SHIP_CABIN_CTG_LINK
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_nbx_parse_sw_rpl_ship_cabin_ctg_link/
+
+spark.hadoop.hive.execution.engine mr

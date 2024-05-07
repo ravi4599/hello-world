@@ -1,0 +1,23 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148/housekeeping_service
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.table report.request_types_category
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVXPReqtycat
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtVXPReqCat
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_housekeeping_req_types_category
+spark.target.hive.table shipdw.hvtb_lnd_vxp_housekeeping_req_types_category
+spark.target.table shipdw.hvtb_lnd_vxp_housekeeping_req_types_category
+spark.source.columns id,name,time_sheet,always_available
+spark.src.table.query (select * from report.request_types_category) as request_types_category
+spark.condition.column id
+spark.hive.table.maxid select max(id) from shipdw.hvtb_lnd_vxp_housekeeping_req_types_category
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table	SHIP.HBTB_INGESTION_METADATA 
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+

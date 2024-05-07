@@ -1,0 +1,26 @@
+spark.src.config.id SrcReservationFact
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtReservationSummaryFact
+spark.parent.id SrcDiningReservationDetailDim-TgtDiningReservationDetailDim
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx	
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type fact
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.pond.database shipdw
+spark.postgresql.schema shipdw
+spark.target.table ship_overview_revenue_summary_fact
+spark.pond.table hvtb_mart_fact_ship_overview_revenue_summary
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_fact_ship_overview_revenue_summary
+spark.target.location /data/apps/nbx/mart/hvtb_mart_fact_ship_overview_revenue_summary
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename ship_overview_revenue_summary_fact
+spark.tableType FACT
+spark.frameworkEnv ship
+

@@ -1,0 +1,43 @@
+spark.src.config.id Srcvxpfoodnbevorderdetail
+spark.voyage.id SC2002269NCR
+spark.tgt.env dev
+spark.api.env dev
+spark.target.config.id TgtOrderfact
+spark.parent.id Srcvxpfoodnbevorderdetail-Tgtvxpfoodnbevorderdetail-SC2002269NCR
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+
+
+spark.source.sql select * ,Case when order_delivery_time_taken_mins>order_max_wait_time then True else False end as order_delayed_flg from  (select NVL(order.voyageid,'N/A') as voyage_id, NVL(dim_voyage.ship_code,'N/A') as ship_code ,NVL(dim_voyage.voyage_skey ,-1) as voyage_skey , NVL(dim_orderdetail.order_detail_skey ,-1) as order_detail_skey, NVL(dim_venue.venue_skey ,-1) as venue_skey,NVL(dim_person.person_skey,-1) as order_placed_by_person_skey, NVL(dim_person_delivertoguestid.person_skey,-1) as order_delivered_to_person_skey, NVL(dim_person_deliverypersonid.person_skey,-1) as order_delivered_by_person_skey, NVL(dim_sale_detail.sale_detail_skey,-1) as sale_detail_skey, order.orderdate as order_placed_datetime, order.modifieddate as order_modified_datetime, order.minwaittime as order_min_wait_time, order.maxwaittime as order_max_wait_time, (NVL(UNIX_TIMESTAMP(order.orderdeliverydate),0)-NVL(UNIX_TIMESTAMP(order.orderdate),0))/60 as order_delivery_time_taken_mins, order.orderdeliverydate as order_delivered_datetime, order.amount as order_amount, parse_order_cancellation.cancellationdate as order_cancellation_date, parse_order_cancellation.refundamount as order_cancellation_refund_amount, parse_order_cancellation.cancellationreason as order_cancellation_reason, parse_foodnbev_orderdetail.order_total_number_items, order.Part_Date as part_date, order.BatchTime as batchtime  from shipdw.hvtb_parse_vxp_foodnbev_order order left join shipdw.hvtb_mart_dim_voyage dim_voyage on(order.orderdate between dim_voyage.voyage_start_date and dim_voyage.voyage_end_date) left join shipdw.hvtb_mart_dim_order_detail dim_orderdetail on(dim_orderdetail.order_id==order.orderid) left join(  select id as venue_id,global_venue_id,venued.venue_skey from shipdw.hvtb_parse_vxp_locationcon_venues venue_parse  inner join shipdw.hvtb_mart_dim_venue venued on(venue_parse.global_venue_id==venued.venue_id) )dim_venue on(order.venueid==dim_venue.venue_id) left join shipdw.hvtb_mart_dim_person dim_person on(UPPER(order.guestid)==UPPER(dim_person.person_guid)) left join shipdw.hvtb_mart_dim_person dim_person_delivertoguestid on(UPPER(order.delivertoguestid)==UPPER(dim_person_delivertoguestid.person_guid)) left join shipdw.hvtb_mart_dim_person dim_person_deliverypersonid on(UPPER(order.deliverypersonid)==UPPER(dim_person_deliverypersonid.person_guid)) left join shipdw.hvtb_mart_dim_sale_detail dim_sale_detail on (TRIM(order.ordernumber) = TRIM(dim_sale_detail.receipt_number)) left join shipdw.hvtb_parse_vxp_foodnbev_ordercancellation parse_order_cancellation on(parse_order_cancellation.orderid==order.orderid) left join (select sum(orderqty) as order_total_number_items,orderid from shipdw.hvtb_parse_vxp_foodnbev_orderdetail group by orderid)parse_foodnbev_orderdetail on (order.orderid==parse_foodnbev_orderdetail.orderid) )order_fact
+
+spark.source.columns voyage_id,ship_code,voyage_skey,order_detail_skey,venue_skey,order_placed_by_person_skey,order_delivered_to_person_skey,order_delivered_by_person_skey,sale_detail_skey,order_placed_datetime,order_modified_datetime,order_min_wait_time,order_max_wait_time,order_delivery_time_taken_mins,order_delayed_flg,order_delivered_datetime,order_amount,order_cancellation_date,order_cancellation_refund_amount,order_cancellation_reason,order_total_number_items,batchtime
+spark.pond.allColumns voyage_id as pond_voyage_id, ship_code as pond_ship_code, voyage_skey as pond_voyage_skey, order_detail_skey as pond_order_detail_skey, venue_skey as pond_venue_skey, order_placed_by_person_skey as pond_order_placed_by_person_skey, order_delivered_to_person_skey as pond_order_delivered_to_person_skey, order_delivered_by_person_skey as pond_order_delivered_by_person_skey, sale_detail_skey as pond_sale_detail_skey, order_placed_datetime as pond_order_placed_datetime, order_modified_datetime as pond_order_modified_datetime, order_min_wait_time as pond_order_min_wait_time,order_max_wait_time as pond_order_max_wait_time, order_delivery_time_taken_mins as pond_order_delivery_time_taken_mins, order_delayed_flg as pond_order_delayed_flg, order_delivered_datetime as pond_order_delivered_datetime, order_amount as pond_order_amount, order_cancellation_date as pond_order_cancellation_date, order_cancellation_refund_amount as pond_order_cancellation_refund_amount, order_cancellation_reason as pond_order_cancellation_reason, order_total_number_items as pond_order_total_number_items, load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash, part_dt as pond_part_dt
+
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_order
+spark.target.table itinerary_dim
+spark.source.primaryKeyColumns order_detail_skey,ship_code,voyage_id,voyage_skey
+spark.target.final_collist  final_view.voyage_id, final_view.ship_code, final_view.voyage_skey, final_view.order_detail_skey, final_view.venue_skey, final_view.order_placed_by_person_skey, final_view.order_delivered_to_person_skey, final_view.order_delivered_by_person_skey, final_view.sale_detail_skey, final_view.order_placed_datetime, final_view.order_modified_datetime, final_view.order_min_wait_time,final_view.order_max_wait_time, final_view.order_delivery_time_taken_mins, final_view.order_delayed_flg, final_view.order_delivered_datetime, final_view.order_amount, final_view.order_cancellation_date, final_view.order_cancellation_refund_amount, final_view.order_cancellation_reason, final_view.order_total_number_items, final_view.load_dt, final_view.upd_dt, final_view.primaryhash, final_view.md5_hash, final_view.part_dt
+
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_fact_order
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_order
+
+
+
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.factType Accu
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname order_fact_tmp
+spark.bq.permtblname order_fact
+spark.bq.viewname shipdw.order_fact

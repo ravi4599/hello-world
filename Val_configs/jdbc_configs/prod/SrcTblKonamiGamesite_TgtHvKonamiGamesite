@@ -1,0 +1,22 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.102.150.228:1521/emsvaldata.synkdb.com
+spark.src.user emsdal
+spark.src.password Daluser1*
+spark.src.table EMS.VW_ODBC_GAMESITE
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.src.config.id SrcTblKonamiGamesite
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtHvKonamiGamesite
+spark.target.location /data/apps/nbx/hive/landing/konami/hvtb_lnd_konami_vw_odbc_gamesite
+spark.target.hive.table shipdw.hvtb_lnd_konami_vw_odbc_gamesite
+spark.src.table.query (SELECT GSTID,GSTNAME,SITECLASS,DBLINKNAME,MULTICASTADDR,MULTICASTPORT,TCPIPADDRESS,PORT,INSTANCE,DBLINKSTATUS,ISMASTERSITE,ISMASTERSITEVALUE,CANLOGIN,CANLOGINVALUE,LASTMODDATE,LASTMODBY From EMS.VW_ODBC_GAMESITE)
+spark.condition.column LASTMODDATE
+spark.source.columns GSTID,GSTNAME,SITECLASS,DBLINKNAME,MULTICASTADDR,MULTICASTPORT,TCPIPADDRESS,PORT,INSTANCE,DBLINKSTATUS,ISMASTERSITE,ISMASTERSITEVALUE,CANLOGIN,CANLOGINVALUE,LASTMODDATE,LASTMODBY
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+#cluster details
+spark.ship.code VAL
+

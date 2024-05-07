@@ -1,0 +1,15 @@
+spark.src.config.id SrcHvRequestType
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtHvRequestType
+spark.parent.id SrcKfkRequestType-TgtHvRequestType-SC2002269NCR
+spark.source.table shipdw.hvtb_lnd_vxp_housekeeping_request_types
+spark.target.table shipdw.hvtb_parse_vxp_housekeeping_request_types
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.kafka.zookeeper 10.2.52.146:2181

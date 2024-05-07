@@ -1,0 +1,39 @@
+spark.src.config.id SrcLocationOptoutDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env dev
+spark.target.config.id TgtLocationOptoutDim
+spark.parent.id SrcParsehostpreference-TgtParsehostpreference
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.table.type dim
+spark.source.sql select NVL(A.VoyageId, -1) as voyage_id, A.hostpreferenceid as location_optout_id,person_dim.person_skey as person_skey, A.isoptout as location_optout_flg,A.lastoptoutdate as location_optout_datetime,A.isdeleted as src_deleted_flg, A.BatchTime, A.Part_Date from (select * from (select *, row_number() over (partition by hostpreferenceid order by lastmodifieddate desc) rn  from shipdw.hvtb_parse_vxp_loca_hostpreference) where rn = 1) A left join shipdw.hvtb_mart_dim_person person_dim on A.hostid=person_dim.reservationguest_guid
+spark.source.columns voyage_id,location_optout_id,person_skey,location_optout_flg,location_optout_datetime,src_deleted_flg
+spark.pond.allColumns location_optout_skey as pond_location_optout_skey,voyage_id as pond_voyage_id,location_optout_id as pond_location_optout_id,person_skey as pond_person_skey,location_optout_flg as pond_location_optout_flg,location_optout_datetime as pond_location_optout_datetime,src_deleted_flg as pond_src_deleted_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+spark.target.final_collist location_optout_skey,final_view.voyage_id,final_view.location_optout_id,final_view.person_skey,final_view.location_optout_flg,final_view.location_optout_datetime,final_view.src_deleted_flg,load_dt,upd_dt,primaryhash,md5_hash
+spark.surrogate_key.column location_optout_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_location_optout
+spark.target.table   location_optout_dim
+spark.source.primaryKeyColumns location_optout_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+
+spark.target.temp  gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_dim_location_optout
+spark.target.location  gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_dim_location_optout
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname location_optout_dim_tmp
+spark.bq.permtblname location_optout_dim
+spark.bq.viewname shipdw.location_optout_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+
+
+
+

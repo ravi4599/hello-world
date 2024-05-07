@@ -1,0 +1,36 @@
+spark.src.config.id SrcMenuItemDim
+spark.voyage.id SC1912065NCM
+spark.tgt.env Prod
+spark.target.config.id TgtMenuItemDim
+spark.parent.id Srcshrfoodnbevmenuitem-Tgtshrfoodnbevmenuitem
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.source.sql select a.VoyageId as voyage_id, a.menuitemid as menu_item_id, a.skunumber as menu_item_sku_number, a.name as menu_item_name, a.smalldescription as menu_item_small_description, a.description as menu_item_long_description, b.name as menu_item_type_name, b.description as menu_item_type_description, c.pricetag as menu_item_plu_number,a.batchtime,a.part_date FROM (select * from (select * ,row_number() over ( partition by menuitemtypeid order by Part_Date desc) as rn from shipdw.hvtb_parse_vxp_foodnbev_menuitem )menuitem )a  LEFT JOIN (select * from (select * ,row_number() over( partition by menuitemtypeid order by Part_Date desc) as rn from shipdw.hvtb_parse_vxp_menuitemtype)menuitemtype where menuitemtype.rn=1)b ON  a.menuitemtypeid = b.menuitemtypeid LEFT JOIN (select * from (select * ,row_number() over ( partition by menuitemid order by Part_Date desc) as rn from shipdw.hvtb_parse_vxp_foodandbeverage_menuitemprice)menuitemprice where menuitemprice.rn=1)c ON  a.menuitemid = c.menuitemid
+spark.source.columns voyage_id,menu_item_id,menu_item_sku_number,menu_item_name,menu_item_small_description,menu_item_long_description,menu_item_type_name,menu_item_type_description,menu_item_plu_number,batchtime,part_date
+spark.pond.allColumns menu_item_skey as pond_menu_item_skey, voyage_id as pond_voyage_id, menu_item_id as pond_menu_item_id, menu_item_sku_number as pond_menu_item_sku_number, menu_item_name as pond_menu_item_name, menu_item_small_description as pond_menu_item_small_description, menu_item_long_description as pond_menu_item_long_description, menu_item_type_name as pond_menu_item_type_name, menu_item_type_description as pond_menu_item_type_description, menu_item_plu_number as pond_menu_item_plu_number,load_dt as pond_load_dt, upd_dt as  pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column menu_item_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_menu_item
+spark.source.primaryKeyColumns menu_item_id
+spark.table.type dim
+spark.target.schema shipdw
+spark.target.table menu_item_dim
+spark.target.final_collist menu_item_skey,final_view.voyage_id as voyage_id, final_view.menu_item_id as menu_item_id, final_view.menu_item_sku_number as menu_item_sku_number, final_view.menu_item_name as menu_item_name, final_view.menu_item_small_description as menu_item_small_description, final_view.menu_item_long_description as menu_item_long_description, final_view.menu_item_type_name as menu_item_type_name, final_view.menu_item_type_description as menu_item_type_description, final_view.menu_item_plu_number as menu_item_plu_number,load_dt,upd_dt,primaryhash,md5_hash
+	 
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_menu_item
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_menu_item
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname menu_item_dim_tmp
+spark.bq.permtblname menu_item_dim
+spark.bq.viewname shipdw.menu_item_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+#-------------------------# 
+spark.hadoop.hive.execution.engine mr
+

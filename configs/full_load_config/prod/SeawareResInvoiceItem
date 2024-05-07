@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.RES_INVOICE_ITEM
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT RES_INVOICE_ITEM_ID, RES_ID, GUEST_ID, RES_PACKAGE_ID, INVOICE_ITEM_TYPE, PRICE_PER_UNIT, N_OF_UNITS, PERCENT, AMOUNT, INVOICE_ITEM_SUBTYPE, INVOICE_ITEM_SUBTYPE2, INVOICE_ITEM_SUBTYPE3, PRICE_PROGRAM, HOTEL_REQUEST_ID, COMMISSION_PERCENT, PRICE_AREA, EXTENDED_INFO, ADJUSTMENT_ORIGIN, RES_PRODUCT_ID, INVOICE_HDR_ID, CLIENT_ID, GUEST_SEQN, AMOUNT_IN_HDR_CURR FROM SEAWARE.RES_INVOICE_ITEM)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_res_invoice_item
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/RES_INVOICE_ITEM
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_res_invoice_item/
+
+spark.hadoop.hive.execution.engine mr

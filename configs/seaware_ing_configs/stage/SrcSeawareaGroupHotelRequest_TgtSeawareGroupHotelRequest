@@ -1,0 +1,30 @@
+spark.kafkabrokers 10.7.3.103:9092,10.7.11.112:9092,10.7.12.61:9092
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+
+spark.src.kafkatopic dbz.sw.SEAWARE.GROUP_HOTEL_REQUEST
+spark.src.personOffSet earliest
+
+spark.src.config.id SrcSeawareaGroupHotelRequest
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtSeawareGroupHotelRequest
+
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_group_hotel_request
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_group_hotel_request
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.kafka.zookeeper 10.7.12.61:2181
+
+spark.source.columns RECORD_ID, PRODUCT_TYPE, HOTEL_REQUEST_TYPE, HOTEL_CATEGORY, HOTEL_ROOM_CATEGORY, HOTEL_ID, HOTEL_ROOM_TYPE, QUANTITY, N_OF_GUESTS, CABIN_CATEGORY, PACKAGE_TYPE, SHIP_CODE, CITY_CODE, STAY_DATE_FROM, STAY_DATE_TO, GROUP_ID, EFFECTIVE_DATE, PACKAGE_ID, HOTEL_SPACE_TYPE, OCCUPANCY, op,ts_ms,voyageid,Batchtime,Part_Date
+
+spark.final.query select RECORD_ID, PRODUCT_TYPE, HOTEL_REQUEST_TYPE, HOTEL_CATEGORY, HOTEL_ROOM_CATEGORY, HOTEL_ID, HOTEL_ROOM_TYPE, QUANTITY, N_OF_GUESTS, CABIN_CATEGORY, PACKAGE_TYPE, SHIP_CODE, CITY_CODE, CAST(STAY_DATE_FROM/1000000 as timestamp)as STAY_DATE_FROM, CAST(STAY_DATE_TO/1000000 as timestamp)as STAY_DATE_TO, GROUP_ID, CAST(EFFECTIVE_DATE/1000000 as timestamp)as EFFECTIVE_DATE, PACKAGE_ID, HOTEL_SPACE_TYPE, OCCUPANCY, op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date

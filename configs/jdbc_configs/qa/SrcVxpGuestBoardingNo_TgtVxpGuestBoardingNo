@@ -1,0 +1,35 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.56.10.6/dxpcore
+spark.src.user pgreadaccessuser
+spark.src.password vzwQArHubFzpEyoL1st7
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVxpGuestBoardingNo
+spark.tgt.env QA
+spark.ing.type Ingestion
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpGuestBoardingNo
+spark.target.table shipdw.hvtb_lnd_vxp_guestboardingnumber
+spark.target.hive.table shipdw.hvtb_lnd_vxp_guestboardingnumber
+spark.src.table.query "guestboardingnumber"
+spark.condition.column lastmodifieddate
+
+spark.source.columns guestboardingnumberid,reservationguestid ,boardingnumber,slotnumber,isdeleted,addedby,addeddate,lastmodifiedby ,lastmodifieddate,shipcode,embarkdate,guestid,reservationid,purgedate,checkedinboardingnumber,onboardedboardingnumber,isboardingnumberpreassigned
+
+ 
+spark.source.query guestboardingnumberid,reservationguestid ,boardingnumber,slotnumber,isdeleted,addedby,addeddate,lastmodifiedby ,lastmodifieddate,shipcode,embarkdate,guestid,reservationid,purgedate,checkedinboardingnumber,onboardedboardingnumber,isboardingnumberpreassigned
+
+ 
+#spark.tz.columns property to change all the timestampz columns to UTC
+spark.tz.columns addeddate,lastmodifieddate
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.target.location gs://vv-cert-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_guestboardingnumber
+
+ 
+spark.hadoop.hive.execution.engine mr
+

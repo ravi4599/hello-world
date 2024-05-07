@@ -1,0 +1,19 @@
+spark.src.config.id SrcHvReservationPreference
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtHvReservationPreference
+spark.parent.id SrcKfkReservationPreference_TgtHvReservationPreference-SC2002269NCR
+spark.source.table shipdw.hvtb_lnd_vxp_table_management_reservations_reservationpreference
+spark.target.table shipdw.hvtb_parse_vxp_table_management_reservations_reservationpreference
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.metadata.offset.table shipdw.hbtb_nbx_kafka_streaming_offset
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.con.format jdbc
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+

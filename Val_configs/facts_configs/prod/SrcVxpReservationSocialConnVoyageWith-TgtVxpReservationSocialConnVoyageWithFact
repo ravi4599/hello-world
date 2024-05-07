@@ -1,0 +1,38 @@
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.src.config.id SrcVxpReservationSocialConnVoyageWith
+spark.target.config.id TgtVxpReservationSocialConnVoyageWithFact
+spark.parent.id SrcVxpDxpreservationsocialconnection-TgtVxpDxpreservationsocialconnection
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.lad.file false
+spark.source.columns voyage_id,ship_code,voyage_skey,person_skey,person_reservationid,connection_person_skey,connectionperson_reservationid,connection_type_skey,is_travel_with,is_connection_confirmed,is_connection_deleted,is_event_visible
+spark.pond.allColumns voyage_id as pond_voyage_id,ship_code as pond_ship_code,voyage_skey as pond_voyage_skey,person_skey as pond_person_skey,person_reservationid as pond_person_reservationid,connection_person_skey as pond_connection_person_skey,connectionperson_reservationid as pond_connectionperson_reservationid,connection_type_skey as pond_connection_type_skey,is_travel_with as pond_is_travel_with,is_connection_confirmed as pond_is_connection_confirmed,is_connection_deleted as pond_is_connection_deleted,is_event_visible as pond_is_event_visible,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_voyage_with
+spark.postgresql.schema shipdw
+spark.target.table voyage_with_fact
+spark.source.primaryKeyColumns person_skey,connection_person_skey,connection_type_skey
+spark.target.final_collist final_view.voyage_id,final_view.ship_code,final_view.voyage_skey,final_view.person_skey,final_view.person_reservationid,final_view.connection_person_skey,final_view.connectionperson_reservationid,final_view.connection_type_skey,final_view.is_travel_with,final_view.is_connection_confirmed,final_view.is_connection_deleted,final_view.is_event_visible,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_fact_voyage_with
+spark.target.location /data/apps/nbx/mart/hvtb_mart_fact_voyage_with
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename voyage_with_fact
+spark.tableType FACT
+spark.frameworkEnv ship
+spark.factType Accu
+#----------------------LAD--------------------------------# 
+spark.ladjob.flag true
+spark.lad.srctablekey reservationsocialconnectionid
+spark.lad.srctable shipdw.hvtb_parse_vxp_dxp_reservationsocialconnection
+spark.lad.columns person_skey,connection_person_skey,connection_type_skey
+spark.ladremoval.flag false
+#----------------------------------------------------------# 
+

@@ -1,0 +1,20 @@
+spark.src.config.id SrcPostvoyageSailorSurveyRpt
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtPostvoyageSailorSurveyRpt
+
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+### Add *whereclause* in source.sql for max(part_dt) ###
+
+spark.hivetable.sql select * from postVoyageData *whereclause*
+
+spark.target.table vv_db.hvtb_nbx_core_postvoyage_sailor_survey_rpt
+spark.source.location gs://vv-prod-nbx-cluster/data/core/sas/seaware/postvoyage_sailor_survey_rpt/*
+spark.hadoop.hive.execution.engine mr

@@ -1,0 +1,39 @@
+spark.src.config.id SrcSeawarePlanForecastHeaderDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtSeawarePlanForecastHeaderDim
+spark.parent.id SrcRevenueForecast-TgtRevenueForecast
+
+spark.hadoop.hive.execution.engine mr
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.source.sql select src.rec_start_dttm,case when (src.sail_id is null and src.forecast_metric_id is null and src.cabin_ctg_generic is null and src.forecast_version_id is null and tgt.sail_id is not null and tgt.forecast_metric_id is not null and tgt.cabin_ctg_generic is not null and tgt.forecast_version_id is not null) then current_timestamp else to_timestamp('9999-12-31 00:00:00') end as rec_end_dttm,src.src_header_id,src.sail_id,src.package_type,src.cabin_ctg_generic,src.forecast_version_id,src.forecast_metric_id,src.comments,src.batchtime,src.part_date from (select current_timestamp as rec_start_dttm,cast(null as int) as src_header_id,sail_dim.sail_id as sail_id,rk.package_type as package_type,rk.cabin_ctg_generic as cabin_ctg_generic,cast(vlkp.forecast_version_id as int) as forecast_version_id,cast(mlkp.forecast_metric_id as int) as forecast_metric_id,rk.comments as comments,rk.batchtime as batchtime,rk.part_date as part_date from vv_db.hvtb_nbx_landing_revenue_kpi_plan_forecast_upload rk left join vv_db.hvtb_nbx_core_sw_ship_dim as ship_dim on ship_dim.ship=rk.ship_code left join vv_db.hvtb_nbx_core_sw_sail_dim as sail_dim on sail_dim.ship_id=ship_dim.ship_id and cast(sail_dim.sail_date_from as date)=cast(rk.sail_date as date) and sail_dim.rec_end_dttm='9999-12-31 00:00:00' and sail_dim.is_active='Y' left join vv_db.hvtb_nbx_core_sw_forecastmetric_lkp as mlkp on mlkp.forecast_metric_desc=rk.forecast_metric left join vv_db.hvtb_nbx_core_sw_forecastversion_lkp as vlkp on vlkp.forecast_version_desc=rk.forecast_version) as src full join vv_db.hvtb_nbx_core_sw_plan_forecast_header_dim tgt on (src.sail_id=tgt.sail_id and src.forecast_metric_id=tgt.forecast_metric_id and src.cabin_ctg_generic=tgt.cabin_ctg_generic and src.forecast_version_id=tgt.forecast_version_id and src.package_type=tgt.package_type)
+spark.source.columns sail_id,package_type,cabin_ctg_generic,forecast_version_id,forecast_metric_id,comments,batchtime
+
+spark.pond.allColumns plan_forecast_id as pond_plan_forecast_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,src_header_id as pond_src_header_id,sail_id as pond_sail_id,package_type as pond_package_type,cabin_ctg_generic as pond_cabin_ctg_generic,forecast_version_id as pond_forecast_version_id,forecast_metric_id as pond_forecast_metric_id,comments as pond_comments,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.surrogate_key.column plan_forecast_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_plan_forecast_header_dim
+spark.source.primaryKeyColumns sail_id,package_type,cabin_ctg_generic,forecast_version_id,forecast_metric_id
+spark.target.final_collist final_view.plan_forecast_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.src_header_id,final_view.sail_id,final_view.package_type,final_view.cabin_ctg_generic,final_view.forecast_version_id,final_view.forecast_metric_id,final_view.comments,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_plan_forecast_header_dim
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_plan_forecast_header_dim
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname sw_plan_forecast_header_dim_tmp
+spark.bq.permtblname sw_plan_forecast_header_dim
+spark.bq.viewname seaware.sw_plan_forecast_header_dim
+
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore

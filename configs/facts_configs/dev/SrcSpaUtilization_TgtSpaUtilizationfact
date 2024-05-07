@@ -1,0 +1,40 @@
+spark.src.config.id SrcSpaUtilization
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtSpaUtilizationfact
+spark.tgt.env Dev
+spark.api.env Dev
+spark.parent.id SrcSpaUtilization-TgtSpaUtilizationfact
+spark.table.type fact
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.source.sql select * from (select spa_util.voyage_id,spa_util.ship_code,NVL(voyage_skey,-1) as voyage_skey ,NVL(dim_service_type.service_type_skey,-1) as service_type_skey,NVL(dim_outlet.outlet_skey,-1) as outlet_skey,NVL(dim_venue.venue_skey,-1) as venue_skey,NVL(dated.date_id,-1) as utilization_date_skey,spa_util.date as utilization_date ,totalavailablehours as  total_available_hours ,totalbookedhours as total_booked_hours,numberofreservations as count_reservations,numofprevoyagebookings as count_prevoyage_bookings,totalrevenue as total_revenue_amount,totaltarget as total_target_amount,spa_util.batchtime,spa_util.part_date from (select * from (select batchtime,part_date, voyageid as voyage_id,shipcode as ship_code,voyagenumber,spaservicetype,spaservicecategory,spavenue,date,totalavailablehours,totalbookedhours,numberofreservations,numofprevoyagebookings,totalrevenue,totaltarget,row_number()over(partition by spaservicetype,spaservicecategory order by date desc)as rn from shipdw.hvtb_parse_spa_utilization)spa where spa.rn=1 )spa_util  left join shipdw.hvtb_mart_dim_voyage dim_voyage on(trim(spa_util.voyagenumber)==trim(dim_voyage.voyage_number)) left join  shipdw.hvtb_mart_dim_service_type dim_service_type on(spa_util.spaservicetype==dim_service_type.service_type and dim_service_type.service_category==spa_util.spaservicecategory) left join shipdw.hvtb_mart_dim_outlet dim_outlet on(trim(spa_util.spavenue)==trim(dim_outlet.outlet_id)) left join shipdw.hvtb_mart_lkp_venue venue_lkp  on(upper(venue_lkp.salesoutletid)==upper(spa_util.spavenue)) left join shipdw.hvtb_mart_dim_venue dim_venue on(UPPER(venue_lkp.venueidgo)==UPPER(dim_venue.venue_id) )  left join shipdw.hvtb_mart_dim_date dated on(dated.`date`==spa_util.date))spa_util_fact 
+
+#select 'SC2002269NCR' as voyage_id,'SC' as ship_code,1 as voyage_skey,1 as service_type_skey,1 as outlet_skey,1 as venue_skey,1 as utilization_date_skey,current_date() as utilization_date,3 as total_available_hours,3 as total_booked_hours,3 as count_reservations,3 as count_prevoyage_bookings,3 as total_revenue_amount,5 as total_target_amount,current_date() as part_date,current_timestamp() as batchtime
+spark.source.columns voyage_id,ship_code,voyage_skey,service_type_skey,outlet_skey,venue_skey,utilization_date_skey,utilization_date,total_available_hours,total_booked_hours,count_reservations,count_prevoyage_bookings,total_revenue_amount,total_target_amount,batchtime,part_date
+spark.pond.allColumns voyage_id as pond_voyage_id,ship_code as pond_ship_code,voyage_skey as pond_voyage_skey,service_type_skey as pond_service_type_skey,outlet_skey as pond_outlet_skey,venue_skey as pond_venue_skey,utilization_date_skey as pond_utilization_date_skey,utilization_date as pond_utilization_date,total_available_hours as pond_total_available_hours,total_booked_hours as pond_total_booked_hours,count_reservations as pond_count_reservations,count_prevoyage_bookings as pond_count_prevoyage_bookings,total_revenue_amount as pond_total_revenue_amount,total_target_amount as pond_total_target_amount,load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash, part_dt as pond_part_dt
+
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_spa_utilization_summary
+
+spark.source.primaryKeyColumns voyage_skey,service_type_skey,outlet_skey,utilization_date_skey
+spark.target.final_collist  final_view.voyage_id,final_view.ship_code,final_view.voyage_skey,final_view.service_type_skey,final_view.outlet_skey,final_view.venue_skey,final_view.utilization_date_skey,final_view.utilization_date,final_view.total_available_hours,final_view.total_booked_hours,final_view.count_reservations,final_view.count_prevoyage_bookings,final_view.total_revenue_amount,final_view.total_target_amount,final_view.load_dt, final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_fact_spa_utilization_summary
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_spa_utilization_summary
+
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname spa_utilization_summary_fact_tmp
+spark.bq.permtblname spa_utilization_summary_fact
+spark.bq.viewname    shipdw.spa_utilization_summary_fact
+
+
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.factType Accu

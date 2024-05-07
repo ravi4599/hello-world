@@ -1,0 +1,13 @@
+spark.src.config.id SrcCoreGuest
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtCoreGuestWearable
+spark.parent.id SrcCoreGuest-TgtCoreGuest-SC1912065NCM
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.4.100.154/hbase-unsecure
+spark.reservation.target.table vv_db.hvtb_parse_vxp_core_guest_res_crt_upd
+spark.resguest.target.table vv_db.hvtb_parse_vxp_core_guest_resguest_crt_upd
+spark.resguest.folio.target.table vv_db.hvtb_parse_vxp_core_guest_folio_resguest_crt_upd
+spark.source.table select * from vv_db.hvtb_lnd_core_guest

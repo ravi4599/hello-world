@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.COUNTRY
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT COUNTRY_ID, COUNTRY_CODE, COUNTRY_NAME, COUNTRY_CODE2, COUNTRY_ISO_ID, INTL_CODE, PHONE_INPUT_MASK, POSTAL_CODE_MASK, POSTAL_CODE_PROVIDED, POSTAL_CODE_COMPLETE, POSTAL_SYMBOLS_NUM_USED, AGENCY_ID, COUNTRY_CODE3, POSTAL_CODE_REGEXP_MATCH, POSTAL_CODE_REGEXP_TRIM, POSTAL_CODE_FORMAT_SQL FROM SEAWARE.COUNTRY)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_country
+
+spark.src.con.fetchSize 100000
+
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_country/
+
+spark.hadoop.hive.execution.engine mr

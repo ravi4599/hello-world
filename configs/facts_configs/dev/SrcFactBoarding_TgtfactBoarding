@@ -1,0 +1,64 @@
+  
+spark.src.config.id   SrcFactBoarding
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   Dev
+spark.target.config.id   TgtfactBoarding
+spark.parent.id   SrcVxpGuestBoardingNo-TgtVxpGuestBoardingNo
+
+   
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.ing.type Fact
+   
+ 
+ 
+spark.source.sql select voyage_id,voyage_skey,person_skey,vxp_reservationguest_id,vxp_reservation_id,vxp_guest_id,boardingnumber_skey,guest_boarding_slot_number,src_last_modified_dt,embark_datetime,checkedin_boarding_number,onboard_boarding_number,seaware_sail_id,seaware_res_id,batchtime,part_date from (Select coalesce(voyage_dim.voyage_skey,-1) as voyage_skey,voyage_dim.voyage_id as voyage_id,coalesce(pd.person_skey,-1) as person_skey, coalesce(gbn.reservationguestid,-1) as vxp_reservationguest_id, rg.reservationid as vxp_reservation_id, rg.guestid as vxp_guest_id, coalesce(bd.boardingnumber_skey,coalesce(bd1.boardingnumber_skey,-1)) as boardingnumber_skey, gbn.slotnumber as guest_boarding_slot_number, gbn.lastmodifieddate as src_last_modified_dt, gbn.embarkdate as embark_datetime, gbn.checkedinboardingnumber as checkedin_boarding_number, gbn.onboardedboardingnumber as onboard_boarding_number,NVL(seaware_dim.src_sail_id,-1) as seaware_sail_id,NVL(seaware_dim.src_res_id,-1) as seaware_res_id,gbn.batchtime,gbn.part_date from (select guestboardingnumberid,reservationguestid, slotnumber, lastmodifieddate, embarkdate, checkedinboardingnumber, onboardedboardingnumber, boardingnumber, shipcode, batchtime,part_date from (select guestboardingnumberid,reservationguestid, slotnumber, lastmodifieddate, embarkdate,checkedinboardingnumber, onboardedboardingnumber, boardingnumber, shipcode, batchtime,part_date ,row_number() over(partition by guestboardingnumberid order by lastmodifieddate desc )as rn from shipdw.hvtb_parse_vxp_guestboardingnumber where isdeleted=false) tmp where tmp.rn = 1) gbn left Join (select reservationguestid, reservationid, guestid from ( select reservationguestid, reservationid, guestid, row_number() over(partition by reservationguestid order by lastmodifieddate desc ) as rn from vv_db.hvtb_parse_vxp_reservationguest)tmp where tmp.rn = 1) rg on gbn.reservationguestid = rg.reservationguestid  left join (select * from (select * ,row_number ()over (partition by reservationguest_guid order by coalesce (booking_departure_date,'1900-01-01') desc, md5_hash desc) as rn from shipdw.hvtb_mart_dim_person)per where per.rn=1) pd on pd.reservationguest_guid = rg.reservationguestid  left Join ( select voyagenumber, reservationid,reservationnumber from (select voyagenumber, reservationid,reservationnumber, row_number() over(partition by reservationid order by lastmodifieddate desc )as rn from vv_db.hvtb_parse_vxp_reservation)tmp where tmp.rn = 1) r on rg.reservationid = r.reservationid   left join (select voyage_number,voyage_skey,voyage_id from shipdw.hvtb_mart_dim_voyage where src_deleted_flag=false and src_active_flag=true) voyage_dim on voyage_dim.voyage_number = r.voyagenumber   left Join (select boardingnumberid, boardingnumber, slotnumber, shipcode, voyagenumber from (select boardingnumberid, boardingnumber, slotnumber, shipcode, voyagenumber, row_number() over(partition by boardingnumberid order by lastmodifieddate desc )as rn from shipdw.hvtb_parse_vxp_boardingnumber where isdeleted=false)tmp where tmp.rn = 1 ) bn on bn.boardingnumber = gbn.boardingnumber and bn.slotnumber = gbn.slotnumber and bn.shipcode = gbn.shipcode and bn.voyagenumber  =r.voyagenumber left Join (select boardingnumberid, boardingnumber, slotnumber, shipcode, voyagenumber from (select boardingnumberid, boardingnumber, slotnumber, shipcode, voyagenumber, row_number() over(partition by boardingnumberid order by lastmodifieddate desc )as rn from shipdw.hvtb_parse_vxp_boardingnumber where isdeleted=false and voyagenumber is null)tmp where tmp.rn = 1 ) bn1 on bn1.boardingnumber = gbn.boardingnumber and bn1.slotnumber = gbn.slotnumber and bn1.shipcode = gbn.shipcode left Join shipdw.hvtb_mart_vxp_boardingnumber_dim bd on bd.boardingnumber_id = bn.boardingnumberid left Join shipdw.hvtb_mart_vxp_boardingnumber_dim bd1 on bd1.boardingnumber_id = bn1.boardingnumberid  left join (select src_res_id,res_id,src_sail_id,rec_end_dttm from vv_db.hvtb_nbx_core_sw_reservation_dim where rec_end_dttm='9999-12-31 00:00:00') seaware_dim on  r.reservationnumber=seaware_dim.src_res_id)
+
+spark.source.columns   voyage_id,voyage_skey,person_skey,vxp_reservationguest_id,vxp_reservation_id,vxp_guest_id,boardingnumber_skey,guest_boarding_slot_number,src_last_modified_dt,embark_datetime,checkedin_boarding_number,onboard_boarding_number,seaware_sail_id,seaware_res_id,seaware_guest_id
+   
+spark.pond.allColumns   voyage_id as pond_voyage_id,voyage_skey as pond_voyage_skey,person_skey as pond_person_skey,vxp_reservationguest_id as pond_vxp_reservationguest_id,vxp_reservation_id as pond_vxp_reservation_id,vxp_guest_id as pond_vxp_guest_id,boardingnumber_skey as pond_boardingnumber_skey,guest_boarding_slot_number as pond_guest_boarding_slot_number,src_last_modified_dt as pond_src_last_modified_dt,embark_datetime as pond_embark_datetime,checkedin_boarding_number as pond_checkedin_boarding_number,onboard_boarding_number as pond_onboard_boarding_number,seaware_sail_id as pond_seaware_sail_id,seaware_res_id as pond_seaware_res_id,seaware_guest_id as pond_seaware_guest_id,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+   
+spark.target.final_collist   final_view.voyage_id as voyage_id,final_view.voyage_skey as voyage_skey,final_view.person_skey as person_skey,final_view.vxp_reservationguest_id as vxp_reservationguest_id,final_view.vxp_reservation_id as vxp_reservation_id,final_view.vxp_guest_id as vxp_guest_id,final_view.boardingnumber_skey as boardingnumber_skey,final_view.guest_boarding_slot_number as guest_boarding_slot_number,final_view.src_last_modified_dt as src_last_modified_dt,final_view.embark_datetime as embark_datetime,final_view.checkedin_boarding_number as checkedin_boarding_number,final_view.onboard_boarding_number as onboard_boarding_number,final_view.seaware_sail_id as seaware_sail_id,final_view.seaware_res_id as seaware_res_id,final_view.seaware_guest_id as seaware_guest_id,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash,final_view.part_dt as part_dt  
+
+  
+spark.target.temp   gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_vxp_boarding_fact
+spark.target.location   gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_vxp_boarding_fact
+
+
+spark.pond.database   shipdw
+spark.pond.table   hvtb_mart_vxp_boarding_fact
+spark.target.table boarding_fact
+spark.factType   Accu								
+spark.source.primaryKeyColumns   voyage_skey,person_skey
+   
+spark.tableType   FACT
+spark.frameworkEnv   shore
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname boarding_fact_tmp
+spark.bq.permtblname boarding_fact
+spark.bq.viewname shipdw.boarding_fact 
+
+#----------------------LAD--------------------------------#
+spark.ladjob.flag true
+spark.lad.srctablekey guestboardingnumberid
+spark.lad.srctable shipdw.hvtb_parse_vxp_guestboardingnumber
+spark.lad.tgttable shipdw.hvtb_parse_vxp_guestboardingnumber_lad
+spark.lad.columns voyage_skey,person_skey
+spark.ladremoval.flag false 
+
+#----------------------------------------------------------#
+
+
+
+
+
+
+
+   
+
+   

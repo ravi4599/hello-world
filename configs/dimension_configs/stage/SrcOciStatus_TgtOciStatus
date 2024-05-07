@@ -1,0 +1,41 @@
+spark.src.config.id SrcOciStatus
+spark.voyage.id SC1912065NCM
+spark.tgt.env Stage
+spark.target.config.id TgtOciStatus
+spark.parent.id SrcRTSOciStatusDetail-TgtRTSOciStatusDetail
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.table.type dim
+
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+
+spark.source.sql select guestId as vxp_guest_id,cast(reservationnumber as integer) as src_res_id,reservationguestid ,precruiseinfo_transportationtypecode as rts_transfer_response,case when precruiseinfo_transportationtypecode='FLT_CAR_PRK'  then 'Air' when precruiseinfo_transportationtypecode='FLT' then 'Air' when precruiseinfo_transportationtypecode='FLT_CHF' then 'Air' when precruiseinfo_transportationtypecode='FLT_NO_CAR_PRK'  then 'Air' when precruiseinfo_transportationtypecode='FLT_NO_CHF'  then 'Air'  else null end as arrival_transportation_mode,null as arrival_booking_source,precruiseinfo_flightnumber as arrival_flight_number,cast(reservationembarkdate as date) as arrival_transportation_date, precruiseinfo_arrivaltime as arrival_transportation_time ,case when postcruiseinfo_flyingoutplancode = 'FLT_OUT' and postcruiseinfo_isopted = true then 'Air' else null end as departure_transportation_mode,null as departure_booking_source,postcruiseinfo_flightnumber as departure_flight_number, cast(reservationdebarkdate as date) as departure_transportation_date,precruiseinfo_departuretime as departure_transportation_time,case when precruiseinfo_transportationtypecode='CAR_PRK'  then 'Y' when precruiseinfo_transportationtypecode='FLT_CAR_PRK' then 'Y' when precruiseinfo_transportationtypecode='FLT_NO_CAR_PRK' then 'Y'  else null end as parking_at_port_flg,voyageid,batchtime,part_date from vv_db.hvtb_parse_mxp_shore_RTS_oci_statusdetail
+
+spark.source.columns vxp_guest_id,src_res_id,src_guest_id,client_id,rts_transfer_response,arrival_transportation_mode,arrival_booking_source,arrival_flight_number,arrival_transportation_date,arrival_transportation_time,departure_transportation_mode,departure_booking_source,departure_flight_number,departure_transportation_date,departure_transportation_time,parking_at_port_flg,voyageid
+
+spark.pond.allColumns rts_id as pond_rts_id,vxp_guest_id as pond_vxp_guest_id,src_res_id as pond_src_res_id,src_guest_id as pond_src_guest_id,client_id as pond_client_id,rts_transfer_response as pond_rts_transfer_response,arrival_transportation_mode as pond_arrival_transportation_mode,arrival_booking_source as pond_arrival_booking_source,arrival_flight_number as pond_arrival_flight_number,arrival_transportation_date as pond_arrival_transportation_date,arrival_transportation_time as pond_arrival_transportation_time,departure_transportation_mode as pond_departure_transportation_mode,departure_booking_source as pond_departure_booking_source,departure_flight_number as pond_departure_flight_number,departure_transportation_date as pond_departure_transportation_date,departure_transportation_time as pond_departure_transportation_time,parking_at_port_flg as pond_parking_at_port_flg,voyageid as pond_voyageid,load_dt as pond_load_dt,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+
+
+spark.pond.database vv_db
+spark.pond.table hvtb_mart_dim_rts_oci_statusdetail
+spark.source.primaryKeyColumns vxp_guest_id,src_res_id
+spark.surrogate_key.column rts_id
+
+spark.target.final_collist   rts_id,final_view.vxp_guest_id,final_view.src_res_id,final_view.src_guest_id,final_view.client_id,final_view.rts_transfer_response,final_view.arrival_transportation_mode,final_view.arrival_booking_source,final_view.arrival_flight_number,final_view.arrival_transportation_date,final_view.arrival_transportation_time,final_view.departure_transportation_mode,final_view.departure_booking_source,final_view.departure_flight_number,final_view.departure_transportation_date,final_view.departure_transportation_time,final_view.parking_at_port_flg,final_view.voyageid,load_dt,upd_dt,primaryhash,md5_hash
+
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_dim_rts_oci_statusdetail
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_rts_oci_statusdetail
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename seaware_guest_rts_dim
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+
+
+
+ 

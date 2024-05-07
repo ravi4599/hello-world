@@ -1,0 +1,27 @@
+spark.query select cabinCategory.ship_code as Ship_Code, cabin.cabin_number as Cabin_Number,cabin.deck_number as Cabin_Deck_Number,cabinCategory.cabin_category as Cabin_Category,cabinCategory.category_capacity as Cabin_Capacity from vv_db.hvtb_parse_sw_rpl_ship_cabin cabin join shipdw.hvtb_parse_sw_cabin_category cabinCategory ON cabin.cabin_id = cabinCategory.cabin_category_id where cabinCategory.ship_code IN ('SC', 'VL', 'RS')
+
+spark.temp gs://vv-cert-nbx-cluster/test_nonpricing/test/temp/
+spark.location gs://vv-cert-nbx-cluster/temp/
+spark.filename _SCVL_cabins
+spark.prefix_with_date True
+spark.sql.codegen.wholeStage false
+
+
+spark.manageExecution.dayOftheWeek Wed,Thu
+spark.hadoop.hive.execution.engine mr
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.frameworkEnv shore
+spark.table.type dim
+
+#spark.talend.processName 'jSWstgRPL_SHIP_CABIN','jSWstgRPL_CABIN_CATEGORY'
+
+spark.src.config.id SrcNonpricingCabins
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtNonpricingCabins
+

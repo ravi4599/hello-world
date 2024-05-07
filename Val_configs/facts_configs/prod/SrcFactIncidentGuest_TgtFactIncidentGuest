@@ -1,0 +1,43 @@
+#------META DATA CONFIG-----#
+spark.src.config.id SrcFactIncidentGuest
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtFactIncidentGuest
+spark.parent.id SrcVxpDxpIncident-TgtVxpDxpIncident
+#spark.same.parent yes
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ing.type Fact
+#-------------------------# 
+spark.source.sql SELECT incdent.incidentid, vdim.voyage_id as voyage_id, incdent.propertyid as ship_code, NVL(vdim.voyage_skey, -1) as voyage_skey, NVL(incdent_dtl.incident_detail_skey, -1) as incident_detail_skey, NVL(pdim.person_skey, -1) as impacted_guest_person_skey from ( select voyagenumber, incidentid, inci.impactedgues, propertyid, lastmodifieddate, batchtime, part_date from ( SELECT voyagenumber, incidentid, impactedgues, propertyid, lastmodifieddate, batchtime, part_date, row_number() over (partition by incidentid, impactedgues order by lastmodifieddate desc) as rn FROM ( select voyagenumber, incidentid, impactedgues, propertyid, lastmodifieddate, batchtime, part_date FROM shipdw.hvtb_parse_vxp_dxp_incident LATERAL VIEW explode(split(impactedguest, ',')) as impactedgues) ) inci where rn = 1)incdent LEFT JOIN ( SELECT * FROM ( SELECT voyage_id, voyage_skey, voyage_number, src_active_flag, src_deleted_flag, upd_dt, row_number() over(partition by voyage_number order by upd_dt desc)rn FROM shipdw.hvtb_mart_dim_voyage WHERE src_active_flag = true AND src_deleted_flag = false) where rn = 1)vdim ON incdent.voyagenumber = vdim.voyage_number LEFT JOIN ( SELECT incident_id, incident_detail_skey FROM shipdw.hvtb_mart_dim_incident_detail)incdent_dtl ON incdent.incidentid = incdent_dtl.incident_id LEFT JOIN ( SELECT * FROM ( SELECT person_skey, reservationguest_guid, upd_dt, row_number() over (partition by reservationguest_guid order by upd_dt desc)rn FROM shipdw.hvtb_mart_dim_person) where rn = 1)pdim ON incdent.impactedgues = pdim.reservationguest_guid *whereclause*
+spark.source.columns voyage_id,ship_code,voyage_skey,incident_detail_skey,impacted_guest_person_skey
+spark.pond.allColumns voyage_id as pond_voyage_id,ship_code as pond_ship_code,voyage_skey as pond_voyage_skey,incident_detail_skey as pond_incident_detail_skey ,impacted_guest_person_skey as pond_impacted_guest_person_skey,load_dt as pond_load_dt, upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash,part_dt as pond_part_dt
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_incident_guest
+spark.source.primaryKeyColumns voyage_skey,incident_detail_skey,impacted_guest_person_skey
+spark.table.type fact	
+spark.target.schema hive_schema_stg
+spark.target.table incident_guest_fact
+spark.target.final_collist final_view.voyage_id,final_view.ship_code,final_view.voyage_skey,final_view.incident_detail_skey ,final_view.impacted_guest_person_skey ,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+spark.target.temp /data/apps/nbx/hive/temp/hvtb_mart_fact_incident_guest
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_fact_incident_guest
+spark.postgresql.database prodnbx
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename incident_guest_fact
+spark.tableType FACT
+spark.frameworkEnv ship
+spark.factType Accu
+#----------------------LAD--------------------------------# 
+spark.ladjob.flag true
+spark.lad.srctablekey incidentid
+spark.lad.srctable shipdw.hvtb_parse_vxp_dxp_incident
+spark.lad.tgttable shipdw.hvtb_parse_vxp_dxp_incident_lad
+spark.lad.columns voyage_skey,incident_detail_skey,impacted_guest_person_skey
+spark.ladremoval.flag false
+#----------------------------------------------------------# 
+

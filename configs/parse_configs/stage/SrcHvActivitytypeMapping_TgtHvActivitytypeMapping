@@ -1,0 +1,22 @@
+spark.src.config.id SrcHvActivitytypeMapping
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtHvActivitytypeMapping
+spark.parent.id SrcKfkActivityTypeMapping-TgtHvActivityTypeMapping
+spark.source.table shipdw.hvtb_lnd_vxp_ars_activitytypemapping
+spark.target.table shipdw.hvtb_parse_vxp_ars_activitytypemapping
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.4.100.154/hbase-unsecure
+
+
+
+
+
+
+
+

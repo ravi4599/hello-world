@@ -1,0 +1,26 @@
+spark.kafkabrokers 10.59.1.30:9092,10.59.1.31:9092,10.59.1.32:9092
+spark.kafka.zookeeper 10.59.1.30:2181,10.59.1.31:2181,10.59.1.32:2181
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic qa-gcp-dbz-sw.SEAWARE.HOTEL
+spark.src.config.id SrcSeawareHotel
+spark.voyage.id SC2002269NCR
+spark.tgt.env QA
+spark.target.config.id TgtSeawareHotel
+spark.target.lnd.table vv_db.hvtb_lnd_sw_rpl_hotel
+spark.target.parse.table vv_db.hvtb_parse_sw_rpl_hotel
+spark.snapshot.table shipdw.hbtb_dbz_snapdate
+spark.metadata.con.format jdbc
+spark.metadata.offset.mode Append
+spark.metadata.offset.table shipdw.hbtb_streaming_ingestion_offset
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.snpsht.table.mode overwrite
+spark.ship.code SHORE
+spark.source.columns hotel_id,hotel_code,hotel_name_typed,hotel_name,hotel_type,is_active,check_in_time,check_out_time,hotel_rating,contact,comments,vendor_id,internal_resort,hotel_bag_code,image_id,hotel_rank,extended_comment,op,ts_ms,voyageid,Batchtime,Part_Date
+spark.final.query select hotel_id,hotel_code,hotel_name_typed,hotel_name,hotel_type,is_active, CAST(check_in_time/1000000 as timestamp) as check_in_time,CAST(check_out_time/1000000 as timestamp) as  check_out_time,hotel_rating,contact,comments,vendor_id,internal_resort,hotel_bag_code,image_id,hotel_rank,extended_comment,op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date
+spark.hadoop.hive.execution.engine mr
+

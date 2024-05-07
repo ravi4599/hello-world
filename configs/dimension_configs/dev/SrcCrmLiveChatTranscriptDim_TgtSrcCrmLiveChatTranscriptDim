@@ -1,0 +1,119 @@
+spark.src.config.id SrcCrmLiveChatTranscriptDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.api.env Dev
+spark.target.config.id TgtCrmLiveChatTranscriptDim
+spark.parent.id SrcSFDCLiveChatTranscript-TgtSFDCLiveChatTranscript
+
+
+
+spark.table.type dim
+spark.hadoop.hive.execution.engine mr
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+
+
+#spark.source.sql select id,L.caseid as src_case_id,name,createddate,starttime,endTime,waittime,abandoned,abandoned__c,status,chat_transferred__c,of_chat_transfers_request_cancelled__c,chat_accepted__c,chatduration,ownerid,contactid,leadid,lastmodifieddate,Answered_in_10__c,AverageResponseTimeOperator,AverageResponseTimeVisitor,Booking_Flow__c,Chats_Cancelled__c,RequestTime from (select * from (select *, row_number()over(partition by id order by createddate desc) as rn from vv_db.hvtb_parse_sfdc_livechattranscript ) where rn=1 )L
+
+spark.source.sql select id,L.caseid as src_case_id,name,createddate,starttime,endTime,waittime,abandoned,abandoned__c,status,chat_transferred__c,of_chat_transfers_request_cancelled__c,chat_accepted__c,chatduration,ownerid,contactid,leadid,lastmodifieddate,Answered_in_10__c,AverageResponseTimeOperator,AverageResponseTimeVisitor,Booking_Flow__c,Chats_Cancelled__c,RequestTime from (select * from (select id,caseid,name,createddate,starttime,endTime,waittime,abandoned,abandoned__c,status,chat_transferred__c,of_chat_transfers_request_cancelled__c,chat_accepted__c,chatduration,ownerid,contactid,leadid,lastmodifieddate,Answered_in_10__c,AverageResponseTimeOperator,AverageResponseTimeVisitor,Booking_Flow__c,Chats_Cancelled__c,RequestTime, row_number()over(partition by id order by createddate desc) as rn from vv_db.hvtb_parse_sfdc_livechattranscript) where rn=1 )L
+
+
+
+
+
+spark.source.columns id,src_case_id,name,createddate,starttime,endTime,waittime,abandoned,abandoned__c,status,chat_transferred__c,of_chat_transfers_request_cancelled__c,chat_accepted__c,chatduration,ownerid,contactid,leadid,lastmodifieddate,Answered_in_10__c,AverageResponseTimeOperator,AverageResponseTimeVisitor,Booking_Flow__c,Chats_Cancelled__c,RequestTime
+
+
+
+
+spark.pond.allColumns livechat_transcript_id as pond_livechat_transcript_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,id as pond_id,src_case_id as pond_src_case_id,name as pond_name,createddate as pond_createddate,starttime as pond_starttime,endTime as pond_endTime,waittime as pond_waittime,abandoned as pond_abandoned,abandoned__c as pond_abandoned__c,status as pond_status,chat_transferred__c as pond_chat_transferred__c,of_chat_transfers_request_cancelled__c as pond_of_chat_transfers_request_cancelled__c,chat_accepted__c as pond_,chatduration as pond_chat_accepted__c,ownerid as pond_ownerid,contactid as pond_contactid,leadid as pond_leadid,lastmodifieddate as pond_lastmodifieddate,Answered_in_10__c as pond_Answered_in_10__c,AverageResponseTimeOperator as pond_AverageResponseTimeOperator,AverageResponseTimeVisitor as pond_AverageResponseTimeVisitor,Booking_Flow__c as pond_Booking_Flow__c,Chats_Cancelled__c as pond_Chats_Cancelled__c,RequestTime as pond_RequestTime,etl_ld_status as pond_etl_ld_status,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,scd_hash as pond_scd_hash
+
+
+
+
+spark.surrogate_key.column livechat_transcript_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_mart_crm_livechat_transcript_dim
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_mart_crm_livechat_transcript_dim
+spark.source.primaryKeyColumns id
+
+
+
+
+spark.target.final_collist final_view.livechat_transcript_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.id,final_view.src_case_id,final_view.name,final_view.createddate,final_view.starttime,final_view.endTime,final_view.waittime,final_view.abandoned,final_view.abandoned__c,final_view.status,final_view.chat_transferred__c,final_view.of_chat_transfers_request_cancelled__c,final_view.chat_accepted__c,final_view.chatduration,final_view.ownerid,final_view.contactid,final_view.leadid,final_view.lastmodifieddate,final_view.Answered_in_10__c,final_view.AverageResponseTimeOperator,final_view.AverageResponseTimeVisitor,final_view.Booking_Flow__c,final_view.Chats_Cancelled__c,final_view.RequestTime,final_view.etl_ld_status,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.scd_hash   
+
+
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_nbx_mart_crm_livechat_transcript_dim
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_mart_crm_livechat_transcript_dim
+
+
+
+
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname livechat_transcript_dim_tmp
+spark.bq.permtblname livechat_transcript_dim
+spark.bq.viewname crm.livechat_transcript_dim
+
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage
+
+
+#spark.talent.dependencyflag true
+spark.load.frequency SW_rpl_daily
+spark.scdtype type2
+   
+
+
+
+
+
+
+
+##=============SCD2 Config Details ==============
+
+spark.source.srcDateColumn src_date
+spark.scd.columns src_case_id,name,createddate,starttime,endTime,waittime,abandoned,abandoned__c,status,chat_transferred__c,of_chat_transfers_request_cancelled__c,chat_accepted__c,chatduration,ownerid,contactid,leadid,lastmodifieddate,Answered_in_10__c,AverageResponseTimeOperator,AverageResponseTimeVisitor,Booking_Flow__c,Chats_Cancelled__c,RequestTime
+
+
+spark.scdtype type2
+
+
+# all source columns as alias (id_new,src_case_id_new,name_new )along with all audit columns
+
+
+spark.source.updateReq livechat_transcript_id,rec_start_dttm,rec_end_dttm,id_new,src_case_id_new,name_new,createddate_new,starttime_new,endTime_new,waittime_new,abandoned_new,abandoned__c_new,status_new,chat_transferred__c_new,of_chat_transfers_request_cancelled__c_new,chat_accepted__c_new,chatduration_new,ownerid_new,contactid_new,leadid_new,lastmodifieddate_new,Answered_in_10__c_new,AverageResponseTimeOperator_new,AverageResponseTimeVisitor_new,Booking_Flow__c_new,Chats_Cancelled__c_new,RequestTime_new,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

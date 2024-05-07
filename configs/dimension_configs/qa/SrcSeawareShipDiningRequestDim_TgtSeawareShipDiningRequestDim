@@ -1,0 +1,57 @@
+spark.src.config.id SrcSeawareShipDiningRequestDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env QA
+spark.api.env QA
+spark.target.config.id TgtSeawareShipDiningRequestDim
+spark.parent.id SrcSeawareShipDiningRequest-TgtSeawareShipDiningRequest
+ 
+ 
+ 
+spark.table.type dim
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+ 
+ 
+ 
+ 
+ 
+spark.source.sql select d.op,d.request_id as src_request_id,d.effective_date as effective_date, d.responsible_guest as src_guest_id, d.dining_kind as dining_kind,d.facility_id as src_facility_id, da.allocation_timestamp as allocation_timestamp,d.dining_date as dining_date, da.dining_time_from as dining_time_from,da.dining_time_to as dining_time_to, d.party_size as party_size,da.inventory_result_type as inventory_status ,d.batchtime as batchtime, current_timestamp as rec_start_dttm,case when d.op == 'd' then current_timestamp else to_timestamp('9999-12-31 00:00:00') end as rec_end_dttm,d.Part_date as Part_date from (select * from (select *, row_number()over(partition by request_id order by ts_ms desc) as rn from vv_db.hvtb_parse_sw_rpl_ship_dining_request *whereclause*) where rn=1 ) as d left join vv_db.hvtb_parse_sw_rpl_ship_dining_alloc da on case when da.dlgt_res_id is null then d.allocation_id = da.allocation_id else da.dlgt_res_id=d.owner_id and date(da.dining_time_from) = date(d.dining_date) and d.requested_start_time = da.dining_time_from end
+ 
+spark.source.columns rec_start_dttm,rec_end_dttm,src_request_id,effective_date,src_guest_id,dining_kind,src_facility_id,allocation_timestamp,dining_date,dining_time_from,dining_time_to,party_size,inventory_status
+ 
+ 
+spark.pond.allColumns ship_dining_req_id as pond_ship_dining_req_id, rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,src_request_id as pond_src_request_id, effective_date as pond_effective_date,src_guest_id as pond_src_guest_id,dining_kind as pond_dining_kind,src_facility_id as pond_src_facility_id, allocation_timestamp as pond_allocation_timestamp,dining_date as pond_dining_date,dining_time_from as pond_dining_time_from,dining_time_to as pond_dining_time_to,party_size as pond_party_size,inventory_status as pond_inventory_status,load_dt as pond_load_dt,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+ 
+spark.surrogate_key.column ship_dining_req_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_ship_dining_request_dim
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_ship_dining_request_dim
+spark.source.primaryKeyColumns src_request_id
+ 
+ 
+spark.target.final_collist final_view.ship_dining_req_id as ship_dining_req_id, final_view.rec_start_dttm as rec_start_dttm,final_view.rec_end_dttm as rec_end_dttm,final_view.src_request_id as src_request_id, final_view.effective_date as effective_date,final_view.src_guest_id as src_guest_id,final_view.dining_kind as dining_kind,final_view.src_facility_id as src_facility_id, final_view.allocation_timestamp as allocation_timestamp,final_view.dining_date as dining_date,final_view.dining_time_from as dining_time_from,final_view.dining_time_to as dining_time_to,final_view.party_size as party_size,final_view.inventory_status as inventory_status, final_view.load_dt,final_view.upd_dt,final_view.primaryhash, final_view.md5_hash
+ 
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_nbx_core_sw_ship_dining_request_dim
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_ship_dining_request_dim
+ 
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_ship_dining_request_dim_tmp
+spark.bq.permtblname seaware_ship_dining_request_dim
+spark.bq.viewname seaware.seaware_ship_dining_request_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage
+ 
+ 
+#spark.talent.dependencyflag true
+spark.load.frequency SW_rpl_daily
+spark.hadoop.hive.execution.engine mr
+

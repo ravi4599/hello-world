@@ -1,0 +1,26 @@
+spark.housekeeping.format org.apache.phoenix.spark
+spark.kafkastreamoffset.kafkastreamoffsettable SHIP.HBTB_NBX_KAFKA_STREAMING_OFFSET
+spark.streamingingestoffset.streamingingestoffsettable SHIP.HBTB_STREAMING_INGESTION_OFFSET
+spark.ingestmetadata.ingestmetadatatable SHIP.HBTB_INGESTION_METADATA
+
+spark.kafkastreamoffset.deletequery DELETE FROM SHIP.HBTB_NBX_KAFKA_STREAMING_OFFSET WHERE TIMESTAMP
+spark.streamingingestoffset.deletequery DELETE FROM SHIP.HBTB_STREAMING_INGESTION_OFFSET WHERE to_date(ARRAY_ELEM (REGEXP_SPLIT(BATCH_INSTANCE_ID,'-'),4),'yyyyMMddhhmms')
+
+
+spark.ingestmetadata.deletequery DELETE  from SHIP.HBTB_INGESTION_METADATA where BATCH_EXECUTION_STARTTIME
+
+
+
+
+spark.housekeeping.days 30
+
+
+
+spark.filepath.housekeeping /backups/hbase-offsets-backup/
+
+spark.housekeeping.readhbasezkurl 10.101.209.231:2181/hbase-secure:nbx.service@AHOY.VIRGINVOYAGES.COM:/etc/config/nbx-api-key/nbxservice.keytab
+
+spark.housekeeping.jdbcurl jdbc:phoenix:10.101.209.231:2181/hbase-secure 
+
+
+

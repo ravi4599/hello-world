@@ -1,0 +1,29 @@
+spark.kafkabrokers 10.9.100.157:9092,10.9.100.142:9092,10.9.100.37:9092 
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+
+spark.src.kafkatopic dev-shore-dbz.SEAWARE.HOTEL_INV_ALLOCATION
+spark.src.personOffSet earliest
+
+spark.src.config.id SrcSeawareaHotelInvAllocation
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtSeawareaHotelInvAllocation
+
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_hotel_inv_allocation
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_hotel_inv_allocation
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.3.100.222:2181/hbase-unsecure
+spark.kafka.zookeeper 10.9.100.142:2181
+
+spark.source.columns ALLOCATION_ID,ALLOCATION_OWNER_TYPE,ALLOCATION_OWNER_ID,ALLOCATION_TIMESTAMP,OPERATOR_ID,INVENTORY_REQUEST_TYPE,DEPENDS_ON_ID,SEQ_NUMBER,PROBABILITY,INVENTORY_RESULT_TYPE,HOTEL_ROOM_CATEGORY,HOTEL_CATEGORY,HOTEL_ID,CHECK_IN_DATE,CHECK_OUT_DATE,HOTEL_ROOM_TYPE,PRIORITY,OCCUPANCY,DECLINE_REASON,RELEASE_TIMESTAMP,SHIP_CODE,CITY_CODE,WTL_OWNER_FLAG,DLGT_RES_ID,IS_DLGT_OBJ,HOTEL_SPACE_TYPE,op,ts_ms,voyageid,Batchtime,Part_Date
+
+spark.final.query select ALLOCATION_ID,ALLOCATION_OWNER_TYPE,ALLOCATION_OWNER_ID,CAST(ALLOCATION_TIMESTAMP/1000000 as timestamp)as ALLOCATION_TIMESTAMP,OPERATOR_ID,INVENTORY_REQUEST_TYPE,DEPENDS_ON_ID,SEQ_NUMBER,PROBABILITY,INVENTORY_RESULT_TYPE,HOTEL_ROOM_CATEGORY,HOTEL_CATEGORY,HOTEL_ID,CAST(CHECK_IN_DATE/1000000 as timestamp)as CHECK_IN_DATE,CAST(CHECK_OUT_DATE/1000000 as timestamp)as CHECK_OUT_DATE,HOTEL_ROOM_TYPE,PRIORITY,OCCUPANCY,DECLINE_REASON,CAST(RELEASE_TIMESTAMP/1000000 as timestamp)as RELEASE_TIMESTAMP,SHIP_CODE,CITY_CODE,WTL_OWNER_FLAG,DLGT_RES_ID,IS_DLGT_OBJ,HOTEL_SPACE_TYPE, op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date

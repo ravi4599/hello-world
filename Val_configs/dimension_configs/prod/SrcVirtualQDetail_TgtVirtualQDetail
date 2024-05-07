@@ -1,0 +1,31 @@
+spark.src.config.id SrcVirtualQDetail
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtVirtualQDetail
+spark.parent.id SrcVxpDcpVirtQ-TgtVxpDcpVirtQ
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.database prodnbx
+spark.source.sql select NVL(A.VoyageId, -1) as voyage_id, A.virtualqueueid as virtual_queue_id, A.virtualqueuedefinitionid as virtual_queue_definition_id, A.personid as person_id,A.addeddate  as queue_joined_datetime,A.status as queue_status,A.statuschangeddate as status_changed_datetime ,A.origin as queue_origin,A.queueno as queue_no,A.notifiedcount as notified_count,A.lastnotifieddate as last_notified_datetime,A.isdeleted as src_deleted_flg ,A.BatchTime, A.Part_Date from (select * from (select v.VoyageId,v.virtualqueueid,v.virtualqueuedefinitionid,v.personid,v.addeddate,vh.status,vh.statuschangeddate,v.origin,v.queueno,v.notifiedcount,v.lastnotifieddate,v.isdeleted,v.BatchTime,v.Part_Date, row_number() over (partition by v.virtualqueueid order by v.lastmodifieddate desc) rn  from shipdw.hvtb_parse_vxp_dxp_virtualqueue v Left Join shipdw.hvtb_parse_vxp_dxp_virtualqueuehistory vh on v.virtualqueueid=vh.virtualqueueid where vh.statuschangeddate=( Select Max(statuschangeddate) from shipdw.hvtb_parse_vxp_dxp_virtualqueuehistory  vh1 where vh1.virtualqueueid=vh.virtualqueueid ) ) where rn = 1) A
+spark.source.columns voyage_id,virtual_queue_id,virtual_queue_definition_id,person_id,queue_joined_datetime,queue_status,status_changed_datetime,queue_origin,queue_no,notified_count,last_notified_datetime,src_deleted_flg
+spark.pond.allColumns virtual_queue_detail_skey as pond_virtual_queue_detail_skey,voyage_id as pond_voyage_id,virtual_queue_id as pond_virtual_queue_id,virtual_queue_definition_id as pond_virtual_queue_definition_id,person_id as pond_person_id,queue_joined_datetime as pond_queue_joined_datetime,queue_status as pond_queue_status,status_changed_datetime as pond_status_changed_datetime,queue_origin as pond_queue_origin,queue_no as pond_queue_no,notified_count as pond_notified_count,last_notified_datetime as pond_last_notified_datetime,src_deleted_flg as pond_src_deleted_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+spark.surrogate_key.column virtual_queue_detail_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_virtual_queue_detail
+spark.target.table virtual_queue_detail_dim
+spark.source.primaryKeyColumns virtual_queue_id
+spark.target.final_collist virtual_queue_detail_skey,final_view.voyage_id,final_view.virtual_queue_id,final_view.virtual_queue_definition_id,final_view.person_id,final_view.queue_joined_datetime,final_view.queue_status,final_view.status_changed_datetime,final_view.queue_origin,final_view.queue_no,final_view.notified_count,final_view.last_notified_datetime,final_view.src_deleted_flg,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_virtual_queue_detail
+spark.target.location /data/apps/nbx/mart/hvtb_mart_dim_virtual_queue_detail
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename virtual_queue_detail_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+

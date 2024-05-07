@@ -1,0 +1,21 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.SHIP_FACILITY
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT FACILITY_ID, SHIP_CODE, FACILITY_TYPE, FACILITY_CODE, FACILITY_NAME, DECK_NUMBER, FACILITY_SIZE, MAX_OCCUPANCY, IMAGE_ID, EFF_DATE_FROM, EFF_DATE_TO, COMMENTS, ASSIGN_MODE, FACILITY_RANK, FACILITY_SUBTYPE FROM SEAWARE.SHIP_FACILITY)
+
+spark.parse.table seaware_oracle.hvtb_nbx_parse_sw_rpl_ship_facility
+
+spark.src.con.fetchSize 100000
+
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_nbx_parse_sw_rpl_ship_facility/
+
+ 
+
+spark.hadoop.hive.execution.engine mr

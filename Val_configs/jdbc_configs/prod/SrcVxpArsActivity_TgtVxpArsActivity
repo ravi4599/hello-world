@@ -1,0 +1,28 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148:5432/ars
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.table public.activity
+spark.src.con.driver org.postgresql.Driver
+#Unique constant for Batchid
+spark.src.config.id SrcVxpArsActivity
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtVxpArsActivity
+spark.src.table.query "activity"
+spark.condition.column lastmodifieddate
+#target hdfs table location with hive table and column details
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_ars_activity
+spark.target.hive.table shipdw.hvtb_lnd_vxp_ars_activity
+spark.source.columns activityid,activitydetailid,activitylocationid,bookingcloseduration,isenable,iswaitlistenable,ispackageable,isbookable ,activitygroupid,portcode,code,currencycode,ismultiplebookingallowed,pricetype ,level ,isdeleted,addeddate,lastmodifieddate,addedby ,lastmodifiedby ,activitygroupcode ,isvip,isgiftable,capacityid,name,accesstype,decsription,additionalinfo,description,cmsid,maxage,isadaaccessible,minage
+spark.source.query activityid,activitydetailid,activitylocationid,bookingcloseduration,isenable,iswaitlistenable,ispackageable,isbookable ,activitygroupid,portcode,code,currencycode,ismultiplebookingallowed,pricetype ,level ,isdeleted,addeddate,lastmodifieddate,addedby ,lastmodifiedby ,activitygroupcode ,isvip,isgiftable,capacityid,name,accesstype,decsription,additionalinfo,description,cmsid,maxage,isadaaccessible,minage
+#spark.tz.columns property to change all the timestampz columns to UTC
+#spark.tz.columns addeddate,lastmodifieddate
+spark.source.zone UTC
+spark.tgt.env Prod
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+

@@ -1,0 +1,20 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.102.150.228:1521/emsvaldata.synkdb.com
+spark.src.user emstal
+spark.src.password Taluser1*
+spark.src.table EMS.VW_TAL_DEVTRANS
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.src.config.id KonamiDevtrans
+spark.tgt.env Prod
+spark.voyage.id VAL2002269NCR
+spark.target.config.id DevtransIng
+spark.target.location /data/apps/nbx/hive/landing/konami/hvtb_lnd_konami_vw_tal_devtrans
+spark.target.hive.table shipdw.hvtb_lnd_konami_vw_tal_devtrans
+spark.src.table.query (SELECT GAMEID,DTTYPID,CURID,VARIANCEAMT,COMPEXPIRE,CREDITPOINT,PRODERRCODE,PPRLINENO,TRANSID,PRIORITY,DEVID,PLAYID,JACKPOTNAME,SEATNUM,PTNID,ACCTID,CARDID,PAPERREFNUM,CHECKNUM,CONTROLNUM,EVTID,DENOM,DEBITAMT,CREDITAMT,BALANCEAMT,COMPID,VOUCHERID,PCALCID,POINTRATIO,COMPPOINTRATIO,DEBITPOINT,DEBITCOMPPOINT,CREDITCOMPPOINT,DEBITBONUSPOINT,CREDITBONUSPOINT,GSTID,SHIFTID,YYYYINSERTED,MMINSERTED,DDINSERTED,DATEINSERTED,LASTMODDATE,LASTMODBY,CREDITBONUSCOMPPOINT,DEBITTIERPOINT,CREDITTIERPOINT FROM EMS.VW_TAL_DEVTRANS)
+spark.condition.column LASTMODDATE
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL

@@ -1,0 +1,29 @@
+spark.src.con.format sfdc
+spark.src.salesforce.username vv_datascience_api@virginvoyages.com.prd
+spark.src.salesforce.password NBX022019
+spark.src.salesforce.endpoint https://login.salesforce.com/services/Soap/u/53.0
+spark.src.salesforce.version 53.0
+spark.src.config.id SrcSFDCSenddefinition
+ 
+spark.voyage.id SC2002269NCR
+ 
+spark.source.columns Id,et4ae5__DateSent__c,et4ae5__AllSources__c,et4ae5__EmailId__c,et4ae5__EmailName__c,et4ae5__FromEmail__c,et4ae5__NumberNotClicked__c,et4ae5__NumberofExistingUndeliverables__c,et4ae5__NumberofExistingUnsubscribes__c,et4ae5__NumberofHardBounces__c,et4ae5__NumberofSoftBounces__c,et4ae5__NumberofSubscribersForwardingEmail__c,et4ae5__NumberofTotalClicks__c,et4ae5__NumberofTotalOpens__c,et4ae5__NumberofUniqueClicks__c,et4ae5__NumberofUniqueOpens__c,et4ae5__NumberSent__c,et4ae5__NumberUnsubscribed__c,et4ae5__Number_Bounced__c,et4ae5__Number_Delivered__c,et4ae5__Number_Not_Opened__c,et4ae5__Open_Rate__c,et4ae5__Click_Through_Rate__c,et4ae5__Unsubscribe_Rate__c,et4ae5__Subject__c,IsDeleted 
+ 
+spark.src.table.query SELECT Id,et4ae5__DateSent__c,et4ae5__AllSources__c,et4ae5__EmailId__c,et4ae5__EmailName__c,et4ae5__FromEmail__c,et4ae5__NumberNotClicked__c,et4ae5__NumberofExistingUndeliverables__c,et4ae5__NumberofExistingUnsubscribes__c,et4ae5__NumberofHardBounces__c,et4ae5__NumberofSoftBounces__c,et4ae5__NumberofSubscribersForwardingEmail__c,et4ae5__NumberofTotalClicks__c,et4ae5__NumberofTotalOpens__c,et4ae5__NumberofUniqueClicks__c,et4ae5__NumberofUniqueOpens__c,et4ae5__NumberSent__c,et4ae5__NumberUnsubscribed__c,et4ae5__Number_Bounced__c,et4ae5__Number_Delivered__c,et4ae5__Number_Not_Opened__c,et4ae5__Open_Rate__c,et4ae5__Click_Through_Rate__c,et4ae5__Unsubscribe_Rate__c,et4ae5__Subject__c,IsDeleted FROM et4ae5__SendDefinition__c
+ 
+spark.src.condition.column LastModifiedDate
+ 
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtSFDCSenddefinition
+spark.target.hive.table vv_db.hvtb_lnd_sfdc_senddefinition
+spark.target.table vv_db.hvtb_lnd_sfdc_senddefinition
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr
+

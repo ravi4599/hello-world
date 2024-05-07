@@ -1,0 +1,24 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:sqlserver://10.102.220.122:1442;database=MXP
+spark.src.user Capgemini
+spark.src.password virginvoyages2020!
+spark.src.con.driver com.microsoft.sqlserver.jdbc.SQLServerDriver
+spark.src.table MXP.dbo.VEmployeePositions
+spark.src.table.query (select * from VEmployeePositions) as VEmployeePositions
+spark.condition.column POSITION_VALID_FROM
+spark.src.config.id SrcMxpVEmployeePositions
+spark.tgt.env Prod
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtMxpVEmployeePositions
+spark.target.location /data/apps/nbx/hive/landing/mxp/hvtb_lnd_mxp_vemployee_positions
+spark.target.hive.table shipdw.hvtb_lnd_mxp_vemployee_positions
+spark.target.table shipdw.hvtb_lnd_mxp_vemployee_positions
+spark.source.columns POSITION_ID,DEPARTMENT_ID,POSITION_NAME,DepartmentName,ReportingCategory,POSITION_VALID_FROM,POSITION_VALID_TO,ACTIVE,REC_DELETED
+spark.source.query POSITION_ID,DEPARTMENT_ID,POSITION_NAME,DepartmentName,ReportingCategory,POSITION_VALID_FROM,POSITION_VALID_TO,ACTIVE,REC_DELETED
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+

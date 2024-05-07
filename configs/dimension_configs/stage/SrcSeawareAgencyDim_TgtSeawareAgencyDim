@@ -1,0 +1,55 @@
+spark.src.config.id SrcSeawareAgencyDim
+spark.voyage.id	SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtSeawareAgencyDim
+spark.parent.id	SrcSeawareaAgency-TgtSeawareAgency
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.frameworkEnv shore
+spark.redshift.schema Hive_schema_stg
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx_mig
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+
+spark.source.sql select a.agency_id as src_agency_id, a.agency_name, a.agency_code, ac.agency_classification_code as agency_market, ac.agency_classification_code as agency_class, r.region_code as agency_sales_region, r.region_code as agency_sales_district, ad.country_code as agency_country, ad.state_code as agency_state, ad.zip as agency_zip, a.batchtime as batchtime, a.part_date as part_date, a.ts_ms as ts_ms_a,ac.ts_ms as ts_ms_ac,arl.ts_ms as ts_ms_arl, r.ts_ms as ts_ms_r, ad.ts_ms as ts_ms_ad from vv_db.hvtb_parse_sw_rpl_agency a left join vv_db.hvtb_parse_sw_rpl_agency_classification_link ac on a.agency_id=ac.agency_id and (ac.agency_class_type='MARKET' and ac.agency_class_type='AGENCY CLASS') left join vv_db.hvtb_parse_sw_rpl_agency_region_link arl on a.agency_id=arl.agency_id and now() between arl.DATE_FROM and arl.DATE_TO left join vv_db.hvtb_parse_sw_rpl_region r on arl.region_id= r.region_id and (r.region_type in ('REGION','DISTRICT') and r.district_type='SALES' and r.is_active='Y') left join vv_db.hvtb_parse_sw_rpl_agency_address ad on a.agency_id=ad.agency_id and ad.address_type='PRIMARY' 
+
+spark.source.columns src_agency_id,agency_name,agency_code,agency_market,agency_class,agency_sales_region,agency_sales_district,agency_country,agency_state,agency_zip
+
+spark.pond.allColumns agency_id as pond_agency_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,src_agency_id as pond_src_agency_id,agency_name as pond_agency_name,agency_code as pond_agency_code,agency_market as pond_agency_market,agency_class as pond_agency_class,agency_sales_region as pond_agency_sales_region,agency_sales_district as pond_agency_sales_district,agency_country as pond_agency_country,agency_state as pond_agency_state,agency_zip as pond_agency_zip,etl_ld_status as pond_etl_ld_status, load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash,scd_hash as pond_scd_hash
+
+spark.surrogate_key.column agency_id
+spark.pond.database vv_db_mig
+spark.pond.table hvtb_nbx_core_sw_agency_dim
+spark.target.schema vv_db_mig
+spark.target.table hvtb_nbx_core_sw_agency_dim
+spark.source.primaryKeyColumns src_agency_id
+
+spark.target.final_collist final_view.agency_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.src_agency_id,final_view.agency_name,final_view.agency_code,final_view.agency_market,final_view.agency_class,final_view.agency_sales_region,final_view.agency_sales_district,final_view.agency_country,final_view.agency_state,final_view.agency_zip,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_nbx_core_sw_agency_dim
+spark.target.location s3://vv-staging-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_agency_dim
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename seaware_agency_dim
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage
+spark.mysql.db vv_metadata
+spark.mysql.login admin
+spark.mysql.password VirginAdmin9$
+spark.mysql.url jdbc:mysql://staging-talend-metadata.cluster-cz4e2a1fysom.us-east-1.rds.amazonaws.com:3306/vv_metadata
+spark.mysql.table load_job_status_log
+spark.mysql.driver com.mysql.jdbc.Driver
+
+
+   
+##=============SCD2 Config Details ==============  
+
+spark.source.srcDateColumn ts_ms
+spark.scd.columns agency_name,agency_code,agency_market,agency_class,agency_sales_region,agency_sales_district,agency_country,agency_state,agency_zip
+
+spark.scdtype type2
+
+# all source columns as alias ( id_new,amount_new,oppo_new )along with all audit columns
+spark.source.updateReq agency_id,rec_start_dttm,rec_end_dttm,src_agency_id_new,agency_name_new,agency_code_new,agency_market_new,agency_class_new,agency_sales_region_new,agency_sales_district_new,agency_country_new,agency_state_new,agency_zip_new,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+

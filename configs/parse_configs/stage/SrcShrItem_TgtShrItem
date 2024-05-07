@@ -1,0 +1,15 @@
+spark.target.salesgroup.table   shipdw.hvtb_parse_mxp_positems_salesgroup
+spark.target.categories.table   shipdw.hvtb_parse_mxp_positems_categories
+spark.target.plugroup.table   shipdw.hvtb_parse_mxp_positems_plugroups
+spark.target.items.table   shipdw.hvtb_parse_mxp_positems_items
+spark.target.prices.table   shipdw.hvtb_parse_mxp_positems_prices
+spark.src.config.id SrcShrPosItem
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtShrPosItem
+spark.parent.id SrcMXPPosItems-TgtMXPPosItems-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.4.100.154/hbase-unsecure
+spark.source.table select * from shipdw.hvtb_lnd_mxp_ship_pos_mxp_pos_items

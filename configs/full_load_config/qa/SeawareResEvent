@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.RES_EVENT
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT RECORD_ID, RES_EVENT_TYPE, RES_ID, EVENT_TIMESTAMP, OPERATOR_ID, OLD_STATUS, NEW_STATUS, OLD_SHIP_CODE, OLD_SAIL_FROM, OLD_SAIL_TO, NEW_SHIP_CODE, NEW_SAIL_FROM, NEW_SAIL_TO FROM SEAWARE.RES_EVENT)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_res_event
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/RES_EVENT
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_res_event/
+
+spark.hadoop.hive.execution.engine mr

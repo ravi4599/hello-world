@@ -1,0 +1,11 @@
+spark.src.config.id SrcShrArsBooking
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtShrArsBooking
+spark.parent.id SrcVXPArsBooking-TgtVXPArsBooking-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.4.100.154/hbase-unsecure
+spark.ars_ingestion.table shipdw.hvtb_lnd_mxp_ship_ars_booking
+spark.arsbooking.target.table shipdw.hvtb_parse_ars_booking

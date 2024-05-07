@@ -1,0 +1,27 @@
+spark.kafkabrokers 10.59.1.30:9092,10.59.1.31:9092,10.59.1.32:9092
+spark.kafka.zookeeper 10.59.1.30:2181,10.59.1.31:2181,10.59.1.32:2181
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic qa-gcp-dbz-sw.SEAWARE.SHIP_ROOM_REQUEST
+spark.src.config.id SrcSeawareShipRoomRequest
+spark.voyage.id SC2002269NCR
+spark.tgt.env QA
+spark.target.config.id TgtSeawareShipRoomRequest
+spark.target.lnd.table vv_db.hvtb_lnd_sw_rpl_ship_room_request
+spark.target.parse.table vv_db.hvtb_parse_sw_rpl_ship_room_request
+spark.ship.code SHORE
+spark.snapshot.table shipdw.hbtb_dbz_snapdate
+spark.metadata.con.format jdbc
+spark.metadata.offset.mode Append
+spark.metadata.offset.table shipdw.hbtb_streaming_ingestion_offset
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.snpsht.table.mode overwrite
+spark.source.columns REQUEST_ID,OWNER_TYPE,OWNER_ID,EFFECTIVE_DATE,RESPONSIBLE_GUEST,INVENTORY_REQUEST_TYPE,SHIP_CODE,FACILITY_TYPE,LAYOUT_CODE,USAGE_START,
+USAGE_DURATION,PARTY_SIZE,ALLOCATION_ID,EXTERNAL_GUEST_COUNT,ATTACHMENT_ID,COMMENTS,NOTES,QUANTITY,OWNERSHIP_MODE,NO_SHOW_COUNT,IS_SAIL_CANCELED,EXT_COMP_ID,FACILITY_SUBTYPE,op,ts_ms,voyageid,Batchtime,Part_Date 
+spark.final.query select REQUEST_ID,OWNER_TYPE,OWNER_ID,CAST(EFFECTIVE_DATE/1000 as timestamp) as EFFECTIVE_DATE,RESPONSIBLE_GUEST,INVENTORY_REQUEST_TYPE,SHIP_CODE,FACILITY_TYPE,LAYOUT_CODE,CAST(USAGE_START/1000 as timestamp) as USAGE_START,USAGE_DURATION,PARTY_SIZE,ALLOCATION_ID,EXTERNAL_GUEST_COUNT,ATTACHMENT_ID,COMMENTS,NOTES,QUANTITY,OWNERSHIP_MODE,NO_SHOW_COUNT,IS_SAIL_CANCELED,EXT_COMP_ID,FACILITY_SUBTYPE,op, CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date
+spark.hadoop.hive.execution.engine mr
+

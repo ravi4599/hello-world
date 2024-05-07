@@ -1,0 +1,19 @@
+
+spark.src.config.id SrcParseSFDCBotDefinition
+spark.voyage.id SC2002269NCR
+spark.src.partitionbyId.columns Id
+spark.src.condition.column LastModifiedDate
+spark.tgt.env Qa
+spark.target.config.id TgtParseSFDCBotDefinition
+spark.source.table vv_db.hvtb_lnd_sfdc_bot_definition
+spark.target.table vv_db.hvtb_parse_sfdc_bot_definition
+spark.api.env Qa
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr
+

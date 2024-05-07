@@ -1,0 +1,48 @@
+spark.src.config.id   SrcCampaignDimLoad
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   Prod
+spark.target.config.id   TgtCampaignDimLoad
+spark.parent.id SrcCtiCampaignParser-TgtCtiCampaignParser
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=!Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr
+
+spark.table.type dim
+spark.api.env Prod
+
+
+spark.source.columns campaignId, campaignName, description, notes, isActive,etl_load_dt,batchtime,part_date
+
+spark.pond.allColumns cti_campaign_skey as pond_cti_campaign_skey,src_campaign_id as pond_src_campaign_id,campaign_name as pond_campaign_name,campaign_description as pond_campaign_description,campaign_notes as pond_campaign_notes,is_active_flg as pond_is_active_flg,etl_load_dt as pond_etl_load_dt,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+
+
+spark.target.ctiskill.table vv_db.hvtb_parse_cti_campaign
+
+spark.surrogate_key.column cti_campaign_skey
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_cti_campaign_dim
+spark.target.schema vv_db
+spark.target.table cti_campaign_dim
+
+spark.source.primaryKeyColumns campaignId
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+
+
+spark.target.final_collist cti_campaign_skey,final_view.campaignId as src_campaign_id ,final_view.campaignName as campaign_name,final_view.description as campaign_description,final_view.notes as campaign_notes,final_view.isActive as is_active_flg,final_view.etl_load_dt as etl_load_dt,load_dt,upd_dt,primaryhash,md5_hash
+
+spark.target.temp gs://vv-prod-nbx-cluster/data/mart/temp/hvtb_nbx_core_cti_campaign_dim
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_cti_campaign_dim
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname cti_campaign_dim_tmp
+spark.bq.permtblname cti_campaign_dim
+spark.bq.viewname cti.cti_campaign_dim

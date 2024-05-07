@@ -1,0 +1,54 @@
+spark.src.config.id SrcSeawareSailCabinReservedim
+spark.voyage.id sc2002269ncr
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtSeawareSailCabinReservedim
+spark.parent.id SrcSeawareSailHeader-TgtSeawareSailHeader
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+
+spark.source.sql select current_timestamp as rec_start_dttm, to_timestamp('9999-12-31') as rec_end_dttm, cast(CabinNumber as STRING) as cabin_number, cast(sailId as INT) as src_sail_id, cast(ReserveType as STRING) as reserve_type, cast(Comments as STRING) as reserve_comments, cast(AllowsBooking as STRING) as is_reserve_allows_booking, cast(Restricted as STRING) as is_reserve_restricted, cast(SailReserved as STRING) as is_sail_reserve, cast(reserve_type_comments as String), batchtime from temptable
+
+spark.source.columns cabin_number,src_sail_id,reserve_type,reserve_comments,is_reserve_allows_booking,is_reserve_restricted,is_sail_reserve,reserve_type_comments
+
+spark.reserve.columns ReserveType,Comments,AllowsBooking,Restricted,SailReserved
+
+spark.cabin.sourcequery select sh.ship, sd.src_sail_id,sd.dep_ref_id, sd.arr_ref_id from vv_db.hvtb_nbx_core_sw_sail_dim sd join vv_db.hvtb_nbx_core_sw_ship_dim sh on sd.ship_id=sh.ship_id and sd.rec_end_dttm='9999-12-31'
+
+spark.apiInvoke.sourcequery SELECT s.src_sail_id as src_sail_id, (s.ship_id) as ship_id, to_date(sail_date_from) as sail_date_from, to_date(sail_date_to) as sail_date_to ,(sh.ship) as ship,s.is_active as is_activ,s.dep_ref_id as dep_ref_id, s.arr_ref_id as arr_ref_id from vv_db.hvtb_nbx_core_sw_sail_dim s join vv_db.hvtb_nbx_core_sw_ship_dim sh on sh.ship_id = s.ship_id where to_date(s.rec_end_dttm) = '9999-12-31' and ship <> 'XE'
+
+spark.xmlData.location gs://vv-prod-nbx-cluster/data/temp/cabinapi/xmlData/
+spark.xmlDataRead.location gs://vv-prod-nbx-cluster/data/temp/cabinapi/xmlData/*
+spark.xmlData.DirectRead N
+
+spark.cabin.seaware.xml.api.url https://prod-swbizlogic.gcp.virginvoyages.com/SwBizLogic/Service.svc/ProcessRequest
+spark.cabin.seaware.xml.api.username  NBX_API
+spark.cabin.seaware.xml.api.password  PRDj39fh4
+
+spark.pond.allColumns sail_cabin_reserve_id as pond_sail_cabin_reserve_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,cabin_number as pond_cabin_number,src_sail_id as pond_src_sail_id,reserve_type as pond_reserve_type,reserve_comments as pond_reserve_comments,is_reserve_allows_booking as pond_is_reserve_allows_booking,is_reserve_restricted as pond_is_reserve_restricted, is_sail_reserve as pond_is_sail_reserve,reserve_type_comments as pond_reserve_type_comments,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.target.final_collist final_view.sail_cabin_reserve_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.cabin_number,final_view.src_sail_id,final_view.reserve_type,final_view.reserve_comments,final_view.is_reserve_allows_booking,final_view.is_reserve_restricted,final_view.is_sail_reserve,final_view.reserve_type_comments,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+
+spark.surrogate_key.column sail_cabin_reserve_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_sail_cabin_reserve_dim
+spark.source.primaryKeyColumns cabin_number,src_sail_id
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_sail_cabin_reserve_dim
+spark.target.temp gs://vv-prod-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_sail_cabin_reserve_dim
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_sail_cabin_reserve_dim
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_sail_cabin_reserve_dim_tmp
+spark.bq.permtblname seaware_sail_cabin_reserve_dim
+spark.bq.viewname seaware.seaware_sail_cabin_reserve_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

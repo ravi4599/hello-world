@@ -1,0 +1,56 @@
+spark.src.config.id SrcSeawareBookedCabinReservation
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtSeawareBookedCabinReservation
+#spark.parent.id SrcSeawareResShipRequest-TgtSeawareResShipRequest
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+ spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.driver.maxResultSize=2048m
+spark.source.sql SELECT sr.res_id as src_res_id,sr.guest_id as src_guest_id,coalesce(rd.res_id, - 1) res_id ,coalesce(gd.guest_id, - 1) guest_id ,coalesce(pd.package_id, - 1) package_id,sr.PRICE_CATEGORY ,cc_price.cabin_category_rank AS PRICE_CATEGORY_RANK ,rp.CABIN_CATEGORY_BERTH AS BERTH_CATEGORY ,cc_berth.cabin_category_rank AS BERTH_CATEGORY_RANK ,ia.CABIN_CATEGORY AS ASSIGNED_CATEGORY ,cc_assigned.cabin_category_rank AS ASSIGNED_CATEGORY_RANK ,cm.CABIN_CATEGORY_GENERIC AS GENERIC_CATEGORY ,coalesce(ia.ALLOCATION_ID, - 1) allocation_id ,coalesce(cm.CABIN_ID, - 1) cabin_id ,coalesce(scrd.sail_cabin_reserve_id, - 1) AS SAIL_CABIN_RESERVE_ID ,sr.BatchTime AS BatchTime ,sr.Part_Date AS Part_Date ,sr.ts_ms AS ts_ms_sr ,ia.ts_ms AS ts_ms_ia ,rp.ts_ms AS ts_ms_rp ,rp.ts_ms AS ts_ms_pt ,cc_price.ts_ms AS ts_ms_cc_price ,sh.ts_ms AS ts_ms_sh FROM ( select * from (SELECT *,row_number() over (partition by SHIP_REQUEST_ID order by ts_ms desc,lsn desc) as rn FROM vv_db.hvtb_parse_sw_rpl_RES_SHIP_REQUEST )sr1 where rn = 1 and op!='d'  ) sr  LEFT JOIN ( select * from (SELECT *,row_number() over (partition by ALLOCATION_ID order by ts_ms desc,lsn desc) as rn FROM vv_db.hvtb_parse_sw_rpl_SHIP_INVENTORY_ALLOC ) ia1 where rn = 1 and op!='d'  ) ia ON sr.allocation_id = ia.allocation_id LEFT JOIN ( select * from (SELECT *,row_number() over (partition by RES_PACKAGE_ID order by ts_ms desc,lsn desc) as rn FROM vv_db.hvtb_parse_sw_rpl_RES_PACKAGE ) rp1 where rn = 1  )  rp ON sr.res_id = rp.res_id AND sr.guest_id = rp.guest_id AND rp.package_class = 'VOYAGE' LEFT JOIN ( select * from (SELECT *,row_number() over (partition by SHIP_CODE, CABIN_CATEGORY order by ts_ms desc,lsn desc) as rn FROM vv_db.hvtb_parse_sw_cabin_category ) cc_price1 where rn = 1  ) cc_price ON sr.price_category = cc_price.cabin_category AND sr.ship_code = cc_price.ship_code LEFT JOIN ( select * from (SELECT *,row_number() over (partition by SHIP_CODE, CABIN_CATEGORY order by ts_ms desc,lsn desc) as rn FROM vv_db.hvtb_parse_sw_cabin_category ) cc_assigned1 where rn = 1  )  cc_assigned ON ia.cabin_category = cc_assigned.cabin_category AND ia.ship_code = cc_assigned.ship_code LEFT JOIN ( select * from (SELECT *,row_number() over (partition by SHIP_CODE, CABIN_CATEGORY order by ts_ms desc,lsn desc) as rn FROM vv_db.hvtb_parse_sw_cabin_category ) cc_berth1 where rn = 1  ) cc_berth ON rp.cabin_category_berth = cc_berth.cabin_category AND rp.ship_code = cc_berth.ship_code LEFT JOIN ( select * from (SELECT *,row_number() over (partition by SAIL_ID order by ts_ms desc,lsn desc) as rn FROM vv_db.hvtb_parse_sw_rpl_SAIL_HEADER ) cc_berth1 where rn = 1  )  sh ON rp.DEP_REF_ID = sh.DEP_REF_ID AND rp.ARR_REF_ID = sh.ARR_REF_ID AND rp.SHIP_CODE = sh.SHIP_CODE JOIN vv_db.hvtb_nbx_core_sw_reservation_dim rd ON sr.res_id = rd.src_res_id AND rd.rec_end_dttm = '9999-12-31' JOIN vv_db.hvtb_nbx_core_sw_guest_dim gd ON sr.guest_id = gd.src_guest_id AND gd.rec_end_dttm = '9999-12-31' LEFT JOIN vv_db.hvtb_nbx_core_sw_package_dim pd ON rp.package_id = pd.src_package_id AND pd.rec_end_dttm = '9999-12-31' LEFT JOIN vv_db.hvtb_nbx_core_sw_sail_cabin_reserve_dim scrd ON scrd.src_sail_id = sh.sail_id AND scrd.cabin_number = ia.cabin_number LEFT JOIN vv_db.hvtb_nbx_core_sw_cabin_master cm ON ia.cabin_number = cm.cabin_number AND ia.ship_code = cm.ship LEFT JOIN vv_db.hvtb_nbx_core_sw_allocation_lkp alkp ON ia.allocation_id = alkp.src_allocation_id AND ia.INVENTORY_RESULT_TYPE = alkp.allocation_inv_result
+
+#spark.source.sql SELECT coalesce(rd.res_id, - 1) res_id ,coalesce(gd.guest_id, - 1) guest_id ,coalesce(pd.package_id, - 1) package_id,sr.PRICE_CATEGORY ,cc_price.cabin_category_rank AS PRICE_CATEGORY_RANK ,rp.CABIN_CATEGORY_BERTH AS BERTH_CATEGORY ,cc_berth.cabin_category_rank AS BERTH_CATEGORY_RANK ,ia.CABIN_CATEGORY AS ASSIGNED_CATEGORY ,cc_assigned.cabin_category_rank AS ASSIGNED_CATEGORY_RANK ,CABIN_CATEGORY_GENERIC AS GENERIC_CATEGORY ,coalesce(ia.ALLOCATION_ID, - 1) allocation_id ,coalesce(cm.CABIN_ID, - 1) cabin_id ,coalesce(scrd.sail_cabin_reserve_id, - 1) AS SAIL_CABIN_RESERVE_ID ,sr.BatchTime AS BatchTime ,sr.Part_Date AS Part_Date ,sr.ts_ms AS ts_ms_sr ,ia.ts_ms AS ts_ms_ia ,rp.ts_ms AS ts_ms_rp ,rp.ts_ms AS ts_ms_pt ,cc_price.ts_ms AS ts_ms_cc_price ,sh.ts_ms AS ts_ms_sh FROM ( select * from (SELECT *,row_number() over (partition by SHIP_REQUEST_ID order by ts_ms desc) as rn FROM vv_db.hvtb_parse_sw_rpl_RES_SHIP_REQUEST )sr1 where rn = 1  ) sr  LEFT JOIN ( select * from (SELECT *,row_number() over (partition by ALLOCATION_ID order by ts_ms desc) as rn FROM vv_db.hvtb_parse_sw_rpl_SHIP_INVENTORY_ALLOC ) ia1 where rn = 1  ) ia ON sr.allocation_id = ia.allocation_id LEFT JOIN ( select * from (SELECT *,row_number() over (partition by RES_PACKAGE_ID order by ts_ms desc) as rn FROM vv_db.hvtb_parse_sw_rpl_RES_PACKAGE ) rp1 where rn = 1  )  rp ON sr.res_id = rp.res_id AND sr.guest_id = rp.guest_id AND rp.package_class = 'VOYAGE' LEFT JOIN ( select * from (SELECT *,row_number() over (partition by SHIP_CODE, CABIN_CATEGORY order by ts_ms desc) as rn FROM vv_db.hvtb_parse_sw_cabin_category ) cc_price1 where rn = 1  ) cc_price ON sr.price_category = cc_price.cabin_category AND sr.ship_code = cc_price.ship_code LEFT JOIN ( select * from (SELECT *,row_number() over (partition by SHIP_CODE, CABIN_CATEGORY order by ts_ms desc) as rn FROM vv_db.hvtb_parse_sw_cabin_category ) cc_assigned1 where rn = 1  )  cc_assigned ON ia.cabin_category = cc_assigned.cabin_category AND ia.ship_code = cc_assigned.ship_code LEFT JOIN ( select * from (SELECT *,row_number() over (partition by SHIP_CODE, CABIN_CATEGORY order by ts_ms desc) as rn FROM vv_db.hvtb_parse_sw_cabin_category ) cc_berth1 where rn = 1  ) cc_berth ON rp.cabin_category_berth = cc_berth.cabin_category AND rp.ship_code = cc_berth.ship_code LEFT JOIN ( select * from (SELECT *,row_number() over (partition by SAIL_ID order by ts_ms desc) as rn FROM vv_db.hvtb_parse_sw_rpl_SAIL_HEADER ) cc_berth1 where rn = 1  )  sh ON rp.DEP_REF_ID = sh.DEP_REF_ID AND rp.ARR_REF_ID = sh.ARR_REF_ID AND rp.SHIP_CODE = sh.SHIP_CODE JOIN vv_db.hvtb_nbx_core_sw_reservation_dim rd ON sr.res_id = rd.src_res_id AND rd.rec_end_dttm = '9999-12-31' JOIN vv_db.hvtb_nbx_core_sw_guest_dim gd ON sr.guest_id = gd.src_guest_id AND gd.rec_end_dttm = '9999-12-31' LEFT JOIN vv_db.hvtb_nbx_core_sw_package_dim pd ON rp.package_id = pd.src_package_id AND pd.rec_end_dttm = '9999-12-31' LEFT JOIN vv_db.hvtb_nbx_core_sw_sail_cabin_reserve_dim scrd ON scrd.src_sail_id = sh.sail_id AND scrd.cabin_number = ia.cabin_number LEFT JOIN vv_db.hvtb_nbx_core_sw_cabin_master cm ON ia.cabin_number = cm.cabin_number AND ia.ship_code = cm.ship LEFT JOIN vv_db.hvtb_nbx_core_sw_allocation_lkp alkp ON ia.allocation_id = alkp.src_allocation_id AND ia.INVENTORY_RESULT_TYPE = alkp.allocation_inv_result WHERE coalesce(ia.ship_code,'') <> 'XE'
+
+spark.source.columns src_res_id,src_guest_id,res_id,guest_id,package_id,price_category,price_category_rank,berth_category,berth_category_rank,assigned_category,assigned_category_rank,generic_category,allocation_id,cabin_id,sail_cabin_reserve_id
+
+spark.pond.allColumns booked_cabin_res_id as pond_booked_cabin_res_id,src_res_id as pond_src_res_id,src_guest_id as pond_src_guest_id,res_id as pond_res_id,guest_id as pond_guest_id,package_id as pond_package_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,price_category as pond_price_category,price_category_rank as pond_price_category_rank,berth_category as pond_berth_category,berth_category_rank as pond_berth_category_rank,assigned_category as pond_assigned_category,assigned_category_rank as pond_assigned_category_rank,generic_category as pond_generic_category,allocation_id as pond_allocation_id,cabin_id as pond_cabin_id,sail_cabin_reserve_id as pond_sail_cabin_reserve_id,etl_ld_status as pond_etl_ld_status,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,scd_hash as pond_scd_hash
+
+spark.target.final_collist final_view.booked_cabin_res_id,final_view.src_res_id,final_view.src_guest_id,final_view.res_id,final_view.guest_id,final_view.package_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.price_category,final_view.price_category_rank,final_view.berth_category,final_view.berth_category_rank,final_view.assigned_category,final_view.assigned_category_rank,final_view.generic_category,final_view.allocation_id,final_view.cabin_id,final_view.sail_cabin_reserve_id,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash   
+
+spark.surrogate_key.column booked_cabin_res_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_booked_cabin_reservation_dim
+spark.source.primaryKeyColumns src_res_id,src_guest_id
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_booked_cabin_reservation_dim
+
+spark.target.temp gs://vv-prod-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_booked_cabin_reservation_dim
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_booked_cabin_reservation_dim
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_booked_cabin_reservation_dim_tmp
+spark.bq.permtblname seaware_booked_cabin_reservation_dim
+spark.bq.viewname seaware.seaware_booked_cabin_reservation_dim_bq
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage
+#spark.talent.dependencyflag true
+spark.load.frequency SW_rpl_daily
+spark.scdtype type2
+##=============SCD2 Config Details ==============  
+
+spark.source.srcDateColumn src_date
+spark.scd.columns res_id,guest_id,package_id,price_category,price_category_rank,berth_category,berth_category_rank,assigned_category,assigned_category_rank,generic_category,allocation_id,cabin_id,sail_cabin_reserve_id
+
+spark.scdtype type2
+
+# all source columns as alias ( id_new,amount_new,oppo_new )along with all audit columns
+spark.source.updateReq booked_cabin_res_id,src_res_id,src_guest_id,res_id,guest_id,package_id,rec_start_dttm,rec_end_dttm,price_category,price_category_rank,berth_category,berth_category_rank,assigned_category,assigned_category_rank,generic_category,allocation_id,cabin_id,sail_cabin_reserve_id,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+
+spark.hadoop.hive.execution.engine mr
+

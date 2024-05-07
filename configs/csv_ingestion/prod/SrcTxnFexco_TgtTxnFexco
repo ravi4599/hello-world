@@ -1,0 +1,36 @@
+spark.src.con.format jdbc
+spark.src.config.id SrcTxnFexco
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtTxnFexco
+
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/creditcard/hvtb_parse_cc_txn_fexco
+spark.target.table vv_db.hvtb_parse_cc_txn_fexco
+
+spark.tgt.env Prod
+spark.api.env Prod
+spark.hadoop.hive.execution.engine mr
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.source.format csv
+spark.csv.header true
+spark.input.inputfilepath gs://vv-prod-credit-card/Fexco/landing/
+
+spark.error.filepath gs://vv-prod-credit-card/Fexco/error/
+
+#spark.source.file 
+
+########while writing spark.source.query no need write -->"from table name"--> as its already present in the scala code ###########
+
+spark.source.query select `MerchantName` as merchant_name ,cast(`MID` as bigint) as mid ,cast(`TID` as bigint) as tid ,`TransactionDate` as transaction_date ,cast(`ReferenceNumber` as bigint) as reference_number ,cast(`ReservationNumber` as bigint) as reservation_number ,`CardType` as card_type ,`POSEntry` as pos_entry ,`POSEnvironment` as pos_environment ,`cvv` ,cast(`Token` as bigint) as token ,`Card Number` as card_number ,`BaseCurrency` as bas_currency ,`AuthCode` as auth_code ,`Response` as response ,`TransactionCurrency` as transactio_currency ,cast(`TransactionAmount` as double) as transaction_amount ,`LastName` as last_name ,`FirstName` as first_name ,`TransactionType` as transaction_type ,`Username` as user_name ,`SubmissionUUID` as submission_uuid ,`ReceiptUUID` as receipt_uuid ,`FullyReversed` as fully_reversed ,`PaymentServicesEnvironment` as paymen_service_environment ,`ChannelDescription` as channel_description ,`ChannelID` as channel_id
+
+######### If aliasing and casting is not required only spark.source.columns can be used #########
+
+#spark.source.columns 
+
+

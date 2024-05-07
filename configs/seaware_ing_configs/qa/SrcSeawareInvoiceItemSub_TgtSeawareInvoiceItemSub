@@ -1,0 +1,31 @@
+spark.kafkabrokers npkafka1.gcpshore.virginvoyages.com:9092,npkafka2.gcpshore.virginvoyages.com:9092,npkafka3.gcpshore.virginvoyages.com:9092
+spark.kafka.zookeeper npkafka1.gcpshore.virginvoyages.com:2181
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+
+spark.src.kafkatopic qa-shore-dbz.SEAWARE.INVOICE_ITEM_SUBTYPE
+spark.src.personOffSet earliest
+
+spark.src.config.id SrcSeawareInvoiceItemSub
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.target.config.id TgtSeawareInvoiceItemSub
+
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_invoice_item_subtype
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_invoice_item_subtype
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.4.100.154:2181/hbase-unsecure
+
+
+spark.source.columns INVOICE_ITEM_SUBTYPE_ID,INVOICE_ITEM_TYPE,INVOICE_ITEM_SUBTYPE,COMMENTS, op,ts_ms,VoyageId,Batchtime,Part_Date
+
+spark.final.query select INVOICE_ITEM_SUBTYPE_ID,INVOICE_ITEM_TYPE,INVOICE_ITEM_SUBTYPE,COMMENTS,op,CAST(ts_ms/1000 as timestamp) as ts_ms,VoyageId,Batchtime,Part_Date

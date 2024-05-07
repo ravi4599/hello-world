@@ -1,0 +1,49 @@
+spark.src.config.id SrcCrmConvDefDialogueDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtCrmConDefDialogueDim
+spark.parent.id SrcSFDCConversationDefinitionDialog_TgtSFDCConversationDefinitionDialog
+ 
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+ 
+ 
+spark.source.sql select d.id as id, d.MasterLabel as MasterLabel, d.ParentId as ParentId, bv.VersionNumber as VersionNumber, bv.BotDefinitionId as BotDefinitionId, bd.MasterLabel as BotDefinition_MasterLabel, d.CreatedDate as CreatedDate, d.LastModifiedDate as LastModifiedDate, d.IsDeleted as IsDeleted,batchtime,part_date from ( select * from ( select id,MasterLabel,ParentId,CreatedDate,LastModifiedDate,IsDeleted,batchtime,part_date, row_number() over ( partition by id order by lastmodifieddate desc ) rn from vv_db.hvtb_parse_sfdc_conversation_definition_dialog ) where rn = 1 ) d left join ( select * from ( select id,VersionNumber,BotDefinitionId,row_number() over ( partition by botdefinitionid order by lastmodifieddate desc ) rn from vv_db.hvtb_parse_sfdc_bot_version ) where rn = 1 ) bv on d.ParentId = bv.id left join ( select * from ( select id,MasterLabel,row_number() over ( partition by createdbyid order by lastmodifieddate desc ) rn from vv_db.hvtb_parse_sfdc_bot_definition ) where rn = 1 ) bd on bv.BotDefinitionId = bd.id
+ 
+ 
+ 
+spark.source.columns id,MasterLabel,ParentId,VersionNumber,BotDefinitionId,BotDefinition_MasterLabel,CreatedDate,LastModifiedDate,IsDeleted
+ 
+ 
+spark.pond.allColumns conversationdefinitiondialog_skey as pond_conversationdefinitiondialog_skey,id as pond_id, MasterLabel as pond_MasterLabel, ParentId as pond_ParentId, VersionNumber as pond_VersionNumber, BotDefinitionId as pond_BotDefinitionId, BotDefinition_MasterLabel as pond_BotDefinition_MasterLabel, CreatedDate as pond_CreatedDate, LastModifiedDate as pond_LastModifiedDate, IsDeleted as pond_IsDeleted,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+ 
+spark.surrogate_key.column conversationdefinitiondialog_skey
+spark.pond.database vv_db
+spark.target.schema vv_db
+spark.pond.table hvtb_mart_dim_conversation_definition_dialog 
+spark.source.primaryKeyColumns id
+ 
+spark.target.final_collist final_view.conversationdefinitiondialog_skey,final_view.id,final_view.MasterLabel, final_view.ParentId, final_view.VersionNumber, final_view.BotDefinitionId, final_view.BotDefinition_MasterLabel, final_view.CreatedDate, final_view.LastModifiedDate, final_view.IsDeleted,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+ 
+ 
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_conversation_definition_dialog
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_conversation_definition_dialog
+ 
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname hvtb_nbx_core_crm_conversation_definition_dialog_tmp
+spark.bq.permtblname hvtb_nbx_core_crm_conversation_definition_dialog
+spark.bq.viewname crm.hvtb_nbx_core_crm_conversation_definition_dialog
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+ 
+ 
+spark.hadoop.hive.execution.engine mr
+

@@ -1,0 +1,21 @@
+spark.source.ctiteam.table.query select * from vv_db.hvtb_nbx_landing_cti_team
+
+spark.target.ctiteam.table vv_db.hvtb_parse_cti_team
+
+spark.src.config.id   SrcCtiTeamParser
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   Dev
+spark.target.config.id   TgtCtiTeamParser 
+spark.parent.id   SrcInvokeCtiTeam-TgtInvokeCtiTeam
+spark.target.ops.table.format   org.apache.phoenix.spark
+spark.target.ops.table.mode   overwrite
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.api.env dev

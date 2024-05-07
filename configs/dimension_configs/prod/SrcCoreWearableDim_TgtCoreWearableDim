@@ -1,0 +1,37 @@
+spark.network.timeout 600s
+spark.sql.broadcastTimeout 600s
+spark.table.type dim
+spark.hadoop.hive.execution.engine mr
+spark.trackable.query select * from (select * , row_number() over(partition by trackableid order by lastmodifieddate desc) rn from vv_db.hvtb_parse_vxp_trackable  ) where rn = 1
+spark.shipping.query select * from (select * , row_number() over(partition by shippingcompanyid order by lastmodifieddate desc) rn from vv_db.hvtb_parse_vxp_shipping_company ) where rn = 1
+spark.shipment.query select * from (select * , row_number() over(partition by shipmentid order by lastmodifieddate desc) rn from vv_db.hvtb_parse_vxp_shipment  ) where rn = 1
+spark.guestfolio.query select * from (select * , row_number() over(partition by guestfolioid order by lastmodifieddate desc) rn from vv_db.hvtb_parse_vxp_guest_folio  ) where rn = 1
+spark.trackableshipment.query select * from (select * , row_number() over(partition by trackableshipmentid order by lastmodifieddate desc) rn from vv_db.hvtb_parse_vxp_trackable_shipment  ) where rn = 1
+spark.swtovxp.wearable.query select addressline1 as mailing_address_line1,addressline2 as mailing_address_line2 ,addressline3 as mailing_address_line3, city as mailing_address_city,state as mailing_address_state,zip as mailing_address_zip ,countrycode as mailing_address_countrycode, cast(clientid as int) as mxp_client_id,guestid  as mxp_guest_id from vv_db.hvtb_parse_swtovxp_wearable
+spark.seaware.guest.rel select * from vv_db.hvtb_nbx_seaware_guest_sw_vxp_rel
+spark.crossidref.query select dxpidcross0_.idvalue as reservationguestid, dxpidcross1_.idvalue as trackableid from shipdw.hvtb_parse_vxp_dxp_idcrossreference dxpidcross0_ , shipdw.hvtb_parse_vxp_dxp_idcrossreference dxpidcross1_ where dxpidcross0_.linkId=dxpidcross1_.linkId and dxpidcross0_.idvalue<>dxpidcross1_.idvalue and dxpidcross0_.idtypeId='e2e22df0-ff60-11e7-abac-125c54c3e820' and dxpidcross1_.idtypeId='992695a4-c317-11e8-9030-0a1a4261e962' and dxpidcross0_.idsourceId= 'c7bc691e-ff60-11e7-abaa-125c54c3e820' and dxpidcross1_.idsourceId='c7bc691e-ff60-11e7-abaa-125c54c3e820' and dxpidcross0_.isdeleted=false
+spark.source.guest.dim.sql select guest_id, rec_start_dttm, rec_end_dttm, src_guest_id, client_id from vv_db.hvtb_nbx_core_sw_guest_dim where to_date(rec_end_dttm) = '9999-12-31'
+spark.core.crm.account.sql select preferred_name__c, firstname, cast(Client_ID__C as int) as Client_ID__C from vv_db.hvtb_parse_sfdc_account
+spark.core.res.guest.rel.sql select res_id as res_guest_rel_res_id, guest_id as res_guest_rel_guest_id from vv_db.hvtb_nbx_core_sw_res_guest_rel
+spark.core.reservation.dim.sql select res_id as res_dim_res_id, vip_status from vv_db.hvtb_nbx_core_sw_reservation_dim
+spark.core.booked.cabin.reservation.dim.sql select res_id as cabin_dim_res_id, guest_id as cabin_dim_guest_id, cabin_id as cabin_dim_cabin_id from vv_db.hvtb_nbx_core_sw_booked_cabin_reservation_dim
+spark.core.cabin.master.dim.sql select cabin_id as cabin_master_cabin_id, cabin_number, deck_number from vv_db.hvtb_nbx_core_sw_cabin_master
+spark.source.guest.vxp.dim.sql select src_guest_id as guest_vxp_src_guest_id, client_id as guest_vxp_client_id, vxp_guest_id as guest_vxp_vxp_guest_id, vxp_reservation_guest_id as guest_vxp_vxp_reservation_guest_id from vv_db.hvtb_nbx_seaware_guest_sw_vxp_rel
+spark.source.columns rec_start_dttm,rec_end_dttm,wearable_rfid,src_guest_id,charge_id,name_to_be_itched,wearable_colour,trackingnumber,shipping_company,shippment_status,mailing_address_line1,mailing_address_line2,mailing_address_line3,mailing_address_city,mailing_address_state,mailing_address_zip,mailing_address_countrycode,batchtime
+spark.pond.allColumns wearable_id as pond_wearable_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,wearable_rfid as pond_wearable_rfid,src_guest_id as pond_src_guest_id,charge_id as pond_charge_id,name_to_be_itched as pond_name_to_be_itched,wearable_colour as pond_wearable_colour,trackingnumber as pond_trackingnumber,shipping_company as pond_shipping_company,shippment_status as pond_shippment_status,mailing_address_line1 as pond_mailing_address_line1,mailing_address_line2 as pond_mailing_address_line2,mailing_address_line3 as pond_mailing_address_line3,mailing_address_city as pond_mailing_address_city,mailing_address_state as pond_mailing_address_state,mailing_address_zip as pond_mailing_address_zip,mailing_address_countrycode as pond_mailing_address_countrycode,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column wearable_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_wearable_dim
+spark.target.schema vv_db
+spark.target.table seaware_wearable_dim
+spark.source.primaryKeyColumns wearable_rfid
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+spark.target.final_collist wearable_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.wearable_rfid,final_view.src_guest_id,final_view.charge_id,final_view.name_to_be_itched,final_view.wearable_colour,final_view.trackingnumber,final_view.shipping_company,final_view.shippment_status,final_view.mailing_address_line1,final_view.mailing_address_line2,final_view.mailing_address_line3,final_view.mailing_address_city,final_view.mailing_address_state,final_view.mailing_address_zip,final_view.mailing_address_countrycode,load_dt,upd_dt,primaryhash,md5_hash
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_wearable_dim_tmp
+spark.bq.permtblname seaware_wearable_dim
+spark.bq.viewname seaware.seaware_wearable_dim
+spark.target.temp gs://vv-prod-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_wearable_dim
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_wearable_dim

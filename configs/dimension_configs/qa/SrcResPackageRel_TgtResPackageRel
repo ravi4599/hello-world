@@ -1,0 +1,46 @@
+spark.src.config.id SrcSeawareResPackageRel
+spark.voyage.id SC2002269NCR
+spark.tgt.env QA
+spark.target.config.id TgtSeawareResPackageRel
+spark.parent.id SrcSeawareResPackage-TgtSeawareResPackage
+spark.table.type dim
+ 
+ 
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+ 
+ 
+spark.source.sql select t.res_package_id, t.res_id as SRC_RES_ID, t.guest_id as SRC_GUEST_ID, t.package_id as SRC_PACKAGE_ID, effective_date, batchtime, part_date, current_timestamp as rec_start_dttm,case when t.op == 'd' then current_timestamp else to_timestamp('9999-12-31 00:00:00') end as rec_end_dttm from ( select * from ( select res_package_id,res_id ,guest_id ,package_id ,effective_date,batchtime, part_date,op,row_number() over(partition by res_package_id order by ts_ms desc) as rn from vv_db.hvtb_parse_sw_rpl_res_package *whereclause*)r where r.rn = 1 ) t where t.package_id is not null
+ 
+spark.source.columns res_package_id,SRC_RES_ID,SRC_GUEST_ID,SRC_PACKAGE_ID,EFFECTIVE_DATE
+ 
+ 
+spark.pond.allColumns respackage_skey as pond_respackage_skey,res_package_id as pond_res_package_id,src_res_id as pond_src_res_id,src_guest_id as pond_src_guest_id,src_package_id as pond_src_package_id,effective_date as pond_effective_date,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+ 
+ 
+spark.surrogate_key.column respackage_skey
+spark.pond.database	vv_db 
+spark.pond.table hvtb_nbx_core_sw_res_package_rel
+spark.target.schema	vv_db 
+spark.source.primaryKeyColumns res_package_id
+ 
+spark.target.final_collist final_view.respackage_skey,final_view.res_package_id as res_package_id ,final_view.src_res_id as src_res_id,final_view.src_guest_id as src_guest_id,final_view.src_package_id as src_package_id,final_view.effective_date as effective_date,final_view.rec_start_dttm as rec_start_dttm,final_view.rec_end_dttm as rec_end_dttm,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash
+ 
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_nbx_core_sw_res_package_rel
+ 
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_nbx_core_sw_res_package_rel
+ 
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_res_package_rel_tmp
+spark.bq.permtblname seaware_res_package_rel
+spark.bq.viewname seaware.seaware_res_package_rel
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

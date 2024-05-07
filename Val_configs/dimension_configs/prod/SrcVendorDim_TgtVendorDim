@@ -1,0 +1,32 @@
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.src.config.id SrcVendorDim
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtVendorDim
+spark.parent.id SrcVxpArsVendor-TgtVxpArsVendor
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.database prodnbx
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename vendor_dim
+spark.table.type dim
+#spark.source.sql select v.vendorid as vendor_id, v.name as vendor_name,v.isactive as src_active_flg, v.isdeleted as src_deleted_flg,v.VoyageId as voyage_id, v.BatchTime,v.Part_Date from (select * from (select *,row_number() over ( partition by vendorid order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_ars_vendor) where rn=1 )v
+spark.source.sql select vendorid as vendor_id,name as vendor_name,isactive as src_active_flg,isdeleted as src_deleted_flg,voyageid as voyage_id,batchtime,part_date from (select *,row_number() over ( partition by vendorid order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_ars_vendor) where rn=1 and
+spark.source.columns voyage_id,vendor_id,vendor_name,src_active_flg,src_deleted_flg
+spark.pond.allColumns vendor_skey as pond_vendor_skey,voyage_id as pond_voyage_id,vendor_id as pond_vendor_id,vendor_name as pond_vendor_name,src_active_flg as pond_src_active_flg,src_deleted_flg as pond_src_deleted_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column vendor_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_vendor
+spark.target.table vendor_dim
+spark.source.primaryKeyColumns vendor_id
+spark.target.final_collist vendor_skey,final_view.voyage_id as voyage_id,final_view.vendor_id as vendor_id,final_view.vendor_name as vendor_name,final_view.src_active_flg as src_active_flg,final_view.src_deleted_flg as src_deleted_flg,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_vendor
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_vendor
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+

@@ -1,0 +1,3 @@
+spark.target.temptablename vv_db.hvtb_nbx_staging_sw_booked_cabin_reservation_dim
+spark.target.tgttablename vv_db.hvtb_nbx_core_sw_booked_cabin_reservation_dim
+spark.target.coalesceval 4

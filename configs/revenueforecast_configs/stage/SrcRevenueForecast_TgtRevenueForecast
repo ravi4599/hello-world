@@ -1,0 +1,20 @@
+spark.src.config.id SrcRevenueForecast
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.landingtable vv_db.hvtb_nbx_landing_revenue_kpi_plan_forecast_upload
+spark.target.config.id TgtRevenueForecast
+spark.target.temp s3://vv-stage-emr-cluster/data/temp/hvtb_nbx_landing_revenue_kpi_plan_forecast_upload
+spark.target.landinglocation s3://vv-stage-emr-cluster/data/landing/hvtb_nbx_landing_revenue_kpi_plan_forecast_upload
+spark.target.parselocation s3://vv-stage-emr-cluster/data/parse/hvtb_nbx_parse_revenue_kpi_plan_forecast_upload
+spark.target.parsetemp s3://vv-stage-emr-cluster/data/temp/hvtb_nbx_parse_revenue_kpi_plan_forecast_upload
+spark.target.coalesce.value 6
+spark.debug.flag false
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.static.columns SHIP_CODE,PACKAGE_TYPE,SAIL_DATE,SAIL_DAYS,CABIN_CTG_GENERIC,FORECAST_VERSION,FORECAST_METRIC,COMMENTS
+spark.s3file.location s3://vv-rev-forecast-prod/stage/
+spark.excel.tabs LOAD FACTOR BUILD %,GROSS TICKET REVENUE $ (build),GROSS TICKET APD $,NET TICKET REVENUE $ (build),NET TICKET APD $,NET-NET TICKET REVENUE $(build),NET-NET TICKET APD $,ONBOARD REV BOOKED % (build),GROSS ONBOARD REVENUE $ (build),GROSS OBR APD $,NET ONBOARD REVENUE $ (build),NET OBR APD $,GROSS OTHER REVENUE $ (build),GROSS OTHER REVENUE APD $,NET OTHER REVENUE $ (build),NET OTHER REVENUE APD $
+
+

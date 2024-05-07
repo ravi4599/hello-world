@@ -1,0 +1,54 @@
+spark.src.config.id SrcMxpPositionFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env dev
+spark.target.config.id TgtMxpPositionFactLAD
+spark.parent.id SrcMxpPositions-TgtMxpPositions
+
+spark.hadoop.hive.execution.engine mr
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.ing.type Fact
+
+
+
+
+
+
+spark.source.sql select voyage_id, person_skey, person_id, persondim_person_id, person_booking_id, booking_id, position_skey, supervisor_group_skey, supervisor_group_id, pbooking_supervisor_group_id, position_valid_from_timestamp, position_valid_to_timestamp, src_deleted_flag from (SELECT nvl(pbooking.VoyageId, -1) AS voyage_id , nvl(persondim.person_skey, -1) AS person_skey , pbooking.person_id, persondim.person_id as persondim_person_id, pbooking.person_booking_id, persondim.booking_id, nvl(positiondim.position_skey, -1) AS position_skey , nvl(sg.supervisor_group_skey, -1) AS supervisor_group_skey , sg.supervisor_group_id, pbooking.supervisor_group_id as pbooking_supervisor_group_id, pos.position_valid_from_timestamp AS position_valid_from_timestamp , pos.position_valid_to_timestamp AS position_valid_to_timestamp , pbooking.rec_deleted AS src_deleted_flag FROM ( SELECT * FROM ( SELECT person_booking_id , position_id , person_id, supervisor_group_id , VoyageId , rec_deleted , ROW_NUMBER() OVER ( PARTITION BY person_id,person_booking_id, position_id ORDER BY last_changed DESC ) AS rn FROM shipdw.hvtb_parse_mxp_person_booking_lad where position_id IS NOT NULL and person_booking_id > 0 ) WHERE rn = 1) pbooking LEFT JOIN ( SELECT * FROM ( SELECT person_skey , booking_id, person_id, voyage_id, upd_dt, md5_hash, ROW_NUMBER() OVER(PARTITION BY person_id,booking_id ORDER BY upd_dt, md5_hash DESC ) AS rn FROM shipdw.hvtb_mart_dim_person where booking_id > 0 ) WHERE rn = 1) persondim ON pbooking.person_booking_id = persondim.booking_id LEFT JOIN ( SELECT position_skey , position_id FROM shipdw.hvtb_mart_dim_position) positiondim ON pbooking.position_id = positiondim.position_id LEFT JOIN ( SELECT voyage_id, supervisor_group_skey, supervisor_group_id, src_deleted_flag FROM shipdw.hvtb_mart_dim_supervisor_group WHERE src_deleted_flag = FALSE) sg ON sg.supervisor_group_id = pbooking.supervisor_group_id LEFT JOIN ( SELECT * FROM ( SELECT position_id , position_valid_from AS position_valid_from_timestamp , position_valid_to AS position_valid_to_timestamp , batchtime , part_date , ROW_NUMBER() OVER ( PARTITION BY position_id ORDER BY last_changed DESC ) AS rn FROM shipdw.hvtb_parse_mxp_positions ) WHERE rn = 1 ) pos ON positiondim.position_id = pos.position_id) position
+
+
+spark.source.columns person_skey, position_skey,supervisor_group_skey, position_valid_from_timestamp, position_valid_to_timestamp,src_deleted_flag, batchtime
+
+
+spark.pond.allColumns   person_skey as pond_person_skey, position_skey as pond_position_skey, supervisor_group_skey as pond_supervisor_group_skey,position_valid_from_timestamp as pond_position_valid_from_timestamp, position_valid_to_timestamp as pond_position_valid_to_timestamp, src_deleted_flag as pond_src_deleted_flag,load_dt as pond_load_dt, upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash,part_dt as pond_part_dt
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_person_position
+
+spark.target.final_collist   final_view.person_skey, final_view.position_skey,final_view.supervisor_group_skey, final_view.position_valid_from_timestamp,final_view.position_valid_to_timestamp,final_view.src_deleted_flag,final_view.load_dt, final_view.upd_dt,final_view.primaryhash, final_view.md5_hash, final_view.part_dt
+
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_fact_person_position
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_person_position
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.factType Accu
+spark.source.primaryKeyColumns person_skey,position_skey
+spark.bq.dataset hive_schema_stg
+spark.bq.permtblname person_position_fact
+spark.bq.temptblname person_position_fact_tmp
+spark.bq.viewname shipdw.personposition_fact
+
+
+#----------------------LAD--------------------------------# 
+spark.ladjob.flag true
+spark.lad.srctablekey person_id,person_booking_id
+spark.lad.srctable shipdw.hvtb_parse_mxp_person_booking
+spark.lad.tgttable shipdw.hvtb_parse_mxp_person_booking_lad
+spark.lad.columns person_skey,position_skey
+spark.ladremoval.flag true
+#----------------------------------------------------------# 

@@ -1,0 +1,23 @@
+spark.target.nonsslkafkabrokers 10.102.220.205:9094,10.102.220.206:9094,10.102.220.207:9094
+spark.ssl.enabled false
+spark.target.passvalue Sailing2020
+spark.target.kafka.batch.size 16384
+spark.src.table.type hive
+spark.target.kafka.topic shp2shr-konami-casino.shifttablestat
+spark.src.table shipdw.hvtb_lnd_konami_ems_vw_tal_shifttblstat
+spark.target.coalesce.value 10
+spark.src.config.id Srcshphivecasinotblstat
+spark.voyage.id VAL2002269NCR
+spark.target.config.id Tgtkfkcasinotblstat
+spark.parent.id Srcasinoshifttblstat-Tgtcasinoshifttblstat
+spark.isfullrefresh yes
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.isfullrefresh yes
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+# Operational Config
+spark.oper.metadata.table.mode overwrite
+spark.oper.metadata.table HBTB_NBX_SHORETOSHIP_SYNC_VOYAGEOPS
+spark.tgt.env Prod
+

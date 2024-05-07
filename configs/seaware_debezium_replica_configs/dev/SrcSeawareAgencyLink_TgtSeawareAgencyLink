@@ -1,0 +1,33 @@
+spark.kafkabrokers 10.59.1.30:9092,10.59.1.31:9092,10.59.1.32:9092
+spark.kafka.zookeeper 10.59.1.30:2181,10.59.1.31:2181,10.59.1.32:2181
+
+
+spark.mpx.consumer spark-consumer-100
+
+spark.src.kafkatopic dev-gcp-dbz-sw.SEAWARE.AGENCY_LINK          
+
+spark.snapshot.table shipdw.hbtb_dbz_snapdate
+spark.metadata.con.format jdbc
+spark.metadata.offset.mode Append
+spark.metadata.offset.table shipdw.hbtb_streaming_ingestion_offset
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.snpsht.table.mode overwrite
+
+
+spark.src.config.id SrcSeawareAgencyLink
+spark.tgt.env Dev
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtSeawareAgencyLink
+
+
+
+spark.target.lnd.table vv_db.hvtb_lnd_sw_rpl_agency_link
+spark.target.parse.table vv_db.hvtb_parse_sw_rpl_agency_link
+spark.ship.code SHORE
+spark.stop.flag Y
+spark.debug.flag true

@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.HOTEL_INV_ALLOCATION
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT ALLOCATION_ID, ALLOCATION_OWNER_TYPE, ALLOCATION_OWNER_ID, ALLOCATION_TIMESTAMP, OPERATOR_ID, INVENTORY_REQUEST_TYPE, DEPENDS_ON_ID, SEQ_NUMBER, PROBABILITY, INVENTORY_RESULT_TYPE, HOTEL_ROOM_CATEGORY, HOTEL_CATEGORY, HOTEL_ID, CHECK_IN_DATE, CHECK_OUT_DATE, HOTEL_ROOM_TYPE, PRIORITY, OCCUPANCY, DECLINE_REASON, RELEASE_TIMESTAMP, SHIP_CODE, CITY_CODE, WTL_OWNER_FLAG, DLGT_RES_ID, IS_DLGT_OBJ, HOTEL_SPACE_TYPE FROM SEAWARE.HOTEL_INV_ALLOCATION)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_hotel_inv_allocation
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/HOTEL_INV_ALLOCATION
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_hotel_inv_allocation/
+
+spark.hadoop.hive.execution.engine mr

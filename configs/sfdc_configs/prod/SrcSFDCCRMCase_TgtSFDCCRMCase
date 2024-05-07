@@ -1,0 +1,34 @@
+spark.src.con.format sfdc
+spark.src.salesforce.username vv_datascience_api@virginvoyages.com.prd
+spark.src.salesforce.password NBX022019
+spark.src.salesforce.endpoint https://login.salesforce.com/services/Soap/u/53.0
+spark.src.salesforce.version 53.0
+spark.src.config.id SrcSFDCCRMCase
+spark.voyage.id SC2002269NCR
+ 
+ 
+ 
+spark.source.columns AccountId,AssetId,Booked_Activities__c,Booking_Payments__c,BusinessHoursId,CaseAudience__c,CaseNumber,CaseSubReason__c,Case_Resolution__c,Category__c,ClosedDate,ContactId,Count_Child_Cases__c,Count_Closed_Cases__c,CreatedById,CreatedDate,Description,EntitlementId,Escalation_Reason__c,Id,IsClosed,IsClosedOnCreate,IsDeleted,IsEscalated,IsStopped,LastModifiedById,LastModifiedDate,Last_Interaction_Date__c,Link__c,MilestoneStatus,NavigatorName__c,Origin,OwnerId,ParentId,Priority,ProductId,Reason,RecordTypeId,Sailor_Email__c,Sailor_Name__c,Ship__c,SlaExitDate,SlaStartDate,Status,StopStartDate,Subject,Sub_Category__c,SuppliedCompany,SuppliedEmail,SuppliedName,SuppliedPhone,SystemModstamp,Transferred_to__c,Type,Voyage__c,WebFName__c,WebLName__c,Reservation_Number__c,caseownerid__c,case_sub_resolution__c,complaint_type__c,Complaint__c,request_assistance_queue__c,request_assistance_reason__c,external_case_resolution__c,external_case_sub_resolution__c,case_activity_counter__c,reopened__c,total_case_resolution_time__c,external_escalation__c,Escalated__c,first_contact_resolution_chat__c,Case_Owner_Queue__c,Booking_Flow__c, Case_Owner__c,Escalated_Flag__c,Reopened_Count__c,First_CaseOwnerQueue__c
+ 
+ 
+spark.src.table.query SELECT AccountId,AssetId,Booked_Activities__c,Booking_Payments__c,BusinessHoursId,CaseAudience__c,CaseNumber,CaseSubReason__c,Case_Resolution__c,Category__c,ClosedDate,ContactId,Count_Child_Cases__c,Count_Closed_Cases__c,CreatedById,CreatedDate,Description,EntitlementId,Escalation_Reason__c,Id,IsClosed,IsClosedOnCreate,IsDeleted,IsEscalated,IsStopped,LastModifiedById,LastModifiedDate,Last_Interaction_Date__c,Link__c,MilestoneStatus,NavigatorName__c,Origin,OwnerId,ParentId,Priority,ProductId,Reason,RecordTypeId,Sailor_Email__c,Sailor_Name__c,Ship__c,SlaExitDate,SlaStartDate,Status,StopStartDate,Subject,Sub_Category__c,SuppliedCompany,SuppliedEmail,SuppliedName,SuppliedPhone,SystemModstamp,Transferred_to__c,Type,Voyage__c,WebFName__c,WebLName__c,Reservation_Number__c,caseownerid__c,case_sub_resolution__c,complaint_type__c,Complaint__c,request_assistance_queue__c,request_assistance_reason__c,external_case_resolution__c,external_case_sub_resolution__c,case_activity_counter__c,reopened__c,total_case_resolution_time__c,external_escalation__c,Escalated__c,first_contact_resolution_chat__c,Case_Owner_Queue__c,Booking_Flow__c, Case_Owner__c, Escalated_Flag__c, Reopened_Count__c, First_CaseOwnerQueue__c FROM Case
+ 
+ 
+ 
+ 
+spark.src.condition.column LastModifiedDate
+ 
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtSFDCCRMCase
+spark.target.hive.table vv_db.hvtb_lnd_sfdc_case
+spark.target.table vv_db.hvtb_lnd_sfdc_case
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr
+

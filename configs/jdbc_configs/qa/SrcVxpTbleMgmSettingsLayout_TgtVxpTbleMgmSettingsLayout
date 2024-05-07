@@ -1,0 +1,32 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.56.10.6/table_management
+spark.src.user pgreadaccessuser
+spark.src.password vzwQArHubFzpEyoL1st7
+spark.src.con.driver org.postgresql.Driver
+
+
+
+spark.src.config.id SrcVxpTbleMgmSettingsLayout
+spark.tgt.env QA
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpTbleMgmSettingsLayout
+spark.target.table shipdw.hvtb_lnd_vxp_table_management_settings_layout
+spark.src.table.query "settings_layout"
+spark.condition.column lastmodifieddate
+spark.source.columns addeddate, public_id, origin_public_id, name, is_default, settings_id, venue_id, addedby, lastmodifiedby, lastmodifieddate
+spark.ship.code SHORE
+
+ 
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+
+ 
+spark.target.location gs://vv-cert-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_table_management_settings_layout
+spark.target.hive.table shipdw.hvtb_lnd_vxp_table_management_settings_layout
+spark.hadoop.hive.execution.engine mr
+

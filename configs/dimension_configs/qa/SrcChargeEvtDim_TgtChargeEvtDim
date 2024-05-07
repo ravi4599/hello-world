@@ -1,0 +1,51 @@
+spark.src.config.id SrcChargeEvtDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env QA
+spark.target.config.id TgtChargeEvtDim
+spark.parent.id SrcSeawareResChargeableAction-TgtSeawareResChargeableAction
+ 
+ 
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+ 
+ 
+ 
+ 
+spark.source.sql select csd.record_id as src_record_id,current_timestamp as rec_start_dttm,current_timestamp() - INTERVAL 1 SECOND as rec_end_dttm,case when cd.entity_type='res' then res.res_id else null end res_id,act.res_action_type action_type,csd.charge_id charge_id,cd.charge_component_code charge_component_code,cd.charge_state charge_state,csd.guest_seqn guest_seqn,csd.amount amount,csd.amount_in_hdr_curr amount_in_hdr_curr,csd.explanation explanation,csd.change_area change_area,act.action_timestamp action_timestamp,act.is_added_manually is_added_manually,csd.package_id as src_package_id,act.is_paid as is_paid,act.paid_timestamp paid_timestamp,cd.comments as comments,act.batchtime as batchtime,act.part_date as part_date from vv_db.hvtb_nbx_parse_sw_rpl_res_chargeable_action as act left join vv_db.hvtb_nbx_parse_sw_rpl_res_charge_detail cd on act.action_id=cd.action_id left join (select * from (select *,row_number() over(partition by record_id order by ts_ms desc) as rn from vv_db.hvtb_nbx_parse_sw_rpl_res_charge_subdetail) p where p.rn=1) csd on cd.charge_id=csd.charge_id left join vv_db.hvtb_nbx_core_sw_reservation_dim res on cd.entity_id=res.src_res_id and to_date(res.rec_end_dttm)='9999-12-31'
+ 
+ 
+spark.source.columns src_record_id,rec_start_dttm,rec_end_dttm,action_type,charge_id,charge_component_code,charge_state,guest_seqn,amount,amount_in_hdr_curr,explanation,change_area,action_timestamp,is_added_manually,src_package_id,is_paid,paid_timestamp,comments
+ 
+ 
+spark.pond.allColumns charge_detail_id as pond_charge_detail_id ,src_record_id as pond_src_record_id ,rec_start_dttm as pond_rec_start_dttm ,rec_end_dttm as pond_rec_end_dttm ,res_id as pond_res_id ,action_type as pond_action_type,charge_id as pond_charge_id ,charge_component_code as pond_charge_component_code ,charge_state as pond_charge_state ,guest_seqn as pond_guest_seqn ,amount as pond_amount ,amount_in_hdr_curr as pond_amount_in_hdr_curr ,explanation as pond_explanation ,change_area as pond_change_area ,src_package_id as pond_src_package_id ,action_timestamp as pond_action_timestamp ,is_added_manually as pond_is_added_manually,is_paid as pond_is_paid,paid_timestamp as pond_paid_timestamp,comments as pond_comments,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+ 
+ 
+spark.surrogate_key.column charge_detail_id
+spark.pond.database vv_db
+spark.pond.table hvtb_mart_seware_charge_event_dim
+spark.source.primaryKeyColumns src_record_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+ 
+spark.target.final_collist final_view.charge_detail_id,final_view.src_record_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.res_id,final_view.action_type,final_view.charge_id,final_view.charge_component_code,final_view.charge_state,final_view.guest_seqn,final_view.amount,final_view.amount_in_hdr_curr,final_view.explanation,final_view.change_area,final_view.src_package_id,final_view.action_timestamp,final_view.is_added_manually,final_view.is_paid,final_view.paid_timestamp,final_view.comments,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+ 
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_seware_charge_event_dim
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_seware_charge_event_dim
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seware_charge_event_dim_tmp
+spark.bq.permtblname seware_charge_event_dim
+spark.bq.viewname seaware.seware_charge_event_dim
+ 
+ 
+ 
+ 
+ 
+spark.hadoop.hive.execution.engine mr
+

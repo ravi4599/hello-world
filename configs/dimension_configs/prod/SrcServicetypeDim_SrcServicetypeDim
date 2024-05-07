@@ -1,0 +1,48 @@
+spark.src.config.id	SrcServicetypeDim
+spark.voyage.id	SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtServicetypeDim
+spark.parent.id	SrcSpaUtilisation-TgtSpaUtilisation
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+
+#spark.redshift.url jdbc:redshift://10.15.1.16:5439/prodnbxpub
+#spark.redshift.username talenduser
+#spark.redshift.password Talenduser$2022
+
+spark.source.sql select NVL(spa_util.VoyageId, -1) as voyage_id,spa_util.SpaServiceType as service_type,spa_util.SpaServiceCategory as service_category,spa_util.batchtime,spa_util.part_date from (select * from (select *,row_number()over(partition by spaservicetype,spaservicecategory order by date desc)as rn from shipdw.hvtb_parse_spa_utilization)spa where spa.rn=1 ) spa_util
+
+spark.source.columns voyage_id,service_type,service_category
+spark.pond.allColumns voyage_id as pond_voyage_id,service_type_skey as pond_service_type_skey,service_type as pond_service_type,service_category as pond_service_category,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.surrogate_key.column service_type_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_service_type
+spark.target.schema shipdw
+spark.target.table service_type_dim
+spark.source.primaryKeyColumns service_type,service_category
+
+spark.target.final_collist final_view.voyage_id as voyage_id ,final_view.service_type_skey as service_type_skey,final_view.service_type as service_type,final_view.service_category as service_category,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash
+
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_service_type
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_service_type
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname service_type_dim
+spark.bq.permtblname service_type_dim
+spark.bq.viewname shipdw.service_type_dim
+
+#spark.redshift.schema Hive_schema_stg
+#spark.redshift.tablename service_type_dim
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

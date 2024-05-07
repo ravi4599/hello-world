@@ -1,0 +1,31 @@
+spark.shipFlag N
+spark.debugFlag N
+spark.shore.seconds 30
+spark.target.coalesce.value 3
+spark.shipCodeColumn Shipcode
+spark.shipCode SC
+spark.src.voyageid SC2002269NCR
+spark.source.sslflag false
+spark.source.kafkabrokers 10.2.52.146:9092,10.2.52.148:9092,10.2.52.162:9092
+spark.source.consumer SrcKfkVxpFBallergySC_k2k-TgtHvVxpFBallergySC_k2k-100
+spark.source.topicname shp2shr-dev-vxp-fandb.allergy
+spark.src.table.type KAFKA
+spark.target.sslflag false
+#spark.target.kafkabrokers 10.15.2.58:9092,10.15.12.38:9092,10.15.13.172:9092
+spark.target.kafkabrokers 10.59.1.30:9092,10.59.1.31:9092,10.59.1.32:9092
+spark.target.topicname shp2shr-dev-vxp-fandb.allergy
+spark.kafka.zookeeper 10.2.52.146:2181
+spark.src.config.id SrcKfkVxpFBallergySC_k2k
+spark.target.config.id TgtHvVxpFBallergySC_k2k
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.metadata.offset.table shipdw.hbtb_nbx_kafka_streaming_offset
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.con.format jdbc
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+
+

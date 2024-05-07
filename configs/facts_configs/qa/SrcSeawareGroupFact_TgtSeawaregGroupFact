@@ -1,0 +1,67 @@
+spark.src.config.id SrcSeawareGroupFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env QA
+spark.api.env QA
+spark.target.config.id TgtSeawaregGroupFact
+spark.parent.id SrcSeawareGroupInvoiceItem-TgtSeawareGroupInvoiceItem
+#spark.same.parent yes
+
+ 
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+ 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+ 
+spark.metadata.con.driver=org.postgresql.Driver
+ 
+
+ 
+
+ 
+spark.source.sql SELECT CURRENT_TIMESTAMP()AS snapshot_time,COALESCE(gd.group_id, -1)                         AS group_id,COALESCE(inv.guest_seqn, -1)      			     AS guest_seqn,COALESCE(pm.package_id, -1)                       AS package_id,COALESCE(invitm.invoice_item_type_id, -1)         AS invoice_item_type_id,COALESCE(lkparea.price_area_id, -1)               AS price_area_id,COALESCE(sh.ship_id, -1)                          AS ship_id,COALESCE(agent.agent_id, -1)                      AS agent_id,COALESCE(agency.agency_id, -1)                    AS agency_id,COALESCE(inv.Promo_code, -1)                        AS promotion_id,COALESCE(addon_id, -1)                            AS addon_id,-1                 AS cardeck_id,-1                 AS shorex_id,COALESCE(hd.hotel_group_req_id, -1)				 AS hotel_group_req_id,COALESCE(sail.sail_id, -1)                        AS sail_id,COALESCE(( Round(inv.Promo_code, 2) ), 0)             AS amount,COALESCE(( Round(inv.commission_percent, 2) ), 0) AS commission_percent,inv.quantity       AS quantity,COALESCE(grphdr.currency_code, 'USD')             AS currency,COALESCE(grphdr.currency_rate, 0) AS currency_rate,sr.cabin_category	 AS cabin_category,cm.cabin_category_generic AS generic_category FROM    (select guest_seqn,Promo_code,Promo_code,commission_percent,quantity,group_id,package_id,invoice_item_type,invoice_item_subtype,price_area,extended_info,group_hotel_req_id,group_ship_req_id,guest_seqn from (select *,row_number() over(partition by record_id order by ts_ms desc) as rn from vv_db.hvtb_parse_sw_rpl_group_invoice_item) p where p.rn=1) inv LEFT JOIN vv_db.hvtb_parse_sw_rpl_group_booking grphdr       ON inv.group_id = grphdr.group_id LEFT JOIN vv_db.hvtb_nbx_core_sw_group_dim gd       ON inv.group_id = gd.src_group_id AND To_date(gd.rec_end_dttm) = '9999-12-31' LEFT JOIN vv_db.hvtb_nbx_core_sw_package_dim pm       ON inv.package_id = pm.src_package_id          AND To_date(pm.rec_end_dttm) = '9999-12-31'  LEFT JOIN vv_db.hvtb_nbx_core_sw_invoice_item_type_lkp invitm       ON inv.invoice_item_type = invitm.invoice_item_type          AND ( CASE                  WHEN Length(inv.invoice_item_subtype) = 0                        OR inv.invoice_item_subtype IS NULL THEN '-1'                  ELSE inv.invoice_item_subtype                END ) = COALESCE(invitm.invoice_item_subtype, '-1') LEFT JOIN vv_db.hvtb_nbx_core_sw_price_area_lkp lkparea       ON inv.price_area = lkparea.price_area LEFT JOIN vv_db.hvtb_nbx_core_sw_ship_dim sh       ON grphdr.ship_code = sh.ship LEFT JOIN vv_db.hvtb_nbx_core_sw_agency_dim Agency       ON grphdr.agency_id = Agency.src_agency_id          AND To_date(agency.rec_end_dttm) = '9999-12-31' LEFT JOIN vv_db.hvtb_nbx_core_crm_agent_master_dim Agent       ON grphdr.agency_id = Agent.seaware_agent_id__c          AND To_date(agent.rec_end_dttm) = '9999-12-31' LEFT JOIN vv_db.hvtb_parse_sw_rpl_sail_header slhdr ON grphdr.ship_code = slhdr.ship_code and grphdr.dep_ref_id = slhdr.dep_ref_id and grphdr.arr_ref_id = slhdr.arr_ref_id LEFT JOIN vv_db.hvtb_nbx_core_sw_sail_dim sail       ON slhdr.sail_id = sail.src_sail_id          AND To_date(sail.rec_end_dttm) = '9999-12-31' LEFT JOIN vv_db.hvtb_nbx_core_sw_addon_lkp al       ON case when inv.price_area='ADDON' then Nvl(inv.extended_info, '~') = Nvl(al.res_addon_code, '~') else 1<>1 end LEFT JOIN vv_db.hvtb_nbx_core_sw_hotel_group_req_dim hd ON inv.group_hotel_req_id = hd.src_hotel_group_req_id   		LEFT JOIN vv_db.hvtb_nbx_landing_sw_rpl_group_ship_request sr on inv.group_ship_req_id = sr.record_id LEFT JOIN (select cm.ship, cm.cabin_category, cm.cabin_category_generic from vv_db.hvtb_nbx_core_sw_cabin_master cm) as cm ON cm.cabin_category = sr.cabin_category and cm.ship = grphdr.ship_code WHERE  NOT EXISTS (select distinct dh.group_id, dg.guest_seqn from vv_db.hvtb_parse_sw_rpl_group_delegate_header dh join vv_db.hvtb_parse_sw_rpl_group_delegate_guest dg on dh.delegate_header_id =dg.delegate_header_id 	where dh.group_id = grphdr.group_id	and dg.guest_seqn = inv.guest_seqn)   
+
+ 
+
+ 
+spark.source.columns SNAPSHOT_time,GROUP_ID,GUEST_SEQN,PACKAGE_ID,INVOICE_ITEM_TYPE_ID,PRICE_AREA_ID,SHIP_ID,AGENT_ID,AGENCY_ID,PROMOTION_ID,ADDON_ID,CARDECK_ID,SHOREX_ID,HOTEL_GROUP_REQ_ID,SAIL_ID,AMOUNT,COMMISSION_PERCENT,QUANTITY,CURRENCY,CURRENCY_RATE,CABIN_CATEGORY,GENERIC_CATEGORY
+
+ 
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_group_fact
+spark.target.schema vv_db
+spark.table.type fact
+
+ 
+
+ 
+
+ 
+spark.pond.allColumns SNAPSHOT_time as pond_SNAPSHOT_time,GROUP_ID as pond_GROUP_ID,GUEST_SEQN as pond_GUEST_SEQN,PACKAGE_ID as pond_PACKAGE_ID,INVOICE_ITEM_TYPE_ID as pond_INVOICE_ITEM_TYPE_ID,PRICE_AREA_ID as pond_PRICE_AREA_ID,SHIP_ID as pond_SHIP_ID,AGENT_ID as pond_AGENT_ID,AGENCY_ID as pond_AGENCY_ID,PROMOTION_ID as pond_PROMOTION_ID,ADDON_ID as pond_ADDON_ID,CARDECK_ID as pond_CARDECK_ID,SHOREX_ID as pond_SHOREX_ID,HOTEL_GROUP_REQ_ID as pond_HOTEL_GROUP_REQ_ID,SAIL_ID as pond_SAIL_ID,AMOUNT as pond_AMOUNT,COMMISSION_PERCENT as pond_COMMISSION_PERCENT,QUANTITY as pond_QUANTITY,CURRENCY as pond_CURRENCY,CURRENCY_RATE as pond_CURRENCY_RATE,CABIN_CATEGORY as pond_CABIN_CATEGORY,GENERIC_CATEGORY as pond_GENERIC_CATEGORY,load_dt as pond_load_dt,upd_dt as pond_upd_dt,part_dt as pond_part_dt
+
+ 
+spark.target.final_collist final_view.SNAPSHOT_time,final_view.GROUP_ID,final_view.GUEST_SEQN,final_view.PACKAGE_ID,final_view.INVOICE_ITEM_TYPE_ID,final_view.PRICE_AREA_ID,final_view.SHIP_ID,final_view.AGENT_ID,final_view.AGENCY_ID,final_view.PROMOTION_ID,final_view.ADDON_ID,final_view.CARDECK_ID,final_view.SHOREX_ID,final_view.HOTEL_GROUP_REQ_ID,final_view.SAIL_ID,final_view.AMOUNT,final_view.COMMISSION_PERCENT,final_view.QUANTITY,final_view.CURRENCY,final_view.CURRENCY_RATE,final_view.CABIN_CATEGORY,final_view.GENERIC_CATEGORY,final_view.load_dt,final_view.upd_dt,final_view.part_dt
+
+ 
+
+ 
+
+ 
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_nbx_core_sw_group_fact
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_nbx_core_sw_group_fact
+spark.tableType FACT
+spark.frameworkEnv shore
+
+ 
+
+ 
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_Group_fact_tmp
+spark.bq.permtblname seaware_Group_fact
+spark.bq.viewname seaware.seaware_Group
+
+ 
+spark.hadoop.hive.execution.engine mr
+

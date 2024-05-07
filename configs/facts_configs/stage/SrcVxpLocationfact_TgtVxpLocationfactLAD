@@ -1,0 +1,58 @@
+#------META   DATA CONFIG-----#
+spark.src.config.id   SrcVxpLocationfact
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   Stage
+spark.api.env   Stage				 
+spark.target.config.id   TgtVxpLocationfact
+spark.parent.id   SrcParselocationevent-TgtParselocationevent
+spark.target.ops.table.format   org.apache.phoenix.spark
+spark.target.ops.table.mode   overwrite
+spark.target.enablerops_table   HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+#-------------------------#
+   
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+
+spark.source.columns   voyage_id,ship_code,voyage_skey,person_skey,venue_skey,event_skey,enter_date_utc_skey,enter_time_utc_skey,enter_datetime_utc,enter_date_local_skey,enter_time_local_skey,enter_datetime,exit_date_utc_skey,exit_time_utc_skey,exit_datetime_utc,exit_date_local_skey,exit_time_local_skey,exit_datetime,duration_of_stay_seconds,batchtime
+  
+spark.pond.allColumns   voyage_id as pond_voyage_id,ship_code as pond_ship_code,voyage_skey as pond_voyage_skey,person_skey as pond_person_skey,venue_skey as pond_venue_skey,event_skey as pond_event_skey,enter_date_utc_skey as pond_enter_date_utc_skey,enter_time_utc_skey as pond_enter_time_utc_skey,enter_datetime_utc as pond_enter_datetime_utc,enter_date_local_skey as pond_enter_date_local_skey,enter_time_local_skey as pond_enter_time_local_skey,enter_datetime as pond_enter_datetime,exit_date_utc_skey as pond_exit_date_utc_skey,exit_time_utc_skey as pond_exit_time_utc_skey,exit_datetime_utc as pond_exit_datetime_utc,exit_date_local_skey as pond_exit_date_local_skey,exit_time_local_skey as pond_exit_time_local_skey,exit_datetime as pond_exit_datetime,duration_of_stay_seconds as pond_duration_of_stay_seconds,load_dt as pond_load_dt, upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash,part_dt as pond_part_dt
+
+spark.pond.database   shipdw
+spark.pond.table   hvtb_mart_fact_location
+spark.source.primaryKeyColumns  voyage_skey,person_skey,venue_skey,event_skey
+spark.table.type   fact							 
+spark.target.schema   hive_schema_stg									
+spark.target.table   location_fact
+spark.lad.file true
+   
+spark.target.final_collist   final_view.voyage_id,final_view.ship_code,final_view.voyage_skey,final_view.person_skey,final_view.venue_skey,final_view.event_skey,final_view.enter_date_utc_skey,final_view.enter_time_utc_skey,final_view.enter_datetime_utc,final_view.enter_date_local_skey,final_view.enter_time_local_skey,final_view.enter_datetime,final_view.exit_date_utc_skey,final_view.exit_time_utc_skey,final_view.exit_datetime_utc,final_view.exit_date_local_skey,final_view.exit_time_local_skey,final_view.exit_datetime,final_view.duration_of_stay_seconds,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+
+   
+spark.target.temp   s3://vv-staging-emr-cluster/data/temp/hvtb_mart_fact_location
+spark.target.location   s3://vv-staging-emr-cluster/data/mart/hvtb_mart_fact_location
+spark.redshift.schema   hive_schema_stg
+spark.redshift.tablename   location_fact
+
+   
+spark.tableType   FACT
+spark.frameworkEnv   shore
+spark.factType   Accu
+
+#----------------------LAD--------------------------------#
+spark.ladjob.flag true
+spark.lad.srctablekey locationeventid
+spark.lad.srctable shipdw.hvtb_parse_vxp_loca_locationevent
+spark.lad.tgttable shipdw.hvtb_parse_vxp_loca_locationevent_lad
+spark.lad.columns voyage_skey,person_skey,venue_skey,event_skey
+spark.ladremoval.flag false 
+
+
+#----------------------------------------------------------#
+
+
+
+
+
+

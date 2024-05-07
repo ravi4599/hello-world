@@ -1,0 +1,52 @@
+#------META DATA CONFIG-----#
+spark.src.config.id SrcDiningReservationDetailDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.target.config.id TgtDiningReservationDetailDim
+spark.parent.id  SrcVxpTblemngtReservation-TgtVxpTblemngtReservation
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+#------Query Propery-----#
+
+#spark.source.sql select * from (select voyage_id, dining_reservation_id, booking_link_id, batchtime, part_date  from (SELECT NVL(voyageid,'N/A') as voyage_id, public_id as dining_reservation_id, external_id as booking_link_id, batchtime, part_date, ROW_NUMBER() over (Partition by public_id order by lastmodifieddate desc) as rn FROM shipdw.hvtb_parse_vxp_table_management_reservation)b where b.rn=1 )a
+
+spark.source.sql SELECT NVL(a.voyageid,'-1') as voyage_id, NVL(a.public_id, -1) as dining_reservation_id, a.external_id as booking_link_id,a.status as reservation_status, a.batchtime, a.part_date FROM (select * from (select * ,row_number() over ( partition by public_id order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_table_management_reservation )res where res.rn=1)a
+
+spark.resaction.sql select resact.reservation_id as reservation_id,resact.status as resstatus,resact.created as reservation_created,resact.addeddate as reservation_created_utc, resact.source as source from (select * from (select *, row_number() over (partition by reservation_id ,status  order by lastmodifieddate desc) rn  from shipdw.hvtb_parse_vxp_table_management_reservationaction) where rn = 1)resact
+
+
+spark.source.columns   voyage_id,dining_reservation_id,booking_link_id,reservation_upcoming_source,reservation_waitlist_source,reservation_seated_source,reservation_completed_source,reservation_canceled_source,reservation_status,batchtime,part_date
+
+spark.pond.allColumns   dining_reservation_detail_skey as pond_dining_reservation_detail_skey, voyage_id as pond_voyage_id, dining_reservation_id as pond_dining_reservation_id, booking_link_id as pond_booking_link_id,reservation_upcoming_source as pond_reservation_upcoming_source,reservation_waitlist_source as pond_reservation_waitlist_source,reservation_seated_source as pond_reservation_seated_source,reservation_completed_source as pond_reservation_completed_source,reservation_canceled_source as pond_reservation_canceled_source,reservation_status as pond_reservation_status, load_dt as pond_load_dt, upd_dt as  pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+
+spark.surrogate_key.column dining_reservation_detail_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_dining_reservation_detail
+spark.source.primaryKeyColumns dining_reservation_id
+spark.table.type dim
+spark.target.schema shipdw
+spark.target.table dining_reservation_detail_dim
+
+spark.target.final_collist   dining_reservation_detail_skey, final_view.voyage_id as voyage_id, final_view.dining_reservation_id as dining_reservation_id, final_view.booking_link_id as booking_link_id,final_view.reservation_upcoming_source as reservation_upcoming_source,final_view.reservation_waitlist_source as reservation_waitlist_source,final_view.reservation_seated_source as reservation_seated_source,final_view.reservation_completed_source as reservation_completed_source,final_view.reservation_canceled_source as reservation_canceled_source, final_view.reservation_status as reservation_status, load_dt, upd_dt, primaryhash, md5_hash
+
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_dining_reservation_detail
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_dining_reservation_detail
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname dining_reservation_detail_dim_tmp
+spark.bq.permtblname dining_reservation_detail_dim
+spark.bq.viewname shipdw.dining_reservation_detail_dim
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

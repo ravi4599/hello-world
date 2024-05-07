@@ -1,0 +1,16 @@
+spark.src.config.id SrcParseRddFileFromSftp
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtParseRddFileFromSftp
+spark.parent.id SrcRddFileFromSftplnd-TgtRddFileFromSftplnd
+spark.source.table shipdw.hvtb_lnd_rddfile_fromsftp
+spark.target.table   shipdw.hvtb_parse_rddfile_fromsftp
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.ship.code Shore
+spark.coalesce.count 4

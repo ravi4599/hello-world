@@ -1,0 +1,27 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://vxpdb.gcp.virginvoyages.com/dxpcore
+spark.src.user pgreadaccessuser
+spark.src.password mvsZ72sVq75KARjLhK9D
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVxpPersonStatus
+spark.target.config.id TgtVxpPersonStatus
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.ing.type Ingestion
+spark.ship.code SHORE
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=!Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.source.columns personstatusid, personid, persontypecode, shipcode, embarkdate, debarkdate, statustypeid, status, statuschangeddate, isdeleted, addeddate, addedby, lastmodifieddate, lastmodifiedby, statustypecode, purgedate, percentagecompleted, statuschangedbypersonid, statuschangedbypersontypecode
+spark.src.table.query personstatusid, personid, persontypecode, shipcode, embarkdate, debarkdate, statustypeid, status, statuschangeddate, isdeleted, addeddate, addedby, lastmodifieddate, lastmodifiedby, statustypecode,purgedate, percentagecompleted, statuschangedbypersonid, statuschangedbypersontypecode
+spark.condition.column lastmodifieddate
+spark.target.location gs://vv-prod-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_personstatus
+spark.src.table.query "personstatus"
+spark.target.hive.table shipdw.hvtb_lnd_vxp_personstatus
+spark.target.table shipdw.hvtb_lnd_vxp_personstatus
+spark.hadoop.hive.execution.engine mr
+

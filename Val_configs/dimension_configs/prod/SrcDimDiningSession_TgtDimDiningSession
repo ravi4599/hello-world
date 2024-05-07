@@ -1,0 +1,31 @@
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.src.config.id SrcDimDiningSession
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtDimDiningSession
+spark.parent.id SrcVxpTbleMgmSessions-TgtVxpTbleMgmSessions
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.sql select ses.voyage_id as voyage_id,ses.public_id as dining_session_id,ses.name as dining_session_name, ses.day_name as session_day_name, voyages.code as session_voyage_number,ses.venue_id as venue_id, set.timeslot_duration as timeslot_duration_seconds,set.max_party_size as max_party_size,ses.batchtime as BatchTime,ses.part_date as Part_Date FROM (select * from (select voyage_id,public_id,name,day_name,venue_id,batchtime,part_date,settings_id,row_number() over (partition by public_id order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_table_management_sessions) where rn = 1 ) ses left join (select * from (select code,public_id,row_number() over(partition by public_id order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_table_management_voyages )where rn = 1 )voyages on ses.voyage_id=voyages.public_id left join (select * from (select timeslot_duration,public_id,max_party_size,row_number() over (partition by public_id order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_table_management_settings )where rn = 1 ) set on ses.settings_id=set.public_id *whereclause*
+spark.source.columns voyage_id,dining_session_id,dining_session_name,session_day_name,session_voyage_number,venue_id,timeslot_duration_seconds,max_party_size,BatchTime
+spark.pond.allColumns voyage_id as pond_voyage_id,dining_session_skey as pond_dining_session_skey,dining_session_id as pond_dining_session_id,dining_session_name as pond_dining_session_name,session_day_name as pond_session_day_name,session_voyage_number as pond_session_voyage_number,venue_id as pond_venue_id,timeslot_duration_seconds as pond_timeslot_duration_seconds,max_party_size as pond_max_party_size,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column dining_session_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_dining_session
+spark.source.primaryKeyColumns dining_session_id
+spark.target.final_collist final_view.voyage_id,final_view.dining_session_skey,final_view.dining_session_id,final_view.dining_session_name,final_view.session_day_name,final_view.session_voyage_number,final_view.venue_id,final_view.timeslot_duration_seconds,final_view.max_party_size,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp /data/apps/nbx/hive/temp/hvtb_mart_dim_dining_session
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_dining_session
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename dining_session_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+

@@ -1,0 +1,28 @@
+spark.redshift.url jdbc:redshift://10.3.0.120:5439/qanbxpub
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.postvoyage.response.fact.sql select request_id as response_fact_request_id, client_id as response_fact_client_id, ship_id as response_fact_ship_id, sail_id as response_fact_sail_id, guest_id as response_fact_guest_id, request_time as response_fact_request_time, response_time as response_fact_response_time, itinerary_port as response_fact_itinerary_port, activity_skey as response_fact_activity_skey, question_id as response_fact_question_id, answer_rating as response_fact_answer_rating, answer_text as response_fact_answer_text, load_dt as response_fact_load_dt, upd_dt as response_fact_upd_dt, part_dt as response_fact_part_dt from vv_db.hvtb_nbx_core_postvoyage_survey_responses_fact
+spark.postvoyage.question.dim.sql select question_id as question_dim_question_id, src_question_id as question_dim_src_question_id, variable_id as question_dim_variable_id, type as question_dim_type from vv_db.hvtb_nbx_core_postvoyage_survey_questions_dim
+spark.ship.dim.sql select ship_id as ship_dim_ship_id, ship as ship_dim_ship from vv_db.hvtb_nbx_core_sw_ship_dim
+spark.sail.dim.sql select sail_id as sail_dim_sail_id, sail_date_from as sail_dim_sail_date_from, sail_date_to as sail_dim_sail_date_to, ship_id as sail_dim_ship_id from vv_db.hvtb_nbx_core_sw_sail_dim
+spark.guest.dim.sql SELECT gd.guest_id as guest_dim_guest_id, gd.client_id as guest_dim_client_id from vv_db.hvtb_nbx_core_sw_guest_dim gd LEFT JOIN vv_db.hvtb_nbx_core_sw_res_guest_rel rel on rel.guest_id = gd.guest_id LEFT JOIN vv_db.hvtb_nbx_core_sw_reservation_dim rd on rd.res_id = rel.res_id WHERE to_date(gd.rec_end_dttm) = '9999-12-31'
+spark.activity.dim.sql select activity_skey as activity_dim_activity_skey, activity_name as activity_dim_activity_name from shipdw.hvtb_mart_dim_activity group by activity_skey, activity_name
+spark.postvoyage.questionanswer.dim.sql select question_answer_id as questionanswer_dim_questionanswer_id,variable_id as questionanswer_dim_variable_id,answer_code as questionanswer_answer_code from vv_db.hvtb_mart_postvoyage_survey_question_answer_dim
+
+spark.source.columns request_id,client_id,ship_id,sail_id,guest_id,request_time,response_time,itinerary_port,activity_skey,question_id,answer_rating,answer_text,question_answer_id
+spark.pond.allColumns request_id as pond_request_id,client_id as pond_client_id,ship_id as pond_ship_id,guest_id as pond_guest_id,request_time as pond_request_time,response_time as pond_response_time,itinerary_port as pond_itinerary_port,activity_skey as pond_activity_skey,question_id as pond_question_id,answer_rating as pond_answer_rating,answer_text as pond_answer_text,question_answer_id as pond_question_answer_id,load_dt as pond_load_dt,upd_dt as pond_upd_dt,part_dt as pond_part_dt
+spark.parse.static.table vv_db.hvtb_parse_postvoyage_static_responses
+spark.parse.dynamic.table vv_db.hvtb_parse_postvoyage_dynamic_responses
+spark.postvoyage.response.fact vv_db.hvtb_nbx_core_postvoyage_survey_responses_fact
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_postvoyage_survey_responses_fact
+spark.target.schema vv_db
+spark.target.table postvoyage_survey_responses_fact
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename postvoyage_survey_responses_fact
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.scdtype type1
+spark.target.final_collist final_view.request_id,final_view.client_id,final_view.ship_id,final_view.sail_id,final_view.guest_id,final_view.request_time,final_view.response_time,final_view.itinerary_port,final_view.activity_skey,final_view.question_id,final_view.answer_rating,final_view.answer_text,NVL(final_view.question_answer_id,NULL) as question_answer_id,load_dt,upd_dt,part_dt
+spark.target.temp s3://vv-staging-emr-cluster/data/core/seaware/temp/hvtb_nbx_core_postvoyage_survey_responses_fact
+spark.target.location s3://vv-staging-emr-cluster/data/core/seaware/hvtb_nbx_core_postvoyage_survey_responses_fact

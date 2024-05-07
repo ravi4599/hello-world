@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.RES_SHIP_REQUEST
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT SHIP_REQUEST_ID, RES_ID, GUEST_ID, SHIP_CODE, REL_DAY_FROM, REL_DAY_TO, SAIL_DATE_FROM, SAIL_DATE_TO, CABIN_CATEGORY, CABIN_SEQ_NUMBER, INVENTORY_REQUEST_TYPE, ALLOCATION_ID, INVENTORY_RESULT_TYPE, DEP_REF_ID, ARR_REF_ID, PRICE_CATEGORY, CHILD_BED_REQUESTED, MAX_CABIN_OCCUPANCY, RESERVE_TYPE, GENDER, BERTHS, IS_NO_SHOW, ALLOTMENT_AGREEMENT_ID, FZ_COUNT, PAX_RESERVE_TYPE, REQUESTED_CABIN, BERTHS_RESERVED, BLOCK_ASSIGNMENT, PAX_TYPE FROM SEAWARE.RES_SHIP_REQUEST)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_res_ship_request
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/RES_SHIP_REQUEST
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_res_ship_request/
+
+spark.hadoop.hive.execution.engine mr

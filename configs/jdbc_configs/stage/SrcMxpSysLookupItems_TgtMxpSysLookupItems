@@ -1,0 +1,21 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:sqlserver://10.12.1.243:1442;database=MXP
+spark.src.user Capgemini
+spark.src.password Nskh#c5v3y&7
+spark.src.con.driver com.microsoft.sqlserver.jdbc.SQLServerDriver
+spark.src.config.id SrcMxpSysLookupItems
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtMxpSysLookupItems
+spark.target.location s3://vv-staging-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_sys_lookup_items
+spark.target.hive.table shipdw.hvtb_lnd_mxp_sys_lookup_items
+spark.target.table shipdw.hvtb_lnd_mxp_sys_lookup_items
+spark.src.table.query MXP.dbo.Sys_Lookup_Items
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.condition.column LAST_CHANGED
+spark.source.columns SYS_LOOKUP_ITEMS_ID, SYS_LOOKUP_CATEGORY_ID, SYS_LOOKUP_ID, SYS_LOOKUP_ITEM_NAME, SYS_LOOKUP_DISPLAY_CODE, SYS_LOOKUP_CATEGORY, SYS_LOOKUP_NUMBER1, SYS_LOOKUP_NUMBER2, SYS_LOOKUP_ACTIVE, REC_DELETED, CREATED_AT_ID, CREATED, LAST_CHANGED, CHANGED, GUID, CREATED_BY_ID, SYS_LOOKUPS, SYS_LOOKUP_DESCRIPTION, SYS_LOOKUP_FIELD_TYPE, SYS_LOOKUP_DOCUMENT, SYS_LOOKUP_INTEGER1, SYS_LOOKUP_INTEGER2, SYS_LOOKUP_BOOLEAN1, SYS_LOOKUP_BOOLEAN2, SYS_LOOKUP_DESCRIPTION2, SYS_LOOKUP_DESCRIPTION3, SYS_LOOKUP_DESCRIPTION4, SYS_LOOKUP_DESCRIPTION5, SYS_LOOKUP_DESCRIPTION6, SYS_LOOKUP_DATE1, SYS_LOOKUP_DATE2, LAST_CHANGE_LOG_ID
+spark.ship.code SHORE
+

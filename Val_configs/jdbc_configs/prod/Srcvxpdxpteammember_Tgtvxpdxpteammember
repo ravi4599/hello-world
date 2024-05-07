@@ -1,0 +1,21 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148:5432/dxpcore
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.table public.teammember
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id Srcvxpdxpteammember
+spark.voyage.id VAL2002269NCR
+spark.target.config.id Tgtvxpdxpteammember
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_dxpcore_teammember
+spark.target.hive.table shipdw.hvtb_lnd_vxp_dxpcore_teammember
+spark.src.table.query "teammember"
+spark.condition.column lastmodifieddate
+spark.target.offset.mode overwrite
+spark.source.columns teammemberid, teammembertypeid, departmentkey, teammembernumber, sourceid, venuecode, useraccountid, titlecode, firstname, middlename, lastname, nickname, preferredname, suffixcode, stateroom, birthdate, citizenshipcountrycode, gender, maritalstatus, email, alternateemail, joiningdate, embarkdate, debarkdate, photomediaitemid, photomodifieddate, isdeleted, addeddate, addedby, lastmodifieddate, lastmodifiedby, propertyid, gendercode, preferredlanguage, departmentcode, embarkport, debarkport, profileline, medicalinformation, astrologicalsigncode, supervisorid, mentorid, birthcountrycode, maritalstatuscode, designation, actualdebarkdate, pmsid
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+

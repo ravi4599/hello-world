@@ -1,0 +1,32 @@
+spark.src.config.id SrcActivitySlotDim
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtActivitySlotDim
+spark.parent.id SrcArsActivityParse-TgtArsActivityParse
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.source.sql select activity_skey,activity_slot.activity_code as activityCode,dim_activity.activity_code,starttime as slot_start_timestamp,endtime as slot_end_timestamp,slot_code as activity_slot_code,totalcapacity as total_capacity,availablecapacity as available_capacity,voyageid as voyage_id,batchtime from shipdw.hvtb_parse_ars_activity_slot activity_slot left join shipdw.hvtb_mart_dim_activity dim_activity on(dim_activity.activity_code==activity_slot.activity_code)
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.columns activity_skey,activity_slot_code,slot_start_timestamp,slot_end_timestamp,total_capacity,available_capacity,voyage_id,batchtime
+spark.pond.allColumns activity_slot_skey as pond_activity_slot_skey,activity_skey as pond_activity_skey,activity_slot_code as pond_activity_slot_code,slot_start_timestamp as pond_slot_start_timestamp,slot_end_timestamp as pond_slot_end_timestamp,total_capacity as pond_total_capacity,available_capacity as pond_available_capacity,voyage_id as pond_voyage_id,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column activity_slot_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_activity_slot
+spark.source.primaryKeyColumns activity_slot_code
+spark.target.final_collist activity_slot_skey,activity_skey,activity_slot_code,slot_start_timestamp,slot_end_timestamp,total_capacity,available_capacity,voyage_id,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_activity_slot
+spark.target.location /data/apps/nbx/mart/hvtb_mart_dim_activity_slot
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename activity_slot_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+spark.activity.source.table shipdw.hvtb_parse_ars_activity_slot
+spark.activitydim.table shipdw.hvtb_mart_dim_activity
+

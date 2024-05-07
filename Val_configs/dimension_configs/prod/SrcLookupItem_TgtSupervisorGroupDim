@@ -1,0 +1,34 @@
+spark.src.config.id	SrcLookupItem 
+spark.voyage.id	SC2002269NCR 
+spark.tgt.env Prod
+spark.ing.type Dim
+spark.target.config.id TgtSupervisorGroupDim
+spark.parent.id	SrcMxpLookupItems-TgtMxpLookupItems 
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.sql SELECT item.voyageid AS voyage_id,item.lookup_item_id AS supervisor_group_id,item.display_code AS supervisor_group_code,item.lookup_item_name AS supervisor_group_name,item.active AS src_active_flag,item.rec_deleted AS src_deleted_flag,item.batchtime,item.part_date FROM (SELECT * FROM (SELECT lookup_item_id, lookup_sub_category_id, display_code, lookup_item_name, active, rec_deleted, voyageid, batchtime, part_date, row_number() over (partition by lookup_item_id order by last_changed desc) as rn FROM shipdw.hvtb_parse_mxp_lookup_items) WHERE rn = 1) item INNER JOIN (SELECT * FROM (SELECT lookup_sub_category_id, lookup_sub_category_name, row_number() over (partition by lookup_sub_category_id order by last_changed desc) as rn FROM shipdw.hvtb_parse_mxp_lookup_sub_categories) WHERE rn = 1) sub_category ON item.lookup_sub_category_id = sub_category.lookup_sub_category_id AND sub_category.lookup_sub_category_name = 'Supervisor Groups'
+spark.source.columns voyage_id,supervisor_group_id,supervisor_group_code,supervisor_group_name,src_active_flag,src_deleted_flag,batchtime
+spark.pond.allColumns voyage_id AS pond_voyage_id,supervisor_group_skey AS pond_supervisor_group_skey,supervisor_group_id AS pond_supervisor_group_id,supervisor_group_code AS pond_supervisor_group_code,supervisor_group_name AS pond_supervisor_group_name,src_active_flag AS pond_src_active_flag,src_deleted_flag AS pond_src_deleted_flag,load_dt AS pond_load_dt,upd_dt AS pond_upd_dt,primaryhash AS pond_primaryhash,md5_hash AS pond_md5_hash
+spark.surrogate_key.column supervisor_group_skey
+spark.pond.database	shipdw 
+spark.pond.table hvtb_mart_dim_supervisor_group
+spark.target.schema	shipdw 
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename supervisor_group_dim
+spark.source.primaryKeyColumns supervisor_group_id
+spark.target.final_collist final_view.voyage_id,final_view.supervisor_group_skey,final_view.supervisor_group_id,final_view.supervisor_group_code,final_view.supervisor_group_name,final_view.src_active_flag,final_view.src_deleted_flag,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_supervisor_group
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_supervisor_group
+spark.target.schema	Hive_schema_stg 
+spark.postgres.tablename supervisor_group_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+

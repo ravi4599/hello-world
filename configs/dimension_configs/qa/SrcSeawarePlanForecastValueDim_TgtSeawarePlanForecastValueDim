@@ -1,0 +1,42 @@
+spark.src.config.id SrcSeawarePlanForecastValueDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.target.config.id TgtSeawarePlanForecastValueDim
+spark.parent.id SrcRevenueForecast-TgtRevenueForecast 
+spark.hadoop.hive.execution.engine mr
+spark.api.env Qa
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.source.sql select src.plan_forecast_id,src.week_index,src.rec_start_dttm,case when (src.plan_forecast_id is null and src.week_index is null and tgt.plan_forecast_id is not null and tgt.week_index is not null) then current_timestamp else to_timestamp('9999-12-31 00:00:00') end as rec_end_dttm,src.value,src.batchtime,src.part_date from (select cast(header_dim.plan_forecast_id as int) as plan_forecast_id,cast(rk.value_index as int) as week_index,current_timestamp as rec_start_dttm,rk.value as value,rk.batchtime as batchtime,rk.part_date as part_date from vv_db.hvtb_nbx_parse_revenue_kpi_plan_forecast_upload rk left join vv_db.hvtb_nbx_core_sw_ship_dim as ship_dim on ship_dim.ship=rk.ship_code left join vv_db.hvtb_nbx_core_sw_sail_dim as sail_dim on sail_dim.ship_id=ship_dim.ship_id and cast(sail_dim.sail_date_from as date)=cast(rk.sail_date as date) and sail_dim.rec_end_dttm='9999-12-31 00:00:00' and sail_dim.is_active='Y' left join vv_db.hvtb_nbx_core_sw_forecastmetric_lkp as mlkp on mlkp.forecast_metric_desc=rk.forecast_metric left join vv_db.hvtb_nbx_core_sw_forecastversion_lkp as vlkp on vlkp.forecast_version_desc=rk.forecast_version left join vv_db.hvtb_nbx_core_sw_plan_forecast_header_dim as header_dim on (sail_dim.sail_id=header_dim.sail_id and rk.cabin_ctg_generic=header_dim.cabin_ctg_generic and vlkp.forecast_version_id=header_dim.forecast_version_id and mlkp.forecast_metric_id=header_dim.forecast_metric_id and rk.package_type=header_dim.package_type)) as src full join vv_db.hvtb_nbx_core_sw_plan_forecast_value_dim tgt on (src.plan_forecast_id=tgt.plan_forecast_id and src.week_index=tgt.week_index)
+
+spark.source.columns plan_forecast_id,week_index,value,batchtime
+
+spark.pond.allColumns plan_forecast_value_id as pond_plan_forecast_value_id,plan_forecast_id as pond_plan_forecast_id,week_index as pond_week_index,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,value as pond_value,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.surrogate_key.column plan_forecast_value_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_plan_forecast_value_dim
+spark.source.primaryKeyColumns plan_forecast_id,week_index
+spark.target.final_collist final_view.plan_forecast_value_id,final_view.plan_forecast_id,final_view.week_index,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.value,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+
+spark.target.temp gs://vv-cert-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_spf_plan_forecast_value_dim
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/seaware/hvtb_nbx_core_spf_plan_forecast_value_dim
+
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_plan_forecast_value_dim_tmp
+spark.bq.permtblname seaware_plan_forecast_value_dim
+spark.bq.viewname seaware.seaware_plan_forecast_value_dim
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore

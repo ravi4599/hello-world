@@ -1,0 +1,22 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://vv-stage-vxp-pgdb.cz4e2a1fysom.us-east-1.rds.amazonaws.com/dxpcore
+spark.src.user pgreadaccessuser
+spark.src.password mvsZ72sVq75KARjLhK9D
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcDxpReservationGuest
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtDxpReservationGuest
+spark.target.location s3://vv-staging-emr-cluster/data/landing/VXP/hvtb_lnd_vxp_reservationguest
+spark.target.hive.table vv_db.hvtb_lnd_vxp_reservationguest
+spark.target.table vv_db.hvtb_lnd_vxp_reservationguest
+spark.src.table.query "reservationguest"
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.condition.column lastmodifieddate
+spark.source.columns reservationguestid,reservationid,guestid,guesttypeid,isvip,isprimary,embarkdate,debarkdate,stateroom,reservationstatusid,guestaddressid,berthnumber,loyaltyleveltypecode,sequencenumber,price,insuranceamount,taxamount,insurancecode,isinsurancedeclined,addeddate,addedby,lastmodifieddate,lastmodifiedby,diningrotation,diningtable,diningroom,diningtime,isroutedto,selectedaddressid,guestemergencycontactid,guestcheckindetailid,gratuityamount,guesttypecode,reservationstatuscode,isbacktoback,pmsid,embarkportcode,debarkportcode,cbpstatus,cbpstatuschangeddate,iswearableactivated,pin,isassociatedflightbooking
+spark.stop.flag N
+spark.ship.code SHORE
+

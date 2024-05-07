@@ -1,0 +1,25 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:sqlserver://10.12.1.243:1442;database=MXP
+spark.src.user Capgemini
+spark.src.password Nskh#c5v3y&7
+spark.src.con.driver com.microsoft.sqlserver.jdbc.SQLServerDriver
+spark.src.table MXP.dbo.VPerson_Account_Detail
+spark.src.config.id SQL_FOLIO_VPAD
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.config.id SPARK_TAB_100
+spark.target.location s3://vv-staging-emr-cluster/data/landing/mxp/hvtb_lnd_folio_vperson_account_detail
+spark.target.hive.table shipdw.hvtb_lnd_folio_vperson_account_detail
+spark.target.table shipdw.hvtb_lnd_folio_vperson_account_detail
+spark.src.table.query (select * from vperson_account_detail) as vperson_account_detail
+spark.condition.column REFERENCENBR
+spark.hive.table.maxid (select max(REFERENCENBR) from shipdw.hvtb_lnd_folio_vperson_account_detail)
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.stop.flag N
+spark.source.columns PERIOD_ID,PERSON_ID,PERSON_BOOKING_ID,PERSON_ACCOUNT_ID,INSTALLATION,CRUISENBR,ACCOUNTCATEGORY,ACCOUNTNBR,ACCOUNTFIRSTNAME,ACCOUNTLASTNAME,BUSINESSDAY,ACCOUNTLINETYPE,REFERENCENBR,ACCOUNTLINESTATUS,LOCATION,QUICKCODE,ACCOUNTLINEDESCRIPTION,QUANTITY,CURRENCYCODE,CREDITAMOUNT,DEBITAMOUNT,DISCOUNTAMOUNT,TOTALAMOUNT,DISCOUNTCOMMENT,COMMENT,COMPANYCODE,BUSINESSUNITCODE,SITECODE,COSTCENTERCODE,ACCOUNTCODE,PRODUCTCODE,CLIENTCODE,ORG_UNIT_ID,ACCOUNT_RECORD_TYPE_ID,ACCOUNT_SOURCE_TYPE_ID,EXTERNAL_REFERENCE
+spark.source.query PERIOD_ID,PERSON_ID,PERSON_BOOKING_ID,PERSON_ACCOUNT_ID,INSTALLATION,CRUISENBR,ACCOUNTCATEGORY,ACCOUNTNBR,ACCOUNTFIRSTNAME,ACCOUNTLASTNAME,BUSINESSDAY,ACCOUNTLINETYPE,REFERENCENBR,ACCOUNTLINESTATUS,LOCATION,QUICKCODE,ACCOUNTLINEDESCRIPTION,QUANTITY,CURRENCYCODE,CREDITAMOUNT,DEBITAMOUNT,DISCOUNTAMOUNT,TOTALAMOUNT,DISCOUNTCOMMENT,COMMENT,COMPANYCODE,BUSINESSUNITCODE,SITECODE,COSTCENTERCODE,ACCOUNTCODE,PRODUCTCODE,CLIENTCODE,ORG_UNIT_ID,ACCOUNT_RECORD_TYPE_ID,ACCOUNT_SOURCE_TYPE_ID,EXTERNAL_REFERENCE
+spark.ship.code SHORE
+

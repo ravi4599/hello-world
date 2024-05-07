@@ -1,0 +1,38 @@
+spark.src.config.id SrcSales
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtSaleDetail
+spark.parent.id SrcShrPosSales-TgtShrPOsSales
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.15.2.206:2181/hbase-unsecure
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+#spark.source.sql SELECT sale_detail.voyageid , sale_detail.batchtime , sale_detail.part_date as part_date , sale_detail.sales_id as sales_id , sale_detail.sales_operatornr , oper.sale_operator_name, sale_detail.sale_detail_src , sale_detail.sales_receiptnr, sale_detail.sales_checkstatus , sale_detail.sales_voyagenumber , 'N/A' AS location , 'N/A' AS line_type , 'N/A' AS line_status , 'N/A' AS line_description , 'N/A' AS src_deleted_flag , sales_groups.sales_group_desc as sale_group_description FROM ( SELECT voyageid , batchtime , part_date , sales_id , sales_operatornr , sale_detail_src , sales_receiptnr , sales_checkstatus , sales_voyagenumber , rn FROM ( SELECT sale.voyageid AS voyageid , sale.batchtime AS batchtime , sale.part_date AS part_date , sale.sales_id AS sales_id , cast(sale.sales_operatornr AS INT) AS sales_operatornr , 'POS' AS sale_detail_src , sale.sales_receiptnr AS sales_receiptnr , sale.sales_checkstatus AS sales_checkstatus , sale.sales_voyagenumber AS sales_voyagenumber , row_number() OVER ( PARTITION BY sales_id ORDER BY sales_created , sales_checkstatus DESC ) AS rn FROM shipdw.hvtb_parse_mxp_pos_sales sale WHERE sale.sales_outletid != 1001000000100000170 OR sale.sales_outletname != 'Casino' ) a WHERE a.rn = 1 ) sale_detail LEFT JOIN ( select Operator_Nr, sale_operator_name, rn from ( select mxp.Operator_Nr, mxp.Operator_Name as sale_operator_name, mxp.rec_changed as rec_changed, row_number() over (partition by Operator_Nr order by rec_changed desc ) as rn from shipdw.hvtb_parse_mxp_operators mxp)m where m.rn = 1 )oper on sale_detail.sales_operatornr = oper.Operator_Nr LEFT JOIN ( SELECT * FROM ( SELECT check_id , rec_changed , sales_group_id , row_number() OVER ( PARTITION BY check_id ORDER BY rec_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_checks ) WHERE rn = 1 ) checks ON checks.check_id = sale_detail.sales_id LEFT JOIN ( SELECT * FROM ( SELECT sales_group_id , sales_group_desc , rec_changed , row_number() OVER ( PARTITION BY sales_group_id ORDER BY rec_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_pos_sales_groups ) WHERE rn = 1 ) sales_groups ON sales_groups.sales_group_id = checks.sales_group_id
+spark.source.sql SELECT sale_detail.voyageid , sale_detail.batchtime , sale_detail.part_date as part_date , sale_detail.sales_id as sales_id , sale_detail.sales_operatornr , oper.sale_operator_name, sale_detail.sale_detail_src , sale_detail.sales_receiptnr, sale_detail.sales_checkstatus , sale_detail.sales_voyagenumber , 'N/A' AS location , 'N/A' AS line_type , 'N/A' AS line_status , 'N/A' AS line_description , 'N/A' AS src_deleted_flag , sales_groups.sales_group_desc as sale_group_description FROM ( SELECT voyageid , batchtime , part_date , sales_id , sales_operatornr , sale_detail_src , sales_receiptnr , sales_checkstatus , sales_voyagenumber , rn FROM ( SELECT sale.voyageid AS voyageid , sale.batchtime AS batchtime , sale.part_date AS part_date , sale.sales_id AS sales_id , cast(sale.sales_operatornr AS INT) AS sales_operatornr , 'POS' AS sale_detail_src , sale.sales_receiptnr AS sales_receiptnr , sale.sales_checkstatus AS sales_checkstatus , sale.sales_voyagenumber AS sales_voyagenumber , row_number() OVER ( PARTITION BY sales_id ORDER BY sales_created , sales_checkstatus DESC ) AS rn FROM shipdw.hvtb_parse_mxp_pos_sales sale WHERE sale.sales_outletid != 1001000000100000170 OR sale.sales_outletname != 'Casino' ) a WHERE a.rn = 1 ) sale_detail LEFT JOIN ( select Operator_Nr, sale_operator_name, rn from ( select mxp.Operator_Nr, mxp.Operator_Name as sale_operator_name, mxp.rec_changed as rec_changed, row_number() over (partition by Operator_Nr order by rec_changed desc ) as rn from shipdw.hvtb_parse_mxp_operators mxp)m where m.rn = 1 )oper on sale_detail.sales_operatornr = oper.Operator_Nr LEFT JOIN ( SELECT * FROM ( SELECT check_id , rec_changed , sales_group_id , row_number() OVER ( PARTITION BY check_id ORDER BY rec_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_checks ) WHERE rn = 1 ) checks ON checks.check_id = sale_detail.sales_id LEFT JOIN ( SELECT * FROM ( SELECT sales_group_id , sales_group_desc , rec_changed , row_number() OVER ( PARTITION BY sales_group_id ORDER BY rec_changed DESC ) rn FROM shipdw.hvtb_parse_mxp_pos_sales_groups ) WHERE rn = 1 ) sales_groups ON sales_groups.sales_group_id = checks.sales_group_id
+spark.source.columns voyageid,batchtime,part_date,sales_id,sales_operatornr,sale_operator_name,sales_receiptnr,sales_checkstatus,sales_voyagenumber,location,line_type,line_status,line_description,src_deleted_flag,sale_group_description
+
+
+spark.pond.allColumns sale_detail_skey as pond_sale_detail_skey,voyage_id as pond_voyage_id, sale_id as pond_sale_id, sale_operator_num as pond_sale_operator_num,sale_operator_name as pond_sale_operator_name,sale_detail_src as pond_sale_detail_src,receipt_number as pond_receipt_number,check_status as pond_check_status,sales_voyagenumber as pond_sales_voyagenumber,location as pond_location,line_type as pond_line_type, line_status as pond_line_status,line_description as pond_line_description,src_deleted_flag as pond_src_deleted_flag,sale_group_description as pond_sale_group_description,load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+spark.surrogate_key.column sale_detail_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_sale_detail
+spark.source.primaryKeyColumns sales_id
+spark.target.final_collist final_view.sale_detail_skey as sale_detail_skey,final_view.voyageid as voyage_id,final_view.sales_id as sale_id , final_view.sale_detail_src as sale_detail_src, cast(final_view.sales_operatornr as int) as sale_operator_num  ,final_view.sale_operator_name as sale_operator_name, NVL(final_view.sales_receiptnr,0) as  receipt_number,final_view.sales_checkstatus as  check_status,final_view.sales_voyagenumber as sales_voyagenumber, final_view.location as location,final_view.line_type as line_type,final_view.line_Status as line_Status,final_view.line_description as line_description,cast(final_view.src_deleted_flag as boolean) as src_deleted_flag,final_view.sale_group_description,load_dt, upd_dt, primaryhash, md5_hash
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_dim_sale_detail
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_dim_sale_detail
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname sale_detail_dim_tmp
+spark.bq.permtblname sale_detail_dim
+spark.bq.viewname shipdw.sale_detail_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore

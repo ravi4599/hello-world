@@ -1,0 +1,31 @@
+spark.src.config.id SrcVxpGuestCheckInDetail
+spark.voyage.id SC2002269NCR
+spark.parent.id SrcVxpDxpGuestCheckInDetail-TgtVxpDxpGuestCheckInDetail-SC2002269NCR
+spark.ing.type Fact
+spark.source.sql select dim_voyage.voyage_id as voyage_id, dim_voyage.ship_code as ship_code, NVL(dim_voyage.voyage_skey,-1) as voyage_skey, NVL(dim_person.person_skey,-1) as person_skey,gcd.cruisecontractsigneddate as cruise_contract_signed_datetime, gcd.cruisewellcontractsigneddate as voyage_well_contract_signed_datetime, gcd.iscruisewellcontractsigned as is_health_contract_signed, gcd.healthcontractsigneddate as health_contract_signed_datetime, gcd.isfittotravel as is_fit_to_travel,gcd.isthermalcheckpassed as is_thermal_check_passed, gcd.thermalcheckdate as thermal_check_datetime,gcd.iscovidtestpassed as is_covid_test_passed, gcd.covidtestdate as covid_test_datetime  from (select a.reservationguestid,a.reservationid,a.guestcheckindetailid from (select reservationguestid,guestcheckindetailid ,reservationid ,row_number() over(partition by reservationguestid order by lastmodifieddate desc) as rn from vv_db.hvtb_parse_vxp_reservationguest)a where a.rn=1) rg left join (select a.cruisecontractsigneddate,a.cruisewellcontractsigneddate,a.iscruisewellcontractsigned,a.healthcontractsigneddate, a.isfittotravel,a.isthermalcheckpassed,a.thermalcheckdate,a.iscovidtestpassed,a.covidtestdate,a.guestcheckindetailid,a.part_date,a.batchtime from (select part_date,batchtime, cruisecontractsigneddate,cruisewellcontractsigneddate,iscruisewellcontractsigned,healthcontractsigneddate,isfittotravel,isthermalcheckpassed,thermalcheckdate,iscovidtestpassed,covidtestdate,guestcheckindetailid ,row_number() over(partition by guestcheckindetailid order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_dxp_guestcheckindetail)a where a.rn=1) gcd on (rg.guestcheckindetailid = gcd.guestcheckindetailid) left join (select a.voyagenumber,a.reservationid from (select voyagenumber, reservationid, row_number() over(partition by reservationid order by lastmodifieddate desc )as rn from vv_db.hvtb_parse_vxp_reservation)a where a.rn = 1) reserv on (rg.reservationid = reserv.reservationid) left join (select voyage_id,voyage_number,ship_code,voyage_skey from shipdw.hvtb_mart_dim_voyage where src_deleted_flag = false and src_active_flag = true ) dim_voyage on (reserv.voyagenumber = dim_voyage.voyage_number) left join shipdw.hvtb_mart_dim_person dim_person on (rg.reservationguestid = dim_person.reservationguest_guid)
+spark.source.columns voyage_id,ship_code,voyage_skey,person_skey,cruise_contract_signed_datetime,voyage_well_contract_signed_datetime,is_health_contract_signed,health_contract_signed_datetime,is_fit_to_travel,is_thermal_check_passed,thermal_check_datetime,is_covid_test_passed,covid_test_datetime
+spark.pond.allColumns voyage_id AS pond_voyage_id,ship_code AS pond_ship_code,voyage_skey AS pond_voyage_skey,person_skey AS pond_person_skey,cruise_contract_signed_datetime AS pond_cruise_contract_signed_datetime, voyage_well_contract_signed_datetime AS pond_voyage_well_contract_signed_datetime, is_health_contract_signed AS pond_is_health_contract_signed, health_contract_signed_datetime AS pond_health_contract_signed_datetime, is_fit_to_travel AS pond_is_fit_to_travel, is_thermal_check_passed AS pond_is_thermal_check_passed, thermal_check_datetime AS pond_thermal_check_datetime, is_covid_test_passed AS pond_is_covid_test_passed, covid_test_datetime AS pond_covid_test_datetime, load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash, part_dt as pond_part_dt
+spark.source.primaryKeyColumns voyage_skey,person_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_voyage_well
+spark.target.config.id TgtWellFact
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.table voyage_well_fact
+spark.target.final_collist final_view.voyage_id,final_view.ship_code,final_view.voyage_skey,final_view.person_skey,final_view.cruise_contract_signed_datetime, final_view.voyage_well_contract_signed_datetime, final_view.is_health_contract_signed, final_view.health_contract_signed_datetime, final_view.is_fit_to_travel, final_view.is_thermal_check_passed, final_view.thermal_check_datetime, final_view.is_covid_test_passed, final_view.covid_test_datetime,final_view.load_dt, final_view.upd_dt, final_view.primaryhash, final_view.md5_hash, final_view.part_dt
+spark.target.temp /data/apps/nbx/hive/temp/hvtb_mart_fact_voyage_well
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_fact_voyage_well
+spark.tgt.env Prod
+spark.postgresql.database prodnbx
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename voyage_well_fact
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.tableType FACT
+spark.frameworkEnv ship
+spark.factType Accu
+spark.ship.code VAL
+

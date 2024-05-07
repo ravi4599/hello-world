@@ -1,0 +1,17 @@
+spark.src.config.id SrcSwToVxpWearable
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtSwToVxpWearable
+spark.parent.id SrcKfkaWearable-TgtHvWearable
+spark.target.table vv_db.hvtb_parse_swtovxp_wearable
+spark.source.table select * from vv_db.hvtb_lnd_swtovxp_wearable
+spark.metadata.offset.table shipdw.hbtb_nbx_kafka_streaming_offset
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.con.format jdbc
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.hadoop.hive.execution.engine mr
+

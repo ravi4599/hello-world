@@ -1,0 +1,28 @@
+spark.source.table select * from shipdw.hvtb_lnd_onboard_sailor_reviewanswer
+spark.ans.target.table shipdw.hvtb_parse_sailor_review_answer
+spark.ans.ques.target.table shipdw.hvtb_parse_sailor_review_ans_quest
+spark.src.config.id SrcSailorReviewAnswer
+spark.voyage.id  SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtSailorReviewAnswer
+spark.parent.id SrcReviewSailorAnswer-TgtReviewSailorAnswer
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite 
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.15.2.206:2181/hbase-unsecure
+spark.kafka.zookeeper 10.15.2.58:2181 
+spark.oauthurl https://dev.virginvoyages.com/svc/identityaccessmanagement-service/oauth/token?grant_type=client_credentials
+spark.findByTypeAndTargetType https://qa.virginvoyages.com/svc/xref-api/v1/references/search/findByTypeAndTargetType �
+spark.findalltypes https://dev.virginvoyages.com/svc/xref-api/v1/types?page=-1&size=-1
+spark.username a02f3532-86ea-4c59-bc0a-ac7b47a73a37
+spark.password vAr6nd87KWQbrE9S
+spark.authorization Basic YTAyZjM1MzItODZlYS00YzU5LWJjMGEtYWM3YjQ3YTczYTM3OnZBcjZuZDg3S1dRYnJFOVM=
+spark.metadata.offset.table shipdw.hbtb_nbx_kafka_streaming_offset
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.con.format jdbc
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.hadoop.hive.execution.engine mr

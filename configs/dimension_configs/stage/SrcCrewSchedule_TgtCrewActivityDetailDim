@@ -1,0 +1,29 @@
+spark.src.config.id SrcCrewSchedule
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtCrewActivityDetailDim
+spark.parent.id SrcParseCrewSchedule-TgtParseCrewSchedule
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.table.type dim
+spark.table.type dim
+spark.redshift.url jdbc:redshift://10.3.0.120:5439/qanbxpub
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.source.sql SELECT   VoyageId AS voyage_id,   id AS crew_activity_guid,   CAST(true AS boolean) AS is_actuals,   created AS schedule_activity_created_datetime,   createdBy AS schedule_activity_createdby_person_id,   updated AS schedule_activity_updated_datetime,  updatedBy AS schedule_activity_updatedby_person_id,  person_company AS actual_company_name,  manningAgent AS actual_manning_agent,  clockIn_clock AS actual_clockin_clock,  clockIn_manualEntry AS is_actual_clockin_manual_entry,  clockOut_clock AS actual_clockout_clock,  clockOut_manualEntry AS is_actual_clockout_manual_entry,  batchtime,   Part_Date  FROM (SELECT * FROM (     SELECT VoyageId, id, created, createdBy, updated, updatedBy, person_company, manningAgent, clockIn_clock, clockIn_manualEntry, clockOut_clock, clockOut_manualEntry, batchtime, Part_Date, row_number() over (partition by id order by updated desc) as rn FROM shipdw.hvtb_parse_mxp_crew_schedule ) WHERE rn = 1)
+spark.source.columns voyage_id,crew_activity_guid,is_actuals,schedule_activity_created_datetime,schedule_activity_createdby_person_id,schedule_activity_updated_datetime,schedule_activity_updatedby_person_id,actual_company_name,actual_manning_agent,actual_clockin_clock,is_actual_clockin_manual_entry,actual_clockout_clock,is_actual_clockout_manual_entry,batchtime
+spark.pond.allColumns voyage_id as pond_voyage_id, crew_activity_detail_skey as pond_crew_activity_detail_skey, crew_activity_guid as pond_crew_activity_guid, is_actuals as pond_is_actuals, schedule_activity_created_datetime  as pond_schedule_activity_created_datetime, schedule_activity_createdby_person_id as pond_schedule_activity_createdby_person_id, schedule_activity_updated_datetime as pond_schedule_activity_updated_datetime, schedule_activity_updatedby_person_id as pond_schedule_activity_updatedby_person_id, actual_company_name as pond_actual_company_name, actual_manning_agent as pond_actual_manning_agent, actual_clockin_clock as pond_actual_clockin_clock, is_actual_clockin_manual_entry as pond_is_actual_clockin_manual_entry, actual_clockout_clock as pond_actual_clockout_clock, is_actual_clockout_manual_entry as pond_is_actual_clockout_manual_entry,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column crew_activity_detail_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_crew_activity_detail
+spark.source.primaryKeyColumns crew_activity_guid,is_actuals
+spark.target.final_collist final_view.voyage_id, crew_activity_detail_skey, final_view.crew_activity_guid, final_view.is_actuals, final_view.schedule_activity_created_datetime, final_view.schedule_activity_createdby_person_id, final_view.schedule_activity_updated_datetime, final_view.schedule_activity_updatedby_person_id, final_view.actual_company_name, final_view.actual_manning_agent, final_view.actual_clockin_clock, final_view.is_actual_clockin_manual_entry, final_view.actual_clockout_clock, final_view.is_actual_clockout_manual_entry,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_dim_crew_activity_detail
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_crew_activity_detail
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename crew_activity_detail_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore

@@ -1,0 +1,25 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:sqlserver://10.102.220.122:1442;database=MXP
+spark.src.user Capgemini
+spark.src.password virginvoyages2020!
+spark.src.con.driver com.microsoft.sqlserver.jdbc.SQLServerDriver
+spark.src.table MXP.dbo.VScheduling_Activities
+spark.src.table.query (select * from VScheduling_Activities) as VScheduling_Activities
+spark.condition.column ActivityID
+spark.src.config.id SrcMxpScheduleActivities
+spark.tgt.env Prod
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtMxpScheduleActivities
+spark.target.location /data/apps/nbx/hive/landing/mxp/hvtb_lnd_mxp_scheduling_activities
+spark.target.hive.table shipdw.hvtb_lnd_mxp_scheduling_activities
+spark.target.table shipdw.hvtb_lnd_mxp_scheduling_activities
+spark.hive.table.maxid select max(activityid) from shipdw.hvtb_lnd_mxp_scheduling_activities
+spark.source.columns ActivityID, ActivityCode, ActivityName, ActivityType, ActivityColor, ActivityIsOvertime, ActivityIsNotAllowedOffsite, ACTIVE, REC_DELETED
+spark.source.query ActivityID, ActivityCode, ActivityName, ActivityType, ActivityColor, ActivityIsOvertime, ActivityIsNotAllowedOffsite, ACTIVE, REC_DELETED
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+

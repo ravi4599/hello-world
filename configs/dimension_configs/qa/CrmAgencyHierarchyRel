@@ -1,0 +1,21 @@
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+ 
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_crm_agency_hierarchy_rel
+spark.target.schema shipdw
+spark.target.table crm_agency_hierarchy_reltest
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_crm_agency_hierarchy_rel
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_crm_agency_hierarchy_rel
+spark.bq.schema Hive_schema_stg
+spark.bq.tablename crm_agency_hierarchy_reltest
+ 
+ 
+ 
+spark.hadoop.hive.execution.engine mr
+

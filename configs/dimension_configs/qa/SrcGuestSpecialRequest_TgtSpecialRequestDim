@@ -1,0 +1,36 @@
+spark.src.config.id SrcGuestSpecialRequest
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.target.config.id TgtSpecialRequestDim
+spark.parent.id SrcMxpPersonSpecialReq-TgtMxpPersonSpecialReq
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.table.type dim
+spark.source.sql select pr.VoyageId as voyage_id,pr.PERSON_SPECIAL_REQUEST_ID as specialrequest_id,pr.PERSON_ID as person_id,pr.GUID as specialrequest_guid,lkpit.LOOKUP_ITEM_NAME as specialrequest_type,lkpit.DISPLAY_CODE as specialrequest_type_code,pr.PERSON_SPECIAL_REQUEST_DATE as specialrequest_date,pr.PERSON_SPECIAL_REQUEST_DESCRIPTION as specialrequest_description,pr.PERSON_SPECIAL_REQUEST_COMMENT as specialrequest_comment,pr.LAST_CHANGED as specialrequest_upd_date,case when pr.op='d' then true else false end as src_deleted_flag, pr.BatchTime as BatchTime , pr.Part_date as Part_date from (select * from (select *,row_number()over(partition by person_special_request_id order by last_changed desc,ts_ms desc) as rn  from shipdw.hvtb_parse_mxp_person_special_requests *whereclause*)psr where psr.rn=1)pr left join (select * from (select *,row_number()over(partition by lookup_item_id order by last_changed desc,ts_ms desc) as rn  from shipdw.hvtb_parse_mxp_lookup_items)lkpitem where lkpitem.rn=1) lkpit on (pr.PERSON_SPECIAL_REQUEST_TYPE_ID = lkpit.LOOKUP_ITEM_ID and lkpit.ACTIVE=1 )inner join (select * from (select *,row_number()over(partition by lookup_sub_category_id order by last_changed desc,ts_ms desc) as rn  from shipdw.hvtb_parse_mxp_lookup_sub_categories)lkpsubcat where lkpsubcat.rn=1) lkpsc on (lkpit.LOOKUP_SUB_CATEGORY_ID = lkpsc.LOOKUP_SUB_CATEGORY_ID and lkpsc.LOOKUP_SUB_CATEGORY_NAME in ('Special Request Categories','Off Site Restrictions')) 
+#select voyageid as voyage_id,batchtime, part_date, NVL(person_skey,-1) as person_skey, special_request_id as specialrequest_id,null specialrequest_guid,special_request_type specialrequest_type,cast(special_request_date as timestamp) as specialrequest_date,special_request_description specialrequest_description,null specialrequest_comment, null as specialrequest_upd_date from(select * from  (select voyageid,batchtime, part_date,NVL(dim_person.person_skey,-1) person_skey,special_request_id,special_request_type,special_request_date,special_request_description, row_number() over (partition by special_request_id order by last_modified_date desc) rn    from shipdw.hvtb_lnd_mxp_sailor_crew_data special_req left JOIN shipdw.hvtb_mart_dim_person dim_person on ( special_req.voyageid == dim_person.voyage_id and special_req.person_id==dim_person.person_id)) t where rn = 1 and special_request_id is not null )d
+spark.source.columns voyage_id,specialrequest_id,person_id,specialrequest_guid,specialrequest_type,specialrequest_type_code,specialrequest_date,specialrequest_description,specialrequest_comment,specialrequest_upd_date,src_deleted_flag
+spark.pond.allColumns specialrequest_skey as pond_specialrequest_skey,voyage_id as pond_voyage_id,specialrequest_id as pond_specialrequest_id,person_id as pond_person_id,specialrequest_guid as pond_specialrequest_guid,specialrequest_type as pond_specialrequest_type,specialrequest_type_code as pond_specialrequest_type_code,specialrequest_date as pond_specialrequest_date,specialrequest_description as pond_specialrequest_description,specialrequest_comment as pond_specialrequest_comment,specialrequest_upd_date as pond_specialrequest_upd_date,src_deleted_flag as pond_src_deleted_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column specialrequest_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_specialrequest
+spark.target.schema shipdw
+spark.target.table specialrequest_dim
+spark.source.primaryKeyColumns specialrequest_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.target.final_collist final_view.voyage_id as voyage_id,specialrequest_skey,final_view.specialrequest_id as specialrequest_id,final_view.person_id as person_id,final_view.specialrequest_guid as specialrequest_guid,final_view.specialrequest_type as specialrequest_type,final_view.specialrequest_type_code as specialrequest_type_code,final_view.specialrequest_date as specialrequest_date,final_view.specialrequest_description as specialrequest_description,final_view.specialrequest_comment as specialrequest_comment,final_view.specialrequest_upd_date as specialrequest_upd_date,final_view.src_deleted_flag as src_deleted_flag,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_dim_specialrequest
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_dim_specialrequest
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname specialrequest_dim_tmp
+spark.bq.permtblname specialrequest_dim
+spark.bq.viewname shipdw.specialrequest_dim
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.RES_CHARGEABLE_ACTION
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT ACTION_ID, ENTITY_TYPE, ENTITY_ID, RES_ACTION_TYPE, ACTION_TIMESTAMP, IS_ADDED_MANUALLY, IS_PAID, PAID_TIMESTAMP, DESIGNATED_PAYMENT_CODE, IS_PAID_SET_MANUALLY FROM SEAWARE.RES_CHARGEABLE_ACTION)
+
+spark.parse.table seaware_oracle.hvtb_nbx_parse_sw_rpl_res_chargeable_action
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/RES_CHARGEABLE_ACTION
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_nbx_parse_sw_rpl_res_chargeable_action/
+
+spark.hadoop.hive.execution.engine mr

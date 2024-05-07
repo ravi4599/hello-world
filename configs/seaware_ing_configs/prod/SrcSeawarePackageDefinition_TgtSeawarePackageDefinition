@@ -1,0 +1,31 @@
+spark.kafkabrokers 10.15.2.58:9092,10.15.12.38:9092,10.15.13.172:9092
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.jks
+spark.passvalue virgin*2020
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.jks
+spark.debug.flag TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic dbz.sw.SEAWARE.PACKAGE_DEFINITION
+spark.src.personOffSet earliest
+spark.kafka.zookeeper 10.15.2.58:2181
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.snapshot.table HBTB_DBZ_SNAPDATE
+
+spark.src.config.id SrcSeawarePackageDefinition
+spark.tgt.env Prod
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtSeawarePackageDefinition
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.15.2.206:2181/hbase-unsecure
+
+spark.target.lnd.table vv_db.hvtb_lnd_sw_rpl_package_definition
+spark.target.parse.table vv_db.hvtb_parse_sw_rpl_package_definition
+spark.ship.code SHORE
+spark.stop.flag N
+spark.debug.flag true
+spark.stop.trgFile Y
+spark.trgFileName hdfs://10.15.2.225:8020/data/streamingtriggers/SrcSeawarePackageDefinition_TgtSeawarePackageDefinition.trg

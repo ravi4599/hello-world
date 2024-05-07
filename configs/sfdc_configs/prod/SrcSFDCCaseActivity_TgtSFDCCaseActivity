@@ -1,0 +1,35 @@
+spark.src.con.format sfdc
+spark.src.salesforce.username vv_datascience_api@virginvoyages.com.prd
+spark.src.salesforce.password NBX022019
+spark.src.salesforce.endpoint https://login.salesforce.com/services/Soap/u/53.0
+spark.src.salesforce.version 53.0
+spark.src.config.id SrcSFDCCaseActivity
+
+ 
+spark.voyage.id SC2002269NCR
+spark.source.columns Id,Case_Activity_Queue__c, Case_Activity_Status__c, Case_Closed__c, Case_Close_DateTime__c, Case_Opened_DateTime__c, Case__c, Change_Type__c, CreatedById,CreatedDate,DurationFormula__c, Duration__c, IsDeleted, Is_Active__c, Is_Current_Value__c, LastModifiedById, LastModifiedDate, Name,SystemModstamp, Value_Changed_From__c, Value_Changed_To__c, Value_Duration__c, Value_In_Time__c, Value_Out_Time__c
+
+ 
+spark.src.table.query SELECT Id,Case_Activity_Queue__c, Case_Activity_Status__c, Case_Closed__c, Case_Close_DateTime__c, Case_Opened_DateTime__c, Case__c, Change_Type__c, CreatedById,CreatedDate,DurationFormula__c, Duration__c, IsDeleted, Is_Active__c, Is_Current_Value__c, LastModifiedById, LastModifiedDate, Name,SystemModstamp, Value_Changed_From__c, Value_Changed_To__c, Value_Duration__c, Value_In_Time__c, Value_Out_Time__c FROM CaseActivity__c
+
+ 
+spark.src.condition.column LastModifiedDate
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtSFDCCaseActivity
+spark.target.hive.table vv_db.hvtb_lnd_sfdc_caseactivity
+spark.target.table vv_db.hvtb_lnd_sfdc_caseactivity
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append
+ 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+
+ 
+
+ 
+spark.hadoop.hive.execution.engine mr
+

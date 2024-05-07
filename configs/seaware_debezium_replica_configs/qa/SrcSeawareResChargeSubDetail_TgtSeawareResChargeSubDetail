@@ -1,0 +1,26 @@
+spark.kafkabrokers 10.59.1.30:9092,10.59.1.31:9092,10.59.1.32:9092
+spark.kafka.zookeeper 10.59.1.30:2181,10.59.1.31:2181,10.59.1.32:2181
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic qa-gcp-dbz-SEAWARE.RES_CHARGE_SUBDETAIL
+spark.src.personOffSet earliest
+spark.src.config.id SrcSeawareResChargeSubDetail
+spark.voyage.id SC2002269NCR
+spark.tgt.env QA
+spark.target.config.id TgtSeawareResChargeSubDetail
+spark.target.lnd.table vv_db.hvtb_nbx_lnd_sw_rpl_res_charge_subdetail
+spark.target.parse.table vv_db.hvtb_nbx_parse_sw_rpl_res_charge_subdetail
+spark.snapshot.table shipdw.hbtb_dbz_snapdate
+spark.metadata.con.format jdbc
+spark.metadata.offset.mode Append
+spark.metadata.offset.table shipdw.hbtb_streaming_ingestion_offset
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.snpsht.table.mode overwrite
+spark.source.columns RECORD_ID, GUEST_SEQN, CLIENT_ID, AMOUNT, EXPLANATION, CHARGE_ID, CHANGE_AREA, ORIGIN, BASIS, PACKAGE_ID, AMOUNT_IN_HDR_CURR,op,ts_ms,voyageid,Batchtime,Part_Date
+spark.final.query select RECORD_ID, GUEST_SEQN, CLIENT_ID, AMOUNT, EXPLANATION, CHARGE_ID, CHANGE_AREA, ORIGIN, BASIS, PACKAGE_ID, AMOUNT_IN_HDR_CURR,op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date
+spark.hadoop.hive.execution.engine mr
+

@@ -1,0 +1,35 @@
+spark.src.config.id SrcGuestRestriction
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtRestrictionDim
+spark.parent.id SrcMxpPersonDisembarkExcp-TgtMxpPersonDisembarkExcp
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.table.type dim
+spark.redshift.url jdbc:redshift://10.3.0.120:5439/qanbxpub
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+
+spark.source.columns voyage_id,restriction_id,person_id,restriction_guid,restriction_type,restriction_categoryId,restriction_category_code,restriction_category,restriction_comment,restriction_from_date,restriction_to_date,src_deleted_flag,src_created_date
+spark.pond.allColumns voyage_id as pond_voyage_id ,restriction_skey as pond_restriction_skey ,restriction_id as pond_restriction_id ,person_id as pond_person_id ,restriction_guid as pond_restriction_guid ,restriction_type as pond_restriction_type ,restriction_categoryId as pond_restriction_categoryId ,restriction_category_code as pond_restriction_category_code ,restriction_category as pond_restriction_category ,restriction_comment as pond_restriction_comment ,restriction_from_date as pond_restriction_from_date ,restriction_to_date as pond_restriction_to_date ,src_deleted_flag as pond_src_deleted_flag ,src_created_date as pond_src_created_date,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.surrogate_key.column restriction_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_restriction
+spark.target.schema shipdw
+spark.target.table restriction_dim
+spark.source.primaryKeyColumns restriction_id
+spark.pond.primaryKeyColumns restriction_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.target.final_collist final_view.voyage_id,final_view.restriction_skey,final_view.restriction_id,final_view.person_id,final_view.restriction_guid,final_view.restriction_type,final_view.restriction_categoryId,final_view.restriction_category_code,final_view.restriction_category,final_view.restriction_comment,final_view.restriction_from_date,final_view.restriction_to_date,final_view.src_deleted_flag,final_view.src_created_date,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_dim_restriction
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_restriction
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename restriction_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore

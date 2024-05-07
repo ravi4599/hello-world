@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.REVENUE_TARGET_HEADER
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT RECORD_ID, SHIP_CODE, PACKAGE_TYPE, SAIL_DATE, SAIL_DAYS, CABIN_CTG_GENERIC, FORECAST_VERSION, FORECAST_METRIC, TIMESTAMP_CREATED, TIMESTAMP_CHANGED, USER_CREATED, USER_CHANGED, COMMENTS FROM SEAWARE.REVENUE_TARGET_HEADER)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_revenue_target_header
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/REVENUE_TARGET_HEADER
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_revenue_target_header/
+
+spark.hadoop.hive.execution.engine mr

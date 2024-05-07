@@ -1,0 +1,43 @@
+#------META DATA CONFIG-----#
+spark.src.config.id SrcPaymentFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtPaymentFact
+spark.parent.id SrcHvPayment-TgtHvPayment
+spark.ing.type Fact
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+#------Query Propery-----#
+
+spark.source.sql SELECT payment.paymentid AS src_int_trans_id, payment.transactiontype AS trans_type, payment.transactionstatus AS trans_status, payment.gatewaytransactionstatus AS gateway_trans_status, payment.gatewayreferencenumber AS gateway_ref_number, payment.clientacknowledgementstatus AS client_ack_status, cast(payment.amount as float) AS trans_amt, payment.currencycode AS trans_currency, payment.token, cast(payment.paymentdate as timestamp) AS trans_timestamp, payment.reservationnumber as src_res_id, payment.receiptreferencenumber as receipt_ref_id,payment.paymentmodecode,payment.isdeleted,payment.consumertype,payment.transactionsubtype,payment.batchtime,payment.part_date from (select * from (select *, row_number()over(partition by paymentid order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_dxp_payment) pay where pay.rn=1) payment
+
+spark.source.columns src_int_trans_id,trans_type,trans_status,gateway_trans_status,gateway_ref_number,client_ack_status,trans_amt,trans_currency,token,trans_timestamp,src_res_id,receipt_ref_id,paymentmodecode,isdeleted,consumertype,transactionsubtype
+
+spark.pond.allColumns src_int_trans_id as pond_src_int_trans_id,trans_type as pond_trans_type,trans_status as pond_trans_status,gateway_trans_status as pond_gateway_trans_status,gateway_ref_number as pond_gateway_ref_number,client_ack_status as pond_client_ack_status,trans_amt as pond_trans_amt,trans_currency as pond_trans_currency,token as pond_token,trans_timestamp as pond_trans_timestamp,src_res_id as pond_src_res_id,receipt_ref_id as pond_receipt_ref_id ,paymentmodecode as pond_paymentmodecode,isdeleted as pond_isdeleted,consumertype as pond_consumertype,transactionsubtype as pond_transactionsubtype,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+
+spark.target.final_collist final_view.src_int_trans_id as src_int_trans_id,final_view.trans_type as trans_type,final_view.trans_status as trans_status,final_view.gateway_trans_status as gateway_trans_status,final_view.gateway_ref_number as gateway_ref_number,final_view.client_ack_status as client_ack_status,final_view.trans_amt as trans_amt,final_view.trans_currency as trans_currency,final_view.token as token,final_view.trans_timestamp as trans_timestamp,final_view.src_res_id as src_res_id,final_view.receipt_ref_id as receipt_ref_id,final_view.paymentmodecode as paymentmodecode,final_view.isdeleted as isdeleted,final_view.consumertype as consumertype,final_view.transactionsubtype as transactionsubtype,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+												 
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_vxp_payment
+spark.source.primaryKeyColumns src_int_trans_id
+spark.table.type fact							
+spark.target.schema shipdw									
+spark.target.table vxp_payment_fact
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_fact_vxp_payment
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_fact_vxp_payment
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname vxp_payment_fact_tmp
+spark.bq.permtblname vxp_payment_fact
+spark.bq.viewname seaware.vxp_payment_fact
+spark.scdtype type1
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.factType Accu
+spark.hadoop.hive.execution.engine mr
+

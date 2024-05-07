@@ -1,0 +1,4 @@
+spark.target.temptablename vv_db.hvtb_nbx_core_sw_reservation_dim_temp
+spark.target.tgttablename vv_db.hvtb_nbx_core_sw_reservation_dim
+spark.target.coalesceval 4
+spark.hadoop.hive.execution.engine mr

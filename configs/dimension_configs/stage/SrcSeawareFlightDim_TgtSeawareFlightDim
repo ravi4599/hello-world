@@ -1,0 +1,33 @@
+spark.src.config.id SrcSeawareFlightDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env stage
+spark.target.config.id TgtSeawareFlightDim
+spark.parent.id SrcSeawareAirActualLeg-TgtSeawareAirActualLeg
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.table.type dim
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+
+spark.source.sql select distinct al.flight_no as flight_no,current_timestamp as rec_start_dttm,case when al.op == 'd' then current_timestamp() - INTERVAL 1 SECOND else to_timestamp('9999-12-31') end as rec_end_dttm,a.airline_name as airline,a_dep.airport_name as departure_airport_name,a_dep_addr.address_city as origin,cast(al.departure_time as date) as departure_date,al.departure_time as departure_time,a_arr.airport_name as arrival_airport_name,a_arr_addr.address_city as destination,cast(al.arrival_time as date) as arrival_date,al.arrival_time as arrival_time,ao.airline_name as operated_by,al.recloc as airline_rloc,al.n_of_stops as n_of_stops,al.batchtime,al.part_date from (select * from (select *,row_number()over(partition by leg_id ,header_id ,segment_id order by ts_ms desc) as rn from vv_db.hvtb_parse_sw_rpl_air_actual_leg) abc where abc.rn=1) al left join vv_db.hvtb_parse_sw_rpl_airline as a on al.airline=a.airline_code left join vv_db.hvtb_parse_sw_rpl_airline as ao on al.operated_by=ao.airline_code left join vv_db.hvtb_parse_sw_rpl_airport as a_dep on al.departure_airport=a_dep.airport_code left join vv_db.hvtb_parse_sw_rpl_airport_address as a_dep_addr on a_dep.airport_code=a_dep_addr.airport_code left join vv_db.hvtb_parse_sw_rpl_airport as a_arr on al.arrival_airport=a_arr.airport_code left join vv_db.hvtb_parse_sw_rpl_airport_address as a_arr_addr on a_dep.airport_code=a_arr_addr.airport_code *whereclause*
+
+spark.source.columns flight_no,rec_start_dttm,rec_end_dttm,airline,departure_airport_name,origin,departure_date,departure_time,arrival_airport_name,destination,arrival_date,arrival_time,operated_by,airline_rloc,n_of_stops,batchtime
+
+spark.pond.allColumns flight_id as pond_flight_id,flight_no as pond_flight_no,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,airline as pond_airline,departure_airport_name as pond_departure_airport_name,origin as pond_origin,departure_date as pond_departure_date,departure_time as pond_departure_time,arrival_airport_name as pond_arrival_airport_name,destination as pond_destination,arrival_date as pond_arrival_date,arrival_time as pond_arrival_time,operated_by as pond_operated_by,airline_rloc as pond_airline_rloc,n_of_stops as pond_n_of_stops,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.surrogate_key.column flight_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_flight_dim
+spark.source.primaryKeyColumns flight_no,departure_date,departure_time
+spark.target.final_collist final_view.flight_id,final_view.flight_no,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.airline,final_view.departure_airport_name,final_view.origin,final_view.departure_date,final_view.departure_time,final_view.arrival_airport_name,final_view.destination,final_view.arrival_date,final_view.arrival_time,final_view.operated_by,final_view.airline_rloc,final_view.n_of_stops,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_nbx_core_sw_flight_dim
+spark.target.location s3://vv-staging-emr-cluster/data/core/seaware/hvtb_nbx_core_sw_flight_dim
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename seware_flight_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore

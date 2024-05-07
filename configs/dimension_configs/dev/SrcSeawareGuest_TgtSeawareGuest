@@ -1,0 +1,55 @@
+spark.src.config.id SrcSeawareGuest
+spark.voyage.id	SC2002269NCR
+spark.tgt.env dev
+spark.api.env Dev
+spark.target.config.id TgtSeawareGuest
+spark.parent.id	SrcSeawareGuestDim-TgtSeawareGuestDim
+
+
+spark.table.type   dim
+
+spark.hadoop.hive.execution.engine mr
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+spark.source.sql select a.src_guest_id as src_guest_id,a.client_id as client_id,a.sail_date_from as sail_date_from, a.sail_date_to as sail_date_to,a.src_res_id as src_res_id,b.guestid as vxp_guest_id,b.reservationid as vxp_res_id, b.reservationguestid as vxp_reservation_guest_id, b.batchtime as batchtime,b.part_date as part_date from(select * from (select distinct src_guest_id,cast(client_id as bigint),rec_end_dttm from vv_db.hvtb_nbx_core_sw_guest_dim) gd left join (select guest_id,res_id from  vv_db.hvtb_nbx_core_sw_res_guest_rel) rgl on gd.src_guest_id=rgl.guest_id left join (select src_res_id,src_sail_id,rec_end_dttm from  vv_db.hvtb_nbx_core_sw_reservation_dim) rd on rgl.res_id=rd.src_res_id and rd.rec_end_dttm='9999-12-31' left join (select sail_id, sail_date_from,sail_date_to from vv_db.hvtb_nbx_core_sw_sail_dim)sd on rd.src_sail_id=sd.sail_id  where gd.rec_end_dttm ='9999-12-31') a left join(select * from (select * from (select guestid,guestuniqueid,batchtime,part_date,lastmodifieddate,row_number() over(partition by guestid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_dxp_guest) where rn=1) g left join (select * from (select reservationguestid,guestid as guest_id,reservationid,row_number() over(partition by reservationguestid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_reservationguest) where rn=1)rg on rg.guest_id=g.guestid left join (select * from (select reservationid as reservation_id,reservationnumber,shipcode,sailingpackagecode,fromdate,todate, row_number() over(partition by reservationid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_reservation) where rn=1) r on rg.reservationid = r.reservation_id where g.guestuniqueid is not null) b on  a.client_id=b.guestuniqueid and a.src_res_id=b.reservationnumber 
+
+
+
+
+spark.source.columns sw_vxp_guest_rel_id,src_guest_id,client_id,sail_date_from,sail_date_to,src_res_id,vxp_guest_id,vxp_res_id,vxp_reservation_guest_id
+
+
+spark.pond.allcolumns sw_vxp_guest_rel_id as pond_sw_vxp_guest_rel_id,src_guest_id as pond_src_guest_id,client_id as pond_client_id,sail_date_from as pond_sail_date_from,sail_date_to as pond_sail_date_to,src_res_id as pond_src_res_id,vxp_guest_id as pond_vxp_guest_id,vxp_res_id as pond_vxp_res_id,vxp_reservation_guest_id as pond_vxp_reservation_guest_id,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+
+spark.surrogate_key.column sw_vxp_guest_rel_id
+spark.pond.database vv_db
+spark.pond.table hvtb_mart_dim_seaware_guest_sw_vxp_rel
+spark.target.schema vv_db
+spark.target.table hvtb_mart_dim_seaware_guest_sw_vxp_rel
+spark.source.primarykeycolumns client_id,src_res_id
+
+
+spark.target.final_collist final_view.sw_vxp_guest_rel_id as sw_vxp_guest_rel_id,final_view.src_guest_id as src_guest_id,final_view.client_id as client_id,final_view.sail_date_from as sail_date_from,final_view.sail_date_to as sail_date_to,final_view.src_res_id as src_res_id,final_view.vxp_guest_id as vxp_guest_id,final_view.vxp_res_id as vxp_res_id,final_view.vxp_reservation_guest_id as vxp_reservation_guest_id,final_view.load_dt as load_dt ,final_view.upd_dt as upd_dt ,final_view.primaryhash as primaryhash ,final_view.md5_hash as md5_hash
+
+
+
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/mart/seaware/temp/hvtb_mart_dim_seaware_guest_sw_vxp_rel
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_mart_dim_seaware_guest_sw_vxp_rel
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_guest_sw_vxp_rel_tmp
+spark.bq.permtblname seaware_guest_sw_vxp_rel
+spark.bq.viewname seaware.seaware_guest_sw_vxp_rel
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+

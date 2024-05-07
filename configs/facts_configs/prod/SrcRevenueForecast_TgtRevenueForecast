@@ -1,0 +1,23 @@
+spark.src.config.id SrcRevenueForecast
+spark.tgt.env Prod
+spark.voyage.id SC2002269NCR
+spark.target.landingtable vv_db.hvtb_nbx_landing_revenue_kpi_plan_forecast_upload
+spark.target.config.id TgtRevenueForecast
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_nbx_landing_revenue_kpi_plan_forecast_upload
+spark.target.landinglocation gs://vv-prod-nbx-cluster/data/landing/hvtb_nbx_landing_revenue_kpi_plan_forecast_upload
+spark.target.parselocation gs://vv-prod-nbx-cluster/data/parse/hvtb_nbx_parse_revenue_kpi_plan_forecast_upload
+spark.target.parsetemp gs://vv-prod-nbx-cluster/data/temp/hvtb_nbx_parse_revenue_kpi_plan_forecast_upload
+spark.target.coalesce.value 6
+spark.debug.flag false
+spark.hadoop.hive.execution.engine mr
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.static.columns SHIP_CODE,PACKAGE_TYPE,SAIL_DATE,SAIL_DAYS,CABIN_CTG_GENERIC,FORECAST_VERSION,FORECAST_METRIC,COMMENTS
+spark.s3file.location gs://vv-prod-nbx-cluster/data/Test_Jar/anagha/forecast/
+spark.excel.tabs LOAD FACTOR BUILD %,GROSS TICKET REVENUE $ (build),GROSS TICKET APD $,NET TICKET REVENUE $ (build),NET TICKET APD $,NET-NET TICKET REVENUE $(build),NET-NET TICKET APD $,ONBOARD REV BOOKED % (build),GROSS ONBOARD REVENUE $ (build),GROSS OBR APD $,NET ONBOARD REVENUE $ (build),NET OBR APD $,GROSS OTHER REVENUE $ (build),GROSS OTHER REVENUE APD $,NET OTHER REVENUE $ (build),NET OTHER REVENUE APD $
+

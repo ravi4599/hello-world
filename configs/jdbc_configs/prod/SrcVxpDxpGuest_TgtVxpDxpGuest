@@ -1,0 +1,46 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://vxpdb.gcp.virginvoyages.com/dxpcore
+spark.src.user pgreadaccessuser
+spark.src.password mvsZ72sVq75KARjLhK9D
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVxpDxpGuest
+spark.tgt.env Prod
+spark.ing.type Ingestion
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpDxpGuest
+spark.src.table.query "guest"
+spark.condition.column lastmodifieddate
+spark.source.columns guestid,titlecode,firstname,middlename,lastname,nickname,preferredname,suffixcode,birthdate,gendercode,maritalstatuscode,occupation,email,alternateemail,anniversarydate,birthcountrycode,citizenshipcountrycode,pmsid,useraccountid,loyaltyleveltypecode,numberofcruisenights,guestuniqueid,isdeleted,additionalinfo,addeddate,addedby,lastmodifieddate,lastmodifiedby,preferredlanguage,countryofresidence
+spark.source.query guestid,titlecode,firstname,middlename,lastname,nickname,preferredname,suffixcode,birthdate,gendercode,maritalstatuscode,occupation,email,alternateemail,anniversarydate,birthcountrycode,citizenshipcountrycode,pmsid,useraccountid,loyaltyleveltypecode,numberofcruisenights,guestuniqueid,isdeleted,additionalinfo,addeddate,addedby,lastmodifieddate,lastmodifiedby,preferredlanguage,countryofresidence
+
+ 
+#spark.tz.columns property to change all the timestampz columns to UTC
+spark.tz.columns addeddate,lastmodifieddate
+spark.source.zone EST
+spark.ship.code SHORE
+
+ 
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+
+ 
+
+ 
+spark.target.location gs://vv-prod-nbx-cluster/data/landing/VXP/shipdw.hvtb_lnd_vxp_dxp_guest
+spark.target.hive.table shipdw.hvtb_lnd_vxp_dxp_guest
+spark.target.table shipdw.hvtb_lnd_vxp_dxp_guest
+
+ 
+
+ 
+
+ 
+
+ 
+spark.hadoop.hive.execution.engine mr
+

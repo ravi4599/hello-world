@@ -1,0 +1,24 @@
+spark.src.config.id SrcSpaUtilisation
+spark.voyage.id SC2002269NCR
+spark.tgt.env dev
+spark.target.config.id TgtSpaUtilisation
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.pond.database shipdw
+spark.pond.table hvtb_lnd_spa_utilization
+spark.input.processedfilepath gs://vv-dev-nbx-cluster/data/landing/OSW-Spa-rpt/processedfile
+spark.target.location gs://vv-dev-nbx-cluster/data/landing/OSW-Spa-rpt/hvtb_lnd_spa_utilization
+spark.target.hive.table shipdw.hvtb_lnd_spa_utilization
+spark.target.table shipdw.hvtb_lnd_spa_utilization
+
+
+ 
+
+
+
+

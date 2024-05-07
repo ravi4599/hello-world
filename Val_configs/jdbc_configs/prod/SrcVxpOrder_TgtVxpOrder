@@ -1,0 +1,21 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148:5432/foodandbeverage
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.table public.order
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVxpOrder
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtVxpOrder
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_foodnbev_order
+spark.target.hive.table shipdw.hvtb_lnd_vxp_foodnbev_order
+spark.source.columns orderid,venueid,locationid,orderdate,guestid,status,tokennumber,colorcode,deliverypersonid,orderdeliverydate,discount,taxamount,taxpercentage,gratuity,gratuitypercentage,amount,currency,paymentid,refundid,modifieddate,ordernumber,delivertoguestid,servicechargepercentage,addedby,addeddate,additionaldetails,deliveredatlocationcode,ordertypeid,orderoriginid,preorderslotsettingid,waittimeid,ispickupplaterequested,modifiedby,minwaittime,maxwaittime,hasotherallergy,locationtype,islocked,notificationcount
+spark.src.table.query "order"
+spark.condition.column modifieddate
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+

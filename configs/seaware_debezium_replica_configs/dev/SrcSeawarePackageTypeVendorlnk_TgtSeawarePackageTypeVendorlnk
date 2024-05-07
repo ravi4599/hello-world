@@ -1,0 +1,31 @@
+spark.kafkabrokers 10.59.1.30:9092,10.59.1.31:9092,10.59.1.32:9092
+spark.kafka.zookeeper 10.59.1.30:2181,10.59.1.31:2181,10.59.1.32:2181
+
+
+spark.mpx.consumer spark-consumer-100
+
+spark.src.kafkatopic dev-gcp-dbz-sw.SEAWARE.PACKAGE_TYPE_VENDOR_LINK
+
+spark.src.config.id SrcSeawarePackageTypeVendorlnk
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtSeawarePackageTypeVendorlnk
+spark.target.lnd.table vv_db.hvtb_lnd_sw_rpl_package_type_vendor_link
+spark.target.parse.table vv_db.hvtb_parse_sw_rpl_package_type_vendor_link
+spark.ship.code SHORE
+
+spark.snapshot.table shipdw.hbtb_dbz_snapdate
+spark.metadata.con.format jdbc
+spark.metadata.offset.mode Append
+spark.metadata.offset.table shipdw.hbtb_streaming_ingestion_offset
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.snpsht.table.mode overwrite
+
+spark.source.columns  record_id,package_type,vendor_id,date_from,date_to,comments,op,ts_ms,voyageid,Batchtime,Part_Date
+
+spark.final.query select record_id,package_type,vendor_id,CAST(date_from/1000000 as timestamp) as date_from,CAST(date_to/1000000 as timestamp) as date_to,comments,op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date

@@ -1,0 +1,40 @@
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.src.config.id SrcPositionOrgUnitDetail
+spark.target.config.id TgtPositionOrgUnitDetailFact
+spark.parent.id SrcMxpPositionOrgUnits-TgtMxpPositionOrgUnits
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.lad.file false
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.sql select distinct position_org_unit.POSITION_ORG_UNIT_ID, dim_position.voyage_id as voyage_id, dim_position.position_skey, dim_org_unit.org_unit_skey, NVL(dim_position1.position_skey,-1) as parent_position_skey, NVL(dim_org_unit1.org_unit_skey,-1) as parent_org_unit_skey, position_org_unit.POSITION_HIERARCHY_LEVEL, dim_supervisor_group.supervisor_group_skey, CASE WHEN position_org_unit.ACTIVE = 0 THEN False ELSE True END as src_active_flag, CASE WHEN position_org_unit.REC_DELETED = 1 OR position_org_unit_detail.REC_DELETED = 1 THEN true ELSE false END as src_deleted_flag from (select POSITION_ORG_UNIT_ID, ORG_UNIT_ID, POSITION_ID, REC_DELETED, ACTIVE, LAST_CHANGED, PARENT_POSITION_ORG_UNIT_ID, POSITION_HIERARCHY_LEVEL from (select POSITION_ORG_UNIT_ID, ORG_UNIT_ID, POSITION_ID, REC_DELETED, ACTIVE, LAST_CHANGED, PARENT_POSITION_ORG_UNIT_ID, POSITION_HIERARCHY_LEVEL, row_number () over (PARTITION BY POSITION_ORG_UNIT_ID order by LAST_CHANGED desc) as rn from shipdw.hvtb_parse_mxp_position_org_units) org where rn = 1) position_org_unit left join shipdw.hvtb_mart_dim_position dim_position on (position_org_unit.POSITION_ID = dim_position.position_id) left join shipdw.hvtb_mart_dim_org_unit dim_org_unit on (position_org_unit.ORG_UNIT_ID = dim_org_unit.org_unit_id) left join (select POSITION_ORG_UNIT_DETAIL_ID, POSITION_ORG_UNIT_ID, REC_DELETED, LAST_CHANGED, CHANGED, DEFAULT_SUPERVISOR_GROUP_ID from (select POSITION_ORG_UNIT_DETAIL_ID, POSITION_ORG_UNIT_ID, REC_DELETED,  LAST_CHANGED, CHANGED, DEFAULT_SUPERVISOR_GROUP_ID, row_number () over (PARTITION BY POSITION_ORG_UNIT_DETAIL_ID order by LAST_CHANGED desc) as rn from shipdw.hvtb_parse_mxp_position_org_unit_detail) org where rn = 1) position_org_unit_detail on (position_org_unit.POSITION_ORG_UNIT_ID = position_org_unit_detail.POSITION_ORG_UNIT_ID) left join (select supervisor_group_id, supervisor_group_skey, src_deleted_flag  from shipdw.hvtb_mart_dim_supervisor_group where src_deleted_flag = false) dim_supervisor_group on (position_org_unit_detail.DEFAULT_SUPERVISOR_GROUP_ID = dim_supervisor_group.supervisor_group_id) left join (select position_org_unit1.POSITION_ORG_UNIT_ID, position_org_unit1.ORG_UNIT_ID, position_org_unit1.POSITION_ID, position_org_unit1.REC_DELETED, position_org_unit1.ACTIVE, position_org_unit1.LAST_CHANGED, position_org_unit1.PARENT_POSITION_ORG_UNIT_ID, position_org_unit1.POSITION_HIERARCHY_LEVEL from (select POSITION_ORG_UNIT_ID, ORG_UNIT_ID, POSITION_ID, REC_DELETED,  ACTIVE, LAST_CHANGED, PARENT_POSITION_ORG_UNIT_ID, POSITION_HIERARCHY_LEVEL from (select POSITION_ORG_UNIT_ID, ORG_UNIT_ID, POSITION_ID, REC_DELETED,  ACTIVE, LAST_CHANGED, PARENT_POSITION_ORG_UNIT_ID, POSITION_HIERARCHY_LEVEL, row_number () over (PARTITION BY POSITION_ORG_UNIT_ID order by LAST_CHANGED desc) as rn from shipdw.hvtb_parse_mxp_position_org_units) org  where rn = 1) position_org_unit1 join (select POSITION_ORG_UNIT_ID, ORG_UNIT_ID, POSITION_ID, REC_DELETED, ACTIVE, LAST_CHANGED, PARENT_POSITION_ORG_UNIT_ID,  POSITION_HIERARCHY_LEVEL from (select POSITION_ORG_UNIT_ID, ORG_UNIT_ID, POSITION_ID, REC_DELETED, ACTIVE, LAST_CHANGED, PARENT_POSITION_ORG_UNIT_ID,  POSITION_HIERARCHY_LEVEL, row_number () over (PARTITION BY POSITION_ORG_UNIT_ID order by LAST_CHANGED desc) as rn from shipdw.hvtb_parse_mxp_position_org_units) org where rn = 1) position_org_unit2 on  (position_org_unit1.PARENT_POSITION_ORG_UNIT_ID = position_org_unit2.PARENT_POSITION_ORG_UNIT_ID) ) position_org2 on (position_org_unit.POSITION_ORG_UNIT_ID = position_org2.POSITION_ORG_UNIT_ID) left join shipdw.hvtb_mart_dim_position dim_position1 on (position_org2.POSITION_ID = dim_position1.position_id) left join shipdw.hvtb_mart_dim_org_unit dim_org_unit1 on (position_org2.ORG_UNIT_ID = dim_org_unit1.org_unit_id)
+spark.source.columns voyage_id,position_skey,org_unit_skey,parent_position_skey,parent_org_unit_skey,position_hierarchy_level,supervisor_group_skey,src_active_flag,src_deleted_flag
+spark.pond.allColumns voyage_id as pond_voyage_id,position_skey as pond_position_skey,org_unit_skey as pond_org_unit_skey,parent_position_skey as pond_parent_position_skey,parent_org_unit_skey as pond_parent_org_unit_skey,position_hierarchy_level as pond_position_hierarchy_level,supervisor_group_skey as pond_supervisor_group_skey,src_active_flag as pond_src_active_flag,src_deleted_flag as pond_src_deleted_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_position_org_unit_detail
+#spark.postgresql.schema shipdw
+spark.target.table position_org_unit_detail_fact
+spark.source.primaryKeyColumns position_skey,org_unit_skey,supervisor_group_skey
+spark.target.final_collist final_view.voyage_id,final_view.position_skey,final_view.org_unit_skey,final_view.parent_position_skey,final_view.parent_org_unit_skey,final_view.position_hierarchy_level,final_view.supervisor_group_skey,final_view.src_active_flag,final_view.src_deleted_flag,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_fact_position_org_unit_detail
+spark.target.location /data/apps/nbx/mart/hvtb_mart_fact_position_org_unit_detail
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename position_org_unit_detail_fact
+spark.tableType FACT
+spark.frameworkEnv ship
+spark.factType Accu
+#----------------------LAD--------------------------------# 
+spark.ladjob.flag true
+spark.lad.srctablekey row_counter
+spark.lad.srctable shipdw.hvtb_parse_mxp_Position_Org_Units
+spark.lad.tgttable shipdw.hvtb_parse_mxp_Position_Org_Units_lad
+spark.lad.columns position_skey,org_unit_skey,supervisor_group_skey
+spark.ladremoval.flag false
+#----------------------------------------------------------# 
+

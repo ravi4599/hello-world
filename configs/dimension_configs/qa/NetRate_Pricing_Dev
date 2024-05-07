@@ -1,0 +1,17 @@
+spark.landing.table vv_db.hvtb_lnd_pricing_detail
+spark.custapi.url https://prod.virginvoyages.com/ota/rest/OTA_CruiseSailAvailRQ
+spark.hadoop.hive.execution.engine mr
+spark.maxdate.query Select sail_date_to  from vv_db.hvtb_nbx_core_sw_sail_dim sail inner join vv_db.hvtb_nbx_core_sw_ship_dim shipd on ( shipd.ship !='VC' and shipd.ship !='XE' and sail.ship_id == shipd.ship_id)
+spark.maxcutoff.months 24  
+spark.numadults.list 1,2,3,4
+spark.currency.list GBP,AUD
+spark.currency.value 39482,67548
+spark.target.table vv_db.hvtb_nbx_core_pricing_detail
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_nbx_core_pricing_detail
+spark.target.final gs://vv-cert-nbx-cluster/data/mart/hvtb_nbx_core_pricing_detail
+spark.noofDays 7
+spark.noofRecords 200
+
+
+
+

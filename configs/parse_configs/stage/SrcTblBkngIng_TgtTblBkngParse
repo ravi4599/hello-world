@@ -1,0 +1,12 @@
+spark.source.table select * from shipdw.hvtb_lnd_vxp_table_booking
+spark.tableDetail.target.table shipdw.hvtb_parse_vxp_table_detail 
+spark.booking.target.table shipdw.hvtb_parse_vxp_table_booking_detail
+spark.src.config.id SrcTblBkngIng
+spark.voyage.id SC2002269NCR 
+spark.tgt.env Stage
+spark.target.config.id TgtTblBkngParse
+spark.parent.id SrcVXPTableBkng-TgtVXPTableBkng-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure

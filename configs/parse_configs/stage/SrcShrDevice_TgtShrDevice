@@ -1,0 +1,10 @@
+spark.target.table shipdw.hvtb_parse_konami_vw_odbc_devicedata
+spark.src.config.id SrcKonamiDevice
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtKonamiDevice
+spark.parent.id SrcKDevice-TgtKDevice-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.4.100.154/hbase-unsecure

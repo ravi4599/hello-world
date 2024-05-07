@@ -1,0 +1,26 @@
+spark.src.config.id SrcVtsLookupSummaryFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtVtsLookupSummaryFact
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.table.type fact
+spark.api.env Prod
+spark.input.filepath gs://vv-prod-nbx-cluster/data/landing/vts/lookup_data_latest.csv
+spark.pond.database vv_db
+spark.pond.table hvtb_mart_vts_performance_targets_lkp
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_vts_performance_targets_lkp
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/vts/hvtb_mart_vts_performance_targets_lkp
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname vts_performance_targets_lkp_tmp
+spark.bq.permtblname vts_performance_targets_lkp
+spark.bq.viewname crm.vts_performance_targets_lkp
+spark.scdtype type1
+spark.tableType fact
+spark.frameworkEnv shore
+

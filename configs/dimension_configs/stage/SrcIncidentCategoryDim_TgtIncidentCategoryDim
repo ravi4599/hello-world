@@ -1,0 +1,32 @@
+spark.src.config.id SrcIncidentCategoryDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtIncidentCategoryDim
+spark.parent.id SrcHvVxpDxpIncidentCategory-TgtHvVxpDxpIncidentCategory
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.table.type   dim
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.source.sql select cat.incidentcategoryid as incident_category_id, cat.code as incident_category_code, cat.departmentcode as incident_category_dept_code, cat.namekey as incident_category_name, cat.dueinterval as incident_category_due_interval, cat.severity as incident_category_severity, pcat.code as incident_parent_category_code, pcat.namekey as incident_parent_category_name, cat.priority as incident_category_priority,cast(collect_set(typ.namekey) as string) as incident_category_types, cat.isactive as src_active_flg, cat.isdeleted as src_deleted_flg, cat.VoyageId as voyage_id , cat.ShipCode , cat.batchtime, cat.Part_date FROM (select * from (select *, row_number() over (partition by incidentcategoryid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_dxp_incidentcategory *whereclause*) where rn = 1 ) cat left join shipdw.hvtb_parse_vxp_dxp_incidentcategory pcat on cat.parentincidentcategoryid = pcat.incidentcategoryid join shipdw.hvtb_parse_vxp_dxp_incidentcategorymap map on map.incidentcategoryid = cat.incidentcategoryid join shipdw.hvtb_parse_vxp_dxp_incidentcategorytype typ on typ.incidentcategorytypeid = map.incidentcategorytypeid group by incident_category_id, incident_category_code, incident_category_dept_code, incident_category_name, incident_category_due_interval, incident_category_severity, incident_parent_category_code, incident_parent_category_name, incident_category_priority, src_active_flg, src_deleted_flg, voyage_id, cat.ShipCode,cat.batchtime,cat.Part_date 
+spark.source.columns incident_category_id,incident_category_code,incident_category_dept_code,incident_category_name,incident_category_due_interval,incident_category_severity,incident_parent_category_code,incident_parent_category_name,incident_category_priority,incident_category_types,src_active_flg,src_deleted_flg
+spark.surrogate_key.column incident_category_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_incident_category
+spark.pond.allColumns voyage_id  as pond_voyage_id,incident_category_skey as pond_incident_category_skey,incident_category_id as pond_incident_category_id,incident_category_code as pond_incident_category_code,incident_category_dept_code as pond_incident_category_dept_code,incident_category_name as pond_incident_category_name,incident_category_due_interval as pond_incident_category_due_interval,incident_category_severity as pond_incident_category_severity,incident_parent_category_code as pond_incident_parent_category_code,incident_parent_category_name as pond_incident_parent_category_name,incident_category_priority as pond_incident_category_priority,incident_category_types as pond_incident_category_types,src_active_flg as pond_src_active_flg,src_deleted_flg as pond_src_deleted_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.target.schema shipdw
+spark.target.table incident_category_dim
+spark.source.primaryKeyColumns incident_category_id
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.target.final_collist final_view.voyage_id,incident_category_skey,final_view.incident_category_id,final_view.incident_category_code,final_view.incident_category_dept_code,final_view.incident_category_name,final_view.incident_category_due_interval,final_view.incident_category_severity,final_view.incident_parent_category_code,final_view.incident_parent_category_name,final_view.incident_category_priority,final_view.incident_category_types,final_view.src_active_flg,final_view.src_deleted_flg,load_dt,upd_dt,primaryhash,md5_hash 
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_dim_incident_category
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_incident_category
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename incident_category_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore

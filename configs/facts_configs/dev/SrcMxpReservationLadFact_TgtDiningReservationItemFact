@@ -1,0 +1,63 @@
+spark.src.config.id SrcMxpReservationLAD
+spark.voyage.id SC2002269NCR
+spark.tgt.env dev
+spark.api.env dev
+spark.target.config.id TgtDiningReservationItemFact
+spark.parent.id SrcHvReservation-TgtHvReservation
+
+
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.ing.type Fact
+
+#spark.source.sql select * from (select NVL(voyage_dim.voyage_skey, -1) as voyage_skey, NVL(voyage_dim.ship_code,-1) as ship_code, NVL(dining_res.dining_reservation_detail_skey,-1) as dining_reservation_detail_skey, NVL(dining_menu.dining_menu_skey , -1) as dining_menu_skey, NVl(dining_menu_item.dining_menu_item_skey, -1)  as dining_menu_item_skey, -1  as sale_detail_dim_skey, -1   as pos_item_skey, res.ItemOrderedAtTime as dining_item_ordered_datetime, res.ItemServedAtTime as dining_item_served_datetime, unix_timestamp(res.ItemServedAtTime)-unix_timestamp(res.ItemOrderedAtTime) as dining_item_fulfillment_time_in_seconds, res.ItemCategory as meal_period_name, case when res.GUEST_ORDER_STATUS_ID = 1 then 'open' when res.GUEST_ORDER_STATUS_ID = 3 then 'closed' else res.GUEST_ORDER_STATUS_ID end as dining_guest_order_status, res.VoyageId as voyage_id, res.BatchTime as batchtime,res.Part_Date as part_date,res.ReservationID as ReservationID from (select * from (select * ,row_number() over(partition by ReservationID order by PartyCheckoutTime desc) rn from shipdw.hvtb_parse_mxp_vvirgin_reservations_lad) where rn = 1) res left join shipdw.hvtb_mart_dim_voyage voyage_dim on res.VoyageNumber = voyage_dim.voyage_number left join shipdw.hvtb_mart_dim_dining_reservation_detail dining_res on upper(res.ReservationID) = upper(dining_res.dining_reservation_id) left join shipdw.hvtb_mart_dim_dining_menu dining_menu on res.MenuGUID = dining_menu.dining_menu_id left join shipdw.hvtb_mart_dim_dining_menu_item dining_menu_item on res.ItemCode = dining_menu_item.dining_menu_item_code)
+
+spark.source.sql  select * from (select NVL(voyage_dim.voyage_skey, -1) as voyage_skey, NVL(voyage_dim.ship_code,-1) as ship_code, NVL(dining_res.dining_reservation_detail_skey,-1) as dining_reservation_detail_skey, NVL(dining_menu.dining_menu_skey , -1) as dining_menu_skey, NVl(dining_menu_item.dining_menu_item_skey, -1) as dining_menu_item_skey, -1 as sale_detail_dim_skey, -1 as pos_item_skey, res.ItemOrderedAtTime as dining_item_ordered_datetime, res.ItemServedAtTime as dining_item_served_datetime, unix_timestamp(res.ItemServedAtTime)-unix_timestamp(res.ItemOrderedAtTime) as dining_item_fulfillment_time_in_seconds, res.ItemCategory as meal_period_name, case when res.GUEST_ORDER_STATUS_ID = 1 then 'open' when res.GUEST_ORDER_STATUS_ID = 3 then 'closed' else res.GUEST_ORDER_STATUS_ID end as dining_guest_order_status, res.VoyageId as voyage_id, res.BatchTime as batchtime,res.Part_Date as part_date,res.ReservationID as ReservationID from (select * from (select * ,row_number() over(partition by ReservationID,TableID,ItemCode order by PartyCheckoutTime desc) rn from shipdw.hvtb_parse_mxp_vvirgin_reservations_lad where PartyCheckoutTime is not null) where rn = 1) res left join shipdw.hvtb_mart_dim_voyage voyage_dim on res.VoyageNumber = voyage_dim.voyage_number left join shipdw.hvtb_mart_dim_dining_reservation_detail dining_res on upper(res.ReservationID) = upper(dining_res.dining_reservation_id) left join shipdw.hvtb_mart_dim_dining_menu dining_menu on res.MenuGUID = dining_menu.dining_menu_id left join shipdw.hvtb_mart_dim_dining_menu_item dining_menu_item on res.ItemCode = dining_menu_item.dining_menu_item_code)
+
+spark.source.columns voyage_id,voyage_skey,ship_code,dining_reservation_detail_skey,dining_menu_skey,dining_menu_item_skey,sale_detail_dim_skey,pos_item_skey,dining_item_ordered_datetime,dining_item_served_datetime,dining_item_fulfillment_time_in_seconds,meal_period_name,dining_guest_order_status
+
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_dining_reservation_item
+spark.target.table dining_reservation_item_fact
+spark.source.primaryKeyColumns voyage_id
+spark.lad.file true
+spark.pond.allColumns voyage_id as pond_voyage_id,voyage_skey as pond_voyage_skey,ship_code as pond_ship_code,dining_reservation_detail_skey as pond_dining_reservation_detail_skey,dining_menu_skey as pond_dining_menu_skey,dining_menu_item_skey as pond_dining_menu_item_skey,sale_detail_dim_skey as pond_sale_detail_dim_skey,pos_item_skey as pond_pos_item_skey,dining_item_ordered_datetime as pond_dining_item_ordered_datetime,dining_item_served_datetime as pond_dining_item_served_datetime,dining_item_fulfillment_time_in_seconds as pond_dining_item_fulfillment_time_in_seconds,meal_period_name as pond_meal_period_name,dining_guest_order_status as pond_dining_guest_order_status,load_dt as pond_load_dt,upd_dt as pond_upd_dt,part_dt as pond_part_dt
+
+spark.target.final_collist final_view.voyage_id,final_view.voyage_skey,final_view.ship_code,final_view.dining_reservation_detail_skey,final_view.dining_menu_skey,final_view.dining_menu_item_skey,final_view.sale_detail_dim_skey,final_view.pos_item_skey,final_view.dining_item_ordered_datetime,final_view.dining_item_served_datetime,final_view.dining_item_fulfillment_time_in_seconds,final_view.meal_period_name,final_view.dining_guest_order_status,final_view.load_dt,final_view.upd_dt,final_view.part_dt
+
+spark.target.temp s3://vv-prod-emr-cluster/data/temp/hvtb_mart_fact_dining_reservation_item
+spark.target.location s3://vv-prod-emr-cluster/data/mart/hvtb_mart_fact_dining_reservation_item
+
+
+
+
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_fact_dining_reservation_item
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_dining_reservation_item
+
+
+
+spark.bq.dataset hive_schema_stg
+spark.bq.permtblname dining_reservation_item_fact
+spark.bq.temptblname dining_reservation_item_fact_tmp
+spark.bq.viewname    shipdw.dining_reservation_item_fact
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.factType Accu
+
+
+#-------------- LAD ----------------------------------------------------------#
+spark.ladjob.flag true
+spark.lad.srctablekey ReservationID
+spark.lad.srctable shipdw.hvtb_parse_mxp_vvirgin_reservations
+spark.lad.tgttable shipdw.hvtb_parse_mxp_vvirgin_reservations_lad
+spark.lad.columns voyage_skey,dining_reservation_detail_skey
+spark.ladremoval.flag true
+
+

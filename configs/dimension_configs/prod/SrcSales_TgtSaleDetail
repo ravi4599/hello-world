@@ -1,0 +1,45 @@
+spark.src.config.id SrcSalesPos
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtSaleDetail
+spark.parent.id SrcMxpChecks-TgtMxpChecks
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.15.2.206:2181/hbase-unsecure
+
+spark.table.type dim
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+
+
+spark.source.sql select check_id as sale_id,check_status,receipt_nr as receipt_number,operator_nr as sale_operator_num,operator_name as sale_operator_name,period.period_code as sales_voyagenumber, sales_group_desc as sale_group_description ,batchtime,part_date,voyageid as voyage_id from ( select * from ( select sales_group_id,operator_id,receipt_nr,check_status,check_id , rec_changed , sales_group_id ,period_id,batchtime,part_date,voyageid, row_number() over ( partition by check_id order by rec_changed desc ) rn from shipdw.hvtb_parse_mxp_checks ) where rn = 1 and check_status in ('C', 'V')) checks left join (select * from (select period_code,period_id,rec_deleted, row_number() over ( partition by period_id order by rec_changed desc) rn from shipdw.hvtb_parse_mxp_periods ) a where rn = 1  ) period on checks.period_id = period.period_id and period.rec_deleted=0 left join (select * from (select operator_nr,operator_name,operator_id,rec_deleted ,row_number() over ( partition by operator_id order by rec_changed desc) rn from shipdw.hvtb_parse_mxp_operators ) where rn = 1  ) operators on checks.operator_id=operators.operator_id and operators.rec_deleted=0 left join (select * from (select sales_group_desc,sales_group_id,rec_deleted, row_number() over ( partition by sales_group_id order by rec_changed desc) rn from  shipdw.hvtb_parse_mxp_pos_sales_groups ) where rn = 1  ) sales_groups on checks.sales_group_id = sales_groups.sales_group_id and sales_groups.rec_deleted=0
+
+spark.source.columns voyage_id,batchtime,part_date,sale_id,sale_operator_num,sale_operator_name,receipt_number,check_status,sales_voyagenumber,sale_group_description
+
+spark.pond.allColumns sale_detail_skey as pond_sale_detail_skey, voyage_id as pond_voyage_id, sale_id as pond_sale_id, sale_operator_num as pond_sale_operator_num,sale_operator_name as pond_sale_operator_name,receipt_number as pond_receipt_number,check_status as pond_check_status,sales_voyagenumber as pond_sales_voyagenumber,sale_group_description as pond_sale_group_description,load_dt as pond_load_dt,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+    
+
+spark.surrogate_key.column sale_detail_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_pos_sale_detail
+spark.source.primaryKeyColumns sale_id
+
+spark.target.final_collist final_view.sale_detail_skey as sale_detail_skey,final_view.voyage_id as voyage_id,final_view.sale_id as sale_id , cast(final_view.sale_operator_num as int) as sale_operator_num  ,final_view.sale_operator_name as sale_operator_name, NVL(final_view.receipt_number,0) as  receipt_number,final_view.check_status as  check_status,final_view.sales_voyagenumber as sales_voyagenumber,final_view.sale_group_description,load_dt, upd_dt, primaryhash, md5_hash
+
+
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_pos_sale_detail
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_pos_sale_detail
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname sale_detail_pos_dim_tmp
+spark.bq.permtblname sale_detail_pos_dim
+spark.bq.viewname shipdw.sale_detail_pos_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr

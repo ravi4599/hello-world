@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.RES_PACKAGE
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT RES_PACKAGE_ID, START_DATE, END_DATE, EFFECTIVE_DATE, RES_ID, GUEST_ID, PACKAGE_TYPE, PACKAGE_ID, IS_PRICEABLE, DEP_REF_ID, ARR_REF_ID, SHIP_CODE, CABIN_CATEGORY, CABIN_CATEGORY_BERTH, CABIN_SEQ_NUMBERS, PACKAGE_CLASS, HOTEL_REQUEST_ID, RES_ADDON_ID, DINING_REQUEST_ID, CAR_REQ_LEG_ID, SHIPROOM_REQUEST_ID, PACKAGE_STATUS, PPS_CARD_OWNER_ID, COMMENT_ID, IS_NO_SHOW, CAB_CTG_UPG_PROMO, PLACE_COUNT, PARENT_GUEST_ID, SRC_PACKAGE_ID, SRC_DEP_REF_ID, SRC_PACKAGE_CLASS, SRC_ARR_REF_ID, SRC_LINK_DESCRIPTION, RES_PRODUCT_ID, PLACE_COUNT_RESERVED, SOURCE_CODE, AIR_PRODUCT_ID, TRANSFER_REQUEST_ID, EXTRA_GUEST_COUNT, RES_TOUR_ITEM_ID, EXT_COMP_ID FROM SEAWARE.RES_PACKAGE)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_res_package
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/RES_PACKAGE
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_res_package/
+
+spark.hadoop.hive.execution.engine mr

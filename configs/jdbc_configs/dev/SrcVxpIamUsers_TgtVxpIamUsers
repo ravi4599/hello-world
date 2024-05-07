@@ -1,0 +1,33 @@
+#source postgres database,table and connection details
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.58.10.21:5432/identityaccessmanagement
+spark.src.user pgreadaccessuser
+spark.src.password TRk1JhJn1SstFUnCZ2Xx
+spark.src.con.driver org.postgresql.Driver
+#Unique constant for Batchid
+spark.src.config.id SrcVxpIamUsers
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpIamUsers
+spark.tgt.env DEV
+spark.ing.type Ingestion
+#Metadbta Hbase table and connection details
+spark.target.table shipdw.hvtb_lnd_vxp_iam_users
+spark.target.hive.table shipdw.hvtb_lnd_vxp_iam_users
+spark.src.table.query "users"
+spark.condition.column lastmodifieddate
+spark.source.columns username,password,companyid ,useremail ,usertype ,accountnonexpired ,accountnonlocked ,credentialsnonexpired ,enabled ,pin , usercontactnumber ,addeddate , addedby ,lastmodifieddate ,lastmodifiedby ,ispasswordresetrequired ,userguid ,passwordresetexpirytime , passwordresetid , emailverificationid , emailverificationexpirytime ,emailverificationstatus
+spark.source.query username,password,companyid ,useremail ,usertype ,accountnonexpired ,accountnonlocked ,credentialsnonexpired ,enabled ,pin , usercontactnumber ,addeddate , addedby ,lastmodifieddate ,lastmodifiedby ,ispasswordresetrequired ,userguid ,passwordresetexpirytime , passwordresetid , emailverificationid , emailverificationexpirytime ,emailverificationstatus
+#spark.tz.columns property to change all the timestampz columns to UTC
+spark.tz.columns addeddate,lastmodifieddate
+spark.source.zone EST
+spark.ship.code SHORE
+ 
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.target.location gs://vv-dev-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_iam_users
+

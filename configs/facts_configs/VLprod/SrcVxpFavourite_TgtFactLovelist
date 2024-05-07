@@ -1,0 +1,37 @@
+spark.tgt.env Prod
+spark.src.config.id SrcVxpFavourite
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtFactLovelist
+spark.parent.id SrcVxpDcpFavourite-TgtVxpDcpFavourite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type fact
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.sql select * from (select part_date,batchtime,vxp_favourite_dis.voyage_id,NVL(activity_skey,-1) as activity_skey,favouriteid as src_favouriteid,NVL(dim_voyage.voyage_skey,-1) as voyage_skey,dim_voyage.ship_code,NVL(person_skey,-1)as person_skey ,lovelisted_datetime_utc,vxp_favourite_dis.src_deleted_flag,src_lastmodified_datetime_utc from(select * from (select addeddate as lovelisted_datetime_utc,isdeleted as src_deleted_flag,lastmodifieddate as src_lastmodified_datetime_utc,referencecode,reservationguestid,voyageid as voyage_id ,favouriteid as src_favouriteid ,part_date,batchtime,favouriteid,row_number()over(partition by favouriteid order by lastmodifieddate desc) as rn from shipdw.hvtb_parse_vxp_favourite)vxp_favourite where vxp_favourite.rn=1)vxp_favourite_dis left join shipdw.hvtb_mart_dim_person dim_person on(lower(reservationguestid)==lower(reservationguest_guid)) left join shipdw.hvtb_mart_dim_voyage dim_voyage on (dim_voyage.voyage_skey==dim_person.voyage_skey) left join shipdw.hvtb_mart_dim_activity dim_activity on(lower(vxp_favourite_dis.referencecode)==lower(dim_activity.activity_code)))lovefact *whereclause*
+ 
+spark.source.columns voyage_id,src_favouriteid,ship_code,voyage_skey,person_skey,activity_skey,lovelisted_datetime_utc,src_deleted_flag,src_lastmodified_datetime_utc,batchtime,part_date
+ 
+spark.pond.allColumns voyage_id as pond_voyage_id,src_favouriteid as pond_src_favouriteid,ship_code as pond_ship_code,voyage_skey as pond_voyage_skey,person_skey as pond_person_skey,activity_skey as pond_activity_skey,lovelisted_datetime_utc as pond_lovelisted_datetime_utc,src_deleted_flag as pond_src_deleted_flag,src_lastmodified_datetime_utc as pond_src_lastmodified_datetime_utc,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+ 
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_sailor_lovelist
+spark.postgresql.schema shipdw
+ 
+spark.source.primaryKeyColumns voyage_skey
+spark.target.final_collist final_view.voyage_id as voyage_id,final_view.src_favouriteid as src_favouriteid,final_view.ship_code as ship_code,final_view.voyage_skey as voyage_skey,final_view.person_skey as person_skey,final_view.activity_skey as activity_skey,final_view.lovelisted_datetime_utc as lovelisted_datetime_utc,final_view.src_deleted_flag as src_deleted_flag,final_view.src_lastmodified_datetime_utc as src_lastmodified_datetime_utc,final_view.load_dt, final_view.upd_dt, final_view.primaryhash, final_view.md5_hash, final_view.part_dt
+ 
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_fact_sailor_lovelist
+spark.target.location /data/apps/nbx/mart/hvtb_mart_fact_sailor_lovelist
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename sailor_lovelist_fact
+ 
+spark.tableType FACT
+spark.frameworkEnv ship
+spark.factType Accu
+spark.ship.code VAL
+

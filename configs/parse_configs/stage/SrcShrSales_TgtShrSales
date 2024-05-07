@@ -1,0 +1,16 @@
+spark.source.table select * from shipdw.hvtb_lnd_mxp_ship_pos_mxp_sales_stream_mxp
+spark.target.salesitem.table  shipdw.hvtb_parse_mxp_pos_sales
+spark.target.checkdetails.table  shipdw.hvtb_parse_mxp_shore_pos_sales_checkdetails
+spark.target.costgood.table shipdw.hvtb_parse_mxp_shore_pos_sales_costofgood
+spark.salesitem.target.location s3://vv-staging-emr-cluster/data/parse/mxp/hvtb_parse_mxp_pos_sales 
+spark.cdetails.target.location s3://vv-staging-emr-cluster/data/parse/mxp/hvtb_parse_mxp_shore_pos_sales_checkdetails 
+spark.goods.target.location s3://vv-staging-emr-cluster/data/parse/mxp/hvtb_parse_mxp_shore_pos_sales_costofgood 
+spark.src.config.id SrcShrPosSales
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtShrPOsSales
+spark.parent.id SrcMXPPosSales-TgtMXPPosSales-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.4.100.154/hbase-unsecure

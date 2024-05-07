@@ -1,0 +1,34 @@
+spark.src.config.id	SrcIncident 
+spark.voyage.id	SC2002269NCR 
+spark.tgt.env Prod
+spark.ing.type Dim
+spark.target.config.id TgtIncidentDetailDim
+spark.parent.id	SrcVxpDxpIncident-TgtVxpDxpIncident 
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.sql SELECT    VoyageId AS voyage_id,   incidentid AS incident_id,   description AS incident_description,   comment AS incident_comment,   incidentreferenceid AS incident_reference_id,   externalreferenceid AS incident_external_reference_id,   resolutionamount AS incident_resolution_amount,   currencycode AS incident_resolution_amount_currency,   reportertype AS incident_reporter_type,   resolutiondescription AS incident_resolution_description,   isnotify AS incident_notify_flg,   raisedbynotes AS incident_raised_by_notes,   attendedbynotes AS incident_attended_by_notes,   priority AS incident_priority,   severity AS incident_severity,   score AS incident_score,   statuschangeddate AS incident_status_changed_datetime_utc,   CAST(unix_timestamp(statuschangeddate) + statuschangeddateoffset * 60 AS TIMESTAMP) AS incident_status_changed_datetime,   batchtime,    Part_Date  FROM (SELECT * FROM (     SELECT VoyageId, incidentid, description, comment, incidentreferenceid, externalreferenceid, resolutionamount, currencycode, reportertype, resolutiondescription, isnotify, raisedbynotes, attendedbynotes, priority, severity, score, statuschangeddate, statuschangeddateoffset, batchtime, Part_Date, row_number() over (partition by incidentid order by lastmodifieddate desc) as rn FROM shipdw.hvtb_parse_vxp_dxp_incident ) WHERE rn = 1)
+spark.source.columns voyage_id,incident_id,incident_description,incident_comment,incident_reference_id,incident_external_reference_id,incident_resolution_amount,incident_resolution_amount_currency,incident_reporter_type,incident_resolution_description,incident_notify_flg,incident_raised_by_notes,incident_attended_by_notes,incident_priority,incident_severity,incident_score,incident_status_changed_datetime_utc,incident_status_changed_datetime,batchtime
+spark.pond.allColumns voyage_id AS pond_voyage_id,incident_detail_skey AS pond_incident_detail_skey,incident_id AS pond_incident_id,incident_description AS pond_incident_description,incident_comment AS pond_incident_comment,incident_reference_id AS pond_incident_reference_id,incident_external_reference_id AS pond_incident_external_reference_id,incident_resolution_amount AS pond_incident_resolution_amount,incident_resolution_amount_currency AS pond_incident_resolution_amount_currency,incident_reporter_type AS pond_incident_reporter_type,incident_resolution_description AS pond_incident_resolution_description,incident_notify_flg AS pond_incident_notify_flg,incident_raised_by_notes AS pond_incident_raised_by_notes,incident_attended_by_notes AS pond_incident_attended_by_notes,incident_priority AS pond_incident_priority,incident_severity AS pond_incident_severity,incident_score AS pond_incident_score,incident_status_changed_datetime_utc AS pond_incident_status_changed_datetime_utc,incident_status_changed_datetime AS pond_incident_status_changed_datetime,load_dt AS pond_load_dt,upd_dt AS pond_upd_dt,primaryhash AS pond_primaryhash,md5_hash AS pond_md5_hash
+spark.surrogate_key.column incident_detail_skey
+spark.pond.database	shipdw 
+spark.pond.table hvtb_mart_dim_incident_detail
+spark.target.schema	shipdw 
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename incident_detail_dim
+spark.source.primaryKeyColumns incident_id
+spark.target.final_collist final_view.voyage_id,incident_detail_skey,final_view.incident_id,final_view.incident_description,final_view.incident_comment,final_view.incident_reference_id,final_view.incident_external_reference_id,final_view.incident_resolution_amount,final_view.incident_resolution_amount_currency,final_view.incident_reporter_type,final_view.incident_resolution_description,final_view.incident_notify_flg,final_view.incident_raised_by_notes,final_view.incident_attended_by_notes,final_view.incident_priority,final_view.incident_severity,final_view.incident_score,final_view.incident_status_changed_datetime_utc,final_view.incident_status_changed_datetime,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_incident_detail
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_incident_detail
+spark.target.schema	Hive_schema_stg 
+spark.postgres.tablename incident_detail_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+

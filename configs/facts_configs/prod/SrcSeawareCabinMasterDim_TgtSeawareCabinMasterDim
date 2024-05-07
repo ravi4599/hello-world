@@ -1,0 +1,51 @@
+spark.src.config.id SrcSeawareCabinMasterDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtSeawareCabinMasterDim
+spark.parent.id SrcSeawareShipCabin-TgtSeawareShipCabin
+
+spark.table.type dim
+#spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.source.sql select sh_cab.cabin_number as cabin_number,sh_cab.cabin_id as cabin_id , sh_cab.ship_code as ship, sh_cab.deck_number as deck_number, sh_cab.cabin_name as cabin_name, sh_cab.cabin_rank as cabin_rank, cab_cat.cabin_category as cabin_category, cab_cat.comments as cabin_category_desc, cab_cat.cabin_category_rank as cabin_category_rank, cat_gen.cabin_category_generic, cat_gen.rank as cabin_category_generic_rank, cab_cat.cabin_capacity as cabin_capacity, sh_cab.batchtime as batchtime, current_timestamp as rec_start_dttm,case when sh_cab.op == 'd' then current_timestamp else to_timestamp('9999-12-31 00:00:00') end as rec_end_dttm,sh_cab.part_date as part_date from (select * from (select cabin_number,cabin_id, ship_code, deck_number, cabin_name, cabin_rank, cabin_id,batchtime,op,Part_date,row_number() over(partition by cabin_id order by ts_ms desc,lsn desc) rn from vv_db.hvtb_parse_sw_rpl_ship_cabin) where rn=1) sh_cab left join (select * from (select cabin_number,eff_sail_to,is_active,ship_code,cabin_category,record_id,row_number() over(partition by record_id order by ts_ms desc,lsn desc) rn from vv_db.hvtb_nbx_parse_sw_rpl_ship_cabin_ctg_link) where rn=1) cab_cat_lk on sh_cab.cabin_number = cab_cat_lk.cabin_number and sh_cab.ship_code = cab_cat_lk.ship_code and cab_cat_lk.is_active = 'Y' and cab_cat_lk.eff_sail_to = '2099-12-31 00:00:00' left join (select * from (select cabin_category,cabin_category_id, ship_code,comments,cabin_category_rank,cabin_capacity,is_active,row_number() over(partition by cabin_category_id order by ts_ms desc,lsn desc) rn from vv_db.hvtb_parse_sw_cabin_category) where rn=1) cab_cat on cab_cat.cabin_category = cab_cat_lk.cabin_category and cab_cat.ship_code = cab_cat_lk.ship_code and cab_cat.is_active = 'Y' left join (select * from (select cabin_category,eff_date_to, record_id,ship_code,cabin_category_generic,row_number() over(partition by record_id order by ts_ms desc,lsn desc) rn from vv_db.hvtb_nbx_parse_sw_rpl_cabin_cat_gen_lnk_cabin_cat) where rn=1) cab_cat_gen_lk on cab_cat_gen_lk.cabin_category = cab_cat.cabin_category and cab_cat_gen_lk.ship_code = cab_cat.ship_code and ( cab_cat_gen_lk.eff_date_to )  like '2099%' left join (select * from (select cabin_category_generic,rank,record_id,row_number() over(partition by record_id order by ts_ms desc,lsn desc) rn from vv_db.hvtb_nbx_parse_sw_rpl_cabin_category_generic) where rn=1) cat_gen on cat_gen.cabin_category_generic = cab_cat_gen_lk.cabin_category_generic
+
+spark.source.columns cabin_number,ship,deck_number,cabin_name,cabin_rank,cabin_category,cabin_category_desc,cabin_category_rank,cabin_category_generic,rank,cabin_capacity
+ 
+ 
+spark.pond.allColumns cabin_id as pond_cabin_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,cabin_number as pond_cabin_number,ship as pond_ship, deck_number as pond_deck_number,cabin_name as pond_cabin_name,cabin_rank as pond_cabin_rank,cabin_category as pond_cabin_category,cabin_category_desc as pond_cabin_category_desc,cabin_category_rank as pond_cabin_category_rank, cabin_category_generic as pond_cabin_category_generic,cabin_category_generic_rank as pond_cabin_category_generic_rank,cabin_capacity as pond_cabin_capacity,etl_ld_status as pond_etl_ld_status,load_dt as pond_load_dt, upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+ 
+spark.surrogate_key.column cabin_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_cabin_master_dim
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_cabin_master_dim
+spark.source.primaryKeyColumns cabin_number,ship
+ 
+ 
+spark.target.final_collist final_view.cabin_id as cabin_id,final_view.rec_start_dttm as rec_start_dttm,final_view.rec_end_dttm as rec_end_dttm, final_view.cabin_number as cabin_number,final_view.ship as ship, final_view.deck_number as deck_number,final_view.cabin_name as cabin_name,final_view.cabin_rank as cabin_rank, final_view.cabin_category as cabin_category,final_view.cabin_category_desc as cabin_category_desc,final_view.cabin_category_rank as cabin_category_rank, cabin_category_generic as cabin_category_generic,final_view.cabin_category_generic_rank as cabin_category_generic_rank, final_view.cabin_capacity as cabin_capacity,final_view.etl_ld_status as etl_ld_status,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash, final_view.md5_hash
+ 
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_nbx_core_sw_cabin_master_dim
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_cabin_master_dim
+ 
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_cabin_master_dim_tmp
+spark.bq.permtblname seaware_cabin_master_dim
+spark.bq.viewname seaware.seaware_cabin_master_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage
+ 
+ 
+#spark.talent.dependencyflag true
+spark.load.frequency SW_rpl_daily
+spark.hadoop.hive.execution.engine mr
+

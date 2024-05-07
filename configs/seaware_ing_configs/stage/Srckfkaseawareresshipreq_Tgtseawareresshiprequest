@@ -1,0 +1,29 @@
+spark.kafkabrokers 10.7.3.103:9092,10.7.11.112:9092,10.7.12.61:9092
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.jks
+spark.passvalue virgin*2020
+spark.debug.flag TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic dbz.sw.SEAWARE.RES_SHIP_REQUEST
+spark.src.personOffSet earliest
+spark.kafka.zookeeper 10.7.12.61:2181
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.snapshot.table HBTB_DBZ_SNAPDATE
+
+spark.src.config.id SrcSeawareResShipRequest
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtSeawareResShipRequest
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+spark.target.lnd.table vv_db.hvtb_lnd_sw_rpl_res_ship_request
+spark.target.parse.table vv_db.hvtb_parse_sw_rpl_res_ship_request
+spark.ship.code SHORE
+spark.stop.flag N
+spark.debug.flag true

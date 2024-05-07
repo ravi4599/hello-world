@@ -1,0 +1,15 @@
+spark.src.config.id Srcshrfoodnbevorder
+spark.voyage.id SC2002269NCR
+spark.tgt.env stage
+spark.target.config.id Tgtshrfoodnbevorder
+spark.parent.id Srckfkafoodnbevorder-TgtHvFoodnbevorder-SC2002269NCR
+spark.source.table select * from shipdw.hvtb_lnd_vxp_foodnbev_order
+spark.target.table shipdw.hvtb_parse_vxp_foodnbev_order
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.kafka.zookeeper 10.7.12.61:2181
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure

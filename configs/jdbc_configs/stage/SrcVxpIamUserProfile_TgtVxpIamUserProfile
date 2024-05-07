@@ -1,0 +1,28 @@
+#source postgres database,table and connection details
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://vv-stage-vxp-pgdb.cz4e2a1fysom.us-east-1.rds.amazonaws.com/identityaccessmanagement
+spark.src.user pgreadaccessuser
+spark.src.password mvsZ72sVq75KARjLhK9D
+spark.src.con.driver org.postgresql.Driver
+#Unique constant for Batchid
+spark.src.config.id SrcVxpIamUserProfile
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpIamUserProfile
+spark.tgt.env Stage
+#Metadbta Hbase table and connection details
+spark.target.location s3://vv-staging-emr-cluster/data/landing/VXP/hvtb_lnd_vxp_iam_userprofile
+spark.target.hive.table shipdw.hvtb_lnd_vxp_iam_userprofile
+spark.target.table shipdw.hvtb_lnd_vxp_iam_userprofile
+spark.src.table.query "userprofile"
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.condition.column lastmodifieddate
+spark.source.columns userprofileid,userid,titlecode,firstname,middlename,lastname,nickname,preferredname,suffixcode,birthdate,gendercode,email,mediaitemid,maritalstatuscode,occupation,birthcountrycode,citizenshipcountrycode,preferredlanguage,phonecountrycode,phonenumber,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby,personid,persontypecode
+spark.source.query userprofileid,userid,titlecode,firstname,middlename,lastname,nickname,preferredname,suffixcode,birthdate,gendercode,email,mediaitemid,maritalstatuscode,occupation,birthcountrycode,citizenshipcountrycode,preferredlanguage,phonecountrycode,phonenumber,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby,personid,persontypecode
+#spark.tz.columns property to change all the timestampz columns to UTC
+spark.tz.columns addeddate,lastmodifieddate
+spark.source.zone EST
+spark.ship.code SHORE
+

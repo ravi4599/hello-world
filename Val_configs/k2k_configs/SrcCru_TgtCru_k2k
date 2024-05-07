@@ -1,0 +1,35 @@
+spark.shipFlag N
+spark.debugFlag N
+spark.shore.seconds 30
+spark.target.coalesce.value 3
+spark.shipCodeColumn Shipcode
+spark.shipCode VL
+spark.src.voyageid VAL2002269NCR
+spark.source.sslflag false
+spark.source.kafkabrokers 10.102.220.205:9094,10.102.220.206:9094,10.102.220.207:9094
+spark.source.consumer SrcMXPCruiseVL_k2k-TgtMXPCruiseVL_k2k-100
+spark.source.topicname cruise-mxp.cruise_roll
+spark.src.table.type KAFKA
+spark.target.sslflag false
+spark.target.kafkabrokers prodkafka1.gcp.virginvoyages.com:9092,prodkafka2.gcp.virginvoyages.com:9092,prodkafka3.gcp.virginvoyages.com:9092
+spark.target.topicname shp2shr-ship-cruise-mxp.cruise_roll
+spark.kafka.zookeeper 10.102.220.205:2181
+spark.src.config.id SrcMXPCruiseVL_k2k
+spark.target.config.id TgtMXPCruiseVL_k2k
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.isfullrefresh yes
+spark.metadata.offset.table shipdw.hbtb_nbx_kafka_streaming_offset
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.con.format jdbc
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.ops.table.mode append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.hadoop.hive.execution.engine mr
+spark.stop.flag Y
+
+
+spark.stop.trgFile Y
+spark.trgFileName hdfs://prd-nbx-gcp-dp-15-hive/data/streamingtriggers/SrcCru_TgtCru_k2k.trg

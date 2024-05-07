@@ -1,0 +1,37 @@
+spark.src.config.id SrcOrderDetailDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtOrderDetailDim
+spark.parent.id SrcVxpOrder-TgtVxpOrder
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.source.sql select NVL(A.VoyageId,-1) as voyage_id, A.orderID as order_id, B.name as order_venue_name,C.ordertypeid as order_type_id, c.name as order_type_name, D.name as order_category, A.status as order_status_num,  (CASE when A.status = 1 then 'Received' when A.status = 2 then 'Prepared' when A.status = 3 then 'Bumped' when A.status = 4 then 'Delivered' when A.status = 5 then 'Canceled' when A.status = 21 then 'PreOrderScheduled' else null end) as order_status_desc, A.ordernumber as order_number, A.BatchTime, A.Part_Date from shipdw.hvtb_parse_vxp_foodnbev_order A left outer join  shipdw.hvtb_parse_vxp_foodnbev_venue B on A.venueID = B.venueid left outer join shipdw.hvtb_parse_vxp_foodnbev_ordertype C  on A.ordertypeid = C.ordertypeid left outer join  shipdw.hvtb_parse_vxp_foodnbev_orderorigin D on A.orderoriginid = D.orderoriginid where A.status !=0
+spark.source.columns voyage_id,order_id,order_venue_name,order_type_id,order_type_name,order_category,order_status_num,order_status_desc,order_number
+spark.pond.allColumns order_detail_skey as pond_order_detail_skey,voyage_id as pond_voyage_id,order_id as pond_order_id,order_venue_name as pond_order_venue_name,order_type_id as pond_order_type_id,order_type_name as pond_order_type_name,order_category as pond_order_category,order_status_num as pond_order_status_num,order_status_desc as pond_order_status_desc,order_number as pond_order_number,load_dt as pond_load_dt,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+spark.surrogate_key.column order_detail_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_order_detail
+spark.postgresql.schema Hive_schema_stg
+spark.target.table hvtb_mart_dim_order_detail
+spark.source.primaryKeyColumns order_id
+spark.pond.primaryKeyColumns voyage_id,pond_order_id
+spark.scdtype type1
+spark.frameworkEnv ship
+spark.target.final_collist order_detail_skey,final_view.voyage_id,final_view.order_id,final_view.order_venue_name,final_view.order_type_id,final_view.order_type_name,final_view.order_category,final_view.order_status_num,final_view.order_status_desc,final_view.order_number,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_restriction
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_order_detail
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename order_detail_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+ 
+spark.ship.code VAL
+

@@ -1,0 +1,54 @@
+spark.src.config.id SrcRPLShipRoomRequest  
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtRPLShipRoomRequest
+spark.parent.id SrcSeawareShipRoomRequest-TgtSeawareShipRoomRequest
+spark.table.type dim
+ 
+ 
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+ 
+ 
+ 
+ 
+spark.source.sql select a.request_id as src_request_id,a.effective_date as effective_date,a.responsible_guest as src_guest_id,a.inventory_request_type as inventory_request_type,a.ship_code as ship_code,a.facility_type as facility_type,a.usage_start as usage_start,a.usage_duration as usage_duration,a.party_size as party_size,a.quantity as quantity,b.allocation_id as allocation_id,b.assigned_room_id as ship_room_id,a.batchtime as batchtime , a.part_date as part_date from (select * from (select allocation_id,request_id,effective_date,responsible_guest,inventory_request_type,ship_code,facility_type,usage_start,usage_duration,party_size,quantity,batchtime, part_date,row_number()over(partition by request_id order by ts_ms desc) as rn from vv_db.hvtb_parse_sw_rpl_ship_room_request) where rn=1 ) a left join (select * from (select allocation_id,assigned_room_id,batchtime, part_date,row_number()over(partition by allocation_id order by ts_ms desc) as rn from vv_db.hvtb_nbx_parse_sw_rpl_ship_room_alloc *whereclause*) where rn=1 ) b on a.allocation_id = b.allocation_id left join (select * from vv_db.hvtb_nbx_core_sw_ship_room_dim ) c on c.src_ship_room_id = b.assigned_room_id
+
+#spark.source.sql SELECT a.request_id AS src_request_id, a.effective_date AS effective_date, a.responsible_guest AS src_guest_id, a.inventory_request_type AS inventory_request_type, a.ship_code AS ship_code, a.facility_type AS facility_type, a.usage_start AS usage_start, a.usage_duration AS usage_duration, a.party_size AS party_size, a.quantity AS quantity, b.allocation_id AS allocation_id, b.assigned_room_id AS ship_room_id, a.batchtime AS batchtime, a.part_date AS part_date FROM ( SELECT * FROM ( SELECT allocation_id, request_id, effective_date, responsible_guest, inventory_request_type, ship_code, facility_type, usage_start, usage_duration, party_size, quantity, batchtime, part_date, ROW_NUMBER()OVER(PARTITION BY request_id ORDER BY ts_ms DESC,lsn DESC ) AS rn FROM vv_db.hvtb_parse_sw_rpl_ship_room_request) WHERE rn=1 ) a LEFT JOIN ( SELECT * FROM ( SELECT allocation_id, assigned_room_id, batchtime, part_date, ROW_NUMBER()OVER(PARTITION BY allocation_id ORDER BY ts_ms DESC,lsn DESC) AS rn FROM vv_db.hvtb_nbx_parse_sw_rpl_ship_room_alloc *whereclause*) WHERE rn=1 ) b ON a.allocation_id = b.allocation_id LEFT JOIN ( SELECT * FROM vv_db.hvtb_nbx_core_sw_ship_room_dim ) c ON c.src_ship_room_id = b.assigned_room_id
+
+ 
+ 
+spark.source.columns src_request_id,effective_date,src_guest_id,inventory_request_type,ship_code,facility_type,usage_start,usage_duration,party_size,quantity,allocation_id,ship_room_id
+ 
+ 
+spark.pond.allColumns ship_room_req_id as pond_ship_room_req_id,src_request_id as pond_src_request_id,effective_date as pond_effective_date,src_guest_id as pond_src_guest_id,inventory_request_type as pond_inventory_request_type,ship_code as pond_ship_code,facility_type as pond_facility_type,usage_start as pond_usage_start,usage_duration as pond_usage_duration,party_size as pond_party_size,quantity as pond_quantity,allocation_id as pond_allocation_id,ship_room_id as pond_ship_room_id,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+ 
+ 
+spark.surrogate_key.column SHIP_ROOM_REQ_ID
+spark.pond.database	vv_db 
+spark.pond.table hvtb_nbx_core_sw_ship_room_request_dim
+spark.target.schema	vv_db 
+spark.source.primaryKeyColumns src_request_id
+ 
+spark.target.final_collist final_view.ship_room_req_id,final_view.src_request_id,final_view.effective_date,final_view.src_guest_id,final_view.inventory_request_type,final_view.ship_code,final_view.facility_type,final_view.usage_start,final_view.usage_duration,final_view.party_size,final_view.quantity,final_view.allocation_id,final_view.ship_room_id,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash
+ 
+ 
+spark.target.temp gs://vv-prod-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_ship_room_request_dim
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_ship_room_request_dim
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_ship_room_request_dim_tmp
+spark.bq.permtblname seaware_ship_room_request_dim
+spark.bq.viewname seaware.seaware_ship_room_request_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+ 
+ 
+spark.hadoop.hive.execution.engine mr
+

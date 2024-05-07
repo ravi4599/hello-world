@@ -1,0 +1,33 @@
+spark.src.config.id SrcVxpReservation
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.api.env PROD
+spark.target.config.id TgtDiningStatusFact
+spark.parent.id SrcHvLndTableClear-TgtHvParseTableClear-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx	
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type fact
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.sql select voyage_id,voyage_skey,dining_reservation_detail_skey, dining_table_skey,venue_skey,table_status,table_status_lastmodifieddate from (select NVL(tc.voyageid,'N/A') as voyage_id,-1 as voyage_skey, -1 as dining_reservation_detail_skey, NVL(dt.dining_table_skey,-1) as dining_table_skey , vd.venue_skey as venue_skey, 'clear' as table_status, tablecleardate as table_status_lastmodifieddate, tc.BatchTime, tc.Part_Date, row_number () OVER (partition by tmv.public_id, dining_table_skey order by tmv.public_id ) as rnk from shipdw.hvtb_parse_tbl_table_clear tc left outer join shipdw.hvtb_lnd_vxp_table_management_settings_table st ON tc.tableNumber= st.name left outer join shipdw.hvtb_parse_vxp_table_management_settings_layout sl ON st.layout_id = st.public_id left outer join shipdw.hvtb_parse_vxp_table_management_sessions ts ON ts.settings_id = sl.settings_id left outer join shipdw.hvtb_parse_vxp_table_management_venues tmv ON tmv.public_id = ts.venue_id and tc.restaurantCode = tmv.external_id left outer join shipdw.hvtb_mart_dim_dining_table dt ON dt.dining_table_id= tc.tableNumber left outer join shipdw.hvtb_mart_dim_venue vd ON tc.restaurantCode=vd.venue_id)re where re.rnk = 1 and*whereclause*
+spark.source.columns voyage_id,voyage_skey,dining_reservation_detail_skey,dining_table_skey,venue_skey,table_status,table_status_lastmodifieddate
+spark.pond.allColumns voyage_id as pond_voyage_id,voyage_skey as pond_voyage_skey,dining_reservation_detail_skey as pond_dining_reservation_detail_skey,dining_table_skey as pond_dining_table_skey,venue_skey as pond_venue_skey,table_status as pond_table_status,table_status_lastmodifieddate as pond_table_status_lastmodifieddate,load_dt as pond_load_dt, upd_dt as pond_upd_dt,part_dt as pond_part_dt
+spark.pond.database shipdw
+spark.postgresql.schema shipdw
+spark.target.table dining_table_status_fact
+spark.source.primaryKeyColumns voyage_id,voyage_skey,table_skey
+spark.pond.table hvtb_mart_fact_dining_table_status
+spark.target.final_collist final_view.voyage_id,final_view.voyage_skey,final_view.dining_reservation_detail_skey,final_view.dining_table_skey,final_view.venue_skey,final_view.table_status,final_view.table_status_lastmodifieddate, final_view.load_dt, final_view.upd_dt,final_view.part_dt
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_fact_dining_table_status
+spark.target.location /data/apps/nbx/mart/hvtb_mart_fact_dining_table_status
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename dining_table_status_fact
+spark.tableType FACT
+spark.frameworkEnv ship
+#spark.factType Accu
+spark.ship.code VAL
+

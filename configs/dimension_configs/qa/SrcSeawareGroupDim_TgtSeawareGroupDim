@@ -1,0 +1,48 @@
+spark.src.config.id SrcSeawareGroupDim
+spark.voyage.id	SC2002269NCR 
+spark.tgt.env QA
+spark.target.config.id TgtSeawareGroupDim
+spark.parent.id	SrcSeawareGrpBking-TgtSeawareGrpBking 
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.source.sql select gb.group_id as src_group_id,gb.group_init_date,gb.group_status,gb.group_type,gb.group_name,gb.group_mode,case when gb.source_code = 'IN HOUSE' then 'Y' else 'N' end as is_internal,gb.source_code,gb.office_code,gh.operator_id as operator,gb.n_of_guests,case when gb.group_status ='CX' then gh.time_stamp else null end as cancellation_date,gb.comments,agencydim.agency_id,agentmaster.agent_id,gb.sail_date_from,gb.sail_date_to,ship.ship_id,case when gb.is_active = 'Y' then True else False end as is_active,case when gb.is_valid = 'Y' then True else False end as is_valid,gb.currency_code,agencydim_sec.agency_id as sec_agency_id ,case when gb.is_charter = 'Y' then True else False end as is_charter,cast(gb.currency_rate as float) as currency_rate,gb.first_full_payment_processed,agentmaster_sec.agent_id as sec_agent_id,cast(gb.client_id as bigint) as client_id,packagedim.package_id,gb.batchtime as batchtime, gb.part_date as part_date,gb.ts_ms as ts_ms_gb,gh.ts_ms as ts_ms_gh from (select * from (select *,row_number() over (partition by group_id order by ts_ms desc, lsn desc) rn from vv_db.hvtb_parse_sw_rpl_group_booking)where rn = 1) gb left join (select group_id, max(group_update_id) as group_update_id from vv_db.hvtb_parse_sw_rpl_group_history_header group by group_id) gh_max on gb.group_id = gh_max.group_id left join (select * from ( select operator_id,time_stamp,group_update_id,ts_ms, row_number() over (partition by group_update_id order by ts_ms desc, lsn desc) as rn from vv_db.hvtb_parse_sw_rpl_group_history_header)hh where hh.rn = 1 ) gh on gh_max.group_update_id = gh.group_update_id left join (select * from vv_db.hvtb_nbx_core_sw_agency_dim where  date(rec_end_dttm) = '9999-12-31')agencydim on gb.agency_id=agencydim.src_agency_id left join (select * from vv_db.hvtb_nbx_mart_crm_agent_master_dim  where  date(rec_end_dttm) = '9999-12-31') agentmaster on gb.agent_id=agentmaster.seaware_agent_id__c left join (select * from vv_db.hvtb_nbx_core_sw_agency_dim where  date(rec_end_dttm) = '9999-12-31') agencydim_sec on gb.sec_agency_id=agencydim_sec.src_agency_id left join (select * from vv_db.hvtb_nbx_mart_crm_agent_master_dim  where  date(rec_end_dttm) = '9999-12-31') agentmaster_sec on gb.sec_agent_id=agentmaster_sec.seaware_agent_id__c left join vv_db.hvtb_nbx_core_sw_ship_dim ship on gb.ship_code =ship.ship left join(select * from vv_db.hvtb_nbx_core_sw_package_dim where date(rec_end_dttm) = '9999-12-31') packagedim on gb.vt_package_id=packagedim.src_package_id
+
+#select gb.group_id as src_group_id,gb.group_init_date,gb.group_status,gb.group_type,gb.group_name,gb.group_mode,case when gb.source_code = 'IN HOUSE' then 'Y' else 'N' end as is_internal,gb.source_code,gb.office_code,gh.operator_id as operator,gb.n_of_guests,case when gb.group_status ='CX' then gh.time_stamp else null end as cancellation_date,gb.batchtime as batchtime, gb.part_date as part_date,gb.ts_ms as ts_ms_gb,gh.ts_ms as ts_ms_gh from (select * from (select group_id,group_init_date,group_status,group_type,group_name,group_mode,source_code,office_code,n_of_guests,group_status,batchtime,part_date,ts_ms,row_number() over (partition by group_id order by ts_ms desc) rn from vv_db.hvtb_parse_sw_rpl_group_booking)where rn = 1) gb left join (select group_id, max(group_update_id) as group_update_id from vv_db.hvtb_parse_sw_rpl_group_history_header group by group_id) gh_max on gb.group_id = gh_max.group_id left join (select * from ( select operator_id,time_stamp,group_update_id,ts_ms, row_number() over (partition by group_id order by ts_ms desc) as rn from vv_db.hvtb_parse_sw_rpl_group_history_header)hh where hh.rn = 1 ) gh on gh_max.group_update_id = gh.group_update_id *whereclause*
+spark.source.columns src_group_id,group_init_date,group_status,group_type,group_name,group_mode,is_internal,source_code,office_code,operator,n_of_guests,cancellation_date,comments,agency_id,agent_id,sail_date_from,sail_date_to,ship_id,is_active,is_valid,currency_code,sec_agency_id,is_charter,currency_rate,first_full_payment_processed,sec_agent_id,client_id,package_id
+
+
+spark.pond.allColumns group_id as pond_group_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,src_group_id as pond_src_group_id,group_init_date as pond_group_init_date,group_status as pond_group_status,group_type as pond_group_type,group_name as pond_group_name,group_mode as pond_group_mode,is_internal as pond_is_internal,source_code as pond_source_code,office_code as pond_office_code,operator as pond_operator,n_of_guests as pond_n_of_guests,cancellation_date as pond_cancellation_date,comments as pond_comments,agency_id as pond_agency_id,agent_id as pond_agent_id,sail_date_from as pond_sail_date_from,sail_date_to as pond_sail_date_to,ship_id as pond_ship_id,is_active as pond_is_active,is_valid as pond_is_valid,currency_code as pond_currency_code,sec_agency_id as pond_sec_agency_id,is_charter as pond_is_charter,currency_rate as pond_currency_rate,first_full_payment_processed as pond_first_full_payment_processed,sec_agent_id as pond_sec_agent_id,client_id as pond_client_id,package_id as pond_package_id,etl_ld_status as pond_etl_ld_status, load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash,scd_hash as pond_scd_hash
+
+spark.surrogate_key.column group_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_group_dim
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_group_dim
+spark.source.primaryKeyColumns src_group_id
+spark.target.final_collist final_view.group_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.src_group_id,final_view.group_init_date,final_view.group_status,final_view.group_type,final_view.group_name,final_view.group_mode,final_view.is_internal,final_view.source_code,final_view.office_code,final_view.operator,final_view.n_of_guests,final_view.cancellation_date,final_view.comments,final_view.agency_id,final_view.agent_id,final_view.sail_date_from,final_view.sail_date_to,final_view.ship_id,final_view.is_active,final_view.is_valid,final_view.currency_code,final_view.sec_agency_id,final_view.is_charter,final_view.currency_rate,final_view.first_full_payment_processed,final_view.sec_agent_id,final_view.client_id,final_view.package_id,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_nbx_core_sw_group_dim
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_group_dim
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_group_dim_tmp
+spark.bq.permtblname seaware_group_dim
+spark.bq.viewname seaware.seaware_group_dim
+spark.scdtype type2
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage
+##=============SCD2 Config Details ==============
+spark.source.srcDateColumn src_date
+spark.scd.columns group_init_date,group_status,group_type,group_name,group_mode,is_internal,source_code,office_code,operator,n_of_guests,cancellation_date,comments,agency_id,agent_id,sail_date_from,sail_date_to,ship_id,is_active,is_valid,currency_code,sec_agency_id,is_charter,currency_rate,first_full_payment_processed,sec_agent_id,client_id,package_id
+spark.scdtype type2
+spark.source.landingsql  select group_id as src_group_id from vv_db.hvtb_parse_sw_rpl_group_booking where op = 'd'
+# all source columns as alias ( id_new,amount_new,oppo_new )along with all audit columns
+spark.source.updateReq group_id,rec_start_dttm,rec_end_dttm,src_group_id_new,group_init_date_new,group_status_new,group_type_new,group_name_new,group_mode_new,is_internal_new,source_code_new,office_code_new,operator_new,n_of_guests_new,cancellation_date_new,comments_new,agency_id_new,agent_id_new,sail_date_from_new,sail_date_to_new,ship_id_new,is_active_new,is_valid_new,currency_code_new,sec_agency_id_new,is_charter_new,currency_rate_new,first_full_payment_processed_new,sec_agent_id_new,client_id_new,package_id_new,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+spark.hadoop.hive.execution.engine mr
+

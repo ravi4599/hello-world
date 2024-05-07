@@ -1,0 +1,29 @@
+spark.target.sslkafkabrokers 10.7.12.61:9097,10.7.11.112:9097,10.7.3.103:9097
+spark.target.truststore /etc/script_keystore/dxp.kafka.client.truststore.jks
+spark.target.keystore /etc/script_keystore/dxp.kafka.client.keystore.jks
+spark.target.passvalue virgin*2020
+spark.kafkabrokers 10.7.3.103:9092,10.7.11.112:9092,10.7.12.61:9092
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic stage-shore-dbz.mxp.dbo.Meals_By_Date
+spark.src.personOffSet earliest
+spark.kafka.zookeeper 10.7.12.61:2181
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.snapshot.table HBTB_DBZ_SNAPDATE
+
+spark.src.config.id SrcMxpMealsByDate
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtMxpMealsByDate
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+spark.target.lnd.table shipdw.hvtb_lnd_mxp_meals_by_date
+spark.target.parse.table shipdw.hvtb_parse_mxp_meals_by_date
+spark.ship.code SHORE
+spark.stop.flag N

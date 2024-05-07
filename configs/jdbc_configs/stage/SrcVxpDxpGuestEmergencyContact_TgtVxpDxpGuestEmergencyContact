@@ -1,0 +1,37 @@
+#source postgres database,table and connection details
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://devpgdb.gcpshore.virginvoyages.com/dxpcore
+spark.src.user pgreadaccessuser
+spark.src.password TRk1JhJn1SstFUnCZ2Xx
+spark.src.con.driver org.postgresql.Driver
+ 
+#Unique constant for Batchid 
+spark.src.config.id SrcVxpDxpGuestEmergencyContact
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpDxpGuestEmergencyContact
+ 
+#Metadbta Hbase table and connection details
+spark.tgt.env stage
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+ 
+spark.src.table.query "guestemergencycontact"
+spark.condition.column lastmodifieddate
+#target hdfs table location with hive table and column details
+spark.target.location s3://vv-staging-emr-cluster/data/landing/VXP/hvtb_lnd_vxp_dxpcore_guestemergencycontact
+spark.target.table shipdw.hvtb_lnd_vxp_dxpcore_guestemergencycontact
+spark.target.hive.table shipdw.hvtb_lnd_vxp_dxpcore_guestemergencycontact
+
+ 
+spark.source.columns guestemergencycontactid,name,relationship,phonenumber,emailid,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby,firstname,lastname,countrytelephonecode,lastmodifiedbyuserid,lastmodifiedbyapplicationid
+spark.source.query guestemergencycontactid,name,relationship,phonenumber,emailid,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby,firstname,lastname,countrytelephonecode,lastmodifiedbyuserid,lastmodifiedbyapplicationid
+ 
+#spark.tz.columns property to change all thez columns to UTC
+spark.tz.columns addeddate,lastmodifieddate
+spark.source.zone EST
+spark.ship.code SHORE
+

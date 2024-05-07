@@ -1,0 +1,22 @@
+spark.source.table shipdw.hvtb_lnd_vxp_housekeeping_team_member_schedule
+spark.src.config.id SrcVxpParseTeamSchedule
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtVxpParseTeamSchedule
+spark.parent.id SrcVXPteammemschedule-TgtVXPteammemschedule
+spark.tgt.env Prod
+spark.target.table shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule
+spark.target.table_place_deck shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule_placedeck
+spark.target.table_place_section shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule_section
+spark.target.hive.table.schedule shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule
+spark.target.location.schedule /data/apps/nbx/hive/parsing/vxp/hvtb_parse_vxp_housekeeping_team_member_schedule
+spark.target.hive.table.placedeck shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule_placedeck
+spark.target.location.placedeck /data/apps/nbx/hive/parsing/vxp/hvtb_parse_vxp_housekeeping_team_member_schedule_placedeck
+spark.target.hive.table.section shipdw.hvtb_parse_vxp_housekeeping_team_member_schedule_section
+spark.target.location.section /data/apps/nbx/hive/parsing/vxp/hvtb_parse_vxp_housekeeping_team_member_schedule_section
+spark.target.offset.mode overwrite
+spark.target.offset.table SHIP.HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+

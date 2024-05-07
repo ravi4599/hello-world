@@ -1,0 +1,21 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:sqlserver://10.12.1.243:1442;database=MXP
+spark.src.user Capgemini
+spark.src.password Nskh#c5v3y&7
+spark.src.con.driver com.microsoft.sqlserver.jdbc.SQLServerDriver
+spark.src.config.id SrcMxpCountries
+spark.tgt.env Stage
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtMxpCountries
+spark.target.location s3://vv-staging-emr-cluster/data/landing/mxp/hvtb_lnd_mxp_Countries
+spark.target.hive.table shipdw.hvtb_lnd_mxp_Countries
+spark.target.table shipdw.hvtb_lnd_mxp_Countries
+spark.src.table.query MXP.dbo.Countries
+spark.target.ops.table.format org.apache.phoenix.spark	
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.condition.column LAST_CHANGED
+spark.source.columns COUNTRY_ID, COUNTRY_NAME, COUNTRY_ALIAS_NAME, COUNTRY_CODE, CONTINENT_ID, REGION_ID, SUPPLIED, ACTIVE, CREATED, LAST_CHANGED, CHANGED, GUID, CREATED_BY_ID, INTERNATIONAL_PHONE_PREFIX, CURRENCY_ID, PRIMARY_LANGUAGES, POPULATION_SIZE, CREATED_AT_ID, PORT_COST_NOTES, TOUR_NOTES, URL_STATE_DEPT, URL_CIA, URL_GOVERMENT_1, URL_GOVERMENT_2, COUNTRY_HOLIDAY_IMPORT_NAME, COUNTRY_ALIAS_CODE, COUNTRY_CODE_3_LETTERS, COMPANY_TAX_CODE, TERRITORY_USA, TERRITORY_EU, TERRITORY_SCHENGEN, TERRITORY_CARICOM, TRADE_ID, UN_COUNTRY_REFERENCE_ID, LAST_CHANGE_LOG_ID, COUNTRY_NAME_ENGLISH, COUNTRY_NAME_SPANISH, COUNTRY_NAME_FRENCH, COUNTRY_NAME_GERMAN, COUNTRY_NAME_ITALIEN, COUNTRY_NAME_PORTUGESE, COUNTRY_NAME_GREEK, COUNTRY_NAME_DUTCH, COUNTRY_NAME_RUSSIAN, COUNTRY_NAME_JAPANESE, COUNTRY_NAME_CHINESE, COUNTRY_NAME_OTHER1, COUNTRY_NAME_OTHER2, COUNTRY_NAME_OTHER3
+spark.ship.code SHORE
+

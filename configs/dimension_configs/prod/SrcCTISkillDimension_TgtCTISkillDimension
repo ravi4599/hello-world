@@ -1,0 +1,47 @@
+spark.src.config.id   SrcCTISkillDimension
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   Prod
+spark.target.config.id   TgtCTISkillDimension
+spark.parent.id SrcCTISkillParser-TgtCTISkillParser
+spark.frameworkEnv shore
+
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=!Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr
+
+spark.table.type dim
+spark.api.env Prod
+
+spark.campaigndim.sql select src_campaign_id as cti_campaign_dim_campaignId, cti_campaign_skey as cti_campaign_dim_cti_campaign_skey from vv_db.hvtb_nbx_core_cti_campaign_dim
+
+spark.source.columns   src_skill_id,skill_name,mediatypeid,mediatypename,cti_campaign_skey,is_active_flg,require_disposition_flg,is_outbound_flg,script_id,script_name,initial_priority,max_priority,service_level_threshold,service_level_goal,batchtime
+
+spark.pond.allColumns   cti_skill_skey as pond_cti_skill_skey,src_skill_id as pond_src_skill_id,skill_name as pond_skill_name,mediaTypeId as pond_mediaTypeId,mediaTypeName as pond_mediaTypeName,cti_campaign_skey as pond_cti_campaign_skey,is_active_flg as pond_is_active_flg,require_disposition_flg as pond_require_disposition_flg,is_outbound_flg as pond_is_outbound_flg,script_id as pond_script_id,script_name as pond_script_name,initial_priority as pond_initial_priority,max_priority as pond_max_priority,service_level_threshold as pond_service_level_threshold,service_level_goal as pond_service_level_goal,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.target.ctiskill.table (select * from (select *,row_number () OVER (PARTITION BY skillId ORDER BY batchtime DESC) as rn from vv_db.hvtb_parse_cti_skill where skillId is not null) where rn=1) 
+
+
+spark.surrogate_key.column   cti_skill_skey
+spark.pond.database   vv_db
+spark.pond.table   hvtb_nbx_core_cti_skill_dim
+spark.source.primaryKeyColumns   src_skill_id
+
+spark.target.final_collist   cti_skill_skey,final_view.src_skill_id as src_skill_id,final_view.skill_name as skill_name,final_view.mediatypeid as mediatypeid,final_view.mediatypename as mediatypename,final_view.cti_campaign_skey as cti_campaign_skey,final_view.is_active_flg as is_active_flg,final_view.require_disposition_flg as require_disposition_flg,final_view.is_outbound_flg as is_outbound_flg,final_view.script_id as script_id,final_view.script_name as script_name,final_view.initial_priority as initial_priority,final_view.max_priority as max_priority,final_view.service_level_threshold as service_level_threshold,final_view.service_level_goal as service_level_goal,load_dt,upd_dt,primaryhash,md5_hash
+
+spark.target.temp   gs://vv-prod-nbx-cluster/data/mart/temp/hvtb_nbx_core_cti_skill_dim
+spark.target.location   gs://vv-prod-nbx-cluster/data/mart/seaware/hvtb_nbx_core_cti_skill_dim
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname cti_skill_dim_tmp
+spark.bq.permtblname cti_skill_dim
+spark.bq.viewname cti.cti_skill_dim
+
+spark.scdtype   type1
+spark.tableType   DIMENSION
+
+spark.sparkContext.getConf.get("spark.sql.crossJoin.enabled")

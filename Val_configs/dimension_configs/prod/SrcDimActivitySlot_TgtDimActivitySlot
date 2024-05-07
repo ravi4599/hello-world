@@ -1,0 +1,31 @@
+spark.src.config.id SrcDimActivitySlot
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.api.env Prod
+spark.target.config.id TgtDimActivitySlot
+spark.parent.id SrcVxpArsActivitySlot-TgtVxpArsActivitySlot
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.sql select ars_activityslot.voyageid as voyage_id,ars_activityslot.activityslotid as activity_slot_id,ars_activityslot.activityid as activity_id,ars_activityslot.code as activity_slot_code,ars_activityslot.startdatetime as slot_start_timestamp,ars_activityslot.enddatetime as slot_end_timestamp,(ars_capacity.totalcapacity+ars_capacity.holdcapacity) as total_capacity,(ars_capacity.totalcapacity+ars_capacity.holdcapacity - cnt) as available_capacity,ars_capacity.minimumselling as minimum_party_size,ars_capacity.maximumwaitlistcount as maximum_party_size,ars_activityslot.status as activity_slot_status,ars_activityslot.type as type,ars_activityslot.iswaitlistenable as waitlist_enable_flg,ars_activityslot.iscancelled as cancelled_flg,ars_activityslot.isdeleted as src_deleted_flg,ars_meetingloc.deckcode as meeting_location_deck_code, ars_meetingloc.directioncode as meeting_location_direction_code, ars_meetingloc.sectioncode as meeting_location_section_code, ars_activityslot.BatchTime as BatchTime,ars_activityslot.Part_Date as Part_Date from (select * from (select voyageid,activityslotid,activityid,code,startdatetime,enddatetime,type,iswaitlistenable,iscancelled,isdeleted,BatchTime,Part_Date,capacityid,status,row_number() over(partition by activityslotid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_ars_activityslot) where rn=1) ars_activityslot left join (select * from (select totalcapacity,holdcapacity,minimumselling,maximumwaitlistcount,capacityid,row_number() over(partition by capacityid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_ars_capacity) where rn=1)ars_capacity on trim(ars_capacity.capacityid) = trim(ars_activityslot.capacityid) left join (select * from (select activityslotcode,activitybookingid,row_number() over(partition by activitybookingid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_ars_activitybooking) where rn=1) ars_activitybooking on trim(ars_activityslot.code) = trim(ars_activitybooking.activityslotcode)  left join (select ars_activitypersonbooking.activitybookingid,cnt_tb.cnt from ((select activitybookingid,personid from (select activitybookingid,personid,row_number() over(partition by activitypersonbookingid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_activitypersonbooking) where rn=1) ars_activitypersonbooking inner join (select personid,count(distinct(personid)) as cnt from shipdw.hvtb_parse_vxp_activitypersonbooking group by personid)cnt_tb on ars_activitypersonbooking.personid=cnt_tb.personid)) ars_activitypersonbooking on trim(ars_activitybooking.activitybookingid) = trim(ars_activitypersonbooking.activitybookingid) left join (select * from(select deckcode,sectioncode,directioncode,activityslotid,row_number() over(partition by activityslotid order by lastmodifieddate desc) rn from shipdw.hvtb_parse_vxp_ars_meetinglocation) where rn=1) ars_meetingloc on trim(ars_meetingloc.activityslotid) = trim(ars_activityslot.activityslotid)
+spark.source.columns voyage_id,activity_slot_id,activity_id,activity_slot_code,slot_start_timestamp,slot_end_timestamp,total_capacity,available_capacity,minimum_party_size,maximum_party_size,activity_slot_status,type,waitlist_enable_flg,cancelled_flg,src_deleted_flg,meeting_location_deck_code,meeting_location_direction_code,meeting_location_section_code,batchtime
+spark.pond.allColumns voyage_id as pond_voyage_id,activity_slot_skey as pond_activity_slot_skey,activity_slot_id as pond_activity_slot_id,activity_id as pond_activity_id,activity_slot_code as pond_activity_slot_code,slot_start_timestamp as pond_slot_start_timestamp,slot_end_timestamp as pond_slot_end_timestamp,total_capacity as pond_total_capacity,available_capacity as pond_available_capacity,minimum_party_size as pond_minimum_party_size,maximum_party_size as pond_maximum_party_size,activity_slot_status as pond_activity_slot_status,type as pond_type,waitlist_enable_flg as pond_waitlist_enable_flg,cancelled_flg as pond_cancelled_flg,src_deleted_flg as pond_src_deleted_flg,meeting_location_deck_code as pond_meeting_location_deck_code,meeting_location_direction_code as pond_meeting_location_direction_code,meeting_location_section_code as pond_meeting_location_section_code,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column activity_slot_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_activity_slot
+spark.source.primaryKeyColumns activity_slot_id
+spark.target.final_collist final_view.voyage_id,final_view.activity_slot_skey,final_view.activity_slot_id,final_view.activity_id,final_view.activity_slot_code,final_view.slot_start_timestamp,final_view.slot_end_timestamp,final_view.total_capacity,final_view.available_capacity,final_view.minimum_party_size,final_view.maximum_party_size,final_view.activity_slot_status,final_view.type,final_view.waitlist_enable_flg,final_view.cancelled_flg,final_view.src_deleted_flg, final_view.meeting_location_deck_code, final_view.meeting_location_direction_code, final_view.meeting_location_section_code ,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp /data/apps/nbx/hive/temp/hvtb_mart_dim_activity_slot
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_activity_slot
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename activityslotdim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+

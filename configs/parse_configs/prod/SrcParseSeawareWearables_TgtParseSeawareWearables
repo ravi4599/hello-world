@@ -1,0 +1,19 @@
+spark.src.config.id SrcParseSeawareWearables
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtParseSeawareWearables
+spark.parent.id SrcKfkSeawareWearables-TgtHvSeawareWearables
+spark.source.table select * from shipdw.hvtb_lnd_seaware_wearables
+spark.target.table shipdw.hvtb_parse_seaware_wearables
+#hvtb_parse_seaware_wearables 
+spark.target.transpose.table shipdw.hvtb_parse_seaware_wearables_flag
+spark.metadata.offset.table shipdw.hbtb_nbx_kafka_streaming_offset
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.con.format jdbc
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.ship.code Shore
+

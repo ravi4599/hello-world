@@ -1,0 +1,34 @@
+spark.src.config.id SrcItem
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtItem
+spark.parent.id SrcShrPosItem-TgtShrPosItem-SC2002269NCR
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.columns voyage_id,items_number,items_name,plugroups_name,plugroups_nr,categories_number,categories_name,ship_code,src_updated_datetime
+spark.pond.allColumns item_skey as pond_item_skey,voyage_id as pond_voyage_id,item_plu_number as pond_item_plu_number,item_name as pond_item_name,item_plu_group_number as pond_item_plu_group_number,item_plu_group_name as pond_item_plu_group_name,item_plu_category_number as pond_item_plu_category_number,item_plu_category_name as pond_item_plu_category_name,ship_code as pond_ship_code,src_updated_datetime as pond_src_updated_datetime,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column item_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_pos_item
+spark.postgresql.schema Hive_schema_stg
+spark.target.table pos_item_dim
+spark.source.primaryKeyColumns items_number
+spark.target.final_collist item_skey,cast(final_view.voyage_id as string) as voyage_id,final_view.items_name as item_name,final_view.items_number as item_plu_number,cast(final_view.plugroups_nr as string) as item_plu_group_number,final_view.plugroups_name as item_plu_group_name,final_view.categories_number as item_plu_category_number,final_view.categories_name as item_plu_category_name,final_view.ship_code as ship_code,final_view.src_updated_datetime as src_updated_datetime,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_pos_item
+spark.target.location /data/apps/nbx/mart/hvtb_mart_dim_pos_item
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename pos_item_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+spark.source.sql select cast(itemj.voyageid as string)as voyage_id,itemj.items_name,cast(itemj.items_number as string) as items_number,pluj.plugroups_nr,pluj.plugroups_name,icj.categories_name as categories_name,icj.categories_number as categories_number,prices.ship_code as ship_code, salesgroup.generated_date as src_updated_datetime, icj.partdate as part_date,icj.batchtime from (select * from(select categories_name,categories_number,categories_guid,batchtime,partdate,generated_date,row_number() over(partition by categories_number order by generated_date desc ) as rn from shipdw.hvtb_parse_mxp_positems_categories)tmp where tmp.rn=1) icj  left join (select * from(select plugroups_nr,plugroups_guid,categories_guid,plugroups_name,generated_date,row_number() over(partition by plugroups_nr order by generated_date desc ) as rn from shipdw.hvtb_parse_mxp_positems_plugroups)tmp where tmp.rn=1)pluj on (icj.categories_guid==pluj.categories_guid) left join (select * from (select voyageid,items_name,items_number,plugroups_guid,items_guid,generated_date,row_number() over(partition by items_number order by generated_date desc ) as rn from shipdw.hvtb_parse_mxp_positems_items item)tmp where tmp.rn=1)itemj on(pluj.plugroups_guid==itemj.plugroups_guid) left join (select * from (select items_guid , ship_code,salesgroup_guid, row_number() over(partition by items_guid, ship_code order by items_guid desc ) as rn from shipdw.hvtb_parse_mxp_positems_prices prices)tmp where tmp.rn=1)prices on(prices.items_guid==itemj.items_guid) left join (select * from (select salesgroup_guid,generated_date,row_number() over(partition by salesgroup_guid order by generated_date desc) as rn from shipdw.hvtb_parse_mxp_positems_salesgroup)tmp where tmp.rn=1)salesgroup on(prices.salesgroup_guid = salesgroup.salesgroup_guid )
+ 
+spark.ship.code VAL
+

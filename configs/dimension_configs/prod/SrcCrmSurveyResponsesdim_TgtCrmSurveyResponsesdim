@@ -1,0 +1,46 @@
+spark.src.config.id SrcCrmSurveyResponsesdim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtCrmSurveyResponsesdim
+spark.parent.id	SrcSFDCSurveyresponses-TgtSFDCSurveyresponses 
+ 
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.table.type dim
+ 
+spark.source.sql select * from (select * from (select survey.id as src_surveyresponses_id,survey.case_number__c,survey.createddate,survey.createdbyid,survey.comments__c,survey.question__c,survey.response__c,survey.surveyquestion__c,CAST(survey.survey_Sent__c AS TIMESTAMP) as survey_Sent__c,survey.IsDeleted,survey.batchtime as batchtime, survey.Part_date as Part_date , row_number()over(partition by id order by Lastmodifieddate desc) as rn from vv_db.hvtb_parse_sfdc_surveyresponses survey where survey.IsDeleted = 'false' ) add where add.rn=1)
+spark.source.columns src_surveyresponses_id, Case_Number__c, CreatedDate, CreatedByid, Comments__c, Question__c, Response__c, SurveyQuestion__c, Survey_Sent__c,IsDeleted
+spark.pond.allColumns surveyresponses_skey as pond_surveyresponses_skey,src_surveyresponses_id as pond_src_surveyresponses_id,Case_Number__c as pond_Case_Number__c,CreatedDate as pond_CreatedDate,CreatedByid as pond_CreatedByid,Comments__c as pond_Comments__c,Question__c as pond_Question__c,Response__c as pond_Response__c, SurveyQuestion__c as pond_SurveyQuestion__c,Survey_Sent__c as pond_Survey_Sent__c,IsDeleted as pond_IsDeleted,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column surveyresponses_skey  
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_mart_dim_crm_surveyresponses
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_mart_dim_crm_surveyresponses
+spark.source.primaryKeyColumns src_surveyresponses_id
+ 
+spark.scdtype type1
+spark.frameworkEnv shore
+ 
+spark.target.final_collist final_view.surveyresponses_skey,final_view.src_surveyresponses_id,final_view.Case_Number__c,final_view.CreatedDate,final_view.CreatedByid,final_view.Comments__c,final_view.Question__c,final_view.Response__c,final_view.SurveyQuestion__c,cast(final_view.Survey_Sent__c as timestamp) as Survey_Sent__c,final_view.IsDeleted,load_dt,upd_dt,primaryhash,md5_hash
+ 
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_nbx_mart_dim_crm_surveyresponses
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_nbx_mart_dim_crm_surveyresponses
+#spark.redshift.schema Hive_schema_stg
+#spark.redshift.tablename crm_surveyresponses_dim_gcp
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname hvtb_nbx_core_crm_surveyresponses_dim_tmp
+spark.bq.permtblname hvtb_nbx_core_crm_surveyresponses_dim
+spark.bq.viewname crm.hvtb_nbx_core_crm_surveyresponses_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+ 
+spark.hadoop.hive.execution.engine mr
+

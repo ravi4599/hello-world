@@ -1,0 +1,19 @@
+spark.src.config.id SrcParseSeawareWearables
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtParseSeawareWearables
+spark.parent.id SrcKfkSeawareWearables-TgtHvSeawareWearables
+
+spark.source.table select * from shipdw.hvtb_lnd_seaware_wearables
+spark.target.table shipdw.hvtb_parse_seaware_wearables
+
+spark.target.transpose.table shipdw.hvtb_parse_seaware_wearables_flag
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.ship.code Shore

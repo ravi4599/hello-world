@@ -1,0 +1,17 @@
+spark.source.table select * from shipdw.hvtb_lnd_mxp_ship_itinerary_mxp_itinerary
+spark.target.table shipdw.hvtb_parse_mxp_itinerary
+spark.src.config.id SrcShrIti
+spark.voyage.id SC2002269NCR
+spark.tgt.env QA
+spark.target.config.id TgtShrIti
+spark.parent.id SrcMXPIti-TgtMXPIti
+spark.metadata.offset.table shipdw.hbtb_nbx_kafka_streaming_offset
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.con.format jdbc
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.hadoop.hive.execution.engine mr
+

@@ -1,0 +1,19 @@
+spark.src.config.id SrcParseCrewSchedule
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtParseCrewSchedule
+spark.parent.id SrcKfkMXPCrewSchedule-TgtHvMXPMXPCrewSchedule
+
+spark.source.table shipdw.hvtb_lnd_mxp_crew_schedule
+spark.target.table shipdw.hvtb_parse_mxp_crew_schedule
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+
+
+spark.target.offset.table SHIP.HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA

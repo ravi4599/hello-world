@@ -1,0 +1,28 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.58.10.21:5432/table_management
+spark.src.user pgreadaccessuser
+spark.src.password TRk1JhJn1SstFUnCZ2Xx
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVxpTblemngtResaction
+spark.tgt.env DEV
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpTblemngtResaction
+spark.target.table shipdw.hvtb_lnd_vxp_table_management_res_reservationaction
+spark.target.hive.table shipdw.hvtb_lnd_vxp_table_management_res_reservationaction
+spark.src.table.query "reservations_reservationaction"
+spark.condition.column lastmodifieddate
+spark.source.columns addeddate, status, created, source, public_id, reservation_id, addedby, lastmodifiedby, lastmodifieddate
+spark.ship.code SHORE
+ 
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.target.location gs://vv-dev-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_table_management_res_reservationaction
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+
+
+
+

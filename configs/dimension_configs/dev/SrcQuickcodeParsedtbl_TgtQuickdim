@@ -1,0 +1,35 @@
+spark.src.config.id SrcQuickcodeParsedtbl
+spark.voyage.id SC1912065NCM
+spark.tgt.env dev
+spark.target.config.id TgtQuickdim
+spark.parent.id SrcMXPQuickcodeparse-TgtMXPQuickcodeparse
+
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.source.columns quick_code_name,quick_code,voyage_id
+spark.pond.allColumns quickcode_skey as pond_quickcode_skey,quick_code_name as pond_quick_code_name,quick_code as pond_quick_code,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column quickcode_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_quickcode
+spark.source.primaryKeyColumns quick_code
+spark.target.schema shipdw
+spark.target.table quick_dim
+spark.target.final_collist final_view.quickcode_skey as quickcode_skey,final_view.quick_code as quick_code,final_view.quick_code_name as quick_code_name,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_dim_quickcode
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_dim_quickcode
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.quickcodeparsed.table shipdw.hvtb_parse_mxp_quickcode
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname quickcode_dim_tmp
+spark.bq.permtblname quickcode_dim
+spark.bq.viewname shipdw.quickcode_dim

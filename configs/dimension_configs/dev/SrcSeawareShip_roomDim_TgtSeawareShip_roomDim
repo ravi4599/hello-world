@@ -1,0 +1,46 @@
+spark.src.config.id SrcSeawareShiproomDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.api.env Dev
+spark.target.config.id TgtSeawareShiproomDim
+spark.parent.id SrcSeawareShipRoom-TgtSeawareShipRoom
+   
+spark.table.type dim
+spark.hadoop.hive.execution.engine mr
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+##spark.source.sql select * from (select * from (select ship.ship_room_id as src_ship_room_id,ship.facility_id,ship.room_number,ship.room_name,ship.room_size,ship.max_occupancy,ship.batchtime as batchtime,ship.part_date as part_date,row_number() over(partition by ship_room_id order by ts_ms desc) as rn from vv_db.hvtb_nbx_parse_sw_rpl_ship_room ship) p where p.rn=1)
+
+spark.source.sql select * from (select * from (select ship.ship_room_id as src_ship_room_id,current_timestamp as rec_start_dttm,current_timestamp() - INTERVAL 1 SECOND as rec_end_dttm,ship.facility_id,ship.room_number,ship.room_name,	ship.room_size,ship.max_occupancy,ship.batchtime as batchtime,ship.part_date as part_date,row_number() over(partition by ship_room_id order by ts_ms desc) as rn from vv_db.hvtb_nbx_parse_sw_rpl_ship_room ship) p where p.rn=1)
+ 
+spark.source.columns src_ship_room_id,facility_id,room_number,room_name,room_size,max_occupancy
+spark.pond.allColumns ship_room_id as pond_ship_room_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm ,src_ship_room_id as pond_src_ship_room_id,facility_id as pond_facility_id,room_number as pond_room_number,room_name as pond_room_name,room_size as pond_room_size,max_occupancy as pond_max_occupancy,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.target.final_collist final_view.ship_room_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.src_ship_room_id,final_view.facility_id,final_view.room_number,final_view.room_name,final_view.room_size,final_view.max_occupancy,load_dt,upd_dt,primaryhash,md5_hash
+
+spark.surrogate_key.column ship_room_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_Ship_room_dim
+spark.source.primaryKeyColumns src_ship_room_id
+spark.target.schema vv_db
+spark.target.table  hvtb_nbx_core_sw_Ship_room_dim
+
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+spark.target.temp gs://vv-dev-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_Ship_room_dim
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_Ship_room_dim
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_coupon_Ship_room_dim_tmp
+spark.bq.permtblname seaware_coupon_Ship_room_dim
+spark.bq.viewname seaware.seaware_coupon_Ship_room_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+

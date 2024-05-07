@@ -1,0 +1,29 @@
+spark.src.con.format sfdc
+spark.src.salesforce.username vv_datascience_api@virginvoyages.com.qa
+spark.src.salesforce.password Dec!1218gEw3temK8VJdeGLSCSjjlUszf
+spark.src.salesforce.endpoint https://virginvoyages--qa.my.salesforce.com/services/Soap/u/53.0
+spark.src.salesforce.version 53.0
+spark.src.config.id SrcSFDCtravelpartymember
+spark.voyage.id SC2002269NCR
+ 
+spark.source.columns Id, IsDeleted, Name, CreatedDate, CreatedById, LastModifiedDate, LastModifiedById, SystemModstamp, LastActivityDate, Booking_ID__c, Sailor_ID__c, Sequence_Number__c, Quote_ID__c, IsPrimary__c, Parent_Reservation__c, SailorStatus__c, VoyageID__c, GDRepeatGIndicator__c, GDSFareCode__c, GDGroupCode__c, InsuranceCode__c, SPackageTypeCode__c, SCruisePackageCode__c, Check_In_Status_Flag__c, CheckedIn__c, GuestType__c,AgencyName__c,AgentName__c,TPMUniqueID__c
+ 
+spark.src.table.query SELECT Id, IsDeleted, Name, CreatedDate, CreatedById, LastModifiedDate, LastModifiedById, SystemModstamp, LastActivityDate, Booking_ID__c, Sailor_ID__c, Sequence_Number__c, Quote_ID__c, IsPrimary__c, Parent_Reservation__c, SailorStatus__c, VoyageID__c, GDRepeatGIndicator__c, GDSFareCode__c, GDGroupCode__c, InsuranceCode__c, SPackageTypeCode__c, SCruisePackageCode__c, Check_In_Status_Flag__c, CheckedIn__c, GuestType__c,AgencyName__c,AgentName__c,TPMUniqueID__c from Travel_Party_Member__c
+ 
+spark.src.condition.column LastModifiedDate
+ 
+spark.tgt.env Qa
+spark.api.env Qa
+spark.target.config.id TgtSFDCtravelpartymember
+spark.target.location s3://vv-dev-emr-cluster/data/landing/crm/hvtb_lnd_sfdc_travel_party_member
+spark.target.hive.table vv_db.hvtb_lnd_sfdc_travel_party_member
+spark.target.table vv_db.hvtb_lnd_sfdc_travel_party_member
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr
+

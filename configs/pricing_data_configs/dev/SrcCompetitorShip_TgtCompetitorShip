@@ -1,0 +1,30 @@
+spark.src.con.format jdbc
+spark.src.config.id SrcCompetitorShip
+spark.tgt.env dev
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtCompetitorShip
+
+spark.target.location gs://vv-dev-nbx-cluster/data/landing/hvtb_lnd_competitor_ship
+
+spark.target.table vv_db.hvtb_lnd_competitor_ship
+
+spark.api.env dev
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr
+
+spark.input.inputfilepath gs://vv-dev-nbx-cluster/data/csv/pricing/competitor_ship_lkp.csv
+
+########while writing spark.source.query no need write -->"from table name"--> as its already present in the scala code ###########
+
+#spark.source.query select 
+
+
+######### If aliasing and casting is not required only spark.source.columns can be used #########
+
+spark.source.columns Ship ,`Is_New`

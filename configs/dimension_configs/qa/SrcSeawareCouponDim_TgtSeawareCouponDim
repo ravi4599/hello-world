@@ -1,0 +1,47 @@
+spark.src.config.id SrcSeawareCouponDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env QA
+spark.api.env QA
+spark.target.config.id TgtSeawareCouponDim
+spark.parent.id SrcSeawareAccCoupon-TgtSeawareAccCoupon
+spark.table.type dim
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.source.sql select ac.coupon_id as src_coupon_id,ac.user_defined_coupon_id as user_defined_coupon_id,cpn_issue_date.issue_date as issue_date ,ac.valid_from as valid_from, ac.valid_to as valid_to,ac.effective_from as effective_from,ac.effective_to as effective_to,ac.coupon_category as coupon_category,ac.coupon_class as coupon_class,cc.coupon_class_code as coupon_class_code,cc.comments as coupon_class_comments,cc.apply_as_payment as apply_as_payment,cc.apply_as_discount as apply_as_discount,ac.office_code as office_code,ac.res_id as res_id,ac.entity_type as entity_type,ac.entity_id as entity_id,ac.is_used as is_used,ac.is_active as is_active,ac.currency_code as currency_code,ac.amount as amount,ac.amount_left as amount_left,ac.charge_code as charge_code,ac.reason_code as reason_code,ac.comments as comments,ac.batchtime as batchtime,ac.part_date as part_date,ac.ts_ms as ts_ms_ac,cc.ts_ms as ts_ms_cc,ts_ms_va from (select * from(select coupon_id,user_defined_coupon_id,valid_from,valid_to,effective_from,effective_to,coupon_category,coupon_class,office_code,res_id,entity_type,entity_id,is_used,is_active,currency_code,amount,amount_left,charge_code,reason_code,comments,batchtime,part_date,ts_ms,row_number() over(partition by coupon_id,coupon_class order by ts_ms desc)rn from vv_db.hvtb_parse_sw_rpl_acc_coupon) where rn=1) as ac left join (select * from(select coupon_class_code,comments,apply_as_payment,apply_as_discount,coupon_class,ts_ms,row_number() over(partition by coupon_class order by ts_ms desc)rn from vv_db.hvtb_parse_sw_rpl_acc_coupon_class)where rn=1) as cc on ac.coupon_class=cc.coupon_class left join (select coupon_id,issue_date,ts_ms_va from (select src_rec_id as coupon_id,cast(from_unixtime(col_value/1000,'yyyy-mm-dd hh:mm:ss') as timestamp) as issue_date,ts_ms as ts_ms_va,row_number() over(partition by src_rec_id order by double(col_value) asc) rn from vv_db.hvtb_parse_sw_rpl_vcs_arch where lower(col_name) = 'stamp_' and lower(action) != 'c' and lower(tbl_name) ='acc_coupon') where rn = 1) cpn_issue_date on ac.coupon_id = cpn_issue_date.coupon_id left join vv_db.hvtb_nbx_core_sw_reservation_dim rd on rd.src_res_id=ac.res_id and rd.rec_end_dttm='9999-12-31'
+spark.source.columns src_coupon_id,user_defined_coupon_id,issue_date,valid_from,valid_to,effective_from,effective_to,coupon_category,coupon_class,coupon_class_code,coupon_class_comments,apply_as_payment,apply_as_discount,office_code,res_id,entity_type,entity_id,is_used,is_active,currency_code,amount,amount_left,charge_code,reason_code,comments
+spark.pond.allColumns coupon_id as pond_coupon_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,src_coupon_id as pond_src_coupon_id,user_defined_coupon_id as pond_user_defined_coupon_id ,issue_date as pond_issue_date,valid_from as pond_valid_from,valid_to as pond_valid_to,effective_from as pond_effective_from,effective_to as pond_effective_to,coupon_category as pond_coupon_category,coupon_class as pond_coupon_class,coupon_class_code as pond_coupon_class_code,coupon_class_comments as pond_coupon_class_comments,apply_as_payment as pond_apply_as_payment,apply_as_discount as pond_apply_as_discount,office_code as pond_office_code,res_id as pond_res_id,entity_type as pond_entity_type,entity_id as pond_entity_id,is_used as pond_is_used,is_active as pond_is_active,currency_code as pond_currency_code,amount as pond_amount,amount_left as pond_amount_left,charge_code as pond_charge_code,reason_code as pond_reason_code,comments as pond_comments,etl_ld_status as pond_etl_ld_status,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,scd_hash as pond_scd_hash
+spark.target.final_collist final_view.coupon_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.src_coupon_id,final_view.user_defined_coupon_id,final_view.issue_date,final_view.valid_from,final_view.valid_to,final_view.effective_from,final_view.effective_to,final_view.coupon_category,final_view.coupon_class,final_view.coupon_class_code,final_view.coupon_class_comments,final_view.apply_as_payment,final_view.apply_as_discount,final_view.office_code,final_view.res_id,final_view.entity_type,final_view.entity_id,final_view.is_used,final_view.is_active,final_view.currency_code,final_view.amount,final_view.amount_left,final_view.charge_code,final_view.reason_code,final_view.comments,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+spark.surrogate_key.column coupon_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_coupon_dim
+spark.source.primaryKeyColumns src_coupon_id
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_coupon_dim
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+spark.target.temp gs://vv-cert-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_coupon_dim
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_coupon_dim
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_coupon_dim_tmp
+spark.bq.permtblname seaware_coupon_dim
+spark.bq.viewname seaware.seaware_coupon_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage
+#spark.talent.dependencyflag true
+spark.load.frequency SW_rpl_daily
+##=============SCD2 Config Details ==============
+spark.source.srcDateColumn src_date
+spark.scd.columns user_defined_coupon_id,issue_date,valid_from,valid_to,effective_from,effective_to,coupon_category,coupon_class,coupon_class_code,coupon_class_comments,apply_as_payment,apply_as_discount,office_code,res_id,entity_type,entity_id,is_used,is_active,currency_code,amount,amount_left,charge_code,reason_code,comments
+spark.scdtype type2
+# all source columns as alias ( id_new,amount_new,oppo_new )along with all audit columns
+spark.source.updateReq coupon_id,rec_start_dttm,rec_end_dttm,src_coupon_id_new,user_defined_coupon_id_new,issue_date_new,valid_from_new,valid_to_new,effective_from_new,effective_to,coupon_category_new,coupon_class_new,coupon_class_code_new,coupon_class_comments_new,apply_as_payment_new,apply_as_discount_new,office_code_new,res_id_new,entity_type_new,entity_id_new,is_used_new,is_active_new,currency_code_new,amount_new,amount_left_new,charge_code_new,reason_code_new,comments_new,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+spark.hadoop.hive.execution.engine mr
+

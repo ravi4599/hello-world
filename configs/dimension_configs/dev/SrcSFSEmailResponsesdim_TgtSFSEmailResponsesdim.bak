@@ -1,0 +1,49 @@
+spark.src.config.id SrcSFSEmailResponses
+spark.voyage.id	SC2002269NCR
+spark.tgt.env Dev
+spark.api.env Dev
+spark.hadoop.hive.execution.engine mr
+spark.target.config.id TgtSFSEmailResponses
+spark.parent.id	SrcSFDCEmailResponses-TgtSFDCEmailResponses
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.table.type dim
+
+spark.source.sql select * from (select * from (select email.ID,email.et4ae5__Lead__c as Lead_ID,email.et4ae5__Contact__c as Contact_ID,email.et4ae5__DateOpened__c as Email_Opens,email.et4ae5__NumberofUniqueClicks__c as Email_UniqueClicks,email.et4ae5__DateUnsubscribed__c as Email_Unsubscribes,email.et4ae5__CampaignMemberId__c as Campaign_Member_ID,email.et4ae5__Email__c as EmailID ,email.et4ae5__FromName__c as Email_From_Name,email.et4ae5__SendDefinition__c as Email_SendDefinition,email.et4ae5__SubjectLine__c as Email_SubjectLine,email.batchtime as batchtime,email.part_date as part_date,row_number() over(partition by id order by et4ae5__dateopened__c desc) as rn from vv_db.hvtb_parse_sfdc_emailresponses email ) p where p.rn=1)
+spark.source.columns ID,Lead_ID,Contact_ID,Email_Opens,Email_UniqueClicks,Email_Unsubscribes,Campaign_Member_ID,EmailID,Email_From_Name,Email_SendDefinition,Email_SubjectLine
+
+spark.pond.allColumns id_skey as pond_id_skey,ID as pond_id_ID,Lead_ID as pond_id_Lead_ID,Contact_ID as pond_id_Contact_ID,Email_Opens as pond_id_Email_Opens,Email_UniqueClicks as pond_id_Email_UniqueClicks,Email_Unsubscribes as pond_id_Email_Unsubscribes,Campaign_Member_ID as pond_id_Campaign_Member_ID,EmailID as pond_id_EmailID,Email_From_Name as pond_id_Email_From_Name,Email_SendDefinition as pond_id_Email_SendDefinition,Email_SubjectLine as pond_id_Email_SubjectLine,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column id_skey  
+spark.pond.database vv_db
+spark.pond.table  hvtb_nbx_mart_dim_crm_emailresponses
+spark.target.schema vv_db
+spark.target.table  hvtb_nbx_core_crm_emailresponses_dim
+spark.source.primaryKeyColumns ID
+
+spark.scdtype   type1
+spark.frameworkEnv   shore
+
+spark.target.final_collist final_view.id_skey,final_view.ID,final_view.Lead_ID,final_view.Contact_ID,final_view.Email_Opens,final_view.Email_UniqueClicks,final_view.Email_Unsubscribes,final_view.Campaign_Member_ID,final_view.EmailID,final_view.Email_From_Name,final_view.Email_SendDefinition,final_view.Email_SubjectLine,load_dt,upd_dt,primaryhash,md5_hash
+
+
+
+
+spark.scdtype   type1
+spark.tableType   DIMENSION
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_nbx_mart_dim_crm_emailresponses
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_mart_dim_crm_emailresponses
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname hvtb_nbx_core_crm_emailresponses_dim_tmp
+spark.bq.permtblname hvtb_nbx_core_crm_emailresponses_dim
+spark.bq.viewname crm.hvtb_nbx_core_crm_emailresponses_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+
+

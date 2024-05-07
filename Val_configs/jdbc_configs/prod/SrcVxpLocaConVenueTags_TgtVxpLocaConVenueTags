@@ -1,0 +1,23 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.102.220.148:5432/locationconstruct
+spark.src.user pgreadaccessuser
+spark.src.password r6yKUVx9grJ8Tz2Fwe
+spark.src.table public.venue_tags
+spark.src.con.driver org.postgresql.Driver
+spark.src.config.id SrcVxpLocaConVenueTags
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtVxpLocaConVenueTags
+spark.target.location /data/apps/nbx/hive/landing/vxp/hvtb_lnd_vxp_locationconstruct_venue_tags
+spark.target.hive.table shipdw.hvtb_lnd_vxp_locationconstruct_venue_tags
+spark.target.table shipdw.hvtb_lnd_vxp_locationconstruct_venue_tags
+spark.src.table.query (select * from venue_tags) as venue_tags
+spark.condition.column id
+spark.hive.table.maxid select max(id) from shipdw.hvtb_lnd_vxp_locationconstruct_venue_tags
+spark.source.columns tag_id,venue_id,id
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+

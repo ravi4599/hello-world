@@ -1,0 +1,32 @@
+#source postgres database,table and connection details
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.56.10.6/identityaccessmanagement
+spark.src.user pgreadaccessuser
+spark.src.password vzwQArHubFzpEyoL1st7
+spark.src.con.driver org.postgresql.Driver
+#Unique constant for Batchid
+spark.src.config.id SrcVxpIamUserProfile
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpIamUserProfile
+spark.tgt.env QA
+#Metadbta Hbase table and connection details
+spark.target.table shipdw.hvtb_lnd_vxp_iam_userprofile
+spark.src.table.query "userprofile"
+spark.condition.column lastmodifieddate
+spark.source.columns userprofileid,userid,titlecode,firstname,middlename,lastname,nickname,preferredname,suffixcode,birthdate,gendercode,email,mediaitemid,maritalstatuscode,occupation,birthcountrycode,citizenshipcountrycode,preferredlanguage,phonecountrycode,phonenumber,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby,personid,persontypecode
+spark.source.query userprofileid,userid,titlecode,firstname,middlename,lastname,nickname,preferredname,suffixcode,birthdate,gendercode,email,mediaitemid,maritalstatuscode,occupation,birthcountrycode,citizenshipcountrycode,preferredlanguage,phonecountrycode,phonenumber,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby,personid,persontypecode
+#spark.tz.columns property to change all the timestampz columns to UTC
+spark.tz.columns addeddate,lastmodifieddate
+spark.source.zone EST
+spark.ship.code SHORE
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.target.location gs://vv-cert-nbx-cluster/data/landing/VXP/hvtb_lnd_vxp_iam_userprofile
+spark.target.hive.table shipdw.hvtb_lnd_vxp_iam_userprofile
+spark.hadoop.hive.execution.engine mr
+

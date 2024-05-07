@@ -1,0 +1,16 @@
+spark.src.config.id SrcRevenueFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.api.env Qa
+spark.target.config.id TgtRevenueSummaryFact
+#spark.parent.id SrcDiningReservationDetailDim-TgtDiningReservationDetailDim
+spark.ing.type Fact
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_ship_overview_revenue_summary
+spark.target.table hvtb_mart_fact_ship_overview_revenue_summary
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_fact_ship_overview_revenue_summary
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_fact_ship_overview_revenue_summary
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.RES_GUEST_IN_ROOM
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT RECORD_ID, RES_ID, ROOM_SEQ_NUMBER, GUEST_ID, DATE_FROM, DATE_TO, HAS_PRE_AIR_NIGHT, HAS_POST_AIR_NIGHT, OCCUPANCY_COUNT FROM SEAWARE.RES_GUEST_IN_ROOM)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_res_guest_in_room
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/RES_GUEST_IN_ROOM
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_res_guest_in_room/
+
+spark.hadoop.hive.execution.engine mr

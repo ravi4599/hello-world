@@ -1,0 +1,21 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.SHIP_ROOM
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT SHIP_ROOM_ID, FACILITY_ID, ROOM_NUMBER, ROOM_NAME, ROOM_SIZE, MAX_OCCUPANCY, CLEANING_TIME, COMMENTS, EFF_DATE_FROM, EFF_DATE_TO FROM SEAWARE.SHIP_ROOM)
+
+spark.parse.table seaware_oracle.hvtb_nbx_parse_sw_rpl_ship_room
+
+spark.src.con.fetchSize 100000
+
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_nbx_parse_sw_rpl_ship_room/
+
+ 
+
+spark.hadoop.hive.execution.engine mr

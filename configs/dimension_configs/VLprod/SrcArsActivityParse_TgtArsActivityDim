@@ -1,0 +1,32 @@
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.src.config.id SrcArsActivityParse
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtArsActivityDim
+spark.parent.id SrcVxpArsActivity-TgtVxpArsActivity
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.table.type dim
+spark.postgresql.database prodnbx
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename activity_dim
+spark.source.sql select a.activityid as activity_id, a.cmsid as activity_cms_id, a.code as activity_code, at.activity_name as activity_type, a.level as activity_level, a.name as activity_name, a.activitygroupcode as activity_group_code, a.portcode as activity_port_code, a.decsription as activity_description, a.currencycode as currency_code, a.ismultiplebookingallowed as multiple_booking_allowed_flg, a.pricetype as price_type, a.isvip as vip_flg, a.isgiftable as giftable_flg, a.ispackageable as packageable_flg, a.isbookable as bookable_flg, a.isadaaccessible as ada_accessible_flg, a.minage as minimum_age, a.maxage as maximum_age, a.accesstype as access_type, a.iswaitlistenable as waitlist_enable_flg, a.bookingcloseduration as booking_closed_duration,  al.setupduration as 	activity_setup_duration , al.activityduration as activity_duration , al.locationtype as activity_location_type,a.isenable as enabled_flg, a.isdeleted as src_deleted_flg, a.VoyageId as voyage_id, a.BatchTime , a.Part_Date from (select * from (select *, row_number() over (partition by activityid order by lastmodifieddate  desc) rn  from shipdw.hvtb_parse_vxp_ars_activity where isdeleted = 'false') where rn = 1) a left join (select * from (select *, row_number() over (partition by activityid , activitytypeid order by lastmodifieddate  desc) rn  from shipdw.hvtb_parse_vxp_ars_activitytypemapping) where rn = 1 and isdeleted = false) am on a.activityid = am.activityid left join (select * from (select *, row_number() over (partition by activitytypeid order by lastmodifieddate  desc) rn  from shipdw.hvtb_parse_vxp_ars_activitytype) where rn = 1 and isdeleted = false) at on am.activitytypeid = at.activitytypeid left join (select * from (select *, row_number() over (partition by activitylocationid order by lastmodifieddate  desc) rn  from shipdw.hvtb_parse_vxp_ars_activitylocation) where rn = 1) al on a.activitylocationid = al.activitylocationid
+spark.source.columns voyage_id,activity_id,activity_cms_id,activity_code,activity_type,activity_level,activity_name,activity_group_code,activity_port_code,activity_description,currency_code,multiple_booking_allowed_flg,price_type,vip_flg,giftable_flg,packageable_flg,bookable_flg,ada_accessible_flg,minimum_age,maximum_age,access_type,waitlist_enable_flg,booking_closed_duration,activity_setup_duration,activity_duration,activity_location_type,enabled_flg,src_deleted_flg
+spark.pond.allColumns activity_skey as pond_activity_skey,voyage_id as pond_voyage_id,activity_id as pond_activity_id,activity_cms_id as pond_activity_cms_id,activity_code as pond_activity_code,activity_type as pond_activity_type,activity_level as pond_activity_level,activity_name as pond_activity_name,activity_group_code as pond_activity_group_code,activity_port_code as pond_activity_port_code,activity_description as pond_activity_description,currency_code as pond_currency_code,multiple_booking_allowed_flg as pond_multiple_booking_allowed_flg,price_type as pond_price_type,vip_flg as pond_vip_flg,giftable_flg as pond_giftable_flg,packageable_flg as pond_packageable_flg,bookable_flg as pond_bookable_flg,ada_accessible_flg as pond_ada_accessible_flg,minimum_age as pond_minimum_age,maximum_age as pond_maximum_age,access_type as pond_access_type,waitlist_enable_flg as pond_waitlist_enable_flg,booking_closed_duration as pond_booking_closed_duration,activity_setup_duration as pond_activity_setup_duration ,activity_duration as pond_activity_duration,activity_location_type as pond_activity_location_type,enabled_flg as pond_enabled_flg,src_deleted_flg as pond_src_deleted_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_activity
+spark.surrogate_key.column activity_skey
+spark.source.primaryKeyColumns activity_id
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_activity
+spark.target.location /data/apps/nbx/mart/hvtb_mart_dim_activity
+spark.target.final_collist final_view.activity_skey,final_view.voyage_id,final_view.activity_id,final_view.activity_cms_id,final_view.activity_code,final_view.activity_type,final_view.activity_level,final_view.activity_name,final_view.activity_group_code,final_view.activity_port_code,final_view.activity_description,final_view.currency_code,final_view.multiple_booking_allowed_flg,final_view.price_type,final_view.vip_flg,final_view.giftable_flg,final_view.packageable_flg,final_view.bookable_flg,final_view.ada_accessible_flg,final_view.minimum_age,final_view.maximum_age,final_view.access_type,final_view.waitlist_enable_flg,final_view.booking_closed_duration,final_view.activity_setup_duration,final_view.activity_duration,final_view.activity_location_type,final_view.enabled_flg,final_view.src_deleted_flg,load_dt,upd_dt,primaryhash,md5_hash
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+ 
+spark.ship.code VAL
+

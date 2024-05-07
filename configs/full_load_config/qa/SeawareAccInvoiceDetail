@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.ACC_INVOICE_DETAIL
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT RECORD_ID, ENTITY_TYPE, ENTITY_ID, PARAM_NAME, PARAM_VALUE, "TIMESTAMP", FPR_ID FROM SEAWARE.ACC_INVOICE_DETAIL)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_acc_invoice_detail
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/ACC_INVOICE_DETAIL
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_acc_invoice_detail/
+
+spark.hadoop.hive.execution.engine mr

@@ -1,0 +1,53 @@
+spark.src.config.id SrcSeawareGroupDim
+spark.voyage.id	SC2002269NCR
+spark.tgt.env dev
+spark.target.config.id TgtSeawareGroupDim
+spark.parent.id	SrcSeawareGrpBking-TgtSeawareGrpBking
+
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.source.sql select gb.group_id as src_group_id,gb.group_init_date,gb.group_status,gb.group_type,gb.group_name,gb.group_mode,case when gb.source_code = 'IN HOUSE' then 'Y' else 'N' end as is_internal,gb.source_code,gb.office_code,gh.operator_id as operator,gb.n_of_guests,case when gb.group_status ='CX' then gh.time_stamp else null end as cancellation_date,gb.batchtime as batchtime, gb.part_date as part_date,gb.ts_ms as ts_ms_gb,gh.ts_ms as ts_ms_gh from (select * from (select group_id,group_init_date,group_status,group_type,group_name,group_mode,source_code,office_code,n_of_guests,group_status,batchtime,part_date,ts_ms,row_number() over (partition by group_id order by ts_ms desc) rn from vv_db.hvtb_parse_sw_rpl_group_booking)where rn = 1) gb left join (select group_id, max(group_update_id) as group_update_id from vv_db.hvtb_parse_sw_rpl_group_history_header group by group_id) gh_max on gb.group_id = gh_max.group_id left join (select * from ( select operator_id,time_stamp,group_update_id,ts_ms, row_number() over (partition by group_id order by ts_ms desc) as rn from vv_db.hvtb_parse_sw_rpl_group_history_header)hh where hh.rn = 1 ) gh on gh_max.group_update_id = gh.group_update_id *whereclause*
+
+spark.source.columns src_group_id,group_init_date,group_status,group_type,group_name,group_mode,is_internal,source_code,office_code,operator,n_of_guests,cancellation_date
+
+spark.pond.allColumns group_id as pond_group_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,src_group_id as pond_src_group_id,group_init_date as pond_group_init_date,group_status as pond_group_status,group_type as pond_group_type,group_name as pond_group_name,group_mode as pond_group_mode,is_internal as pond_is_internal,source_code as pond_source_code,office_code as pond_office_code,operator as pond_operator,n_of_guests as pond_n_of_guests,cancellation_date as pond_cancellation_date,etl_ld_status as pond_etl_ld_status, load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash,scd_hash as pond_scd_hash
+
+spark.surrogate_key.column group_id
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_sw_group_dim
+spark.target.schema vv_db
+spark.target.table hvtb_nbx_core_sw_group_dim
+spark.source.primaryKeyColumns src_group_id
+
+spark.target.final_collist final_view.group_id,final_view.rec_start_dttm,final_view.rec_end_dttm,final_view.src_group_id,final_view.group_init_date,final_view.group_status,final_view.group_type,final_view.group_name,final_view.group_mode,final_view.is_internal,final_view.source_code,final_view.office_code,final_view.operator,final_view.n_of_guests,final_view.cancellation_date,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/mart/seaware/temp/hvtb_nbx_core_sw_group_dim
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/seaware/hvtb_nbx_core_sw_group_dim
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_group_dim_tmp
+spark.bq.permtblname seaware_group_dim
+spark.bq.viewname seaware.seaware_group_dim
+
+spark.scdtype type2
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage
+
+##=============SCD2 Config Details ==============  
+
+spark.source.srcDateColumn src_date
+spark.scd.columns group_init_date,group_status,group_type,group_name,group_mode,is_internal,source_code,office_code,operator,n_of_guests,cancellation_date
+
+spark.scdtype type2
+
+# all source columns as alias ( id_new,amount_new,oppo_new )along with all audit columns
+spark.source.updateReq group_id,rec_start_dttm,rec_end_dttm,src_group_id_new,group_init_date_new,group_status_new,group_type_new,group_name_new,group_mode_new,is_internal_new,source_code_new,office_code_new,operator_new,n_of_guests_new,cancellation_date_new,etl_ld_status,load_dt,upd_dt,primaryhash,md5_hash,scd_hash
+

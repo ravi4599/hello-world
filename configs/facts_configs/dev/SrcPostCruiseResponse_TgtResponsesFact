@@ -1,0 +1,57 @@
+spark.src.config.id   SrcPostCruiseResponse
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   dev
+spark.target.config.id   TgtResponsesFact
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.api.env dev
+
+spark.postvoyage.response.fact.sql select request_id as response_fact_request_id, client_id as response_fact_client_id, ship_id as response_fact_ship_id, sail_id as response_fact_sail_id, guest_id as response_fact_guest_id, request_time as response_fact_request_time, response_time as response_fact_response_time, itinerary_port as response_fact_itinerary_port, activity_skey as response_fact_activity_skey, question_id as response_fact_question_id, answer_rating as response_fact_answer_rating, answer_text as response_fact_answer_text, load_dt as response_fact_load_dt, upd_dt as response_fact_upd_dt, part_dt as response_fact_part_dt from vv_db.hvtb_nbx_core_postvoyage_survey_responses_fact
+spark.postvoyage.question.dim.sql select question_id as question_dim_question_id, src_question_id as question_dim_src_question_id, variable_id as question_dim_variable_id, type as question_dim_type from vv_db.hvtb_nbx_core_postvoyage_survey_questions_dim
+
+spark.ship.dim.sql select ship_id, ship  from vv_db.hvtb_nbx_core_sw_ship_dim
+
+spark.sail.dim.sql select sail_id, src_sail_id, sail_date_from, sail_date_to, ship_id,sail_dim_sailfromdate,sail_dim_sailtodate from (Select sail_id, src_sail_id, sail_date_from, sail_date_to, ship_id, to_date(sail_date_from) as sail_dim_sailfromdate, to_date(sail_date_to) as sail_dim_sailtodate,row_number() over(partition by sail_date_from, sail_date_to,ship_id order by src_sail_id desc, sail_date_from desc ) as rn from vv_db.hvtb_nbx_core_sw_sail_dim where is_active = 'Y') inerQry where rn = 1
+#select sail_id, src_sail_id, sail_date_from, sail_date_to, ship_id, to_date(sail_date_from) as sail_dim_sailfromdate, to_date(sail_date_to) as sail_dim_sailtodate from vv_db.hvtb_nbx_core_sw_sail_dim where is_active = 'Y'
+
+#spark.guest.dim.sql SELECT gd.guest_id , gd.client_id as guest_dim_client_id, rd.src_sail_id as rd_src_sail_id from (select guest_id,client_id, row_number() over(partition by client_id order by guest_id desc) as rn from vv_db.hvtb_nbx_core_sw_guest_dim WHERE to_date(rec_end_dttm) = '9999-12-31') gd LEFT JOIN vv_db.hvtb_nbx_core_sw_res_guest_rel rel on rel.guest_id = gd.guest_id LEFT JOIN vv_db.hvtb_nbx_core_sw_reservation_dim rd on rd.res_id = rel.res_id WHERE rn = 1
+
+spark.guest.dim.sql SELECT guest_id, guest_dim_client_id, rd_src_sail_id from (SELECT gd.guest_id , gd.client_id as guest_dim_client_id, rd.src_sail_id as rd_src_sail_id, row_number() over(partition by gd.client_id, rd.src_sail_id order by gd.guest_id desc,gd.rec_end_dttm desc) as rn from vv_db.hvtb_nbx_core_sw_guest_dim gd LEFT JOIN vv_db.hvtb_nbx_core_sw_res_guest_rel rel on rel.guest_id = gd.guest_id LEFT JOIN vv_db.hvtb_nbx_core_sw_reservation_dim rd on rd.res_id = rel.res_id) where rn = 1
+
+spark.activity.dim.sql select activity_skey, activity_name from (select activity_skey, trim(lower(activity_name)) as activity_name, row_number() over(partition by activity_name order by upd_dt desc ) as rn from shipdw.hvtb_mart_dim_activity where src_deleted_flg = false) where rn = 1
+
+spark.postvoyage.questionanswer.dim.sql select question_answer_id as questionanswer_dim_questionanswer_id,variable_id as questionanswer_dim_variable_id,answer_code as questionanswer_answer_code from vv_db.hvtb_mart_postvoyage_survey_question_answer_dim
+
+spark.source.columns request_id,client_id,ship_id,sail_id,guest_id,request_time,response_time,itinerary_port,activity_skey,question_id,answer_rating,answer_text,question_answer_id
+spark.pond.allColumns request_id as pond_request_id,client_id as pond_client_id,ship_id as pond_ship_id,guest_id as pond_guest_id,request_time as pond_request_time,response_time as pond_response_time,itinerary_port as pond_itinerary_port,activity_skey as pond_activity_skey,question_id as pond_question_id,answer_rating as pond_answer_rating,answer_text as pond_answer_text,question_answer_id as pond_question_answer_id,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash,part_dt as pond_part_dt
+spark.parse.static.table vv_db.hvtb_parse_postvoyage_static_responses
+spark.parse.dynamic.table vv_db.hvtb_parse_postvoyage_dynamic_responses
+spark.postvoyage.response.fact vv_db.hvtb_nbx_core_postvoyage_survey_responses_fact
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_postvoyage_survey_responses_fact
+spark.target.schema vv_db
+spark.target.table postvoyage_survey_responses_fact
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname postvoyage_survey_responses_fact_tmp
+spark.bq.permtblname postvoyage_survey_responses_fact
+spark.bq.viewname seaware.postvoyage_survey_responses_fact
+
+
+spark.target.final_collist final_view.request_id,final_view.client_id,final_view.ship_id,final_view.sail_id,final_view.guest_id,final_view.request_time,final_view.response_time,final_view.itinerary_port,final_view.activity_skey,final_view.question_id,final_view.answer_rating,final_view.answer_text,final_view.question_answer_id as question_answer_id,load_dt,upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash,final_view.part_dt as part_dt
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/core/seaware/temp/hvtb_nbx_core_postvoyage_survey_responses_fact
+spark.target.location gs://vv-dev-nbx-cluster/data/core/seaware/hvtb_nbx_core_postvoyage_survey_responses_fact
+spark.target.processedfilepath gs://vv-dev-nbx-cluster/data/core/seaware/hvtb_nbx_core_postvoyage_survey_responses_fact_shr2shp
+
+spark.source.primaryKeyColumns  request_id,question_id
+spark.tableType   FACT
+spark.frameworkEnv   shore
+spark.factType   Accu
+spark.scdtype type1

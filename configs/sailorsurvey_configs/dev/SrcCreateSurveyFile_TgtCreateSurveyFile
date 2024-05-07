@@ -1,0 +1,21 @@
+spark.sailorsurvey.ManualFlag N
+spark.zkurl ip-10-3-100-222.seatrials.virginvoyages.com:2181/hbase-unsecure
+spark.voyage.format org.apache.phoenix.spark
+spark.voyage.mode overwrite
+spark.reservation.table.name HBTB_NBX_SEAWARE_RESERVATION
+spark.sailorsurvey.table.name HBTB_NBX_VOYAGE_SAILORSURVEY
+spark.voyage.table HBTB_NBX_VOYAGE_SAILORSURVEY
+spark.sailorsurvey.daysDelay 2
+spark.sailorsurvey.VoyageCode
+spark.sailorsurvey.ShipCode SC
+spark.sailorsurvey.tgtLocation hdfs:///data/core/SailorSurvey/FTPFile/
+spark.sailorsurvey.fileNamePrefix Virgin_Sample
+
+spark.voyage.id  SC2002269NCR
+spark.src.config.id  SrcCreateSurveyFile
+spark.target.config.id  TgtCreateSurveyFile
+spark.tgt.env   dev
+spark.target.ops.table.format   org.apache.phoenix.spark
+spark.target.ops.table.mode   overwrite
+spark.target.enablerops_table   HBTB_INGESTION_METADATA
+spark.target.zkurl ip-10-3-100-222.seatrials.virginvoyages.com:2181/hbase-unsecure

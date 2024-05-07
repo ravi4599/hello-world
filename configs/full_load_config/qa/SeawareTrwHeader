@@ -1,0 +1,21 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.TRW_HEADER
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT TRW_HEADER_ID, TRW_TYPE, START_DATE, END_DATE, IS_MATCHED, COMMENTS FROM SEAWARE.TRW_HEADER)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_trw_header
+
+spark.src.con.fetchSize 100000
+
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_trw_header/
+
+ 
+
+spark.hadoop.hive.execution.engine mr

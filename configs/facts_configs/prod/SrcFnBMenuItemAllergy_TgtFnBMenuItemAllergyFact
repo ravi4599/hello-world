@@ -1,0 +1,50 @@
+spark.src.config.id   SrcFnBMenuItemAllergy
+spark.voyage.id   SC2002269NCR
+spark.tgt.env prod
+spark.target.config.id   TgtFnBMenuItemAllergyFact
+spark.parent.id SrcHvFBmenuitemallergy-TgtHvFBmenuitemallergy
+
+spark.ing.type Fact
+spark.metadata.con.format jdbc
+
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+   
+spark.source.sql select menuitemparse.voyageid as voyage_id, NVL(menudim.menu_item_skey, -1) as menu_item_skey ,NVL(allergydim.allergy_skey , -1) as allergy_skey,false as src_deleted_flg,menuitemparse.batchtime,menuitemparse.part_date,menuitemparse.menuitemallergyid from ( select * from (select *, row_number() over (partition by menuitemid,allergyid order by addeddate  desc) rn  from shipdw.hvtb_parse_vxp_foodandbeverage_menuitemallergy) where rn = 1 ) menuitemparse left join shipdw.hvtb_mart_dim_menu_item menudim on menuitemparse.menuitemid = menudim.menu_item_id left join shipdw.hvtb_mart_dim_allergy allergydim on menuitemparse.allergyid = allergydim.allergy_id
+ 
+spark.source.columns voyage_id,menu_item_skey,allergy_skey,src_deleted_flg
+
+spark.pond.allColumns voyage_id as pond_voyage_id,menu_item_skey as pond_menu_item_skey,allergy_skey as pond_allergy_skey,src_deleted_flg as pond_src_deleted_flg,load_dt as pond_load_dt,upd_dt as pond_upd_dt,part_dt as pond_part_dt
+
+spark.pond.database   shipdw
+spark.pond.table   hvtb_mart_menuitem_allergy_fact
+spark.target.table menuitem_allergy_fact
+
+spark.target.final_collist final_view.voyage_id,final_view.menu_item_skey,final_view.allergy_skey,final_view.src_deleted_flg,final_view.load_dt,final_view.upd_dt,final_view.part_dt
+
+spark.target.temp   gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_menuitem_allergy_fact
+spark.target.location   gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_menuitem_allergy_fact
+
+spark.tableType   fact
+spark.frameworkEnv   shore
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname menuitem_allergy_fact_tmp
+spark.bq.permtblname menuitem_allergy_fact
+spark.bq.viewname shipdw.menuitem_allergy_fact
+
+spark.hadoop.hive.execution.engine mr
+
+#----------------------LAD--------------------------------#
+spark.ladjob.flag true
+spark.lad.srctablekey menuitemallergyid
+spark.lad.srctable shipdw.hvtb_parse_vxp_foodandbeverage_menuitemallergy
+spark.lad.tgttable shipdw.hvtb_parse_vxp_foodandbeverage_menuitemallergy_lad
+spark.lad.columns voyage_id,menu_item_skey,allergy_skey
+spark.ladremoval.flag false 
+
+#----------------------------------------------------------#

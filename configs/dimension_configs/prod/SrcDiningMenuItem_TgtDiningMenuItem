@@ -1,0 +1,31 @@
+spark.src.config.id SrcDiningMenuItem
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtDiningMenuItem
+spark.parent.id SrcMxpRecipeDishes-TgtMxpRecipeDishes
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.table.type dim
+spark.source.columns voyage_id,dining_menu_item_code,dining_menu_item_name,dining_menu_item_group,dining_menu_item_category,dining_menu_item_sub_category
+spark.pond.allColumns voyage_id as pond_voyage_id,dining_menu_item_skey as pond_dining_menu_item_skey,dining_menu_item_code as pond_dining_menu_item_code,dining_menu_item_name as pond_dining_menu_item_name,dining_menu_item_group as pond_dining_menu_item_group,dining_menu_item_category as pond_dining_menu_item_category,dining_menu_item_sub_category as pond_dining_menu_item_sub_category,src_deleted_flag as pond_src_deleted_flag,src_active_flag as pond_src_active_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column dining_menu_item_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_dining_menu_item
+spark.source.primaryKeyColumns dining_menu_item_code
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+spark.target.final_collist final_view.voyage_id,final_view.dining_menu_item_skey ,final_view.dining_menu_item_code,final_view.dining_menu_item_name,final_view.dining_menu_item_group,final_view.dining_menu_item_category,final_view.dining_menu_item_sub_category,final_view.src_deleted_flag,final_view.src_active_flag,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_dining_menu_item
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_dining_menu_item
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname dining_menu_item_dim_tmp
+spark.bq.permtblname dining_menu_item_dim
+spark.bq.viewname shipdw.dining_menu_item_dim
+spark.hadoop.hive.execution.engine mr
+

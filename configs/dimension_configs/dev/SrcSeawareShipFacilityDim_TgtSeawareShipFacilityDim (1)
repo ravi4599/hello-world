@@ -1,0 +1,49 @@
+spark.src.config.id SrcSeawareShipFacilityDim
+spark.voyage.id	SC2002269NCR
+spark.tgt.env dev
+spark.target.config.id TgtSeawareShipFacilityDim
+spark.parent.id	 SrcSeawareShipFacility-TgtSeawareShipFacility
+
+spark.hadoop.hive.execution.engine mr
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+spark.source.sql select facility_id, ship_code, facility_type, facility_code, facility_name, deck_number, facility_size, max_occupancy, assign_mode, facility_rank, facility_subtype,ts_ms,batchtime ,part_date from (select * from (select facility_id,ship_code, facility_type, facility_code, facility_name, deck_number, facility_size, max_occupancy, assign_mode, facility_rank, facility_subtype,ts_ms,batchtime ,part_date, row_number() over(partition by facility_id order by ts_ms desc) as rn from vv_db.hvtb_nbx_parse_sw_rpl_ship_facility where facility_id is not null) r where r.rn=1)as t
+
+spark.source.columns facility_id, ship_code, facility_type, facility_code, facility_name, deck_number, facility_size, max_occupancy, assign_mode, facility_rank, facility_subtype
+
+spark.surrogate_key.column ship_facility_skey
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_spf_ship_facility_lkp
+spark.target.schema vv_db
+spark.target.table seaware_ship_facility_lkp
+spark.source.primaryKeyColumns facility_id
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+
+spark.pond.allColumns facility_id as pond_facility_id,ship_facility_skey as pond_ship_facility_skey, ship_code as pond_ship_code, facility_type as pond_facility_type, facility_code as pond_facility_code, facility_name as pond_facility_name, deck_number as pond_deck_number, facility_size as pond_facility_size, max_occupancy as pond_max_occupancy, assign_mode as pond_assign_mode, facility_rank as pond_facility_rank, facility_subtype as pond_facility_subtype,load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+
+spark.target.final_collist final_view.facility_id,final_view.ship_facility_skey, final_view.ship_code, final_view.facility_type, final_view.facility_code, final_view.facility_name, final_view.deck_number,final_view.facility_size,final_view.max_occupancy, final_view.assign_mode,final_view.facility_rank,final_view.facility_subtype,load_dt,upd_dt,primaryhash,md5_hash
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_nbx_core_spf_ship_facility_lkp
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_nbx_core_spf_ship_facility_lkp
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_ship_facility_lkp_tmp
+spark.bq.permtblname seaware_ship_facility_lkp
+spark.bq.viewname shipdw.seaware_ship_facility_lkp_tmp
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+spark.src.config.id SrcCTICallStateHistoryFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtCTICallStateHistoryFact
+spark.parent.id SrcCtiCallStateHistoryParser-TgtCtiCallStateHistoryParser
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+spark.table.type Fact
+spark.api.env dev
+
+spark.cti.call.agent.dim.sql select src_agent_id as cti_agent_dim_agentId, cti_agent_skey as cti_agent_dim_cti_agent_skey from vv_db.hvtb_nbx_core_cti_agent_dim
+spark.cti.call.skill.dim.sql select src_skill_id as cti_skill_dim_skillId, cti_skill_skey as cti_skill_dim_cti_skill_skey from vv_db.hvtb_nbx_core_cti_skill_dim
+
+spark.source.columns contactid,stateindex,contactstatename,startdate,agentid,skillid,duration
+spark.pond.allColumns src_contact_id as pond_src_contact_id,contact_state_index as pond_contact_state_index,contact_state_name as pond_contact_state_name,state_start_timestamp as pond_state_start_timestamp,cti_agent_skey as pond_cti_agent_skey,cti_skill_skey as pond_cti_skill_skey,duration_in_seconds as pond_duration_in_secondsload_dt as pond_load_dt,upd_dt as pond_upd_dt,part_dt as pond_part_dt
+
+spark.target.cticallstate.table vv_db.hvtb_parse_cti_call_state_history
+
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_cti_call_state_history_fact
+spark.target.schema vv_db
+spark.target.table cti_call_state_history_fact
+
+
+
+
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.scdtype type1
+
+spark.target.final_collist final_view.contactid as src_contact_id,final_view.stateindex as contact_state_index,final_view.contactstatename as contact_state_name,final_view.startdate as state_start_timestamp,final_view.agentid as cti_agent_skey,final_view.skillid as cti_skill_skey,final_view.duration as duration_in_seconds,load_dt,upd_dt,part_dt
+
+spark.target.temp s3://vv-dev-emr-cluster/data/core/seaware/temp/hvtb_nbx_core_cti_call_state_history_fact
+spark.target.location s3://vv-dev-emr-cluster/data/core/seaware/hvtb_nbx_core_cti_call_state_history_fact
+
+
+
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname cti_call_state_history_fact_tmp
+spark.bq.permtblname cti_call_state_history_fact
+spark.bq.viewname seaware.cti_call_state_history_fact

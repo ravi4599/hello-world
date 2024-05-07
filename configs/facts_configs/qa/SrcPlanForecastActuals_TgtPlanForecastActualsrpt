@@ -1,0 +1,29 @@
+spark.src.config.id SrcPlanForecastActuals
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.target.config.id TgtPlanForecastActualsrpt
+
+
+
+
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=!Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+
+#spark.redshift.url   jdbc:redshift://10.4.0.203:5439/qanbx
+#spark.redshift.username talenduser
+#spark.redshift.password Talenduser@123
+#spark.redshift.schema shipdw
+
+
+
+
+spark.hadoop.hive.execution.engine mr
+#SrcPlanForecastActuals
+#TgtPlanForecastActualsrpt

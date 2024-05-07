@@ -1,0 +1,34 @@
+spark.src.config.id SrcCrIti
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtItinery
+spark.parent.id SrcShrIti-TgtShrIti
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.sql select * from(select * from (select voyage_id as voyageid,number as voyage_number,itinerary_id,itinerary_voyageitineraryid,namekey,cast(itinerary_itineraryday as int)as itinerary_itineraryday,embarkdate,debarkdate,embarkportcode,debarkportcode,itinerary_gangwayopeningtime,itinerary_gangwayclosingtime,itinerary_departuretime,itinerary_arrivaltime,itinerary_isseaday,batchtime,part_date,Cast(split(itinerary_date,'T')[0] as date)as sale_date,itinerary_date as itinerary_day_date,isactive,isdeleted, Row_Number() over(partition by itinerary_id order by modificationtime desc) as rn from shipdw.hvtb_parse_mxp_itinerary )iti where rn=1)iti_dim
+spark.source.columns voyageid,voyage_number,itinerary_id,itinerary_voyageitineraryid,namekey,itinerary_itineraryday,embarkdate,debarkdate,embarkportcode,debarkportcode,itinerary_gangwayopeningtime,itinerary_gangwayclosingtime,itinerary_departuretime,itinerary_arrivaltime,itinerary_isseaday,itinerary_day_date,isactive,isdeleted
+spark.pond.allColumns itinerary_skey as pond_itinerary_skey,voyage_id as pond_voyage_id,voyage_number as pond_voyage_number,itinerary_id as pond_itinerary_id,voyage_itinerary_guid as pond_voyage_itinerary_guid,itinerary_name as pond_itinerary_name,itinerary_day as pond_itinerary_day,itinerary_embark_dt as pond_itinerary_embark_dt,itinerary_debark_dt as pond_itinerary_debark_dt,itinerary_embark_port_code as pond_itinerary_embark_port_code,itinerary_debark_port_code as pond_itinerary_debark_port_code,gangway_open_time as pond_gangway_open_time,gangway_close_time as pond_gangway_close_time,itinerary_departure_time as pond_itinerary_departure_time,itinerary_arrival_time as pond_itinerary_arrival_time,itinerary_isseaDay as pond_itinerary_isseaDay,load_dt as pond_load_dt,upd_dt as pond_upd_dt,itinerary_day_date as pond_itinerary_day_date,src_active_flag as pond_src_active_flag,src_deleted_flag as pond_src_deleted_flag,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column itinerary_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_itinerary
+spark.postgresql.schema shipdw
+spark.target.table itinerary_dim
+spark.source.primaryKeyColumns itinerary_id
+spark.target.final_collist itinerary_skey,final_view.voyageid as voyage_id,final_view.voyage_number as voyage_number,final_view.itinerary_id as itinerary_id,final_view.itinerary_voyageitineraryid as voyage_itinerary_guid,final_view.namekey as itinerary_name,cast(final_view.itinerary_itineraryday as int)as itinerary_day,Cast (final_view.embarkdate as timestamp)as  itinerary_embark_dt,cast(final_view.debarkdate as timestamp) as itinerary_debark_dt,final_view.embarkportcode as itinerary_embark_port_code,final_view.debarkportcode as itinerary_debark_port_code,Cast(final_view.itinerary_gangwayopeningtime as timestamp) as gangway_open_time,cast(final_view.itinerary_gangwayclosingtime as timestamp) as gangway_close_time,cast(final_view.itinerary_departuretime as timestamp) as itinerary_departure_time,cast(final_view.itinerary_arrivaltime as timestamp) as itinerary_arrival_time,final_view.itinerary_isseaday,cast(final_view.itinerary_day_date as timestamp)as itinerary_day_date,final_view.isactive as src_active_flag,final_view.isdeleted as src_deleted_flag,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_itinerary
+spark.target.location /data/apps/nbx/mart/hvtb_mart_dim_itinerary
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename itinerary_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+ 
+spark.ship.code VAL
+

@@ -1,0 +1,37 @@
+spark.src.config.id SrcVoyageWellQuestionaire
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.api.env Qa
+spark.target.config.id TgtVoyageWellQuestionaireFact
+spark.parent.id SrcVxpDxpHealthDetail-TgtVxpDxpHealthDetail
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+#spark.source.sql select VoyageId as voyage_id,answer as voyage_well_answer,reservationguestid as health_reservationguestid,healthquestioncode from shipdw.hvtb_lnd_vxp_dxp_healthdetail *whereClause*
+spark.source.sql select voyage_id,voyage_well_answer,health_reservationguestid,healthquestioncode from (select distinct VoyageId as voyage_id,answer as voyage_well_answer,reservationguestid as health_reservationguestid,healthquestioncode,BatchTime,Part_Date from (select healthdetailid,reservationguestid,healthquestionid,answer,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby,healthquestioncode,VoyageId,BatchTime,Part_Date,row_number() over (partition by healthdetailid,reservationguestid order by lastmodifieddate desc) as row_num from shipdw.hvtb_lnd_vxp_dxp_healthdetail) where row_num=1) *whereClause*
+spark.source.columns voyage_id ,ship_code,voyage_skey,person_skey,voyage_well_question_skey,voyage_well_answer
+spark.pond.allColumns voyage_id as pond_voyage_id ,ship_code as pond_ship_code,voyage_skey as pond_voyage_skey,person_skey as pond_person_skey,voyage_well_question_skey as pond_voyage_well_question_skey,voyage_well_answer pond_voyage_well_answer,load_dt as pond_load_dt, upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash, part_dt as pond_part_dt
+spark.target.final_collist final_view.voyage_id,final_view.ship_code,NVL(final_view.voyage_skey,-1) as voyage_skey,NVL(final_view.person_skey,-1) as person_skey,NVL(final_view.voyage_well_question_skey,-1) as voyage_well_question_skey,final_view.voyage_well_answer,final_view.load_dt, final_view.upd_dt, final_view.primaryhash, final_view.md5_hash, final_view.part_dt
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_fact_voyage_well_questionaire
+spark.target.schema shipdw									
+spark.target.table hvtb_mart_fact_voyage_well_questionaire
+#spark.source.primaryKeyColumns person_skey,ship_code,voyage_skey
+#spark.source.primaryKeyColumns person_skey,voyage_skey
+spark.source.primaryKeyColumns voyage_well_question_skey,voyage_skey,person_skey
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_fact_voyage_well_questionaire
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_fact_voyage_well_questionaire
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname voyage_well_questionaire_fact_tmp
+spark.bq.permtblname voyage_well_questionaire_fact
+spark.bq.viewname shipdw.voyage_well_questionaire_fact
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.scdtype type1
+spark.factType Accu
+spark.hadoop.hive.execution.engine mr
+

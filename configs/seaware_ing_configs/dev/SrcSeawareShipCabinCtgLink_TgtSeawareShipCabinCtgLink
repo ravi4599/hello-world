@@ -1,0 +1,28 @@
+spark.kafkabrokers 10.9.100.157:9092,10.9.100.142:9092,10.9.100.37:9092 
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic dev-shore-dbz.SEAWARE.SHIP_CABIN_CTG_LINK
+
+spark.src.personOffSet earliest
+spark.src.config.id SrcSeawareShipCabinCtgLink
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtSeawareShipCabinCtgLink
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_ship_cabin_ctg_link
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_ship_cabin_ctg_link
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.3.100.222:2181/hbase-unsecure
+spark.kafka.zookeeper 10.9.100.142:2181
+
+spark.source.columns RECORD_ID,SHIP_CODE,CABIN_NUMBER,CABIN_CATEGORY,EFF_SAIL_FROM,EFF_SAIL_TO,ROLLAWAY_BEDS,CABIN_CAPACITY,IS_ACTIVE,EXT_CABIN_CONTRACT_TYPE,ACCOUNT_NUMBER,CHILD_BEDS,op,ts_ms,voyageid,Batchtime,Part_Date
+
+spark.final.query select RECORD_ID,SHIP_CODE,CABIN_NUMBER,CABIN_CATEGORY,CAST(EFF_SAIL_FROM/1000000 as timestamp) as EFF_SAIL_FROM,CAST(EFF_SAIL_TO/1000000 as timestamp) as EFF_SAIL_TO,ROLLAWAY_BEDS,CABIN_CAPACITY,IS_ACTIVE,EXT_CABIN_CONTRACT_TYPE,ACCOUNT_NUMBER,CHILD_BEDS,op,CAST(ts_ms/1000000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date

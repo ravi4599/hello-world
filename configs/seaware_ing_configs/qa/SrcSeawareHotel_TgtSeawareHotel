@@ -1,0 +1,27 @@
+spark.kafkabrokers npkafka1.gcpshore.virginvoyages.com:9092,npkafka2.gcpshore.virginvoyages.com:9092,npkafka3.gcpshore.virginvoyages.com:9092
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic qa-shore-dbz.SEAWARE.HOTEL
+spark.src.personOffSet earliest
+spark.src.config.id SrcSeawareHotel
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.target.config.id TgtSeawareHotel
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_hotel
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_hotel
+
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.4.100.154:2181/hbase-unsecure
+spark.kafka.zookeeper npkafka1.gcpshore.virginvoyages.com:2181
+spark.source.columns  hotel_id,hotel_code,hotel_name_typed,hotel_name,hotel_type,is_active,check_in_time,check_out_time,hotel_rating,contact,comments,vendor_id,internal_resort,hotel_bag_code,image_id,hotel_rank,extended_comment,op,ts_ms,voyageid,Batchtime,Part_Date
+
+spark.final.query select hotel_id,hotel_code,hotel_name_typed,hotel_name,hotel_type,is_active, CAST(check_in_time/1000000 as timestamp) as check_in_time,CAST(check_out_time/1000000 as timestamp) as  check_out_time,hotel_rating,contact,comments,vendor_id,internal_resort,hotel_bag_code,image_id,hotel_rank,extended_comment,op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date

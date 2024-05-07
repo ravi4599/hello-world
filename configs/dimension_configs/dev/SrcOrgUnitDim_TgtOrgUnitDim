@@ -1,0 +1,55 @@
+spark.src.config.id   SrcOrgUnitDim
+spark.voyage.id   SC2002269NCR 
+spark.tgt.env   Dev
+
+spark.target.config.id   TgtOrgUnitDim
+spark.parent.id   SrcMxpOrgUnits-TgtMxpOrgUnits
+spark.ship.code Shore
+
+
+spark.target.ops.table.format   org.apache.phoenix.spark
+spark.target.ops.table.mode   overwrite
+spark.target.enablerops_table   HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.15.2.206:2181/hbase-unsecure
+
+
+spark.table.type   dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+spark.source.sql select NVL(A.VoyageId, -1) as voyage_id, A.org_unit_id as org_unit_id, A.org_unit_name as org_unit_name, A.org_unit_abbreviation as org_unit_abbreviation, A.BatchTime, A.Part_Date from (select * from (select *, row_number() over (partition by org_unit_id order by last_changed desc) rn  from shipdw.hvtb_parse_mxp_org_units) where rn = 1) A
+
+spark.source.columns voyage_id,org_unit_id,org_unit_name,org_unit_abbreviation
+
+spark.pond.allColumns org_unit_skey as pond_org_unit_skey,voyage_id as pond_voyage_id,org_unit_id as pond_org_unit_id,org_unit_name as pond_org_unit_name,org_unit_abbreviation as pond_org_unit_abbreviation,load_dt as pond_load_dt,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+
+spark.surrogate_key.column   org_unit_skey
+spark.pond.database   shipdw
+spark.pond.table   hvtb_mart_dim_org_unit
+spark.target.schema   shipdw
+spark.target.table   org_unit_dim
+spark.source.primaryKeyColumns  org_unit_id
+spark.scdtype   type1
+spark.frameworkEnv   shore
+
+
+spark.target.final_collist org_unit_skey,final_view.voyage_id,final_view.org_unit_id,final_view.org_unit_name,final_view.org_unit_abbreviation,load_dt,upd_dt,primaryhash,md5_hash
+
+
+spark.target.temp   gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_dim_org_unit
+spark.target.location  gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_dim_org_unit
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname org_unit_dim_tmp
+spark.bq.permtblname org_unit_dim
+spark.bq.viewname shipdw.org_unit_dim
+
+spark.scdtype   type1
+spark.tableType   DIMENSION
+

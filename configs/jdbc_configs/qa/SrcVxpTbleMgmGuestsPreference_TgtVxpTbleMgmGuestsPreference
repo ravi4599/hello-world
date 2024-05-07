@@ -1,0 +1,46 @@
+
+
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.56.10.6/table_management
+spark.src.user pgreadaccessuser
+spark.src.password vzwQArHubFzpEyoL1st7
+spark.src.con.driver org.postgresql.Driver
+ 
+spark.src.config.id SrcVxpTbleMgmGuestsPreference
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpTbleMgmGuestsPreference
+
+spark.tgt.env qa
+spark.target.offset.mode overwrite
+
+
+spark.target.table shipdw.hvtb_lnd_vxp_table_management_guests_preference
+
+
+spark.source.columns addeddate,public_id,code,dxp_id,name,active,type_id,addedby,lastmodifiedby,lastmodifieddate
+
+
+spark.source.query addeddate,public_id,code,dxp_id,name,active,type_id,addedby,lastmodifiedby,lastmodifieddate
+
+
+spark.tz.columns addeddate,lastmodifieddate
+spark.src.table.query "guests_preference"
+spark.condition.column lastmodifieddate
+spark.ship.code SHORE
+
+
+
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+
+
+spark.target.location gs://vv-cert-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_table_management_guests_preference
+spark.target.hive.table shipdw.hvtb_lnd_vxp_table_management_guests_preference
+spark.hadoop.hive.execution.engine mr
+
+

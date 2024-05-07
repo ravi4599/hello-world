@@ -1,0 +1,35 @@
+spark.src.config.id SrcPersonSchedules
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtCrewActivityDetailDim
+spark.parent.id	SrcMxpPersonSchedules-TgtMxpPersonSchedules 
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.api.env Prod
+spark.table.type dim
+spark.target.schema shipdw
+spark.target.table hvtb_mart_dim_crew_activity_detail
+spark.source.sql SELECT   VoyageId AS voyage_id,   GUID AS crew_activity_guid,   CAST(false AS boolean) AS is_actuals,   created AS schedule_activity_created_datetime,   CAST(created_by_id AS string) AS schedule_activity_createdby_person_id,   CAST('' AS timestamp) AS schedule_activity_updated_datetime,  CAST(NULL AS string) AS schedule_activity_updatedby_person_id,  CAST(NULL AS string) AS actual_company_name,  CAST(NULL AS string) AS actual_manning_agent,  CAST(NULL AS string) AS actual_clockin_clock,  CAST(NULL AS boolean) AS is_actual_clockin_manual_entry,  CAST(NULL AS string) AS actual_clockout_clock,  CAST(NULL AS boolean) AS is_actual_clockout_manual_entry,  batchtime,   Part_Date  FROM (SELECT * FROM (     SELECT VoyageId, GUID, created, created_by_id, batchtime, Part_Date, row_number() over (partition by person_schedule_id order by last_changed desc) as rn FROM shipdw.hvtb_parse_mxp_person_schedules ) WHERE rn = 1)
+spark.source.columns voyage_id,crew_activity_guid,is_actuals,schedule_activity_created_datetime,schedule_activity_createdby_person_id,schedule_activity_updated_datetime,schedule_activity_updatedby_person_id,actual_company_name,actual_manning_agent,actual_clockin_clock,is_actual_clockin_manual_entry,actual_clockout_clock,is_actual_clockout_manual_entry,batchtime
+spark.pond.allColumns voyage_id as pond_voyage_id, crew_activity_detail_skey as pond_crew_activity_detail_skey, crew_activity_guid as pond_crew_activity_guid, is_actuals as pond_is_actuals, schedule_activity_created_datetime  as pond_schedule_activity_created_datetime, schedule_activity_createdby_person_id as pond_schedule_activity_createdby_person_id, schedule_activity_updated_datetime as pond_schedule_activity_updated_datetime, schedule_activity_updatedby_person_id as pond_schedule_activity_updatedby_person_id, actual_company_name as pond_actual_company_name, actual_manning_agent as pond_actual_manning_agent, actual_clockin_clock as pond_actual_clockin_clock, is_actual_clockin_manual_entry as pond_is_actual_clockin_manual_entry, actual_clockout_clock as pond_actual_clockout_clock, is_actual_clockout_manual_entry as pond_is_actual_clockout_manual_entry,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column crew_activity_detail_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_crew_activity_detail
+spark.source.primaryKeyColumns crew_activity_guid,is_actuals
+spark.target.final_collist final_view.voyage_id, crew_activity_detail_skey, final_view.crew_activity_guid, final_view.is_actuals, final_view.schedule_activity_created_datetime, final_view.schedule_activity_createdby_person_id, final_view.schedule_activity_updated_datetime, final_view.schedule_activity_updatedby_person_id, final_view.actual_company_name, final_view.actual_manning_agent, final_view.actual_clockin_clock, final_view.is_actual_clockin_manual_entry, final_view.actual_clockout_clock, final_view.is_actual_clockout_manual_entry,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_crew_activity_detail
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_crew_activity_detail
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname crew_activity_detail_dim_tmp
+spark.bq.permtblname crew_activity_detail_dim
+spark.bq.viewname shipdw.crew_activity_detail_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

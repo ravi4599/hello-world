@@ -1,0 +1,28 @@
+spark.kafkabrokers npkafka1.gcpshore.virginvoyages.com:9092,npkafka2.gcpshore.virginvoyages.com:9092,npkafka3.gcpshore.virginvoyages.com:9092 
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic qa-shore-dbz.SEAWARE.VENDOR
+
+spark.src.personOffSet earliest
+spark.src.config.id SrcSeawareVendor
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.target.config.id TgtSeawareVendor
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_vendor
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_vendor
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.4.100.154:2181/hbase-unsecure
+spark.kafka.zookeeper npkafka1.gcpshore.virginvoyages.com:2181
+
+spark.source.columns VENDOR_ID,VENDOR_CODE,VENDOR_NAME_TYPED,VENDOR_NAME,CONTACT,COMMENTS,IS_ACTIVE,EMAIL,op,ts_ms,voyageid,Batchtime,Part_Date
+
+spark.final.query select VENDOR_ID,VENDOR_CODE,VENDOR_NAME_TYPED,VENDOR_NAME,CONTACT,COMMENTS,IS_ACTIVE,EMAIL,op,CAST(ts_ms/1000000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date

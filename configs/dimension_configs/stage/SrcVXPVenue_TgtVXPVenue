@@ -1,0 +1,42 @@
+spark.src.config.id SrcVXPVenue
+spark.voyage.id SC2002269NCR
+spark.tgt.env stage
+spark.target.config.id TgtVXPVenue
+spark.parent.id SrcHvVenues-TgtHvVenues
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+spark.table.type dim
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+
+spark.source.sql SELECT venues.VoyageId as voyage_id, venues.global_venue_id as venue_id, venues.name as venue_name, sector.name as venue_sector_name, 'VXP' as data_src, lkup.threshold1 as density_threshold_1, lkup.threshold2 as density_threshold_2, org.org_unit_abbreviation as ship_code, venues.batchtime as batchtime, venues.part_date as part_date from ( select * from ( select VoyageId,global_venue_id,sector_id,name,batchtime,part_date, row_number() over ( partition by global_venue_id order by batchtime desc) as rn from shipdw.hvtb_parse_vxp_locationcon_venues)a where a.rn = 1 and a.global_venue_id <> '')venues left join ( select * from ( select id,name,sim_id,batchtime, row_number() over ( partition by id order by batchtime desc) as rn from shipdw.hvtb_parse_vxp_locationconstruct_sectors )b where b.rn = 1)sector on (venues.sector_id == sector.id) left join shipdw.hvtb_mart_lkp_venue_density_threshold lkup on (venues.global_venue_id == lkup.venue_id) left join( select * from ( select id,name,batchtime, row_number() over( partition by id order by batchtime desc) as rn from shipdw.hvtb_parse_vxp_locationconstruct_sims)c where c.rn = 1) sims on (sims.id == sector.sim_id) left join shipdw.hvtb_mart_dim_org_unit org on (sims.name == org.org_unit_name)
+
+spark.source.columns voyage_id,venue_id,venue_name,venue_sector_name,data_src,density_threshold_1,density_threshold_2,ship_code
+
+spark.pond.allColumns venue_skey as pond_venue_skey,voyage_id as pond_voyage_id,venue_id as pond_venue_id,venue_name as pond_venue_name,venue_sector_name as pond_venue_sector_name,data_src as pond_data_src,density_threshold_1 as pond_density_threshold_1,density_threshold_2 as pond_density_threshold_2,ship_code as pond_ship_code,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+spark.surrogate_key.column venue_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_venue
+spark.source.primaryKeyColumns venue_id
+
+spark.target.final_collist venue_skey,final_view.voyage_id as voyage_id,final_view.venue_id as venue_id,final_view.venue_name as venue_name,final_view.venue_sector_name as venue_sector_name,final_view.data_src as data_src,final_view.density_threshold_1 as density_threshold_1,final_view.density_threshold_2 as density_threshold_2,final_view.ship_code as ship_code,final_view.load_dt as   load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash
+
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_dim_venue
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_venue
+
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename venue_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+
+
+
+#spark.source.sql select * from (Select venue_id, venue_name, voyage_id, 'VXP' as data_src, batchtime, part_date from (SELECT  global_venue_id as venue_id, name as venue_name, VoyageId  as voyage_id, BatchTime as batchtime, Part_Date as part_date,ROW_NUMBER() over (Partition by global_venue_id order by Part_Date desc) as rn FROM shipdw.hvtb_parse_vxp_locationcon_venues)a where a.rn=1)vxpvenue_dim
+
+

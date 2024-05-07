@@ -1,0 +1,59 @@
+spark.src.config.id   SrcSeawareWearableFul
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   Qa
+spark.target.config.id   TgtSeawareWearableFul
+
+
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+   
+
+   
+spark.table.type   fact
+
+
+spark.pond.database   shipdw
+spark.pond.table   hvtb_mart_fact_seaware_wearable_fulfillment
+spark.target.schema   shipdw
+
+
+spark.target.temp   gs://vv-cert-nbx-cluster/data/mart/seaware/temp/hvtb_mart_fact_seaware_wearable_fulfillment
+spark.target.location   gs://vv-cert-nbx-cluster/data/mart/seaware/hvtb_mart_fact_seaware_wearable_fulfillment
+
+
+
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_wearable_fulfillment_fact_tmp
+spark.bq.permtblname seaware_wearable_fulfillment_fact
+spark.bq.viewname   seaware.seaware_wearable_fulfillment_fact
+
+spark.tableType   FACT
+spark.frameworkEnv   shore
+spark.factType   Accu
+  
+   
+spark.pond.allColumns   res_id as pond_res_id,sail_id as pond_sail_id,guest_id as pond_guest_id,src_res_id as pond_src_res_id,client_id as pond_client_id,sw_generated_by_flg as pond_sw_generated_by_flg,sw_wearable_type as pond_sw_wearable_type,sw_listener_success_flg as pond_sw_listener_success_flg,sw_listener_error_flg as pond_sw_listener_error_flg,sw_listener_error_details as pond_sw_listener_error_details,seaware_to_vxp_success_flg as pond_seaware_to_vxp_success_flg,seaware_to_vxp_status as pond_seaware_to_vxp_status,vxp_to_rrd_success_flg as pond_vxp_to_rrd_success_flg,vxp_to_rrd_status as pond_vxp_to_rrd_status,vxp_wearable_color as pond_vxp_wearable_color,rrd_success_flg as pond_rrd_success_flg,rrd_processing_status as pond_rrd_processing_status,vxp_rrd_file_received_flg as pond_vxp_rrd_file_received_flg,rrd_to_vxp_ingestion_success_flg as pond_rrd_to_vxp_ingestion_success_flg,rrd_to_vxp_ingestion_status as pond_rrd_to_vxp_ingestion_status,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash  as pond_md5_hash,part_dt as pond_part_dt
+ 
+
+
+spark.source.primaryKeyColumns  res_id,guest_id
+
+   
+spark.target.final_collist   final_view.res_id as res_id,final_view.sail_id as sail_id,final_view.guest_id as guest_id,final_view.src_res_id as src_res_id,final_view.client_id as client_id,final_view.sw_generated_by_flg as sw_generated_by_flg,final_view.sw_wearable_type as sw_wearable_type,final_view.sw_listener_success_flg as sw_listener_success_flg,final_view.sw_listener_error_flg as sw_listener_error_flg,final_view.sw_listener_error_details as sw_listener_error_details,final_view.seaware_to_vxp_success_flg as seaware_to_vxp_success_flg,final_view.seaware_to_vxp_status as seaware_to_vxp_status,final_view.vxp_to_rrd_success_flg as vxp_to_rrd_success_flg,final_view.vxp_to_rrd_status as vxp_to_rrd_status,final_view.vxp_wearable_color as vxp_wearable_color,final_view.rrd_success_flg as rrd_success_flg,final_view.rrd_processing_status as rrd_processing_status,final_view.vxp_rrd_file_received_flg as vxp_rrd_file_received_flg,final_view.rrd_to_vxp_ingestion_success_flg as rrd_to_vxp_ingestion_success_flg,final_view.rrd_to_vxp_ingestion_status as rrd_to_vxp_ingestion_status,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash,final_view.part_dt
+
+
+spark.source.columns res_id,sail_id,guest_id,src_res_id,client_id,sw_generated_by_flg,sw_wearable_type,sw_listener_success_flg,sw_listener_error_flg,sw_listener_error_details,seaware_to_vxp_success_flg,seaware_to_vxp_status,vxp_to_rrd_success_flg,vxp_to_rrd_status,vxp_wearable_color,rrd_success_flg,rrd_processing_status,vxp_rrd_file_received_flg,rrd_to_vxp_ingestion_success_flg,rrd_to_vxp_ingestion_status
+
+
+
+
+
+
+   

@@ -1,0 +1,33 @@
+spark.src.config.id SrcMxpPositionDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtMxpPositionDim
+spark.parent.id SrcMxpPositions-TgtMxpPositions
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.table.type dim
+spark.source.sql select a.voyageid as voyage_id,a.position_id as position_id,a.position_code as position_code,a.position_name as position_name,a.department_id as position_dept_id,a.active as src_active_flag,a.batchtime,a.part_date  from (select * from (select *,row_number() over ( partition by position_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_positions) where rn=1)a
+spark.source.looup.items.sql select a.lookup_item_id as lookup_item_id,a.lookup_item_name as lookup_item_name,a.lookup_sub_category_id  as lookup_sub_category_id from (select * from (select *,row_number() over ( partition by lookup_item_id order by last_changed desc) as rn from shipdw.hvtb_parse_mxp_lookup_items) where rn=1)a
+spark.source.columns voyage_id,position_id,position_dept_id,position_name,position_dept_name,position_code,src_active_flag
+spark.pond.allColumns position_skey as pond_position_skey,voyage_id as pond_voyage_id,position_id as pond_position_id,position_name as pond_position_name,position_code as pond_position_code,position_dept_id as pond_position_dept_id,position_dept_name as pond_position_dept_name,src_active_flag as pond_src_active_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column position_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_position
+spark.source.primaryKeyColumns position_id
+spark.target.final_collist position_skey,cast(final_view.voyage_id as string) as voyage_id,final_view.position_id,final_view.position_code,final_view.position_name,final_view.position_dept_id,final_view.position_dept_name,final_view.src_active_flag,load_dt,upd_dt,primaryhash,md5_hash
+spark.target.temp gs://vv-prod-nbx-cluster/data/temp/hvtb_mart_dim_position
+spark.target.location gs://vv-prod-nbx-cluster/data/mart/hvtb_mart_dim_position
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname position_dim_tmp
+spark.bq.permtblname position_dim
+spark.bq.viewname shipdw.position_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+spark.hadoop.hive.execution.engine mr
+

@@ -1,0 +1,42 @@
+spark.src.config.id   SrcSeawareChangeFact
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   Dev
+spark.api.env   Dev	
+spark.target.config.id   TgtSeawareChangeFact
+spark.parent.id   SrcSailorAttParse-TgtSailorAttParse
+#spark.same.parent yes
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+spark.source.columns id,person,shipcode,batchtime,created_timestamp,visited_timestamp,question_id,part_date,location
+
+spark.pond.database vv_db
+spark.pond.table hvtb_mart_fact_seaware_change_history
+spark.target.schema vv_db
+spark.table.type fact
+
+
+
+spark.pond.allColumns change_id as pond_change_id,src_res_id as pond_src_res_id,attrib_name as pond_attrib_name,paramtype as pond_paramtype,old_value as pond_old_value,new_value as pond_new_value,changed_by as pond_changed_by,changed_timestamp as pond_changed_timestamp,load_dt as pond_load_dt,upd_dt as pond_upd_dt,part_dt as pond_part_dt
+
+spark.target.final_collist change_id,src_res_id,attrib_name,paramtype,old_value,new_value,changed_by,cast(changed_timestamp as timestamp) as changed_timestamp,load_dt,upd_dt,part_dt
+
+spark.target.temp   gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_fact_seaware_change_history
+spark.target.location   gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_fact_seaware_change_history
+spark.tableType FACT
+spark.frameworkEnv shore
+
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seaware_change_history_fact_tmp
+spark.bq.permtblname seaware_change_history_fact
+spark.bq.viewname    seaware.seaware_change_history
+spark.hadoop.hive.execution.engine mr
+

@@ -1,0 +1,34 @@
+spark.kafkabrokers 10.7.3.103:9092,10.7.11.112:9092,10.7.12.61:9092
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic shore-dbz.sw.SEAWARE.SHIP_CABIN_CTG_LINK
+spark.src.personOffSet earliest
+spark.src.config.id SrcSwShipCabinCtgLnk
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtSwShipCabinCtgLnk
+
+
+spark.kafka.zookeeper 10.7.12.61:2181
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.snapshot.table HBTB_DBZ_SNAPDATE
+
+
+spark.target.lnd.table shipdw.hvtb_lnd_sw_ship_cabin_ctg_link
+spark.target.parse.table shipdw.hvtb_parse_sw_ship_cabin_ctg_link
+spark.ship.code SC
+#spark.stop.flag Y
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+
+
+

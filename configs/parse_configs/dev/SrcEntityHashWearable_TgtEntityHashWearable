@@ -1,0 +1,39 @@
+#spark.source.sql select * from (select entitycode,entityhashid,uniquesourceid,failedhashcode,additionalinfo,split(additionalinfo,',(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)')[53]  as original_wearable_colour,addeddate,lastmodifieddate as change_dt,batchtime,part_date,row_number() over(partition by uniquesourceid order by lastmodifieddate desc,addeddate desc) rn from shipdw.hvtb_parse_batch_entity_hash where failedhashcode in ('RECEIVED_FROM_SEAWARE','SUCCESS_SENDING_TO_RRD','FAILED_SENDING_TO_RRD_AT_FTP','FAILED_SENDING_TO_RRD_AT_VXP','FAILED_SENDING_TO_RRD_AT_SAILOR_API','RECEIVED_FROM_RRD','SUCCESS_TO_ASSIGN','PARTIAL_SUCCESS_TO_ASSIGN','FAILED_TO_ASSIGN') ) where rn=1 
+
+
+spark.source.sql  select * from shipdw.hvtb_parse_batch_entity_hash where failedhashcode in('RECEIVED_FROM_SEAWARE','SUCCESS_SENDING_TO_RRD','FAILED_SENDING_TO_RRD_AT_FTP','FAILED_SENDING_TO_RRD_AT_VXP','FAILED_SENDING_TO_RRD_AT_SAILOR_API','RECEIVED_FROM_RRD','SUCCESS_TO_ASSIGN','PARTIAL_SUCCESS_TO_ASSIGN','FAILED_TO_ASSIGN') and  failedhashcode is not null
+
+spark.target.table shipdw.hvtb_parse_entity_hash_wearable
+spark.src.config.id SrcEntityHashWearable
+spark.voyage.id SC2002269NCR
+spark.tgt.env Dev
+spark.target.config.id TgtEntityHashWearable
+spark.parent.id SrcBatchEntityHash-TgtBatchEntityHash
+spark.ship.code Shore
+
+spark.pond.table shipdw.hvtb_parse_entity_hash_wearable
+
+
+spark.metadata.offset.table shipdw.hbtb_nbx_kafka_streaming_offset
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.con.format jdbc
+spark.metadata.user postgres
+spark.metadata.password Setsail2022
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+
+
+spark.pond.allColumns entitycode as pond_entitycode,entityhashid as pond_entityhashid,uniquesourceid as pond_uniquesourceid,failedhashcode as pond_failedhashcode,additionalinfo as pond_additionalinfo,seaware_to_vxp_success_flg as pond_seaware_to_vxp_success_flg,seaware_to_vxp_status as pond_seaware_to_vxp_status,vxp_to_rrd_success_flg as pond_vxp_to_rrd_success_flg,vxp_to_rrd_status as pond_vxp_to_rrd_status,vxp_wearable_color as pond_vxp_wearable_color,vxp_rrd_file_received_flg as pond_vxp_rrd_file_received_flg,rrd_to_vxp_ingestion_success_flg as pond_rrd_to_vxp_ingestion_success_flg,rrd_to_vxp_ingestion_status as pond_rrd_to_vxp_ingestion_status
+
+spark.source.primaryKeyColumnsPond pond_uniquesourceid
+#spark.source.primaryKeyColumnsPond pond_entityhashid
+spark.source.allColumnsPond pond_entitycode,pond_entityhashid,pond_uniquesourceid,pond_failedhashcode,pond_additionalinfo,pond_seaware_to_vxp_success_flg,pond_seaware_to_vxp_status,pond_vxp_to_rrd_success_flg,pond_vxp_to_rrd_status,pond_vxp_wearable_color,pond_vxp_rrd_file_received_flg,pond_rrd_to_vxp_ingestion_success_flg,pond_rrd_to_vxp_ingestion_status
+
+
+spark.source.primaryKeyColumns uniquesourceid
+spark.source.allColumns entitycode,entityhashid,uniquesourceid,failedhashcode,additionalinfo,seaware_to_vxp_success_flg,seaware_to_vxp_status,vxp_to_rrd_success_flg,vxp_to_rrd_status,vxp_wearable_color,vxp_rrd_file_received_flg,rrd_to_vxp_ingestion_success_flg,rrd_to_vxp_ingestion_status
+
+
+
+

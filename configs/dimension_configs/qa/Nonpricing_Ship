@@ -1,0 +1,26 @@
+spark.query select ship_code AS Ship_Code, ship_name AS Ship_Name,ship_id AS Registry_Code, ship_registry AS Registry_Description,ship_built_date AS Built_Date, ship_crew_size AS Crew_Size,ship_pax_capacity AS Pax_Capacity, ship_cruising_speed Cruising_Speed,ship_max_speed AS Max_Speed, ship_length AS Length,ship_beam AS Beam, ship_tonnage AS Tonnage from vv_db.hvtb_nbx_parse_sw_rpl_ship where ship_code IN ('SC','VL','RS')
+
+spark.temp gs://vv-cert-nbx-cluster/test_nonpricing/test/temp/
+spark.location gs://vv-cert-nbx-cluster/temp/
+spark.filename VV_ship
+spark.prefix_with_date false
+spark.sql.codegen.wholeStage false
+
+spark.hadoop.hive.execution.engine mr
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.frameworkEnv shore
+spark.table.type dim
+
+#spark.manageExecution.dayOftheWeek Wed,Thu
+
+#spark.talend.processName 'jSWstgRPL_SHIP'
+
+spark.src.config.id SrcNonpricingShip
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtNonpricingShip

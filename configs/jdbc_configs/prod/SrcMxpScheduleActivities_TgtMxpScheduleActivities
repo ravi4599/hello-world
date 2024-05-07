@@ -1,0 +1,33 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:sqlserver://10.12.1.243:1442;database=MXP
+spark.src.user Capgemini
+spark.src.password Nskh#c5v3y&7
+spark.src.con.driver com.microsoft.sqlserver.jdbc.SQLServerDriver
+spark.src.table.query MXP.dbo.VScheduling_Activities
+ 
+spark.src.config.id SrcMxpScheduleActivities
+spark.tgt.env Prod
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtMxpScheduleActivities
+
+
+spark.source.columns ActivityID, ActivityCode, ActivityName, ActivityType, ActivityColor, ActivityIsOvertime, ActivityIsNotAllowedOffsite, ACTIVE, REC_DELETED
+
+spark.source.query ActivityID, ActivityCode, ActivityName, ActivityType, ActivityColor, ActivityIsOvertime, ActivityIsNotAllowedOffsite, ACTIVE, REC_DELETED
+
+spark.hive.table.maxid select max(activityid) from shipdw.hvtb_lnd_mxp_scheduling_activities
+spark.condition.column ActivityID
+spark.target.location gs://vv-prod-nbx-cluster/data/landing/mxp/hvtb_lnd_mxp_scheduling_activities
+spark.target.hive.table shipdw.hvtb_lnd_mxp_scheduling_activities
+spark.target.table shipdw.hvtb_lnd_mxp_scheduling_activities
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.ship.code SHORE
+spark.hadoop.hive.execution.engine mr
+

@@ -1,0 +1,100 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.virginvoyages.shore.facts</groupId>
+	<artifactId>shore-datamart-facts</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>vv-nexus-snapshots</id>
+			<url>http://10.3.100.215:8081/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+
+	<modules>
+		
+		<module>vv-nbx-datamart-boarding-fact</module>
+		<module>vv-nbx-datamart-person-status-fact</module>
+		<module>vv-nbx-datamart-shore-crew-activity-facts</module>
+		<module>vv-nbx-datamart-chat-queue-facts</module>
+		<module>vv-nbx-datamart-voyage-well-questionaire-fact</module>
+		<module>vv-nbx-datamart-vxp-housekeeping-request-facts</module>
+		<module>vv-nbx-datamart-incident-fact</module>
+		<module>vv-nbx-datamart-incident-guest-facts</module>
+		<module>vv-nbx-datamart-device-revenue-facts</module>
+		<module>vv-nbx-datamart-konami-revenue-facts</module>
+		<module>vv-nbx-datamart-well-fact</module>
+		<module>vv-nbx-datamart-order-facts</module>
+		<module>vv-nbx-datamart-allergy-facts</module>
+		<module>vv-nbx-datamart-dining-table-status-fact</module>
+		<module>vv-nbx-datamart-dining-reservation-item-facts</module>
+		<module>vv-nbx-datamart-dining-session-fact</module>
+		<module>vv-nbx-datamart-location-history-fact</module>
+		<module>vv-nbx-datamart-person-status-history-facts</module>
+		<module>vv-nbx-datamart-virtual-queue-facts</module>
+		<module>shore-datamart-person-address-fact</module>
+		<module>shore-datamart-survey-response-fact</module>
+		<module>vv-nbx-datamart-wearable-fulfillment-facts</module>
+		<module>vv-nbx-datamart-activity-revenue-summary-fact</module>
+		<module>ship_overview_device_revenue_summary_fact</module>
+		<module>vv-nbx-datamart-shore-revenue-summary-fact</module>
+		<module>vv-nbx-datamart-shore-union-device-revenue</module>
+		<module>vv-nbx-datamart-dining-reservation-facts</module>
+		<module>vv-nbx-datamart-booking-facts</module>
+		<module>vv-nbx-datamart-orderitem-facts</module>
+		<module>vv-nbx-datamart-seaware-group-fact</module>
+		<module>vv-nbx-datamart-teammemberschedule-fact</module>
+		<module>vv-nbx-datamart-sail-dining-facts</module>
+		<module>vv-nbx-datamart-shore-venue-revenue-summary-fact</module>
+		<module>vv-nbx-datamart-vts-case-summary-fact</module>
+		<module>vv-nbx-datamart-vts-phone-summary-fact</module>
+		<module>vv-nbx-datamart-shore-location-facts</module>
+		<module>vv-nbx-datamart-person-position-facts</module>
+		<module>vv-nbx-datamart-seaware-revenue-fact</module>
+		<module>vv-nbx-datamart-vts-chat-summary-fact</module>
+		<module>vv-nbx-datamart-vts-overall-summary-fact</module>
+		<module>vv-nbx-datamart-vts-performace-targets-lkp-summary-fact</module>
+		<module>vv-nbx-datamart-postvoyage-survey-responses-facts</module>
+		<module>shore-datamart-SW-Protected-Commission-Detail-Fact</module>
+		<module>vv-nbx-datamart-seaware-revenue-summary-fact</module>
+		<module>vv-nbx-datamart-plan-forecast-actuals</module>
+		<module>vv-nbx-datamart-revenue-commission-fact</module>
+		<module>vv-nbx-datamart-cabin-facts_rpl</module>
+		<module>shore-datamart-sailor-service-attribution-facts</module>
+    	<module>vv-nbx-datamart-cabin-facts</module>
+		<module>vv-nbx-datamart-folio-revenue-facts</module>
+		<module>vv-nbx-datamart-dining-reservation-guest-facts</module>
+		<module>shore-datamart-Protected-Commission-Detail-Fact	</module>
+        <module>vv-nbx-datamart-spa-utilization-summary-facts</module>	
+		<module>vv-nbx-datamart-shore-position-orgunit-detail-facts</module>
+		<module>vv-nbx-datamart-dining-reservation-crew-fact</module>
+		<module>vv-nbx-datamart-seaware-sail-cabin-fact</module>
+		<module>vv-nbx-datamart-embarkdisembark-dashboard-fact</module>
+		</modules>
+
+	<dependencies>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.1</version>
+			</plugin>
+		</plugins>
+	</build>
+</project>

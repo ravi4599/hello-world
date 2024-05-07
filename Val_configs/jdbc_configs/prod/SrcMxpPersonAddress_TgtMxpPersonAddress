@@ -1,0 +1,22 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:sqlserver://10.102.220.122:1442;database=MXP
+spark.src.user Capgemini
+spark.src.password virginvoyages2020!
+spark.src.table dbo.Person_Address
+spark.src.con.driver com.microsoft.sqlserver.jdbc.SQLServerDriver
+spark.src.config.id SrcMxpPersonAddress
+spark.tgt.env Prod
+spark.voyage.id VAL2002269NCR
+spark.target.config.id TgtMxpPersonAddress
+spark.target.location /data/apps/nbx/hive/landing/mxp/hvtb_lnd_mxp_Person_Address
+spark.target.hive.table shipdw.hvtb_lnd_mxp_Person_Address
+spark.src.table.query MXP.dbo.Person_Address
+spark.condition.column LAST_CHANGED
+spark.source.columns ROW_COUNTER, PERSON_ADDRESS_ID, PERSON_ID, PERSON_ADDRESS_TYPE_ID, PERSON_STREET_1, PERSON_STREET_2, PERSON_STREET_3, PERSON_CITY_NAME, PERSON_POSTAL_CODE, PERSON_STATE, PERSON_COUNTRY_ID, PERSON_PHONE, PERSON_MOBILE_PHONE, PERSON_FAX, PERSON_E_MAIL, PERSON_ADDERSS_COMMENT, PERSON_IS_MAILING_ADDRESS, REC_DELETED, CREATED_AT_ID, CREATED_BY_ID, CREATED, LAST_CHANGED, CHANGED, GUID, PREFERRED_AIRPORT, PERSON_ADDRESS_CONTACT, PREFERRED_AIRPORT_ID, PERSON_E_MAIL2, PERSON_ADDRESS_EXTERNAL_ID, PERSON_WORK_PHONE, LAST_CHANGE_LOG_ID, EMERGENCY_CONTACT_TYPE_ID, HASHBYTES, PREFERRED_AIRPORT_DISTANCE, PREFERRED_AIRPORT_TRANSIT_TIME, PREFERRED_AIRPORT_TRANSPORTATION_TYPE, PERSON_SKYPE_NAME
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL
+

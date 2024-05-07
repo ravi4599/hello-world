@@ -1,0 +1,270 @@
+def workSpaceDir = "/var/lib/jenkins/workspace/${JOB_NAME}-${params.environment}"
+def jenkinsGlobalProps = "/var/lib/jenkins/workspace/vv-bigdata-global-jenkins-properties/jenkins-properties/jenkins_file.properties"
+def props = null
+
+def branchVerion = "feature"
+def nbx_jar_build_location = "/var/lib/jenkins/nbx_gcp_build_jars"
+
+
+pipeline {
+
+  agent {
+      node {
+          label 'master'
+      }
+  }
+
+  options {
+    timestamps()
+    buildDiscarder(logRotator(numToKeepStr: '5'))
+  }
+
+  stages {
+
+        stage('Checkout') {
+            steps {
+					cleanWs()
+					checkout([$class: 'GitSCM',
+					branches: [[name: "${branch}"]],
+					extensions: [[$class: 'RelativeTargetDirectory', 
+						relativeTargetDir: workSpaceDir]],
+					userRemoteConfigs: [[
+						credentialsId: 'jenkins-cicd',
+						url: 'git@bitbucket.org:VirginVoyages/bigdata-nbx-shore-etl.git']
+					]
+				])
+				echo "tagetdir :${workSpaceDir}"	
+				script {	
+					props = readProperties file: "${jenkinsGlobalProps}"
+					echo "Jobserver : ${props.jobServerdev}"
+					def branchVTemp = "${branch}" =~ /(\bSprint.*\b)/
+					branchVerion = branchVTemp[0][1]
+				}
+ 			}
+        }
+	
+        stage('Build') {
+            steps {
+              withMaven(maven: 'M2_HOME', mavenOpts: '-Xmx4096m -Xms4096m') {
+                sh "ls -la"
+                sh "pwd"
+                sh "mvn  -B -f ${workSpaceDir}/vv-nbx-shore-data-parser/pom.xml clean install -DskipTests=true --fail-at-end"
+              }
+
+            }
+        }
+
+        stage('Copy artifacts - DEV') {
+		    when {
+			  expression { params.environment == 'dev' } 
+			}
+            steps {
+              echo 'copy stage'
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-apollo-pos-change/target/*.jar jenkins@${props.jobServerdev}:/data/apps/talend/shared/scripts/nbx/Parse/Apollo/"
+				 
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-folio-item/target/*.jar jenkins@${props.jobServerdev}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				 
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-mxp-*/target/*.jar jenkins@${props.jobServerdev}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-konami-*/target/*.jar jenkins@${props.jobServerdev}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-GoSpark-*/target/*.jar jenkins@${props.jobServerdev}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-ars-*/target/*.jar jenkins@${props.jobServerdev}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-core-*/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-folio-*/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-transferrequest-*/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-swtovxp-wearable/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-campaign/target/*.jar jenkins@${props.jobServerdev}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-team/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-campaign/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-agent/target/*.jar  jenkins@${props.jobServerdev}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				 
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-onboard-sailor-review*/target/*.jar jenkins@${props.jobServerdev}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-ars-*/target/*.jar jenkins@${props.jobServerdev}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-sailor-service-attribution/target/*.jar jenkins@${props.jobServerdev}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+              }
+		}
+		
+		stage('Copy artifacts - INT') {
+		    when {
+			  expression { params.environment == 'int' } 
+			}
+            steps {
+              echo 'copy stage'
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-apollo-pos-change/target/*.jar jenkins@${props.jobServerint}:/data/apps/talend/shared/scripts/nbx/Parse/Apollo/"
+				 
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-folio-item/target/*.jar jenkins@${props.jobServerint}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				 
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-mxp-*/target/*.jar jenkins@${props.jobServerint}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-konami-*/target/*.jar jenkins@${props.jobServerint}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-GoSpark-*/target/*.jar jenkins@${props.jobServerint}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-ars-*/target/*.jar jenkins@${props.jobServerint}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-core-*/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-folio-*/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-transferrequest-*/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-swtovxp-wearable/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-campaign/target/*.jar jenkins@${props.jobServerint}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-team/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-campaign/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-agent/target/*.jar  jenkins@${props.jobServerint}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				 
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-onboard-sailor-review*/target/*.jar jenkins@${props.jobServerint}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-ars-*/target/*.jar jenkins@${props.jobServerint}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-sailor-service-attribution/target/*.jar jenkins@${props.jobServerint}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  
+              }
+		}
+		
+		stage('Copy artifacts - QA') {
+		    when {
+			  expression { params.environment == 'qa' } 
+			}
+            steps {
+              echo 'copy stage'
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-apollo-pos-change/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/Apollo/"
+				 
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-folio-item/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				 
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-mxp-*/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-konami-*/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-GoSpark-*/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				 
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-onboard-sailor-review*/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-ars-*/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-core-*/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-folio-*/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-transferrequest-*/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-swtovxp-wearable/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-campaign/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-team/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-campaign/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-agent/target/*.jar  jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-sailor-service-attribution/target/*.jar   jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-agent/resources/qa*.conf jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse"
+
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-campaign/resources/qa*.conf jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse"
+
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-team/resources/qa*.conf jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-postvoyage-survey-responses/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-meal-count/target/*.jar  ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-housekeeping-requests-types/target/*.jar  ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-table-clear/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-table-booking/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-housekeeping-teammember-schedule/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-housekepper/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-locationconstruct-tags/target/*.jar  ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-locationconstruct-sectors/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-locacon-venuetags/target/*.jar  jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/" 
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-hostpreference/target/*.jar  ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-locationevent/target/*.jar  ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-virtualqdef/target/*.jar  ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-virtualqueue/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-virtualqhstry/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-foodbeverage-menuitemallergy/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-foodbeverage-allergy/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-foodbeverage-orderallergy/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-ars-activitybooking/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-ars-activitytype/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-ars-activitytypemapping/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-zulip-zerver-supportqueue/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-zulip-zerver-userprofile/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-entity-hash/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-seaware-wearables/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-errorreporting-seaware-wearables/target/*.jar jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  // Config copy
+				  sh "scp ${workSpaceDir}/configs/parse_configs/qa/* jenkins@${props.jobServerqa}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/config/"
+				  
+				  
+				  echo 'Copy stage successful!'
+				
+				  echo "uploading jar to google storage"
+				
+				  echo "branch Version : ${branchVerion}"
+				
+					sh "mkdir -p /var/lib/jenkins/nbx_gcp_build_jars/${branchVerion}/parser/"
+					
+					sh "cp ${workSpaceDir}/vv-nbx-shore-data-parser/*/target/*.jar ${nbx_jar_build_location}/${branchVerion}/parser/"
+					
+					sh "source ~/.bash_profile && gsutil cp -r ${nbx_jar_build_location} gs://nbx-nonprod-build-jars/"
+					
+					sh "rm ${nbx_jar_build_location}/${branchVerion}/parser/*.jar"
+
+              }
+		}
+		
+		stage('Copy artifacts - STG') {
+		    when {
+			  expression { params.environment == 'stage' } 
+			}
+            steps {
+              echo 'copy stage'
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-apollo-pos-change/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/Apollo/"
+				 
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-folio-item/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				 
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-mxp-*/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-konami-*/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-GoSpark-*/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				 
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-onboard-sailor-review*/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-ars-*/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-core-*/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-folio-*/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-transferrequest-*/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-swtovxp-wearable/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-campaign/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-team/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-campaign/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-agent/target/*.jar  jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-sailor-service-attribution/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-agent/resources/stage*.conf jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse"
+
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-campaign/resources/stage*.conf jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse"
+
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-team/resources/stage*.conf jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-postvoyage-survey-responses/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-meal-count/target/*.jar  ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-housekeeping-requests-types/target/*.jar  ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-table-clear/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-table-booking/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-housekeeping-teammember-schedule/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-housekepper/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-locationconstruct-tags/target/*.jar  ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-locationconstruct-sectors/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-locacon-venuetags/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-hostpreference/target/*.jar  ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-locationevent/target/*.jar  ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-virtualqdef/target/*.jar  ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-virtualqueue/target/*.jar ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-virtualqhstry/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-foodbeverage-menuitemallergy/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-foodbeverage-allergy/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-foodbeverage-orderallergy/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-ars-activitybooking/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-ars-activitytype/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-vxp-ars-activitytypemapping/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-zulip-zerver-supportqueue/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-zulip-zerver-userprofile/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-entity-hash/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-seaware-wearables/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  sh "scp ${workSpaceDir}/vv-nbx-shore-data-parser/vv-nbx-data-parser-errorreporting-seaware-wearables/target/*.jar jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/"
+				  
+				  // Config copy
+				  sh "scp ${workSpaceDir}/configs/parse_configs/stage/* jenkins@${props.jobServerstage}:/data/apps/talend/shared/scripts/nbx/Parse/MXP/config/"
+				  
+              }
+		}
+    }
+}

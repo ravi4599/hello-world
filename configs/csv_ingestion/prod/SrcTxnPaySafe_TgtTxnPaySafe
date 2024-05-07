@@ -1,0 +1,36 @@
+spark.src.con.format jdbc
+spark.src.config.id SrcTxnPaySafe
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtTxnPaySafe
+
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/creditcard/hvtb_parse_cc_txn_paysafe
+spark.target.table vv_db.hvtb_parse_cc_txn_paysafe
+
+spark.tgt.env Prod
+spark.api.env Prod
+spark.hadoop.hive.execution.engine mr
+spark.metadata.con.format jdbc
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.source.format csv
+spark.csv.header true
+spark.input.inputfilepath gs://vv-prod-credit-card/PaySafe/landing/
+
+spark.error.filepath gs://vv-prod-credit-card/PaySafe/error/
+
+#spark.source.file 
+
+########while writing spark.source.query no need write -->"from table name"--> as its already present in the scala code ###########
+
+spark.source.query select cast(`Site Name` as string) as site_name, cast(`Site ID (BE)` as bigint) as site_id, cast(`Transaction Type` as string) as transaction_type, TO_DATE(CAST(UNIX_TIMESTAMP(`Txn Date`, 'MM/dd/yyyy') AS TIMESTAMP)) as transaction_date, cast(`Transaction Time` as bigint) as transaction_time, TO_DATE(CAST(UNIX_TIMESTAMP(`Record Date`, 'MM/dd/yyyy') AS TIMESTAMP)) as record_date, TO_DATE(CAST(UNIX_TIMESTAMP(`Batch Date`, 'MM/dd/yyyy') AS TIMESTAMP)) as batch_date, cast(`Batch No.` as bigint) as batch_no, cast(`Batch Sequence ID` as bigint) as batch_sequence_id, cast(`Invoice Number` as bigint) as invoice_number, TO_DATE(CAST(UNIX_TIMESTAMP(`Funded Date`, 'MM/dd/yyyy') AS TIMESTAMP)) as funded_date , cast(`Transaction Status` as string) as transaction_status, cast(`Network` as string) as network, cast(`Account #(Last 4)` as int) as account_last_four, cast(`Submitted Sales Amount` as double) as submitted_sales_amount, cast(`Processed Sales Amount` as double) as processed_sales_amount, cast(`Auth Code` as string) as auth_code
+
+######### If aliasing and casting is not required only spark.source.columns can be used #########
+
+#spark.source.columns 
+
+

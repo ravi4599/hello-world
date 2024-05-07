@@ -1,0 +1,17 @@
+spark.src.config.id SrcVtsCaseSummaryFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtVtsCaseSummaryFact
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.redshift.url jdbc:redshift://10.3.0.120:5439/qanbxpub
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+spark.pond.database vv_db
+spark.pond.table hvtb_mart_vts_case_summary_fact
+spark.target.temp s3://vv-dev-emr-cluster/data/temp/vts/hvtb_mart_vts_case_summary_fact
+spark.target.location s3://vv-dev-emr-cluster/data/mart/vts/hvtb_mart_vts_case_summary_fact
+spark.redshift.schema hive_schema_stg
+spark.redshift.tablename vts_case_summary_fact

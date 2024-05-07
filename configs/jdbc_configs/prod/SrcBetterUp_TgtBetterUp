@@ -1,0 +1,24 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:sqlserver://10.59.1.101:1442;database=MXP
+spark.src.user cdcmxpdbuser
+spark.src.password Nskh#c5v3y&7
+spark.src.con.driver com.microsoft.sqlserver.jdbc.SQLServerDriver
+spark.src.config.id SrcBetterUp
+spark.tgt.env Prod
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtBetterUp
+spark.temp gs://vv-prod-nbx-cluster/data/landing/tmpBetterup
+spark.target.location gs://vv-prod-nbx-cluster/data/landing/Betterup
+spark.target.backuplocation gs://vv-prod-nbx-cluster/data/landing/bkupBetterup
+spark.target.filename workers
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+spark.source.zone EST
+spark.ship.code SHORE
+spark.hadoop.hive.execution.engine mr
+

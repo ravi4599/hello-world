@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.SHIP
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT SHIP_ID, SHIP_CODE, SHIP_NAME, SHIP_REGISTRY, SHIP_BUILT_DATE, SHIP_CREW_SIZE, SHIP_PAX_CAPACITY, SHIP_CRUISING_SPEED, SHIP_MAX_SPEED, SHIP_LENGTH, SHIP_BEAM, SHIP_DRAUGHT, SHIP_TONNAGE, SHIP_STABILIZER, COMMENTS, IMAGE_ID, CRUISE_LINE_CODE FROM SEAWARE.SHIP)
+
+spark.parse.table seaware_oracle.hvtb_nbx_parse_sw_rpl_ship
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/SHIP
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_nbx_parse_sw_rpl_ship/
+
+spark.hadoop.hive.execution.engine mr

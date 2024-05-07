@@ -1,0 +1,15 @@
+spark.source.table select * from shipdw.hvtb_lnd_mxp_internal_account
+spark.person.target.table  shipdw.hvtb_parse_mxp_internal_person_detail
+spark.account.target.table shipdw.hvtb_parse_mxp_internal_account_detail
+spark.address.target.table shipdw.hvtb_parse_mxp_internal_address_detail
+spark.src.config.id SrcInternalAcc
+spark.voyage.id SC2002269NCR 
+spark.tgt.env Stage
+spark.target.config.id TgtInternalAcc
+spark.parent.id  SrcMXPAccSystem-TgtMXPAccSystem-SC2002269NCR
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table  HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.4.100.154/hbase-unsecure

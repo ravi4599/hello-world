@@ -1,0 +1,32 @@
+spark.kafkabrokers 10.15.2.58:9092,10.15.12.38:9092,10.15.13.172:9092
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+
+spark.src.kafkatopic dbz.sw.SEAWARE.APIS_INFO
+spark.src.personOffSet earliest
+
+spark.src.config.id SrcSeawareApisInfo
+spark.voyage.id SC2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtSeawareApisInfo
+
+spark.target.lnd.table vv_db_mig.hvtb_nbx_lnd_sw_rpl_apis_info
+spark.target.parse.table vv_db_mig.hvtb_nbx_parse_sw_rpl_apis_info
+
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite 
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA 
+spark.target.zkurl 10.15.2.206:2181/hbase-unsecure
+spark.kafka.zookeeper 10.15.2.58:2181
+
+spark.source.columns record_id,res_id,client_id,document_type,document_number,document_issued_city,document_issued_country,document_expiration_date,visa_type,visa_issued_country,visa_number,visa_issued_city,visa_issued_date,emrgncy_contact_name,emrgncy_contact_phone_number,emrgncy_contact_intl_code,return_airline_carrier_code,return_flight_number,return_flight_date,other_transportation,dest_address,dest_city,dest_state,dest_country,is_completed,visa_exp_date,dest_zip,id_doc_type,id_doc_number,id_doc_issued_country,id_doc_issued_city,id_doc_expiration_date,id_doc_photo_id,id_doc_image_id,visa2_type,visa2_issued_country,visa2_number,visa2_issued_city,visa2_issued_date,visa2_exp_date,is_visa_permanent,is_visa2_permanent,residency_date,id_doc_issued_date,id2_doc_type,id2_doc_number,id2_doc_issued_country,id2_doc_issued_city,id2_doc_expiration_date,id2_doc_issued_date,id2_doc_photo_id,id2_doc_image_id,is_visa_multi_use,is_visa2_multi_use,emrgncy_email,emrgncy_contact_relationship,op,ts_ms,voyageid,Batchtime,Part_Date
+spark.final.query select record_id,res_id,client_id,document_type,document_number,document_issued_city,document_issued_country,CAST(document_expiration_date/1000000 as timestamp)as document_expiration_date,visa_type,visa_issued_country,visa_number,visa_issued_city,CAST(visa_issued_date/1000000 as timestamp)as visa_issued_date,emrgncy_contact_name,emrgncy_contact_phone_number,emrgncy_contact_intl_code,return_airline_carrier_code,return_flight_number,return_flight_date,other_transportation,dest_address,dest_city,dest_state,dest_country,is_completed,CAST(visa_exp_date/1000000 as timestamp)as visa_exp_date,dest_zip,id_doc_type,id_doc_number,id_doc_issued_country,id_doc_issued_city,id_doc_expiration_date,id_doc_photo_id,id_doc_image_id,visa2_type,visa2_issued_country,visa2_number,visa2_issued_city,CAST(visa2_issued_date/1000000 as timestamp)as visa2_issued_date,CAST(visa2_exp_date/1000000 as timestamp)as visa2_exp_date,is_visa_permanent,is_visa2_permanent,CAST(residency_date/1000000 as timestamp)as residency_date,CAST(id_doc_issued_date/1000000 as timestamp)as id_doc_issued_date,id2_doc_type,id2_doc_number,id2_doc_issued_country,id2_doc_issued_city,CAST(id2_doc_expiration_date/1000000 as timestamp)as id2_doc_expiration_date,CAST(id2_doc_issued_date/1000000 as timestamp)as id2_doc_issued_date,id2_doc_photo_id,id2_doc_image_id,is_visa_multi_use,is_visa2_multi_use,emrgncy_email,emrgncy_contact_relationship,op,CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date
+
+
+

@@ -1,0 +1,15 @@
+spark.temp gs://vv-cert-nbx-cluster/data/lkp/hvtb_lkp_shorex_code_name_temp
+
+spark.target.tgtpath gs://vv-cert-nbx-cluster/data/lkp/hvtb_lkp_shorex_code_name
+
+spark.target.location gs://vv-cert-nbx-cluster/data/temp/shorex_data/shorex
+
+
+
+spark.source.zone EST
+
+spark.ship.code SHORE
+
+spark.tgt.env qa
+
+spark.hadoop.hive.execution.engine mr

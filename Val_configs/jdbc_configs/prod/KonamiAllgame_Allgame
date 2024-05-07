@@ -1,0 +1,20 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.102.150.228:1521/emsvaldata.synkdb.com
+spark.src.user emstal
+spark.src.password Taluser1*
+spark.src.table EMS.VW_TAL_ALLGAME
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.src.config.id KonamiAllgame
+spark.tgt.env Prod
+spark.voyage.id VAL2002269NCR
+spark.target.config.id Allgame
+spark.target.location /data/apps/nbx/hive/landing/konami/hvtb_lnd_konami_vw_tal_allgame
+spark.target.hive.table shipdw.hvtb_lnd_konami_vw_tal_allgame
+spark.src.table.query (SELECT DEVCATID,DEVSUBCATID,MASTERPROM,GAMEPROM,GAMECODE,PAYTABLECODE,GAMEINDEX,GAMENAME,THEHOLDPCT,DPH,LASTMODDATE,LASTMODBY,DEVGAMENAME,DEVPAYTABLECODE,DEVGAMECRC,DEVTHEHOLDPCT,MAXCOIN,UPLOADED,DEVPAYTABLECODE2,ISBETTYPE,GAMEID,MFRID FROM EMS.VW_TAL_ALLGAME)
+spark.condition.column LASTMODDATE
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table SHIP.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.ship.code VAL

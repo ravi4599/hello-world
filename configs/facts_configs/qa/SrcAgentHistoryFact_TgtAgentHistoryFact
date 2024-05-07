@@ -1,0 +1,36 @@
+spark.src.config.id SrcAgentHistoryFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env  qa
+spark.target.config.id TgtAgentHistoryFact
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=!Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+spark.hadoop.hive.execution.engine mr
+
+
+
+spark.table.type Fact
+spark.api.env qa
+
+
+
+
+spark.access.token.url https://api.incontact.com/InContactAuthorizationServer/Token
+spark.auth.key basic VlZfRGF0YUxha2UxQENhcGdlbWluaTE6NDU5NzI3Mw==
+spark.access.credentials {"grant_type" : "password","username" : "ashwin.john@capgemini.com","password" : "VV$Feb$022020","scope" : ""}
+spark.skill.dim.sql select cti_skill_skey,src_skill_id from vv_db.hvtb_nbx_core_cti_skill_dim 
+spark.agent.dim.sql select cti_agent_skey,src_agent_id from vv_db.hvtb_nbx_core_cti_agent_dim
+spark.target.fact.table vv_db.hvtb_nbx_core_cti_agent_state_history_fact
+
+spark.target.temp gs://vv-cert-nbx-cluster/data/mart/temp/hvtb_nbx_core_cti_agent_state_history_fact
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/seaware/hvtb_nbx_core_cti_agent_state_history_fact
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname cti_agent_state_history_fact_tmp
+spark.bq.permtblname cti_agent_state_history_fact
+spark.bq.viewname cti.cti_agent_state_history_fact

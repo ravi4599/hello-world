@@ -1,0 +1,33 @@
+spark.src.config.id SrcGameDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.api.env Stage
+spark.target.config.id TgtGameDim
+spark.parent.id KonamiAllgame_Allgame
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.table.type dim
+spark.target.schema shipdw
+spark.target.table game_dim
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+
+spark.source.sql select voyageid as voyage_id,gameid as game_id,gamename as game_name,masterprom as game_master_prom,isbettype as game_is_bet_type_flag,batchtime,part_date from  (select * from (select voyageid,gameid,gamename,masterprom,cast(isbettype as boolean) as isbettype,lastmoddate,batchtime,part_date,row_number() over(partition by gameid order by lastmoddate desc) rn from shipdw.hvtb_parse_konami_vw_tal_allgame) where rn=1)
+
+spark.source.columns voyage_id,game_id,game_name,game_master_prom,game_is_bet_type_flag
+spark.pond.allColumns voyage_id as pond_voyage_id,game_skey as pond_game_skey,game_id as pond_game_id,game_name as pond_game_name,game_master_prom as pond_game_master_prom,game_is_bet_type_flag as pond_game_is_bet_type_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column game_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_game
+spark.source.primaryKeyColumns game_id
+spark.target.final_collist final_view.voyage_id,final_view.game_skey,final_view.game_id,final_view.game_name,final_view.game_master_prom,final_view.game_is_bet_type_flag,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp s3://vv-staging-emr-cluster/data/temp/hvtb_mart_dim_game
+spark.target.location s3://vv-staging-emr-cluster/data/mart/hvtb_mart_dim_game
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename game_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore

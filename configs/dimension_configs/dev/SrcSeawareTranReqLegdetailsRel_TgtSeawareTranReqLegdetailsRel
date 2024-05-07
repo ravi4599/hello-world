@@ -1,0 +1,41 @@
+spark.src.config.id SrcSeawareTranReqLegdetailsRel
+spark.voyage.id	SC2002269NCR
+spark.tgt.env dev
+spark.target.config.id TgtSeawareTranReqLegdetailsRel
+spark.parent.id SrcTransferReqIng-TgtcTransferReqIng
+spark.hadoop.hive.execution.engine mr
+spark.api.env Dev
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+
+spark.source.sql select  src.rec_start_dttm,case when (src.src_sail_id is null and src.src_res_id is null and src.pickup_date is null and src.primary_sailor_name is null and tgt.src_sail_id is not null and tgt.src_res_id is not null and tgt.pickup_date is not null and tgt.primary_sailor_name is not null) then current_timestamp else to_timestamp('9999-12-31 00:00:00') end as  rec_end_dttm,src.src_res_id,src.src_sail_id, src.pickup_date,src.primary_sailor_name, src.number_of_passengers,src.qty_of_luggage, cast(concat(src.pickup_date, ' ', src.pickup_time) as timestamp) as pickup_time, src.pickup_poi,src.pickup_location,src.pickup_address,src.pickup_city,src.pickup_zip,src.dropoff_poi, src.dropoff_location,src.dropoff_address,src.dropoff_city,src.dropoff_zip,src.batchtime,src.part_date from (select current_timestamp as rec_start_dttm,deets.virgin_voyages_res_number as src_res_id,sd.src_sail_id as src_sail_id,deets.pick_up_date as pickup_date,deets.sailor_name as primary_sailor_name,deets.number_of_passengers as number_of_passengers,deets.qty_of_luggage as qty_of_luggage,deets.pick_up_time as pickup_time,lkppick.transfer_request_poi_id as pickup_poi,deets.pick_up_location as pickup_location,deets.pickup_address as pickup_address,deets.pick_up_city as pickup_city,deets.pick_up_zip as pickup_zip,lkpdrop.transfer_request_poi_id as dropoff_poi,deets.drop_off_location as dropoff_location,deets.destination_address as dropoff_address,deets.drop_off_city as dropoff_city,deets.drop_off_zip as dropoff_zip,deets.batchtime as batchtime,deets.part_date as part_date from (select * from (select *, row_number()over(partition by virgin_voyages_res_number order by batchtime desc) as rn from vv_db.hvtb_parse_transfer_deets)dt where dt.rn=1) deets left join (select * from vv_db.hvtb_nbx_core_sw_sail_dim where is_active = 'y') sd on to_date(sd.sail_date_from) = deets.sail_date_from and to_date(sd.sail_date_to) = deets.sail_date_to left join (select transfer_request_poi_id,point_of_interest from vv_db.hvtb_mart_lkp_sw_transfer_request) lkppick on lkppick.point_of_interest = deets.pick_up_location left join (select transfer_request_poi_id,point_of_interest from vv_db.hvtb_mart_lkp_sw_transfer_request) lkpdrop on lkpdrop.point_of_interest = deets.drop_off_location) src full join vv_db.hvtb_mart_sw_transreq_legdetails_rel tgt on (src.src_sail_id = tgt.src_sail_id and src.src_res_id = tgt.src_res_id and src.pickup_date = tgt.pickup_date and src.primary_sailor_name = tgt.primary_sailor_name)
+
+
+#(select current_timestamp as rec_start_dttm,to_timestamp('9999-12-31 00:00:00') as rec_end_dttm,deets.virgin_voyages_res_number as src_res_id,sd.src_sail_id as src_sail_id,deets.pick_up_date as pickup_date,deets.sailor_name as primary_sailor_name,deets.number_of_passengers as number_of_passengers,deets.qty_of_luggage as qty_of_luggage,deets.pick_up_time as pickup_time,lkppick.transfer_request_poi_id as pickup_poi,deets.pick_up_location as pickup_location,deets.pickup_address as pickup_address,deets.pick_up_city as pickup_city,deets.pick_up_zip as pickup_zip,lkpdrop.transfer_request_poi_id as dropoff_poi,deets.drop_off_location as dropoff_location,deets.destination_address as dropoff_address,deets.drop_off_city as dropoff_city,deets.drop_off_zip as dropoff_zip,deets.batchtime as batchtime,deets.part_date as part_date from (select * from (select *, row_number()over(partition by virgin_voyages_res_number order by batchtime desc) as rn from shipdw.hvtb_parse_transfer_deets)dt where dt.rn=1) deets left join (select * from vv_db.hvtb_nbx_core_sw_sail_dim where is_active = 'y') sd on to_date(sd.sail_date_from) = deets.sail_date_from and to_date(sd.sail_date_to) = deets.sail_date_to left join (select transfer_request_poi_id,point_of_interest from shipdw.hvtb_mart_lkp_sw_transfer_request) lkppick on lkppick.point_of_interest = deets.pick_up_location left join (select transfer_request_poi_id,point_of_interest from shipdw.hvtb_mart_lkp_sw_transfer_request) lkpdrop on lkpdrop.point_of_interest = deets.drop_off_location)
+
+spark.source.columns rec_start_dttm,rec_end_dttm,src_res_id,src_sail_id,pickup_date,primary_sailor_name,number_of_passengers,qty_of_luggage,pickup_time,pickup_poi,pickup_location,pickup_address,pickup_city,pickup_zip,dropoff_poi,dropoff_location,dropoff_address,dropoff_city,dropoff_zip
+
+spark.pond.allColumns transfer_request_leg_detail_id as pond_transfer_request_leg_detail_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,src_res_id as pond_src_res_id,src_sail_id as pond_src_sail_id,pickup_date as pond_pickup_date,primary_sailor_name as pond_primary_sailor_name,number_of_passengers as pond_number_of_passengers,qty_of_luggage as pond_qty_of_luggage,pickup_time as pond_pickup_time,pickup_poi as pond_pickup_poi,pickup_location as pond_pickup_location,pickup_address as pond_pickup_address,pickup_city as pond_pickup_city,pickup_zip as pond_pickup_zip,dropoff_poi as pond_dropoff_poi,dropoff_location as pond_dropoff_location,dropoff_address as pond_dropoff_address,dropoff_city as pond_dropoff_city,dropoff_zip as pond_dropoff_zip,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column transfer_request_leg_detail_id
+spark.pond.database vv_db
+spark.pond.table hvtb_mart_sw_transreq_legdetails_rel
+spark.source.primaryKeyColumns src_sail_id,src_res_id,pickup_date,primary_sailor_name
+spark.target.final_collist final_view.transfer_request_leg_detail_id,final_view.rec_start_dttm,final_view.rec_end_dttm,cast(final_view.src_res_id as int) as src_res_id,final_view.src_sail_id,cast(final_view.pickup_date as timestamp) as pickup_date,final_view.primary_sailor_name,final_view.number_of_passengers,final_view.qty_of_luggage,cast(final_view.pickup_time as timestamp) as pickup_time,cast(final_view.pickup_poi as int) as pickup_poi,final_view.pickup_location,final_view.pickup_address,final_view.pickup_city,final_view.pickup_zip,cast(final_view.dropoff_poi as int) as dropoff_poi,final_view.dropoff_location,final_view.dropoff_address,final_view.dropoff_city,final_view.dropoff_zip,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+spark.target.temp gs://vv-dev-nbx-cluster/data/temp/hvtb_mart_sw_transreq_legdetails_rel
+spark.target.location gs://vv-dev-nbx-cluster/data/mart/hvtb_mart_sw_transreq_legdetails_rel
+spark.redshift.schema Hive_schema_stg
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname SEWARE_TRANSFER_REQUEST_LEG_DETAILS_REL_tmp
+spark.bq.permtblname SEWARE_TRANSFER_REQUEST_LEG_DETAILS_REL
+spark.bq.viewname seaware.SEWARE_TRANSFER_REQUEST_LEG_DETAILS_REL
+
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv shore
+

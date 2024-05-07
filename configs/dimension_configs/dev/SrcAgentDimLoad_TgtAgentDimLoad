@@ -1,0 +1,49 @@
+spark.src.config.id   SrcAgentDimLoad
+spark.voyage.id   SC2002269NCR
+spark.tgt.env   dev
+spark.target.config.id   TgtAgentDimLoad
+spark.parent.id SrcCtiAgentParser-TgtCtiAgentParser
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.table.type dim
+spark.api.env dev
+
+spark.teamdim.sql select src_team_id as cti_team_dim_teamId, cti_team_skey as cti_team_dim_cti_team_skey from vv_db.hvtb_nbx_core_cti_team_dim
+
+spark.source.columns agentId, teamnewId,userName, firstName, lastName, emailAddress, isActive, isSupervisor, profileId,profileName,etl_load_dt,batchtime,part_date
+
+spark.pond.allColumns cti_agent_skey as pond_cti_agent_skey,src_agent_id as pond_src_agent_id,cti_team_skey as pond_cti_team_skey,agent_username as pond_agent_username,agent_first_name as pond_agent_first_name,agent_last_name as pond_agent_last_name,email_address as pond_email_address,is_active_flg as pond_is_active_flg,is_supervisor_flg as pond_is_supervisor_flg,profile_id as pond_profile_id,profile_name as pond_profile_name,etl_load_dt as pond_etl_load_dt,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+
+
+
+spark.target.ctiskill.table vv_db.hvtb_parse_cti_agent
+
+spark.surrogate_key.column cti_agent_skey
+spark.pond.database vv_db
+spark.pond.table hvtb_nbx_core_cti_agent_dim
+spark.target.schema vv_db
+spark.target.table cti_agent_dim
+
+spark.source.primaryKeyColumns agentId
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+
+
+spark.target.final_collist cti_agent_skey,final_view.agentId as src_agent_id,final_view.teamnewId as cti_team_skey ,final_view.userName as agent_username,final_view.firstName as agent_first_name,final_view.lastName as agent_last_name,final_view.emailAddress as email_address,final_view.isActive as is_active_flg,final_view.isSupervisor as is_supervisor_flg,final_view.profileId as profile_id,final_view.profileName as profile_name,final_view.etl_load_dt as etl_load_dt,load_dt,upd_dt,primaryhash,md5_hash
+
+spark.target.temp gs://vv-dev-nbx-cluster/data/core/temp/hvtb_nbx_core_cti_agent_dim
+spark.target.location gs://vv-dev-nbx-cluster/data/core/seaware/hvtb_nbx_core_cti_agent_dim
+
+
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname cti_agent_dim_tmp
+spark.bq.permtblname cti_agent_dim
+spark.bq.viewname seaware.cti_agent_dim

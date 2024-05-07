@@ -1,0 +1,4 @@
+spark.quick_parser.mode overwrite
+spark.quick_parser_output.location /data/apps/nbx/hive/parsing/mxp/hvtb_parse_mxp_ship_quickcode
+spark.quickcode.apiurl http://10.101.224.114/API/MXP_VIRGIN.exe/QuickCode
+

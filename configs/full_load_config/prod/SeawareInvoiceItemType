@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.INVOICE_ITEM_TYPE
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT INVOICE_ITEM_TYPE, INVOICE_ITEM_TYPE_ID, COMMENTS, IS_COMMISSIONABLE, CAN_USE_FOR_CHARGES, ALWAYS_REFUNDABLE, USED_INTERNALLY, USED_FOR_AIR_DEVIATION, ALLOW_RATE_PROTECTION, CHARGE_COMPONENT_CODE, CLASSIFICATION_FOR_GROUP, INCLUDE_IN_QUOTED_PRICE, USED_FOR_PROJECTIONS, USE_IN_PERFORMANCE_CALC, IS_MANUAL_ADJ_RESTRICTED, SUPPRESS_ZERO_AMOUNT, IS_DISCOUNT FROM SEAWARE.INVOICE_ITEM_TYPE)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_invoice_item_type
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/INVOICE_ITEM_TYPE
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_invoice_item_type/
+
+spark.hadoop.hive.execution.engine mr

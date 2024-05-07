@@ -1,0 +1,31 @@
+spark.src.config.id SrcDiningMenu
+spark.voyage.id VAL2002269NCR
+spark.tgt.env Prod
+spark.target.config.id TgtDiningMenu
+spark.parent.id SrcMxpVVirginReservations-TgtMxpVVirginReservations
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.postgresql.database devnbx
+spark.source.sql select NVL(A.VoyageId, -1) as voyage_id, A.guid as dining_menu_id, A.menu_code as dining_menu_code, A.menu_name as dining_menu_name,A.rec_deleted as src_deleted_flag,A.active as src_active_flag, A.BatchTime, A.Part_Date from (select * from (select VoyageId,guid,menu_code,menu_name,rec_deleted,active,BatchTime,Part_Date, row_number() over (partition by guid order by ts_ms desc) rn  from shipdw.hvtb_parse_mxp_menus)A where rn = 1) A
+spark.source.columns voyage_id,dining_menu_id,dining_menu_code,dining_menu_name,src_deleted_flag,src_active_flag
+spark.pond.allColumns voyage_id as pond_voyage_id,dining_menu_skey as pond_dining_menu_skey,dining_menu_id as pond_dining_menu_id,dining_menu_code as pond_dining_menu_code,dining_menu_name as pond_dining_menu_name,src_deleted_flag as pond_src_deleted_flag,src_active_flag as pond_src_active_flag,load_dt as pond_load_dt,upd_dt as pond_upd_dt, primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+spark.surrogate_key.column dining_menu_skey
+spark.pond.database shipdw
+spark.pond.table hvtb_mart_dim_dining_menu
+spark.target.table hvtb_mart_dim_dining_menu
+spark.source.primaryKeyColumns dining_menu_id
+spark.target.final_collist final_view.voyage_id as voyage_id,dining_menu_skey,final_view.dining_menu_id as dining_menu_id,final_view.dining_menu_code as dining_menu_code,final_view.dining_menu_name as dining_menu_name,final_view.src_deleted_flag as src_deleted_flag,final_view.src_active_flag as src_active_flag,final_view.load_dt as load_dt ,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_dining_menu
+spark.target.location /data/apps/nbx/mart/hvtb_mart_dim_dining_menu
+spark.postgresql.schema Hive_schema_stg
+spark.postgresql.tablename dining_menu_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+

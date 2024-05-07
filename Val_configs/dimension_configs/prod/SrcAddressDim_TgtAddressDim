@@ -1,0 +1,33 @@
+spark.src.config.id	SrcAddressDim 
+spark.voyage.id	SC2002269NCR 
+spark.tgt.env Prod
+spark.target.config.id TgtAddressDim
+spark.parent.id	SrcMxpPersonAddress-TgtMxpPersonAddress 
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.postgresql.database prodnbx
+spark.target.enablerops_table ship.HBTB_INGESTION_METADATA
+spark.target.zkurl P-VAL-DLK-ADA1.ahoy.virginvoyages.com:2181/hbase-secure
+spark.table.type dim
+spark.postgresql.url jdbc:postgresql://10.102.209.154:5432/
+spark.postgresql.user nifiusr
+spark.postgresql.password finiPRO@123
+spark.source.sql select NVL(pa.VoyageId, -1) as voyage_id,pa.person_address_id as address_id,coun.country_name as address_country,sli.sys_lookup_item_name as address_type,pa.person_is_mailing_address as address_mailing_flg,pa.person_street_1 as address_line1,pa.person_street_2 as address_line2,pa.person_street_3 as address_line3,pa.person_city_name as address_city,pa.person_state as address_state,pa.person_postal_code as address_postal_code,pa.person_phone as phone_number,pa.person_mobile_phone as mobile_phone_number,pa.person_fax as fax_number,pa.person_e_mail as email_address,pa.person_adderss_comment as address_comment,pa.preferred_airport as home_airport,pa.BatchTime as batchtime,pa.Part_Date as partdate from (select * from (select *, row_number() over (partition by person_address_id order by last_changed desc) rn  from shipdw.hvtb_parse_mxp_Person_Address) where rn = 1) pa left join  (select * from (select *, row_number() over (partition by country_id order by last_changed desc) rn  from shipdw.hvtb_parse_mxp_Countries) where rn = 1) coun on pa.person_country_id= coun.country_id left join (select * from (select sys_lookup_category_id,sys_lookup_id,sys_lookup_active,sys_lookup_item_name, row_number() over (partition by sys_lookup_items_id order by last_changed desc) rn  from shipdw.hvtb_parse_mxp_sys_lookup_items) where rn = 1) sli on pa.person_address_type_id = sli.sys_lookup_id and sli.sys_lookup_active=true join (select * from (select sys_lookup_category_id ,sys_looup_category_name, row_number() over (partition by sys_lookup_category_id order by last_changed desc) rn  from shipdw.hvtb_parse_mxp_sys_lookup_categories) where rn = 1) slc on sli.sys_lookup_category_id=slc.sys_lookup_category_id and slc.sys_looup_category_name='Address Types'
+spark.source.columns voyage_id,address_id,address_country,address_type,address_mailing_flg,address_line1,address_line2,address_line3,address_city,address_state,address_postal_code,phone_number,mobile_phone_number,fax_number,email_address,address_comment,home_airport
+spark.pond.allColumns voyage_id as pond_voyage_id,address_skey as pond_address_skey,address_id as pond_address_id,address_country as pond_address_country,address_type as pond_address_type,address_mailing_flg as pond_address_mailing_flg,address_line1 as pond_address_line1,address_line2 as pond_address_line2,address_line3 as pond_address_line3,address_city as pond_address_city,address_state as pond_address_state,address_postal_code as pond_address_postal_code,phone_number as pond_phone_number,mobile_phone_number as pond_mobile_phone_number,fax_number as pond_fax_number,email_address as pond_email_address,address_comment as pond_address_comment,home_airport as pond_home_airport,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash,md5_hash as pond_md5_hash
+spark.surrogate_key.column address_skey
+spark.pond.database	shipdw 
+spark.pond.table hvtb_mart_dim_address
+spark.target.schema	shipdw 
+spark.postgresql.schema hive_schema_stg
+spark.postgresql.tablename address_dim
+spark.source.primaryKeyColumns address_id
+spark.target.final_collist final_view.voyage_id as voyage_id ,final_view.address_skey as address_skey,final_view.address_id as address_id,final_view.address_country as address_country,final_view.address_type,final_view.address_mailing_flg as address_mailing_flg,final_view.address_line1 as address_line1,final_view.address_line2 as address_line2,final_view.address_line3 as address_line3,final_view.address_city as address_city,final_view.address_state as address_state,final_view.address_postal_code as address_postal_code,final_view.phone_number as phone_number,final_view.mobile_phone_number as mobile_phone_number,final_view.fax_number as fax_number,final_view.email_address as email_address,final_view.address_comment as address_comment,final_view.home_airport as home_airport,final_view.load_dt as load_dt,final_view.upd_dt as upd_dt,final_view.primaryhash as primaryhash,final_view.md5_hash as md5_hash
+spark.target.temp /data/apps/nbx/temp/hvtb_mart_dim_address
+spark.target.location /data/apps/nbx/hive/mart/hvtb_mart_dim_address/
+spark.target.schema Hive_schema_stg
+spark.postgres.tablename address_dim
+spark.scdtype type1
+spark.tableType DIMENSION
+spark.frameworkEnv ship
+

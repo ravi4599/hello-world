@@ -1,0 +1,22 @@
+{
+  "connector.class": "io.debezium.connector.oracle.OracleConnector",
+  "db_type": "oracle",
+  "database.user": "DMS_USER",
+  "database.dbname": "VVCRTORA",
+  "tasks.max": "1",
+  "schema.history.internal.kafka.bootstrap.servers": "npkafka1.gcpshore.virginvoyages.com:9092,npkafka2.gcpshore.virginvoyages.com:9092,npkafka3.gcpshore.virginvoyages.com:9092",
+  "heartbeat.interval.ms": "200000",
+  "topic.heartbeat.prefix": "__debezium-heartbeat",
+  "log.mining.strategy": "online_catalog",
+  "database.port": "1521",
+  "schema.history.internal.store.only.captured.tables.ddl": "true",
+  "topic.prefix": "qa-ora-gcp",
+  "heartbeat.action.query": "MERGE INTO SEAWARE.debezium_heartbeat_tbl t1 USING (SELECT 'debezium_heartbeat' AS heartbeat_name from dual) t2 ON ( T1.heartbeat_name=T2.heartbeat_name) WHEN MATCHED THEN  UPDATE SET T1.heartbeat_time = sysdate WHEN NOT MATCHED THEN INSERT (heartbeat_name,heartbeat_time) VALUES('debezium_heartbeat',sysdate)",
+  "decimal.handling.mode": "double",
+  "schema.history.internal.kafka.topic": "qa-ora-gcp.dbhistory",
+  "database.hostname": "10.64.8.30",
+  "database.password": "QA228yud",
+  "name": "qa_Seaware_schema_Lwupdate-03NOV23",
+  "table.include.list": "SEAWARE.COUNTRY,SEAWARE.SHIP_FACILITY,SEAWARE.AIR_ACTUAL_PNR_LINK,SEAWARE.APIS_ID_DOCUMENT_TYPE,SEAWARE.CABIN_CAT_GEN_LNK_CABIN_CAT,SEAWARE.SHIP_DINING_ALLOC,SEAWARE.HOTEL,SEAWARE.REVENUE_TARGET_VALUE,SEAWARE.SHIP_CABIN_RESERVE_TYPE,SEAWARE.INVOICE_ITEM_SUBTYPE,SEAWARE.INVOICE_ITEM_SUBTYPE,SEAWARE.INVOICE_ITEM_SUBTYPE,SEAWARE.HOTEL_ADDRESS,SEAWARE.AIRPORT_ADDRESS,SEAWARE.AIRLINE,SEAWARE.SHIP_ROOM,SEAWARE.SHIP_CABIN_RESERVE,SEAWARE.INVOICE_ITEM_TYPE,SEAWARE.RES_PACKAGE_STUB,SEAWARE.REGION,SEAWARE.SHIP,SEAWARE.APIS_DOCUMENT,SEAWARE.SHIP_ROOM_ALLOC,SEAWARE.SHIP_ROOM_REQUEST,SEAWARE.PACKAGE_ITIN_PACKAGE_LINK,SEAWARE.REVENUE_TARGET_HEADER,SEAWARE.CANCELLATION_CASE,SEAWARE.SHIP_CABIN_CTG_LINK,SEAWARE.AGENCY_REGION_LINK,SEAWARE.SHIP_CABIN,SEAWARE.AM_CODE,SEAWARE.ACC_COUPON_CLASS,SEAWARE.CABIN_CATEGORY_GENERIC,SEAWARE.DEBEZIUM_HEARTBEAT_TBL,SEAWARE.DEBEZIUM_TEST_TBL1,SEAWARE.DEBEZIUM_TEST_TBL2",
+  "snapshot.mode": "schema_only"
+}

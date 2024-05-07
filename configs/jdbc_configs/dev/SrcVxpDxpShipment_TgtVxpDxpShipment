@@ -1,0 +1,32 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://10.58.10.21:5432/dxpcore
+spark.src.user pgreadaccessuser
+spark.src.password TRk1JhJn1SstFUnCZ2Xx
+spark.src.con.driver org.postgresql.Driver
+
+spark.src.config.id SrcVxpDxpShipment
+spark.tgt.env Dev
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpDxpShipment
+
+spark.target.location gs://vv-dev-nbx-cluster/data/landing/vxp/hvtb_lnd_vxp_shipment
+spark.target.hive.table vv_db.hvtb_lnd_vxp_shipment
+spark.target.table vv_db.hvtb_lnd_vxp_shipment
+spark.src.table.query "shipment"
+
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.metadata.con.url jdbc:postgresql://10.58.10.220:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022
+spark.metadata.con.driver=org.postgresql.Driver
+
+spark.condition.column lastmodifieddate
+spark.source.columns shipmentid,shippedto,trackingnumber,shippingcompanyid,statuscode,shippeddate,fulfilmentlocationid,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby,statuschangedby,statuschangeddate
+spark.source.query shipmentid,shippedto,trackingnumber,shippingcompanyid,statuscode,shippeddate,fulfilmentlocationid,isdeleted,addeddate,addedby,lastmodifieddate,lastmodifiedby,statuschangedby,statuschangeddate
+#spark.tz.columns property to change all the timestampz columns to UTC
+spark.tz.columns shippeddate,addeddate,lastmodifieddate
+spark.source.zone EST
+spark.ship.code SHORE
+

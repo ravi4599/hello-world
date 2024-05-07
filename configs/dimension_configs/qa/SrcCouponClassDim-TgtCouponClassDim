@@ -1,0 +1,49 @@
+spark.src.config.id SrcCouponClassDim
+spark.voyage.id SC2002269NCR
+spark.tgt.env QA
+spark.target.config.id TgtCouponClassDim
+spark.parent.id SrcSeawareAccCouponClass-TgtSeawareAccCouponClass
+ 
+ 
+spark.table.type dim
+spark.metadata.con.format jdbc	
+spark.metadata.ops.table.mode=Append 
+spark.metadata.enablerops.table shipdw.HBTB_INGESTION_METADATA
+spark.metadata.con.url jdbc:postgresql://10.56.10.47:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password=Setsail2022 
+spark.metadata.con.driver=org.postgresql.Driver 
+ 
+ 
+spark.source.sql select ship.coupon_class,ship.comments as coupon_class_desc,current_timestamp as rec_start_dttm,to_timestamp('9999-12-31 00:00:00') as rec_end_dttm,ship.coupon_class_code,ship.is_gen_per_client as gen_per_client,ship.apply_as_payment,ship.is_apply_per_client as apply_per_client,ship.cancel_with_res,ship.apply_as_discount,ship.batchtime as batchtime,ship.part_date as part_date from (select * from (select *,row_number() over(partition by coupon_class order by ts_ms desc) as rn from vv_db.hvtb_parse_sw_rpl_acc_coupon_class) p where p.rn=1) as ship
+ 
+ 
+spark.source.columns coupon_class,coupon_class_desc,rec_start_dttm,rec_end_dttm,coupon_class_code,gen_per_client,apply_as_payment,apply_per_client,cancel_with_res,apply_as_discount
+ 
+ 
+spark.pond.allColumns coupon_class_id as pond_coupon_class_id,rec_start_dttm as pond_rec_start_dttm,rec_end_dttm as pond_rec_end_dttm,coupon_class as pond_coupon_class,coupon_class_desc as pond_coupon_class_desc,coupon_class_code as pond_coupon_class_code,gen_per_client as pond_gen_per_client,apply_as_payment as pond_apply_as_payment,apply_per_client as pond_apply_per_client,cancel_with_res as pond_cancel_with_res,apply_as_discount as pond_apply_as_discount,load_dt as pond_load_dt,upd_dt as pond_upd_dt,primaryhash as pond_primaryhash, md5_hash as pond_md5_hash
+ 
+ 
+spark.surrogate_key.column coupon_class_id
+spark.pond.database vv_db
+spark.pond.table hvtb_mart_seware_coupon_class_dim
+spark.source.primaryKeyColumns coupon_class
+spark.scdtype type1
+spark.frameworkEnv shore
+spark.tableType DIMENSION
+ 
+spark.target.final_collist final_view.coupon_class_id,final_view.rec_start_dttm, final_view.rec_end_dttm,final_view.coupon_class,final_view.coupon_class_desc, final_view.coupon_class_code,final_view.gen_per_client,final_view.apply_as_payment,final_view.apply_per_client,final_view.cancel_with_res,final_view.apply_as_discount,final_view.load_dt,final_view.upd_dt,final_view.primaryhash,final_view.md5_hash
+ 
+ 
+spark.target.temp gs://vv-cert-nbx-cluster/data/temp/hvtb_mart_seware_coupon_class_dim
+spark.target.location gs://vv-cert-nbx-cluster/data/mart/hvtb_mart_seware_coupon_class_dim
+spark.bq.dataset hive_schema_stg
+spark.bq.temptblname seware_coupon_class_dim_tmp
+spark.bq.permtblname seware_coupon_class_dim
+spark.bq.viewname seaware.seware_coupon_class_dim
+ 
+ 
+ 
+ 
+spark.hadoop.hive.execution.engine mr
+

@@ -1,0 +1,25 @@
+spark.kafkabrokers npkafka1.gcpshore.virginvoyages.com:9092,npkafka2.gcpshore.virginvoyages.com:9092,npkafka3.gcpshore.virginvoyages.com:9092
+spark.truststore /etc/script_keystore/dxp.kafka.client.truststore.AWS.shore.jks
+spark.keystore /etc/script_keystore/dxp.kafka.client.keystore.AWS.shore.jks
+spark.passvalue SetS@!l2o2o
+spark.debug.option TRUE
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic xref-shore-dbz.xref_cert.reference_type
+spark.src.personOffSet earliest
+spark.src.config.id SrcXrefRefType
+spark.voyage.id SC2002269NCR
+spark.tgt.env Qa
+spark.target.config.id TgtXrefRefType
+spark.target.lnd.table shipdw.hvtb_nbx_landing_xref_reference_type
+spark.target.parse.table shipdw.hvtb_nbx_parse_xref_reference_type
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.4.100.154:2181/hbase-unsecure
+spark.kafka.zookeeper npkafka1.gcpshore.virginvoyages.com:2181
+spark.source.columns reference_type_id,reference_source_id,reference_type,op,ts_ms,voyageid,Batchtime,Part_Date
+
+spark.final.query select reference_type_id,reference_source_id,reference_type,op, CAST(ts_ms/1000 as timestamp) as ts_ms,voyageid,Batchtime,Part_Date

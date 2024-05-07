@@ -1,0 +1,19 @@
+spark.src.con.format jdbc
+spark.src.con.url jdbc:oracle:thin:@10.64.8.170:1521/VVPRDORA
+spark.src.user rep_user
+spark.src.password VVtrt457
+spark.src.table SEAWARE.RES_ADDON
+spark.src.con.driver oracle.jdbc.driver.OracleDriver
+spark.voyage.id SC2002269NCR
+spark.ship.code SHORE
+
+ 
+spark.src.table.query (SELECT RES_ADDON_ID, GUEST_ID, RES_ID, RES_ADDON_CODE, START_DATE, END_DATE, EFFECTIVE_DATE, IS_DEFAULT, PAP_CODE, DELIVERY_PLACE, QUANTITY, IS_AUTO, AMENITY_SUBCODE, COMMENTS, DELIVERY_PLACE_DETAIL, HOTEL_ROOM_REQUEST_ID, SHIPROOM_REQUEST_ID, DINING_REQUEST_ID, LINK_FROM_REQUEST, ATTACHMENT_ID, ADDON_STATUS, PARENT_DESCR, ADDON_PRICE_CODE, PAID_DATE, LINK_DESCRIPTION, NOTES, MANDATORY_GROUP FROM SEAWARE.RES_ADDON)
+
+spark.parse.table seaware_oracle.hvtb_parse_sw_rpl_res_addon
+
+spark.src.con.fetchSize 100000
+#spark.target.location gs://vv-cert-nbx-cluster/test/RES_ADDON
+spark.target.location gs://vv-prod-nbx-cluster/data/parse/seaware_oracle/hvtb_parse_sw_rpl_res_addon/
+
+spark.hadoop.hive.execution.engine mr

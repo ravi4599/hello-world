@@ -1,0 +1,28 @@
+#source postgres database,table and connection details
+spark.src.con.format jdbc
+spark.src.con.url jdbc:postgresql://vv-stage-vxp-pgdb.cz4e2a1fysom.us-east-1.rds.amazonaws.com/table_management
+spark.src.user pgreadaccessuser
+spark.src.password mvsZ72sVq75KARjLhK9D
+spark.src.table public.guests_preferencetype
+spark.src.con.driver org.postgresql.Driver
+#Unique constant for Batchid
+spark.src.config.id SrcVxpTableMgmtGuestsPreferenceType
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtVxpTableMgmtGuestsPreferenceType
+spark.tgt.env Stage
+#Metadata Hbase table and connection details
+spark.target.offset.mode overwrite
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+#target hdfs table location with hive table and column details
+spark.target.location s3://vv-staging-emr-cluster/data/landing/VXP/hvtb_lnd_vxp_table_management_guests_preferencetype
+spark.target.table shipdw.hvtb_lnd_vxp_table_management_guests_preferencetype
+spark.target.hive.table shipdw.hvtb_lnd_vxp_table_management_guests_preferencetype
+spark.source.columns addeddate,public_id,code,dxp_id,name,active,addedby,lastmodifiedby,lastmodifieddate
+spark.tz.columns addeddate,lastmodifieddate
+spark.src.table.query "guests_preferencetype"
+spark.condition.column lastmodifieddate
+spark.ship.code SHORE
+

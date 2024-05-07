@@ -1,0 +1,45 @@
+spark.src.config.id SrcSeawareSailCabinFact
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtSeawareSailCabinFact
+#spark.parent.id
+
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl 10.7.3.177:2181/hbase-unsecure
+spark.ing.type Fact
+
+spark.source.sql SELECT snapshot_time, sail_id, cabin_category, cabin_category_rank, generic_category, max_capacity, num_of_cabins, ok_abs, ok_wgt, gty_abs, gty_wgt, wtl_abs, wtl_wgt, avail_cabins, avail_abs, avail_wgt, avail_nested, num_of_reserved, in_allotments, num_of_upgrade, num_of_downgrade, shared_abs, shared_allotment_abs, etl_ld_dt, etl_upd_dt, na_abs, ok_gtry_rstr_abs, taxes_and_fees, voyage_fare_guest1, voyage_fare_guest2, voyage_fare_guest3, voyage_fare_guest4, discount_guest1, discount_guest2, discount_guest3, discount_guest4, voyage_fare_guest1_gbp, voyage_fare_guest2_gbp, voyage_fare_guest3_gbp, voyage_fare_guest4_gbp, discount_guest1_gbp, discount_guest2_gbp, discount_guest3_gbp, discount_guest4_gbp, taxes_and_fees_gbp, voyage_fare_guest1_aud, voyage_fare_guest2_aud, voyage_fare_guest3_aud, voyage_fare_guest4_aud, discount_guest1_aud, discount_guest2_aud, discount_guest3_aud, discount_guest4_aud, taxes_and_fees_aud, voyage_fare_guest1_cad, voyage_fare_guest2_cad, voyage_fare_guest3_cad, voyage_fare_guest4_cad, discount_guest1_cad, discount_guest2_cad, discount_guest3_cad, discount_guest4_cad, taxes_and_fees_cad, snapshot_date FROM vv_db_mig.hvtb_nbx_staging_sw_sail_cabin_fact
+
+
+spark.source.columns snapshot_time, sail_id, cabin_category, cabin_category_rank, generic_category, max_capacity, num_of_cabins, ok_abs, ok_wgt, gty_abs, gty_wgt, wtl_abs, wtl_wgt, avail_cabins, avail_abs, avail_wgt, avail_nested, num_of_reserved, in_allotments, num_of_upgrade, num_of_downgrade, shared_abs, shared_allotment_abs, etl_ld_dt, etl_upd_dt, na_abs, ok_gtry_rstr_abs, taxes_and_fees, voyage_fare_guest1, voyage_fare_guest2, voyage_fare_guest3, voyage_fare_guest4, discount_guest1, discount_guest2, discount_guest3, discount_guest4, voyage_fare_guest1_gbp, voyage_fare_guest2_gbp, voyage_fare_guest3_gbp, voyage_fare_guest4_gbp, discount_guest1_gbp, discount_guest2_gbp, discount_guest3_gbp, discount_guest4_gbp, taxes_and_fees_gbp, voyage_fare_guest1_aud, voyage_fare_guest2_aud, voyage_fare_guest3_aud, voyage_fare_guest4_aud, discount_guest1_aud, discount_guest2_aud, discount_guest3_aud, discount_guest4_aud, taxes_and_fees_aud, voyage_fare_guest1_cad, voyage_fare_guest2_cad, voyage_fare_guest3_cad, voyage_fare_guest4_cad, discount_guest1_cad, discount_guest2_cad, discount_guest3_cad, discount_guest4_cad, taxes_and_fees_cad, snapshot_date
+spark.pond.database vv_db_mig
+spark.pond.table hvtb_nbx_core_sw_sail_cabin_fact
+spark.target.table seaware_sail_cabin_fact
+
+spark.pond.allColumns snapshot_time, sail_id, cabin_category, cabin_category_rank, generic_category, max_capacity, num_of_cabins, ok_abs, ok_wgt, gty_abs, gty_wgt, wtl_abs, wtl_wgt, avail_cabins, avail_abs, avail_wgt, avail_nested, num_of_reserved, in_allotments, num_of_upgrade, num_of_downgrade, shared_abs, shared_allotment_abs, etl_ld_dt, etl_upd_dt, na_abs, ok_gtry_rstr_abs, taxes_and_fees, voyage_fare_guest1, voyage_fare_guest2, voyage_fare_guest3, voyage_fare_guest4, discount_guest1, discount_guest2, discount_guest3, discount_guest4, voyage_fare_guest1_gbp, voyage_fare_guest2_gbp, voyage_fare_guest3_gbp, voyage_fare_guest4_gbp, discount_guest1_gbp, discount_guest2_gbp, discount_guest3_gbp, discount_guest4_gbp, taxes_and_fees_gbp, voyage_fare_guest1_aud, voyage_fare_guest2_aud, voyage_fare_guest3_aud, voyage_fare_guest4_aud, discount_guest1_aud, discount_guest2_aud, discount_guest3_aud, discount_guest4_aud, taxes_and_fees_aud, voyage_fare_guest1_cad, voyage_fare_guest2_cad, voyage_fare_guest3_cad, voyage_fare_guest4_cad, discount_guest1_cad, discount_guest2_cad, discount_guest3_cad, discount_guest4_cad, taxes_and_fees_cad, snapshot_date
+
+spark.target.final_collist final_view.snapshot_time, final_view.sail_id, final_view.cabin_category, final_view.cabin_category_rank, final_view.generic_category, final_view.max_capacity, final_view.num_of_cabins, final_view.ok_abs, final_view.ok_wgt, final_view.gty_abs, final_view.gty_wgt, final_view.wtl_abs, final_view.wtl_wgt, final_view.avail_cabins, final_view.avail_abs, final_view.avail_wgt, final_view.avail_nested, final_view.num_of_reserved, final_view.in_allotments, final_view.num_of_upgrade, final_view.num_of_downgrade, final_view.shared_abs, final_view.shared_allotment_abs, final_view.etl_ld_dt, final_view.etl_upd_dt, final_view.na_abs, final_view.ok_gtry_rstr_abs, final_view.taxes_and_fees, final_view.voyage_fare_guest1, final_view.voyage_fare_guest2, final_view.voyage_fare_guest3, final_view.voyage_fare_guest4, final_view.discount_guest1, final_view.discount_guest2, final_view.discount_guest3, final_view.discount_guest4, final_view.voyage_fare_guest1_gbp, final_view.voyage_fare_guest2_gbp, final_view.voyage_fare_guest3_gbp, final_view.voyage_fare_guest4_gbp, final_view.discount_guest1_gbp, final_view.discount_guest2_gbp, final_view.discount_guest3_gbp, final_view.discount_guest4_gbp, final_view.taxes_and_fees_gbp, final_view.voyage_fare_guest1_aud, final_view.voyage_fare_guest2_aud, final_view.voyage_fare_guest3_aud, final_view.voyage_fare_guest4_aud, final_view.discount_guest1_aud, final_view.discount_guest2_aud, final_view.discount_guest3_aud, final_view.discount_guest4_aud, final_view.taxes_and_fees_aud, final_view.voyage_fare_guest1_cad, final_view.voyage_fare_guest2_cad, final_view.voyage_fare_guest3_cad, final_view.voyage_fare_guest4_cad, final_view.discount_guest1_cad, final_view.discount_guest2_cad, final_view.discount_guest3_cad, final_view.discount_guest4_cad, final_view.taxes_and_fees_cad, final_view.snapshot_date
+
+spark.source.primaryKeyColumns sail_id,cabin_category
+spark.target.temp s3://vv-prod-emr-cluster/data/temp/sw_rpl/hvtb_nbx_core_sw_sail_cabin_fact
+spark.target.location s3://vv-prod-emr-cluster/data/mart/seaware_replica/hvtb_nbx_core_sw_sail_cabin_fact
+spark.tableType FACT
+spark.frameworkEnv shore
+spark.redshift.schema Hive_schema_stg
+spark.redshift.tablename seaware_sail_cabin_fact 
+
+spark.redshift.url jdbc:redshift://10.7.1.214:5439/stagenbx_mig
+spark.redshift.username talenduser
+spark.redshift.password Talenduser@123
+
+spark.frameworkEnv shore
+spark.source.prevoyageflag Prevoyage
+spark.mysql.db vv_metadata
+spark.mysql.login admin
+spark.mysql.password VirginAdmin9$
+spark.mysql.url jdbc:mysql://staging-talend-metadata.cluster-cz4e2a1fysom.us-east-1.rds.amazonaws.com:3306/vv_metadata
+spark.mysql.table load_job_status_log
+spark.mysql.driver com.mysql.jdbc.Driver
+spark.talend.loadfrequency SW_DWH_daily								   

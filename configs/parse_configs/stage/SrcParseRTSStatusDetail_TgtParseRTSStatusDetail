@@ -1,0 +1,23 @@
+spark.src.config.id SrcRTSOciStatusDetail
+spark.voyage.id SC2002269NCR
+spark.tgt.env Stage
+spark.target.config.id TgtRTSOciStatusDetail
+spark.parent.id SrcOcistatusDetail-TgtOcistatusDetail
+spark.source.table select * from vv_db.hvtb_lnd_vas_oci_statusdetail
+spark.checkinGuestDetail.target.table vv_db.hvtb_parse_rts_checkinguestdetails
+spark.precruiseinfo.target.table vv_db.hvtb_parse_rts_precruiseinfo
+spark.postcruiseinfo.target.table vv_db.hvtb_parse_rts_postcruiseinfo
+spark.target.table.format org.apache.phoenix.spark
+spark.target.offset.mode overwrite
+spark.target.offset.table HBTB_STREAMING_INGESTION_OFFSET
+spark.target.ops.table.format org.apache.phoenix.spark
+spark.target.ops.table.mode overwrite
+spark.target.enablerops_table HBTB_INGESTION_METADATA
+spark.target.zkurl   10.4.100.154:2181/hbase-unsecure
+spark.kafka.zookeeper   10.9.100.157:2181
+spark.oauthurl	https://prod.virginvoyages.com/svc/identityaccessmanagement-service/oauth/token?grant_type=client_credentials
+spark.findByTypeAndTargetType	https://prod.virginvoyages.com/svc/xref-api/v1/references/search/findByTypeAndTargetType
+spark.findalltypes	https://prod.virginvoyages.com/svc/xref-api/v1/types?page=-1&size=-1
+spark.username	a02f3532-86ea-4c59-bc0a-ac7b47a73a37
+spark.password	HV6CvL7evpjhgYSY
+spark.authorization	Basic YTAyZjM1MzItODZlYS00YzU5LWJjMGEtYWM3YjQ3YTczYTM3OkhWNkN2TDdldnBqaGdZU1k=

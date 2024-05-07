@@ -1,0 +1,11 @@
+
+spark.tableau.credentials virginnbxservicedesk.in@capgemini.com
+spark.tableau.password Capgemini2020
+spark.tableau.contentUrl virginvoyages
+spark.tableau.authurl https://us-east-1.online.tableau.com/api/3.8/auth/signin
+
+spark.tableau.datasources s3://vv-*env*-emr-cluster/data/TableauDataSourcesApi/datasourcesid.txt
+spark.tableau.refreshURL https://us-east-1.online.tableau.com/api/3.8/sites/*siteid*/datasources/*datasourceid*/refresh
+
+
+spark.tableau.sleepTime 10000

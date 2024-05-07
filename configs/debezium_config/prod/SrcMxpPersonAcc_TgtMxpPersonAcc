@@ -1,0 +1,24 @@
+spark.kafkabrokers prodkafka1.gcp.virginvoyages.com:9092,prodkafka2.gcp.virginvoyages.com:9092,prodkafka3.gcp.virginvoyages.com:9092
+spark.kafka.zookeeper prodkafka1.gcp.virginvoyages.com:2181
+spark.mpx.consumer spark-consumer-100
+spark.src.kafkatopic dbz.mxp.dbo.Person_Account
+spark.snapshot.table shipdw.hbtb_dbz_snapdate
+spark.src.config.id SrcMxpPersonAcc
+spark.tgt.env Prod
+spark.voyage.id SC2002269NCR
+spark.target.config.id TgtMxpPersonAcc
+spark.target.lnd.table shipdw.hvtb_lnd_mxp_person_account
+spark.target.parse.table shipdw.hvtb_parse_mxp_person_account
+spark.ship.code SHORE
+spark.metadata.con.format jdbc
+spark.metadata.offset.mode Append
+spark.metadata.offset.table shipdw.hbtb_streaming_ingestion_offset
+spark.metadata.con.url jdbc:postgresql://10.48.10.221:5432/shipdw
+spark.metadata.user postgres
+spark.metadata.password !Setsail2022
+spark.metadata.con.driver org.postgresql.Driver
+spark.metadata.ops.table.mode Append
+spark.metadata.enablerops.table shipdw.hbtb_ingestion_metadata
+spark.snpsht.table.mode overwrite
+spark.hadoop.hive.execution.engine mr
+
