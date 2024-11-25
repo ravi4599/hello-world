@@ -1,0 +1,43 @@
+USE WAREHOUSE {{params.warehouse}};
+
+SET load_dt =  '{{params.load_dt}}';
+
+COPY INTO @IDH_{{params.env}}.{{params.schema}}.stage_for_jj_polled_sales/{{params.file_name}} 
+from
+(
+ SELECT 
+'JJF' AS BRAND,
+TO_CHAR(DATE_TRUNC('week', DATEADD('day', -7, ($load_dt))) + INTERVAL '8 days','MM-DD-YYYY') AS REPORTING_PERIOD,
+OWNER_ID AS CUSTOMER_NUMBER, 
+FRANCHISEE_NAME AS CUSTOMER_NAME,
+LPAD(T.REST_ID,6,'0') AS UNIT,
+'USD' AS LOCAL_CURRENCY,
+SUM(DERIVED_NET_AMT) AS LOCAL_NET_SALES_RETAIL,
+SUM(TRANS_CNT) AS TRANSACTION_COUNT_RETAIL,
+SUM(DERIVED_GROSS_AMT) LOCAL_GROSS_SALES,
+'' AS LOCAL_NET_SALES_WHOLESALE, 
+'' AS TRANSACTION_COUNT_WHOLESALE,
+'WEEKLY' AS REPORTING_FREQUENCY
+FROM IDH_{{params.source_env}}.D_TRANS.TRANS T
+INNER JOIN IDH_{{params.source_env}}.D_LOC.REST R 
+ON T.REST_ID = R.REST_ID AND T.BRAND_ID = R.BRAND_ID
+WHERE T.BRAND_ID = 'jj' 
+AND R.OWNERSHIP_TYPE = 'Franchised'
+AND VOID_IND = 'FALSE'
+AND
+BUSINESS_DATE
+BETWEEN
+To_Date(DATE_TRUNC('week', DATEADD('day', -7, ($load_dt))) + INTERVAL '2 days') and 
+To_Date(DATE_TRUNC('week', DATEADD('day', -7, ($load_dt))) + INTERVAL '8 days')
+and dayname($load_dt) = 'Wed'
+GROUP BY 
+T.BRAND_ID,
+REPORTING_PERIOD,
+OWNER_ID, 
+FRANCHISEE_NAME,
+T.REST_ID
+)
+OVERWRITE = TRUE 
+single = true
+FILE_FORMAT = (FIELD_DELIMITER = '|' TYPE = csv NULL_IF = ('NULL', 'null') EMPTY_FIELD_AS_NULL = false  compression='NONE')
+HEADER=true;

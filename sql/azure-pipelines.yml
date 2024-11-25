@@ -1,0 +1,33 @@
+trigger:
+  branches:
+    include:
+    - dev
+    - qa
+    - uat
+    - prod
+
+variables:
+- ${{ if eq(variables['Build.SourceBranchName'], 'dev') }}:
+  - name: branchName
+    value: "dev"
+- ${{ if eq(variables['Build.SourceBranchName'], 'qa') }}:
+  - name: branchName
+    value: "qa"
+- ${{ if eq(variables['Build.SourceBranchName'], 'uat') }}:
+  - name: branchName
+    value: "uat"
+- ${{ if eq(variables['Build.SourceBranchName'], 'prod') }}:
+  - name: branchName
+    value: "prod"
+
+resources:
+  repositories:
+  - repository: udp-pipeline-modules
+    type: git
+    name: udp-pipeline-modules/udp-pipeline-modules
+    ref: refs/heads/feature/PA-1391
+
+extends:
+  template: templates/pipelines/snowsql.yml@udp-pipeline-modules
+  parameters:
+    branchName: ${{ variables.branchName }}

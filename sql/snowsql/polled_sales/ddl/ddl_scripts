@@ -1,0 +1,76 @@
+1. Change the env in the below command
+
+CREATE STAGE IF NOT EXISTS "IDH_DEV"."D_FINANCE".STAGE_FOR_BASKIN_POLLED_SALES
+	STORAGE_INTEGRATION = UDP_STORAGE_INT_<env>
+	URL = 'azure://ibue2<env>01udpadls2.blob.core.windows.net/baskin/outbound/polled_sales';
+	
+CREATE STAGE IF NOT EXISTS "IDH_qa"."D_FINANCE".STAGE_FOR_DUNKIN_POLLED_SALES
+	STORAGE_INTEGRATION = UDP_STORAGE_INT_qa
+	URL = 'azure://ibue2qa01udpadls2.blob.core.windows.net/dunkin/outbound/polled_sales';
+	
+CREATE STAGE IF NOT EXISTS "IDH_DEV"."D_FINANCE".STAGE_FOR_ARBYS_POLLED_SALES
+	STORAGE_INTEGRATION = UDP_STORAGE_INT_DEV
+	URL = 'azure://ibue2dev01udpadls2.blob.core.windows.net/arbys/outbound/polled_sales';	
+	
+2. create variables. refer to qa
+
+dunkin_polled_sales_weekly
+dunkin_polled_sales_monthly
+baskin_polled_sales_weekly
+dunkin_polled_sales_monthly
+arbys_polled_sales_monthly
+
+3. Make sure the table IDS_QA.FINANCE_ACCTG.FRANCHISEE_POLLED_SALES_SNAPSHOT and view IDS_QA.FINANCE_ACCTG_BV.FRANCHISEE_POLLED_SALES_SNAPSHOT_BV
+are created
+
+    create or replace TABLE IDS_dev.FINANCE_ACCTG.FRANCHISEE_POLLED_SALES_SNAPSHOT (
+	BRAND_ID VARCHAR(16777216),
+	REPORTING_PERIOD VARCHAR(16777216),
+	CUSTOMER_NUMBER VARCHAR(16777216),
+	CUSTOMER_NAME VARCHAR(16777216),
+	rest_id VARCHAR(16777216),
+	LOCAL_CURRENCY VARCHAR(16777216),
+	LOCAL_NET_SALES_RETAIL VARCHAR(16777216),
+	TRANSACTION_COUNT_RETAIL VARCHAR(16777216),
+	LOCAL_GROSS_SALES VARCHAR(16777216),
+	LOCAL_NET_SALES_WHOLESALE VARCHAR(16777216),
+	TRANSACTION_COUNT_WHOLESALE VARCHAR(16777216),
+	REPORTING_FREQUENCY VARCHAR(16777216),
+	EXPECTED_SALES_DAYS VARCHAR(16777216),
+	ACTUAL_SALES_DAYS VARCHAR(16777216),
+	SNAPSHOT_DATE DATE,
+	SOURCE_SYSTEM_NAME VARCHAR(16777216),
+	LOAD_ID	number(38),
+	LOAD_DTTM timestamp,	UPDATE_ID number(38),	UPDATE_DTTM timestamp
+);
+
+create OR REPLACE view IDH_DEV.D_FINANCE.FRANCHISEE_POLLED_SALES_SNAPSHOT as SELECT brand_id,rest_id,
+reporting_frequency,
+reporting_period,
+expected_sales_days,
+actual_sales_days,
+snapshot_date FROM (
+select 'ARG' AS brand_id,
+rest_id AS rest_id,
+reporting_frequency,
+reporting_period,
+expected_sales_days,
+actual_sales_days,
+snapshot_date, DENSE_RANK() OVER (PARTITION BY snapshot_date,reporting_frequency ORDER BY LOAD_id desc ) AS rn from IDS_DEV.FINANCE_ACCTG.FRANCHISEE_POLLED_SALES_SNAPSHOT WHERE brand_id = 'arbys'
+union
+select 'BRI' AS brand_id,
+rest_id AS rest_id,
+reporting_frequency,
+reporting_period,
+expected_sales_days,
+actual_sales_days,
+snapshot_date, DENSE_RANK() OVER (PARTITION BY snapshot_date,reporting_frequency ORDER BY LOAD_id desc ) AS rn from IDS_DEV.FINANCE_ACCTG.FRANCHISEE_POLLED_SALES_SNAPSHOT WHERE brand_id = 'bskn'
+union
+select 'DKN' AS brand_id,
+rest_id AS rest_id,
+reporting_frequency,
+reporting_period,
+expected_sales_days,
+actual_sales_days,
+snapshot_date, DENSE_RANK() OVER (PARTITION BY snapshot_date,reporting_frequency ORDER BY LOAD_id desc ) AS rn from IDS_DEV.FINANCE_ACCTG.FRANCHISEE_POLLED_SALES_SNAPSHOT WHERE brand_id = 'dnkn'
+)T  WHERE rn = 1

@@ -1,0 +1,17 @@
+---
+trigger:
+  - master
+
+resources:
+  repositories:
+  - repository: udp-pipeline-modules
+    type: git
+    name: udp-pipeline-modules/udp-pipeline-modules
+    ref: refs/heads/master
+
+extends:
+  template: templates/pipelines/snowflake-dml.yml@udp-pipeline-modules
+  parameters:
+    dbTypes:
+      - IRB
+#      - RA (Please do not change this value, Consult with DBA Team (inspiredbadmins@inspirebrands.com))
