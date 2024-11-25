@@ -1,0 +1,1 @@
+CREATE STAGE IF NOT EXISTS STG_EXT_ARB_GETTILLS_ADLS2_TO_RDS_PROCESSED URL = 'azure://ibue2dev01udpadls2.blob.core.windows.net/arbys/staging/domain/transaction/tills/processed' STORAGE_INTEGRATION = UDP_STORAGE_INT_DEV FILE_FORMAT = RDS_DEV.ARB.ARBYS_GETTILLS_FILE_FORMAT;

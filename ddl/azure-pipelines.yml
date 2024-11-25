@@ -1,0 +1,73 @@
+---
+trigger:
+- dev
+- qa
+- uat
+- prod
+
+resources:
+  repositories:
+  - repository: udp-pipeline-modules
+    type: git
+    name: udp-pipeline-modules/udp-pipeline-modules
+    ref: refs/heads/master
+
+extends:
+  template: templates/pipelines/snowflake.yml@udp-pipeline-modules
+  parameters:
+    # NOTE: int is important to provide the right environment here
+    envName: dev
+    commonRepositoryId: udp-pipeline-modules
+    polarisDatabases:
+      dev: POLARIS_DEV
+      qa: POLARIS_DEV
+      uat: POLARIS_UAT01
+      prod: POLARIS
+    roles:
+    - RA_OBJOWNR_$(envNameUC)_ROLE
+    - IRB_OBJOWNR_$(envNameUC)_ROLE
+    snowflakeDatabases:
+    - group: 1
+      databases:
+      - name: RDS
+        role: IRB_OWNER
+        warehouse: "RA_UA_WH"
+    - group: 2
+      dependsOn:
+      - RDS
+      databases:
+      - name: IDS
+        role: IRB_OWNER
+        warehouse: "IRB_UA_$(whEnvSuffix)WH"
+      - name: IDM
+        role: IRB_OWNER
+        warehouse: "IRB_UA_$(whEnvSuffix)WH"
+    - group: 3
+      dependsOn:
+      - RDS
+      - IDS
+      - IDM
+      databases:
+      - name: IDH
+        role: IRB_OWNER
+        warehouse: "IRB_UA_$(whEnvSuffix)WH"
+    - group: 4
+      databases:
+      - name: ITPRCS
+        role: IRB_OWNER
+        warehouse: "IRB_UA_$(whEnvSuffix)WH"
+    - group: 5
+      databases:
+      - name: EDW
+        role: IRB_EDW_ROLE
+        warehouse: "IRB_UA_$(whEnvSuffix)WH"
+    - group: 6
+      databases:
+      - name: FINIDS
+        role: IRB_OWNER
+        warehouse: "IRB_UA_WH"    
+    - group: 7
+      databases:
+      - name: STG
+        role: IRB_OWNER
+        warehouse: "IRB_UA_WH" 

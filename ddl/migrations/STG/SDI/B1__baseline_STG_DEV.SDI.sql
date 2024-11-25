@@ -1,0 +1,359 @@
+
+create TRANSIENT TABLE IF NOT EXISTS CMX_AOR_INGESTION (
+	VALUE VARIANT,
+	FILENAME VARCHAR(16777216),
+	LOAD_ID NUMBER(38,0),
+	LOAD_DTTM TIMESTAMP_NTZ(9)
+);
+create TRANSIENT TABLE IF NOT EXISTS CMX_LIST_ENTITIES (
+	VALUE VARIANT,
+	FILENAME VARCHAR(16777216),
+	LOAD_ID NUMBER(38,0),
+	LOAD_DTTM TIMESTAMP_NTZ(9)
+);
+create TRANSIENT TABLE IF NOT EXISTS CMX_MAPPING (
+	VALUE VARIANT,
+	FILENAME VARCHAR(16777216),
+	LOAD_ID NUMBER(38,0),
+	LOAD_DTTM TIMESTAMP_NTZ(9)
+);
+create TABLE IF NOT EXISTS GA_ANALYTICS_EVENTS (
+	EVENT_DATE VARCHAR(16777216),
+	EVENT_TIMESTAMP NUMBER(38,0),
+	EVENT_NAME VARCHAR(16777216),
+	EVENT_PARAMS ARRAY,
+	EVENT_PREVIOUS_TIMESTAMP NUMBER(38,0),
+	EVENT_VALUE_IN_USD FLOAT,
+	EVENT_BUNDLE_SEQUENCE_ID NUMBER(38,0),
+	EVENT_SERVER_TIMESTAMP_OFFSET NUMBER(38,0),
+	USER_ID VARCHAR(16777216),
+	USER_PSEUDO_ID VARCHAR(16777216),
+	USER_PROPERTIES ARRAY,
+	USER_FIRST_TOUCH_TIMESTAMP NUMBER(38,0),
+	USER_LTV OBJECT,
+	DEVICE OBJECT,
+	GEO OBJECT,
+	APP_INFO OBJECT,
+	TRAFFIC_SOURCE OBJECT,
+	STREAM_ID VARCHAR(16777216),
+	PLATFORM VARCHAR(16777216),
+	EVENT_DIMENSIONS OBJECT,
+	ECOMMERCE OBJECT,
+	ITEMS ARRAY,
+	LOAD_ID NUMBER(34,0),
+	LOAD_DATE TIMESTAMP_NTZ(9),
+	DATASET_ID VARCHAR(16777216)
+);
+create TABLE IF NOT EXISTS IDP_CUSTOMER_ADDRESS_HIST (
+	ID VARCHAR(16777216),
+	TYPE VARCHAR(16777216),
+	ADDRESS1 VARCHAR(16777216),
+	ADDRESS2 VARCHAR(16777216),
+	CITY VARCHAR(16777216),
+	STATE VARCHAR(16777216),
+	COUNTRY VARCHAR(16777216),
+	POSTAL_CODE VARCHAR(16777216),
+	PREFERRED VARCHAR(16777216),
+	CREATED_TS VARCHAR(16777216),
+	UPDATED_TS VARCHAR(16777216),
+	CUSTOMER_ID VARCHAR(16777216)
+);
+create TABLE IF NOT EXISTS IDP_CUSTOMER_HISTORY (
+	CUSTOMER_UUID VARCHAR(16777216),
+	BRAND VARCHAR(16777216),
+	EMAIL VARCHAR(16777216),
+	FIRST_NAME VARCHAR(16777216),
+	LAST_NAME VARCHAR(16777216),
+	DOB VARCHAR(16777216),
+	FRAUD_STATUS VARCHAR(16777216),
+	ACCOUNT_STATUS VARCHAR(16777216),
+	PROFILE_COMPLETED VARCHAR(16777216),
+	EMAIL_CONFIRMED VARCHAR(16777216),
+	CREATED_TS VARCHAR(16777216),
+	UPDATED_TS VARCHAR(16777216),
+	DEFAULT_TNC_ACCEPTED VARCHAR(16777216),
+	MEMBER_SINCE VARCHAR(16777216),
+	MIGRATED VARCHAR(16777216),
+	MIGRATION_SOURCE VARCHAR(16777216),
+	GENDER VARCHAR(16777216),
+	ID VARCHAR(16777216),
+	PROFILE_AVATAR_URL VARCHAR(16777216),
+	MFA_SMS_STATUS VARCHAR(16777216),
+	MFA_EMAIL_STATUS VARCHAR(16777216)
+)COMMENT='It''s created by Ashot Vardanyan'
+;
+create TABLE IF NOT EXISTS REST_PROCESSED (
+	STORECODE VARCHAR(20),
+	LOAD_ID VARCHAR(16777216),
+	LOAD_DTTM TIMESTAMP_NTZ(9),
+	UPDATE_ID VARCHAR(16777216),
+	UPDATE_DTTM TIMESTAMP_NTZ(9)
+);
+create TRANSIENT TABLE IF NOT EXISTS SONIC_MENU_ITEM_PRICE (
+	STORE_ID VARCHAR(16777216),
+	STORENUMBER VARCHAR(16777216),
+	PRODUCTPRICES VARIANT,
+	SOURCE_SYSTEM_NAME VARCHAR(16777216),
+	FILENAME VARCHAR(16777216),
+	LOAD_ID NUMBER(38,0),
+	LOAD_DTTM TIMESTAMP_NTZ(9)
+);
+create TABLE IF NOT EXISTS SONIC_MENU_ITEM_PRICE_ERROR (
+	STOREID VARCHAR(16777216),
+	ERROR VARCHAR(16777216),
+	FILENAME VARCHAR(16777216),
+	LOAD_ID NUMBER(38,0),
+	LOAD_DTTM TIMESTAMP_NTZ(9)
+);
+create TABLE IF NOT EXISTS TEST (
+	A VARCHAR(1),
+	B VARCHAR(1),
+	C VARCHAR(1)
+);
+CREATE VIEW IF NOT EXISTS EPSILON_STORE_V(
+	CHAINNAME,
+	PARENTSTOREID,
+	PARENTSTORECODE,
+	STORECODE,
+	STORENAME,
+	CHAINPRIORITY,
+	ADDRESSLINE1,
+	ADDRESSLINE2,
+	CITY,
+	STATECODE,
+	POSTALCODE,
+	COUNTRYCODE,
+	URBANIZATION,
+	LATITUDE,
+	LONGITUDE,
+	STORETYPE,
+	MANAGERFIRSTNAME,
+	MANAGERMIDDLEINITIAL,
+	MANAGERLASTNAME,
+	MANAGEREMAILADDR,
+	DMA,
+	DIVCODE,
+	STATUS,
+	STOREOPENDATE,
+	STORECLOSEDATE,
+	GENERALMANAGER,
+	REGIONALMANAGER,
+	DIRECTOROFOPERATIONS,
+	DIVISIONALVICEPRESIDENT,
+	REGIONALMARKETINGMANAGER,
+	FRANCHISEOWNERSHIPGROUP,
+	LOYALTYLOCATION,
+	LOYALTY_ALCOHOLEARNING,
+	POSSOFTWAREKEYID
+) as (
+    SELECT
+        'SONC' as ChainName,
+        '' as ParentStoreId,
+        '' as ParentStoreCode,
+        TO_VARCHAR(to_number(r.Rest_ID)) as StoreCode,
+        IFNULL(TO_VARCHAR(LEFT(r.REST_NAME,80)),'') as StoreName,
+        '' as ChainPriority,
+        IFNULL(LEFT(REPLACE(r.Address_Line1_Txt,',',''),80),'') as AddressLine1,
+        IFNULL(LEFT(REPLACE(r.Address_Line2_Txt,',',''),80),'') as AddressLine2,
+        IFNULL(LEFT(r.City,30),'') as City,
+        IFNULL(LEFT(r.State,6),'') as StateCode,
+        IFNULL(LEFT(r.Zip_Code,10),'') as PostalCode,
+        IFNULL(DECODE(r.Country_Name,'US','USA',r.Country_Name),'')  as CountryCode,
+        '' as URBANIZATION,
+        IFNULL(TO_VARCHAR(LEFT(r.Latitude_Nbr,18)),'') as Latitude,
+        IFNULL(TO_VARCHAR(LEFT(r.Longitude_Nbr,18)),'') as Longitude,
+        DECODE(UPPER(r.Ownership_Type),'COMPANY OWNED','CORP','FRANCHISED','FRAN',LEFT(r.Ownership_Type,4)) as StoreType,
+        '' as ManagerFirstName,
+        '' as ManagerMiddleInitial,
+        '' as ManagerLastName,
+        IFNULL(LTRIM(RTRIM(LEFT(r.Rest_Email_Txt,80))),'') as ManagerEmailAddr,
+        TO_VARCHAR(r.DMA_Code) as DMA,
+        IFNULL(LEFT(r.Division_Nbr,20),'') as DivCode,
+        case when p.StoreCode is null then 'A' else
+        DECODE(UPPER(r.Rest_Status_Type),
+        'RE-OPEN','A',
+        'CLOSED','I',
+        'PENDING','A',
+        'TEMP CLOSED','I',
+        'OPEN','A',
+        null,'I',
+        'FAILURE TO OPEN','I',
+        IFNULL(LEFT(r.Rest_Status_Type,1),'')) end as Status,
+        IFNULL(TO_VARCHAR(r.Open_Date,'mm/dd/yyyy'),'') as StoreOpenDate,
+        IFNULL(TO_VARCHAR(r.closure_date, 'mm/dd/yyyy'),'') as StoreCloseDate,
+        '' as GeneralManager,
+        '' as RegionalManager,
+        '' as DirectorofOperations,
+        '' as DivisionalVicePresident,
+        '' as RegionalMarketingManager,
+        IFNULL(REPLACE(LEFT(r.Franchisee_Name,45),',',''),'') as FranchiseOwnershipGroup,
+        'Y' as LoyaltyLocation,
+        'N' as Loyalty_AlcoholEarning,
+        '' as POSSoftwareKeyID
+
+    FROM IDH_DEV.D_LOC.REST r
+    LEFT OUTER JOIN STG_DEV.SDI.REST_PROCESSED p ON r.rest_id=p.STORECODE
+    WHERE r.brand_id='sonic' AND UPPER(r.Country_Name) LIKE 'US%' AND r.Rest_ID IS NOT NULL
+);
+CREATE VIEW IF NOT EXISTS REST(
+	CHAINNAME,
+	PARENTSTOREID,
+	PARENTSTORECODE,
+	STORECODE,
+	STORENAME,
+	CHAINPRIORITY,
+	ADDRESSLINE1,
+	ADDRESSLINE2,
+	CITY,
+	STATECODE,
+	POSTALCODE,
+	COUNTRYCODE,
+	URBANIZATION,
+	LATITUDE,
+	LONGITUDE,
+	STORETYPE,
+	MANAGERFIRSTNAME,
+	MANAGERMIDDLEINITIAL,
+	MANAGERLASTNAME,
+	MANAGEREMAILADDR,
+	DMA,
+	DIVCODE,
+	STATUS,
+	STOREOPENDATE,
+	STORECLOSEDATE,
+	GENERALMANAGER,
+	REGIONALMANAGER,
+	DIRECTOROFOPERATIONS,
+	DIVISIONALVICEPRESIDENT,
+	REGIONALMARKETINGMANAGER,
+	FRANCHISEOWNERSHIPGROUP,
+	LOYALTYLOCATION,
+	LOYALTY_ALCOHOLEARNING,
+	POSSOFTWAREKEYID
+) as (
+    SELECT
+        'SONC' as ChainName,
+        NULL as ParentStoreId,
+        NULL as ParentStoreCode,
+        to_number(r.Rest_ID) as StoreCode,
+        left(r.REST_NAME,80) as StoreName,
+        NULL as ChainPriority,
+        LEFT(r.Address_Line1_Txt,80) as AddressLine1,
+        LEFT(r.Address_Line2_Txt,80) as AddressLine2,
+        LEFT(r.City,30) as City,
+        LEFT(r.State,6) as StateCode,
+        LEFT(r.Zip_Code,10) as PostalCode,
+        DECODE(r.Country_Name,'US','USA',r.Country_Name)  as CountryCode,
+        NULL as URBANIZATION,
+        LEFT(r.Latitude_Nbr,18) as Latitude,
+        LEFT(r.Longitude_Nbr,18) as Longitude,
+        DECODE(UPPER(r.Ownership_Type),'COMPANY OWNED','CORP','FRANCHISED','FRAN',LEFT(r.Ownership_Type,4)) as StoreType,
+        NULL as ManagerFirstName,
+        NULL as ManagerMiddleInitial,
+        NULL as ManagerLastName,
+        LTRIM(RTRIM(LEFT(r.Rest_Email_Txt,80))) as ManagerEmailAddr,
+        r.DMA_Code as DMA,
+        LEFT(r.Division_Nbr,20) as DivCode,
+        case when p.StoreCode is null then 'A' else
+        DECODE(UPPER(r.Rest_Status_Type),
+        'RE-OPEN','A',
+        'CLOSED','I',
+        'PENDING','A',
+        'TEMP CLOSED','I',
+        'OPEN','A',
+        null,'I',
+        'FAILURE TO OPEN','I',
+        LEFT(r.Rest_Status_Type,1)) end as Status,
+        r.Open_Date as StoreOpenDate,
+        r.closure_date as StoreCloseDate,
+        NULL as GeneralManager,
+        NULL as RegionalManager,
+        NULL as DirectorofOperations,
+        NULL as DivisionalVicePresident,
+        NULL as RegionalMarketingManager,
+        LEFT(r.Franchisee_Name,45) as FranchiseOwnershipGroup,
+        'Y' as LoyaltyLocation,
+        'N' as Loyalty_AlcoholEarning,
+        NULL as POSSoftwareKeyID
+    FROM IDH_DEV.D_LOC.REST r
+    LEFT OUTER JOIN STG_DEV.SDI.REST_PROCESSED p ON r.rest_id=STORECODE
+    WHERE r.brand_id='sonic' AND UPPER(r.Country_Name) LIKE 'US%'
+);
+CREATE FILE FORMAT IF NOT EXISTS CSV_AS_PLAIN_TEXT_ANALYSIS_FILE_FORMAT
+	FIELD_DELIMITER = 'NONE'
+	NULL_IF = ()
+	COMPRESSION = NONE
+;
+CREATE FILE FORMAT IF NOT EXISTS CSV_GZIP_AS_PLAIN_TEXT_ANALYSIS_FILE_FORMAT
+	FIELD_DELIMITER = 'NONE'
+	NULL_IF = ()
+	COMPRESSION = GZIP
+;
+CREATE FILE FORMAT IF NOT EXISTS DIGITAL_JSON_GZIP_FILE_FORMAT
+	TYPE = json
+	NULL_IF = ()
+	COMPRESSION = gzip
+;
+CREATE FILE FORMAT IF NOT EXISTS DIGITAL_JSON_NO_COMPRESSION_FILE_FORMAT
+	TYPE = JSON
+	NULL_IF = ()
+	COMPRESSION = NONE
+;
+CREATE FILE FORMAT IF NOT EXISTS PAYCON_PARQUET_FILE_FORMAT
+	TYPE = PARQUET
+	NULL_IF = ()
+;
+CREATE FILE FORMAT IF NOT EXISTS RM_AVRO_FILE_FORMAT
+	TYPE = AVRO
+	NULL_IF = ()
+;
+CREATE FILE FORMAT IF NOT EXISTS RM_JSON_FORMAT
+	TYPE = json
+	NULL_IF = ()
+;
+CREATE FILE FORMAT IF NOT EXISTS SONIC_CIP_HIST_CSV
+	FIELD_DELIMITER = '|'
+	FIELD_OPTIONALLY_ENCLOSED_BY = '\"'
+	NULL_IF = ('')
+;
+CREATE FILE FORMAT IF NOT EXISTS TEST_CSV_ESCAPE
+	SKIP_HEADER = 1
+	ESCAPE = '('
+	ESCAPE_UNENCLOSED_FIELD = ')'
+	FIELD_OPTIONALLY_ENCLOSED_BY = '\"'
+;
+CREATE FUNCTION IF NOT EXISTS "FLAT_GA_EVENTS_UP_EP_VALUE"("A" ARRAY)
+RETURNS ARRAY
+LANGUAGE JAVASCRIPT
+AS '
+    const FLEXIBLE_KEY_NAMES = ["string_value", "int_value", "double_value", "float_value"]
+
+    const parseInput = (input = {}) => {
+        const res = {
+            "key": input.key
+        };
+        const value = input.value;
+        if (value) {
+            for (const [key, value] of Object.entries(input.value)) {
+                if (FLEXIBLE_KEY_NAMES.includes(key)) {
+                    res.value = value;
+                } else {
+                    res[key] = value;
+                }
+            }
+        }
+        return res;
+    }
+
+    return A.map(parseInput)
+  ';
+CREATE FUNCTION IF NOT EXISTS "KV_ARRAY_TO_OBJECT"("A" ARRAY)
+RETURNS OBJECT
+LANGUAGE JAVASCRIPT
+AS '
+    let dict = {};
+    A.forEach(item => {
+        dict[item.key] = item.value;
+    });
+    return dict;
+';
