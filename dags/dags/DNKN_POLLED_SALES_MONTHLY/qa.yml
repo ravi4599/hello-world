@@ -1,0 +1,24 @@
+dag_id: "DNKN_POLLED_SALES_MONTHLY"
+dag_description: "Dunkin data unload from snowflake to ADLS2"
+email: ['udpfinanceengineeringpod@inspirebrands.com']
+env : "QA"
+warehouse_id : "RA_PRCSSA_IRB_WH"
+schema_id : "D_TRANS"
+file_format: "RDS_QA.DUN.DIGITAL_PIPE_DELIMITED_CSV_FILE_FORMAT"  
+schedule_interval: '30 9 1-10 * *'
+
+stage_name : "IDH_QA.D_TRANS.stage_for_dnkn_polled_sales"
+snowflake_owner_conn_id: "Snowflake-IRB-OWNER"
+
+azure:
+  adls_gen2:
+    container_name: "dunkin"
+    directory: "outbound/polled_sales"
+    base_path: "azure://ibue2qa01udpadls2.blob.core.windows.net/"
+    file_name : "DKN_UDP_Finance_PolledSales_*_Monthly.dat"
+  adf:
+    pipeline_name:
+      PolledSales_PL: "PL_ADLS2_TO_FS_ORACLE"  
+    parameters:
+      FileSourcePasswordSecretName : "ARBY-FILE-SHARE-SVC"
+      Targetfilepath : "/InspireOICS_UDP_Prod/Test"

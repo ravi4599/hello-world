@@ -1,0 +1,15 @@
+dag_id: "E2E_SALES_RECON_BWW_DPVHSTSALES_BY_INTERVAL_SQL_TO_RDS"
+dag_description: "dpvHstSaleByInterval data load from SQL(Insight) to ADLS2 and from ADLS2 to RDS"
+email: ["jagadish.cherukuri@inspirebrands.com", "arun.munagapati@inspirebrands.com", 'vagicharla.sudana@inspirebrands.com']
+env : "QA"
+warehouse_id : "RA_PRCSSA_IRB_WH"
+snowflake_conn_id : "Snowflake-IRB-OWNER"
+schema_id : "BWW"
+file_format: "RDS_QA.BWW.NBO_BWW_FILE_FORMAT"
+pattern: ".*"
+
+azure:
+  adf:
+    pipeline_name: "COPY_HSTSALESBYINTERVAL_ADLS"
+    pipeline_file_size: "PL_GET_METADATA_FILE_ADLS"
+    sourceFolderName: "landing/ftp/SalesRecon/bww_insight/dpvHstSalesByInterval/"

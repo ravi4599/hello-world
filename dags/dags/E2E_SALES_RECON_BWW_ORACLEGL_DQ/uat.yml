@@ -1,0 +1,20 @@
+# Global settings
+dag_id: "E2E_SALES_RECON_BWW_ORACLEGL_DQ"
+dag_description: "Mailing DAG for DQ framework"
+emails: ['murugan.thirunavukar@inspirebrands.com','theja.h@inspirebrands.com']
+owner: "DQ"
+
+snowflake_conn_irb_objowner_id: "snowflake-SVC-IRB-UAT"
+warehouse_name: "IRB_PRCSSA_IRB_UAT_WH"
+env: "UAT"
+
+database: "IDS_UAT"
+schema_name: "INT_REF"
+target_schema: "Sales Recon (ORACLE GL)"
+brand: "%"
+table_list:
+  - GL_DAILY_SALES_MEASURE_BWW
+
+# Paths
+utils_path: "/opt/airflow/dags/transaction/global_utils"
+airflow_path: "/opt/airflow/dags/transaction/global_utils/airflow"

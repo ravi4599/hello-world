@@ -1,0 +1,13 @@
+
+dag_id: "ARBYS_POS_REVENUE_CENTER_ADLS_TO_RDS"
+dag_description: "Arbys Pos data load from ADLS2 to RDS"
+emails: ['udpfinanceengineeringpod@inspirebrands.com']
+env : "QA"
+warehouse_id: "RA_PRCSSA_IRB_WH"
+snowflake_conn_id : "Snowflake-IRB-OWNER" 
+schema_id : "ARB"
+rds_env : "RDS_QA"
+file_format: "RDS_QA.ARB.POS_REVENUE_CENTER_FILE_FORMAT"
+stage_name: '@RDS_QA.ARB.REVENUE_CENTER_XML_READ_ADLS2'
+delete_days: "180"
+schedule_interval: '30 7 * * 6-7'

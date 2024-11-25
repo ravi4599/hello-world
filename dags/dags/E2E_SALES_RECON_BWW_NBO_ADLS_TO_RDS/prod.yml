@@ -1,0 +1,10 @@
+dag_id: "E2E_SALES_RECON_BWW_NBO_ADLS_TO_RDS"
+dag_description: "NBO data load from ADLS2 to RDS"
+email: ["DataServicesHelp@inspirebrands.com", "itdataservicessupport@inspirebrands.com"]
+env : "PROD"
+warehouse_id : "RA_PRCSSA_IRB_PROD_WH"
+snowflake_conn_id : "Snowflake-IRB-PROD-OWNER"
+schema_id : "BWW"
+file_format: "RDS_PROD.BWW.NBO_BWW_FILE_FORMAT"
+pattern: ".*NBO_SALES.*[.]csv"
+

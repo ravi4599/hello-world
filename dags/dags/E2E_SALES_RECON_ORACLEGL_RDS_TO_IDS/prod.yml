@@ -1,0 +1,10 @@
+
+dag_id: "E2E_SALES_RECON_ORACLEGL_RDS_TO_IDS"
+dag_description: "Arbys Oracle GL data load from RDS to IDS"
+emails: ["DataServicesHelp@inspirebrands.com", "itdataservicessupport@inspirebrands.com"]
+email: ["DataServicesHelp@inspirebrands.com", "itdataservicessupport@inspirebrands.com"]
+source_env : "PROD"
+target_env : "PROD"
+warehouse_id : "IRB_PRCSSA_IRB_PROD_WH"
+snowflake_conn_id : "Snowflake-IRB-PROD-OWNER"
+schema_id : "ARB"

@@ -1,0 +1,11 @@
+dag_id: "DUNKIN_BOS_ADLS_TO_RDS_ALL_HI_PL"
+dag_description: "DUNKIN Crunchtime data load from ADLS2 to RDS"
+email: ['vagicharla.sudana@inspirebrands.com']
+env : "UAT"
+snowflake_conn_id: "snowflake-SVC-IRB-UAT"
+warehouse_id: "RA_PRCSSA_IRB_UAT_WH"
+schema_id : "DUN"
+file_format: "RDS_UAT.DUN.DIGITAL_PIPE_DELIMITED_CSV_FILE_FORMAT"
+pattern: ".*DBI_Daily_Sales.*[.]csv"
+stage_name: "@RDS_UAT.DUN.SALES_RECON_READ_ADLS2"
+snowflake_rds_database_name: "RDS_UAT"

@@ -1,0 +1,8 @@
+dag_id: "ARBYS_POS_ITEM_RDS_TO_IDS_DAILY"
+dag_description: "Arbys Parbrinks data load from RDS to IDS"
+emails: ['udpfinanceengineeringpod@inspirebrands.com']
+email: ['udpfinanceengineeringpod@inspirebrands.com']
+source_env : "UAT"
+target_env : "UAT"
+warehouse_id : "IRB_PRCSSA_IRB_UAT_WH"
+schema_id : "ARB"

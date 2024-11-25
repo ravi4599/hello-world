@@ -1,0 +1,8 @@
+dag_id: "JJ_ORACLEGL_RDS_TO_IDS_DAILY__ALL_HI_PL"
+dag_description: "JJ Oracle GL data load from RDS to IDS"
+email: ["DataServicesHelp@inspirebrands.com", "itdataservicessupport@inspirebrands.com","rajesh.patil@inspirebrands.com"]
+source_env : "PROD"
+target_env : "PROD"
+warehouse_id : "IRB_PRCSSA_IRB_PROD_WH"
+snowflake_conn_id: "Snowflake-IRB-PROD-OWNER"
+schema_id : "JJE"

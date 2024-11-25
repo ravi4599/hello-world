@@ -1,0 +1,21 @@
+# Global settings
+dag_id: "DUNKIN_BOS_DQ"
+dag_description: "Mailing DAG for DQ framework"
+emails: ['shashikala.g@inspirebrands.com','theja.h@inspirebrands.com','murugan.thirunavukar@inspirebrands.com']
+owner: "DQ"
+
+warehouse_name: "IRB_PRCSSA_IRB_WH"
+env: "DEV"
+
+database: "IDS_DEV"
+schema_name: "INT_REF"
+target_schema: "Sales Recon (BOS)-Dunkin"
+brand: "%"
+table_list:
+  - BOS_DAILY_SALES_MEASURE_DUNKIN
+
+# Paths
+#utils_path: "/home/PolarisAdministrator/airflow/dags/transaction/global_utils"
+#airflow_path: "/home/PolarisAdministrator/airflow/dags/transaction/global_utils/airflow"
+utils_path: "/opt/airflow/dags/transaction/global_utils"
+airflow_path: "/opt/airflow/dags/transaction/global_utils/airflow"

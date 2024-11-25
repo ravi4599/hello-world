@@ -1,0 +1,12 @@
+
+dag_id: "E2E_SALES_RECON_ORACLEGL_ADLS_TO_RDS"
+dag_description: "Arbys Oracle GL data load from ADLS2 to RDS"
+emails: ['udpfinanceengineeringpod@inspirebrands.com']
+env : "UAT"
+warehouse_id : "RA_PRCSSA_IRB_UAT_WH"
+snowflake_conn_id : "snowflake-SVC-IRB-UAT"
+schema_id : "ARB"
+file_format: "RDS_UAT.ARB.GENERAL_LEDGER_ARB_FILE_FORMAT"
+pattern: ".*GL_SALES_JE_TO_UDP.*[.]csv"
+snowflake_rds_database_name: "RDS_UAT"
+stage_name: "@RDS_UAT.ARB.SALES_RECON_READ_ADLS2"

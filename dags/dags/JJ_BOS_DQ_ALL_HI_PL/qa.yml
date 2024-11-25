@@ -1,0 +1,21 @@
+# Global settings
+dag_id: "JJ_BOS_DQ_ALL_HI_PL"
+dag_description: "Mailing DAG for DQ framework"
+emails: ['theja.h@inspirebrands.com','leena.hatwar@inspirebrands.com','murugan.thirunavukar@inspirebrands.com']
+owner: "DQ"
+
+snowflake_conn_irb_objowner_id: "Snowflake-IRB-OWNER"
+warehouse_name: "IRB_PRCSSA_IRB_WH"
+env: "QA"
+
+database: "IDS_QA"
+schema_name: "INT_REF"
+target_schema: "Sales Recon (BOS) - JJ"
+brand: "%"
+table_list:
+  - BOS_DAILY_SALES_MEASURE_JJ
+
+
+# Paths
+utils_path: "/opt/airflow/dags/transaction/global_utils"
+airflow_path: "/opt/airflow/dags/transaction/global_utils/airflow"

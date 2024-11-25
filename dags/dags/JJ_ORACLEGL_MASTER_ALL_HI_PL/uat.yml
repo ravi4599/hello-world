@@ -1,0 +1,19 @@
+dag_config:
+  dag_id: 'JJ_ORACLEGL_MASTER_ALL_HI_PL'
+  default_args:
+    'owner': 'SALESRECON'
+    'email': ['murugan.thirunavukar@inspirebrands.com','theja.h@inspirebrands.com']
+    'email_on_failure': True
+    'depends_on_past': False
+    'retries' : 0
+    schedule_interval: ""
+  doc_md: |-
+    ### Master DAG
+    This DAG is responsible for triggering the other transaction DAGs for procesing data
+  tags: ['SALESRECON_JJ', 'ORACLEGL', 'MASTERDAG']
+  catchup : False
+  
+child_dags:
+  JJ_ORACLEGL_FTP_TO_ADLS_ALL_HI_PL: 'JJ_ORACLEGL_FTP_TO_ADLS_ALL_HI_PL'
+  JJ_ORACLEGL_ADLS_TO_RDS_ALL_HI_PL: 'JJ_ORACLEGL_ADLS_TO_RDS_ALL_HI_PL'
+  JJ_ORACLEGL_RDS_TO_IDS_DAILY__ALL_HI_PL: 'JJ_ORACLEGL_RDS_TO_IDS_DAILY__ALL_HI_PL'

@@ -1,0 +1,7 @@
+dag_id: "DUNKIN_ORACLEGL_RDS_TO_IDS_DAILY_ALL_HI_PL"
+dag_description: "DUNKIN Oracle GL data load from RDS to IDS"
+email: ['vagicharla.sudana@inspirebrands.com']
+source_env : "GOLD"
+target_env : "DEV"
+warehouse_id : "IRB_PRCSSA_IRB_WH"
+schema_id : "DUN"

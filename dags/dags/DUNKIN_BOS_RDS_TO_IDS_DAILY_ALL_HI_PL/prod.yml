@@ -1,0 +1,8 @@
+dag_id: "DUNKIN_BOS_RDS_TO_IDS_DAILY_ALL_HI_PL"
+dag_description: "DUNKIN Crunchtime data load from RDS to IDS"
+email: ["itdataservicessupport@inspirebrands.com", "DNKNhelp@service-now.com"]
+source_env : "PROD"
+target_env : "PROD"
+warehouse_id : "IRB_PRCSSA_IRB_PROD_WH"
+snowflake_conn_id: "Snowflake-IRB-PROD-OWNER"
+schema_id : "DUN"

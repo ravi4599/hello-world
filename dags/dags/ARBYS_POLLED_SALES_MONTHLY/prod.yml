@@ -1,0 +1,25 @@
+dag_id: "ARBYS_POLLED_SALES_MONTHLY"
+dag_description: "ARBYS data unload from snowflake to ADLS2"
+email: ['udpfinanceengineeringpod@inspirebrands.com']
+env : "PROD"
+source_env : "GOLD"
+warehouse_id : "RA_PRCSSA_IRB_WH"
+schema_id : "D_TRANS"
+file_format: "rds_prod.arb.pipe_delimited_csv_file_format"
+schedule_interval: '30 0 1-10 * *'
+stage_name : "IDH_PROD.D_TRANS.stage_for_arbys_polled_sales"
+snowflake_owner_conn_id: "Snowflake-IRB-OWNER"
+
+azure:
+  adls_gen2:
+    container_name: "arbys"
+    directory: "outbound/polled_sales"
+    base_path: "azure://ibue2prod01udpadls2.blob.core.windows.net/"
+    file_name : "ARBYS_UDP_Finance_PolledSales_20240301_Monthly.dat"
+  adf:
+    pipeline_name:
+      PolledSales_PL: "PL_ADLS2_TO_FS_ORACLE"
+    parameters:
+      FileSourcePasswordSecretName : "ARBY-FILE-SHARE-SVC"
+      Targetfilepath : "/InspireOICS_UDP_Prod/Inbound"
+      

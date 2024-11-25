@@ -1,0 +1,12 @@
+dag_id: "ARBYS_POS_ITEM_ADLS_TO_RDS"
+dag_description: "Arbys Pos item data load from ADLS2 to RDS"
+emails: ['udpfinanceengineeringpod@inspirebrands.com']
+env : "PROD"
+warehouse_id: "IRB_PRCSSA_IRB_PROD_WH"
+snowflake_conn_id: "Snowflake-IRB-PROD-OWNER"
+schema_id : "ARB"
+rds_env : "RDS_PROD"
+file_format: "RDS_PROD.ARB.POS_ITEM_FILE_FORMAT"
+stage_name: '@RDS_PROD.ARB.ITEM_XML_READ_ADLS2'
+delete_days: "180"
+schedule_interval: '30 7 * * 6-7'

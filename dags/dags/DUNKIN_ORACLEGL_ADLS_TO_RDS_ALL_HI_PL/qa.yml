@@ -1,0 +1,11 @@
+dag_id: "DUNKIN_ORACLEGL_ADLS_TO_RDS_ALL_HI_PL"
+dag_description: "DUNKIN Oracle GL data load from ADLS2 to RDS"
+email: ['vagicharla.sudana@inspirebrands.com']
+env : "QA"
+warehouse_id : "RA_PRCSSA_IRB_WH"
+snowflake_conn_id : "Snowflake-IRB-OWNER"
+schema_id : "DUN"
+file_format: "RDS_QA.DUN.DIGITAL_PIPE_DELIMITED_CSV_FILE_FORMAT"
+pattern: ".*GL_SALES_JE_TO_UDP.*[.]csv"
+stage_name: "@RDS_QA.DUN.SALES_RECON_READ_ADLS2"
+snowflake_rds_database_name : "RDS_QA"

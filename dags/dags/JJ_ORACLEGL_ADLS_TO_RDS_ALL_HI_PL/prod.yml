@@ -1,0 +1,11 @@
+dag_id: "JJ_ORACLEGL_ADLS_TO_RDS_ALL_HI_PL"
+dag_description: "JJ Oracle GL data load from ADLS2 to RDS"
+email: ["DataServicesHelp@inspirebrands.com", "itdataservicessupport@inspirebrands.com","rajesh.patil@inspirebrands.com"]
+env : "PROD"
+warehouse_id: "RA_PRCSSA_IRB_PROD_WH"
+snowflake_conn_id: "Snowflake-IRB-PROD-OWNER"
+schema_id : "JJE"
+file_format: "RDS_PROD.JJE.GENERAL_LEDGER_JJ_FILE_FORMAT"
+pattern: ".*GL_SALES_JE_TO_UDP.*[.]csv"
+snowflake_rds_database_name: "RDS_PROD"
+stage_name: "@RDS_PROD.JJE.SALES_RECON_JJ_CSV_ADLS2"

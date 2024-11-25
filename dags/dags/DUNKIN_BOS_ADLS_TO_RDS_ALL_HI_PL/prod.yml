@@ -1,0 +1,11 @@
+dag_id: "DUNKIN_BOS_ADLS_TO_RDS_ALL_HI_PL"
+dag_description: "DUNKIN Crunchtime data load from ADLS2 to RDS"
+email: ["itdataservicessupport@inspirebrands.com", "DNKNhelp@service-now.com"]
+env : "PROD"
+snowflake_conn_id: "Snowflake-IRB-PROD-OWNER"
+warehouse_id: "RA_PRCSSA_IRB_PROD_WH"
+schema_id : "DUN"
+file_format: "RDS_PROD.DUN.DIGITAL_PIPE_DELIMITED_CSV_FILE_FORMAT"
+pattern: ".*DBI_Daily_Sales.*[.]csv"
+stage_name: "@RDS_PROD.DUN.SALES_RECON_READ_ADLS2"
+snowflake_rds_database_name: "RDS_PROD"

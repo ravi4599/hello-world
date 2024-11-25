@@ -1,0 +1,19 @@
+dag_config:
+  dag_id: 'DUNKIN_POS_MASTER_ALL_HI_PL'
+  default_args:
+    'owner': 'SALESRECON'
+    'email': ['theja.h@inspirebrands.com','murugan.thirunavukar@inspirebrands.com','leena.hatwar@inspirebrands.com']
+    'email_on_failure': True
+    'depends_on_past': False
+    'retries' : 0
+    schedule_interval: ""
+  doc_md: |-
+    ### Master DAG
+    This DAG is responsible for triggering the other transaction DAGs for transaction data
+  tags: ['POS', 'SALESRECON_DUNKIN', 'MASTERDAG']
+  catchup : False
+  
+  
+child_dags:
+  E2E_SALES_RECON_DNKN_IDS_TO_IDS_DAILY: 'DUNKIN_POS_IDS_TO_IDS_DAILY_ALL_HI_PL'
+  DUNKIN_POS_DQ: 'DUNKIN_POS_DQ'

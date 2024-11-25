@@ -1,0 +1,11 @@
+dag_id: "E2E_SALES_RECON_SDI_ORACLEGL_ADLS_TO_RDS"
+dag_description: "SDI Oracle GL data load from ADLS2 to RDS"
+email: ["DataServicesHelp@inspirebrands.com","itdataservicessupport@inspirebrands.com"]
+env : "PROD"
+warehouse_id : "RA_PRCSSA_IRB_PROD_WH"
+snowflake_conn_id : "Snowflake-IRB-PROD-OWNER"
+schema_id : "SDI"
+file_format: "RDS_PROD.SDI.GENERAL_LEDGER_SDI_FILE_FORMAT"
+pattern: ".*GL_SALES_JE_TO_UDP.*[.]csv"
+rds_env: "RDS_PROD"
+stage_name: "@RDS_PROD.SDI.SALES_RECON_READ_SDI_ADLS2"

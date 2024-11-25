@@ -1,0 +1,12 @@
+dag_id: "E2E_SALES_RECON_SDI_BOS_INFOR_MICROS_ADLS_TO_RDS"
+dag_description: "SDI BOS data load from ADLS2 to RDS"
+email: ['udpfinanceengineeringpod@inspirebrands.com']
+env : "UAT"
+snowflake_conn_id: "snowflake-SVC-IRB-UAT"
+warehouse_id: "RA_PRCSSA_IRB_UAT_WH"
+schema_id : "SDI"
+rds_env : "RDS_UAT"
+file_format: "RDS_UAT.SDI.SALES_RECON_SDI_FILE_FORMAT"
+micros_pattern: '.*HOST_DSR_MICR_.*[.]txt'
+infor_pattern: '.*HOST_DSR_INF_.*[.]txt'
+stage_name: "@RDS_UAT.SDI.SALES_RECON_SDI_SFTP_DATA_TO_ADLS2"

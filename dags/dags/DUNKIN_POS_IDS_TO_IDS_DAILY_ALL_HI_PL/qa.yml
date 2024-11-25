@@ -1,0 +1,8 @@
+dag_id: "DUNKIN_POS_IDS_TO_IDS_DAILY_ALL_HI_PL"
+dag_description: "DUNKIN data load from IDS to IDS"
+email: ['vgicharla.sudana@inspirebrands.com']
+source_env : "GOLD"
+target_env : "QA"
+warehouse_id : "IRB_PRCSSA_IRB_WH"
+snowflake_conn_id : "Snowflake-IRB-OWNER"
+schema_id : "DUN"

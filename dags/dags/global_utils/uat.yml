@@ -1,0 +1,49 @@
+#databricks
+cluster_init_script: "dbfs:/PolarisClusterInitScripts/ADLSUATFullAccess.sh"
+cluster_init_script_2: "dbfs:/PolarisHiveMetastoreDBR7.0/UATHiveMetastore.sh"
+azure_kv_url: "https://ibazdpolariskeyvault01.vault.azure.net"
+cluster_run_env_property: "UAT"
+sf_storage_integration: "UDP_STORAGE_INT_UAT"
+env: "UAT"
+
+emails: [ ]
+
+
+# Paths
+sql_path: "/opt/airflow/files/snowsql/sales-recon/"
+sonic_base_adls2_path: "azure://ibue2uat01udpadls2.blob.core.windows.net/sonic"
+utils_path: "/opt/airflow/dags/transaction/global_utils"
+airflow_path: "/opt/airflow/dags/transaction/global_utils/airflow"
+transformation_notebook_base_path: '/Polaris/DataEngineering/Transformations_UAT'
+datamart_notebook_path_staging: '/Polaris/DataEngineering/DataMart_UAT/Incremental'
+datamart_notebook_path_mart: '/Polaris/DataEngineering/DataMart_UAT/Incremental/STAGE_TO_DM'
+
+azure:
+  adf:
+    connection_id: "adf-uat"
+    factory_name: "adf-ib-ue2-uat01-udp"
+    resource_group: "rg-ib-ue2-uat01-udp-adf"
+    api_connection_kv_name: "IBUE2UAT01UDP-adf"
+
+    
+#Snowflake
+snowflake_conn_irb_id: "snowflake-SVC-IRB-UAT"
+snowflake_conn_id: "snowflake-SVC-IRB-UAT"
+snowflake_conn_irb_objowner_id: "snowflake-SVC-IRB-UAT"
+
+warehouse_irb: "IRB_PRCSSA_IRB_WH"
+warehouse_ua: "RA_UA_WH"
+
+warehouse_bww_irb: "IRB_PRCSSA_BWW_WH"
+warehouse_bww_ra: "RA_PRCSSA_BWW_WH"
+
+warehouse_arb_irb: "IRB_PRCSSA_ARB_WH"
+warehouse_arb_ra: "RA_PRCSSA_ARB_WH"
+
+warehouse_jje_irb: "IRB_PRCSSA_JJE_WH"
+warehouse_jje_ra: "RA_PRCSSA_JJE_WH"
+
+warehouse_nonbrand_irb: IRB_PRCSSA_IRB_WH
+
+warehouse_sdi_irb: "IRB_PRCSSA_SDI_WH"
+warehouse_sdi_ra: "RA_PRCSSA_SDI_WH"

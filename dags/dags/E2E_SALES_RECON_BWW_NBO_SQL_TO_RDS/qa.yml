@@ -1,0 +1,17 @@
+dag_id: "E2E_SALES_RECON_BWW_NBO_SQL_TO_RDS"
+dag_description: "NBO Menulink data load from  SQL to ADLS2 and then from ADLS2 to RDS"
+email: ['jagadish.cherukuri@inspirebrands.com','arun.munagapati@inspirebrands.com','anjali.kumari@inspirebrands.com','iswarya.rajkumar@inspirebrands.com','amrita.das@inspirebrands.com','prayank.jain@inspirebrands.com', 'vagicharla.sudana@inspirebrands.com']
+env : "QA"
+warehouse_id : "RA_PRCSSA_IRB_WH"
+snowflake_conn_id : "Snowflake-IRB-OWNER"
+schema_id : "BWW"
+file_format: "RDS_QA.BWW.NBO_BWW_FILE_FORMAT"
+pattern: ".*NBO_SALES.*[.]csv"
+stage_name: "@RDS_QA.BWW.SALES_RECON_BWW_NBO_CSV_ADLS2"
+snowflake_rds_database_name: "RDS_QA"
+
+azure:
+  adf:
+    pipeline_name: "Copy_nbo_st_register_to_ADLS"
+    pipeline_file_size: "PL_GET_METADATA_FILE_ADLS"
+    sourceFolderName: "landing/db/NBO_Sales/"

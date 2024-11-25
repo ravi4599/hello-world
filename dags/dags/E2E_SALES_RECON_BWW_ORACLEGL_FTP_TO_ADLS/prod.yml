@@ -1,0 +1,11 @@
+
+dag_id: "E2E_SALES_RECON_ORACLEGL_FTP_TO_ADLS"
+dag_description: "Arbys Oracle GL data load from FTP to ADLS2"
+emails: ["DataServicesHelp@inspirebrands.com", "itdataservicessupport@inspirebrands.com"]
+email: ["DataServicesHelp@inspirebrands.com", "itdataservicessupport@inspirebrands.com"]
+
+azure:
+  adf:
+    pipeline_name: "PL_COPY_SFTP_SOURCE"
+    job_name: "ARGSRC_Ingest_Oracle_GL_I"
+

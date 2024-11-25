@@ -1,0 +1,11 @@
+dag_id: "E2E_SALES_RECON_BWW_ORACLEGL_ADLS_TO_RDS"
+dag_description: "BWW Oracle GL data load from ADLS2 to RDS"
+email: ['jagadish.cherukuri@inspirebrands.com','arun.munagapati@inspirebrands.com','anjali.kumari@inspirebrands.com','iswarya.rajkumar@inspirebrands.com','amrita.das@inspirebrands.com','prayank.jain@inspirebrands.com']
+env : "QA"
+warehouse_id : "RA_PRCSSA_IRB_WH"
+snowflake_conn_id : "Snowflake-IRB-OWNER"
+schema_id : "BWW"
+file_format: "RDS_QA.BWW.GENERAL_LEDGER_BWW_FILE_FORMAT"
+pattern: ".*GL_SALES_JE_TO_UDP.*[.]csv"
+snowflake_rds_database_name: "RDS_QA"
+stage_name: "@RDS_QA.BWW.SALES_RECON_READ_BWW_ADLS2"

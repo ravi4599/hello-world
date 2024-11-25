@@ -1,0 +1,8 @@
+dag_id: "E2E_SALES_RECON_BWW_GND_ITEM_ADLS_GEN2_TO_RDS"
+dag_description: "BWW  data load from ADLS Gen2 to RDS"
+email: ["DataServicesHelp@inspirebrands.com", "itdataservicessupport@inspirebrands.com"]
+env : "PROD"
+warehouse_id : "RA_PRCSSA_IRB_PROD_WH"
+snowflake_conn_id : "Snowflake-IRB-PROD-OWNER"
+schema_id : "BWW"
+file_format: "RDS_PROD.BWW.DIGITAL_PIPE_DELIMITED_CSV_FILE_FORMAT"

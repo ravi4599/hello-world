@@ -1,0 +1,135 @@
+{
+	"ARBYS_UDP_GS_POLLED_SALES_MONTHLY": {
+		"pipeline": {
+			"id": "ARBYS_UDP_GS_POLLED_SALES_MONTHLY",
+			"description": "ARBYS_UDP_GS_POLLED_SALES_MONTHLY",
+			"tags": [
+				"SALESRECON",
+				"POLLED_SALES",
+				"POLLED_SALES_ARB"
+			],
+			"type": "atomic_pipeline",
+			"load_type": "full",
+			"data_load_frequency": "30 0 1-10 * *",
+			"data_owner": "sales-recon",
+			"config_type": "json",
+			"schedule_type": "cron;no-catchup",
+			"schedule_value": "30 0 1-10 * *",
+			"created_timestamp": "1717795043",
+			"created_by": "ravi.voleti@inspirebrands.com",
+			"last_modified_timestamp": "1717795043",
+			"last_modified_by": "ravi.voleti@inspirebrands.com",
+			"start_date": "2024-06-06 07:00:00",
+			"doc_md": "Polled Sales Arbys",
+			"version": 1,
+			"extra_params": {
+				"timezone": "America/New_York"
+			}
+		},
+		"tasks": [
+			{
+				"start_job": {
+					"task_type": "airflow.operators.dummy.DummyOperator",
+					"task_config": {
+						"email": "ravi.voleti@inspirebrands.com",
+						"retries": 1,
+						"depends_on_past": false
+					},
+					"upstream_tasks": []
+				}
+			},
+			{
+				"polled_sales_data_to_adls": {
+					"task_type": "SnowflakeUnloadOperator",
+					"task_config": {
+						"email": "ravi.voleti@inspirebrands.com",
+						"retries": 1,
+						"depends_on_past": false,
+						"source_conn_id": "{{{snowflake.connections.irb_owner}}}",
+						"source_path": "snowflake://IDH_{{{ENV}}}.D_TRANS",
+						"source_name": "",
+						"dest_conn_id": "{{{snowflake.storage_integrations.udp}}}",
+						"dest_path": "azure://ibue2{{{env}}}01udpadls2.blob.core.windows.net/arbys/outbound/polled_sales",
+						"dest_name": "ARBYS_UDP_Finance_PolledSales_{{  next_execution_date.strftime('%Y%m%d')  }}_MONTHLY",
+						"dest_type": "CSV",
+						"dest_data_schema": {
+							"BRAND": "str",
+							"REPORTING_PERIOD": "str",
+							"CUSTOMER_NUMBER": "str",
+							"CUSTOMER_NAME": "str",
+							"UNIT": "str",
+							"LOCAL_CURRENCY": "str",
+							"LOCAL_NET_SALES_RETAIL": "str",
+							"TRANSACTION_COUNT_RETAIL": "str",
+							"LOCAL_GROSS_SALES": "str",
+							"LOCAL_NET_SALES_WHOLESALE": "str",
+							"TRANSACTION_COUNT_WHOLESALE": "str",
+							"REPORTING_FREQUENCY": "str"
+						},
+						"params": {
+							"schema": "D_TRANS",
+							"environment": "{{{ENV}}}"
+						},
+						"extra_params": {
+							"file_format": {
+								"compression": "NONE",
+								"file_extension": "dat",
+								"field_delimiter": "'|'",
+								"binary_format": "UTF8",
+								 "empty_field_as_null": "False"
+								},
+							"copy_options": {
+								"single": "True",
+								"overwrite": "True",
+								"header": "True"
+							},
+							"source_query": "/opt/airflow/files/snowsql/sales-recon/polled_sales/arbys/arbys_polled_sales_monthly.sql",
+							"snowflake_stage_schema": "D_TRANS",
+							"snowflake_stage_database": "IDH_{{{ENV}}}",
+							"snowflake_warehouse": "IRB_PRCSSA_IRB_WH"
+						}
+					},
+					"upstream_tasks": [
+						"start_job"
+					]
+				}
+			},      {
+        "copy_polled_sales_adls_data_to_salesrecon_gs": {
+          "task_type": "AdlsToSftpBinaryOperator",
+          "task_config": {
+            "email": "ravi.voleti@inspirebrands.com",
+            "retries": 1,
+            "depends_on_past": false,
+            "source_conn_id": "ibue2{{{env}}}01udp-airflow2.vault.azure.net/secrets/airflow-connection-adls-storage-options",
+            "source_path": "azure://ibue2{{{env}}}01udpadls2.blob.core.windows.net/arbys/outbound/polled_sales/",
+            "source_name": "ARBYS_UDP_Finance_PolledSales_{{  next_execution_date.strftime('%Y%m%d')  }}_MONTHLY.dat",
+            "dest_conn_id": "ibue2{{{env}}}01udp-airflow2.vault.azure.net/secrets/airflow-connections-sftp-gs-udp-salesrecon",
+            "dest_path": "sftp:///TestOICS_UDP_Test",
+            "dest_name": "",
+            "extra_params": {
+              "buffer_size": "{{2 ** 22}}",
+              "delete_source_file": false,
+              "raise_error_if_no_files": false
+            }
+          },
+          "upstream_tasks": [
+            "polled_sales_data_to_adls"
+          ]
+        }
+      },
+	  {
+				"end_job": {
+					"task_type": "airflow.operators.dummy.DummyOperator",
+					"task_config": {
+						"email": "ravi.voleti@inspirebrands.com",
+						"retries": 1,
+						"depends_on_past": false
+					},
+					"upstream_tasks": [
+						"copy_polled_sales_adls_data_to_salesrecon_gs"
+					]
+				}
+			}
+		]
+	}
+}

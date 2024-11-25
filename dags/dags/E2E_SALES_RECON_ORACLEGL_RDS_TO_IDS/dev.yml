@@ -1,0 +1,8 @@
+
+dag_id: "E2E_SALES_RECON_ORACLEGL_RDS_TO_IDS"
+dag_description: "Arbys Oracle GL data load from RDS to IDS"
+emails: ['udpfinanceengineeringpod@inspirebrands.com']
+source_env : "DEV"
+target_env : "DEV"
+warehouse_id : "IRB_PRCSSA_IRB_WH"
+schema_id : "ARB"

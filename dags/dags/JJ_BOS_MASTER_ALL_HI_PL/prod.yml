@@ -1,0 +1,22 @@
+
+dag_config:
+  dag_id: 'JJ_BOS_MASTER_ALL_HI_PL'
+  default_args:
+    'owner': 'SALESRECON'
+    'email': ["itdataservicessupport@inspirebrands.com","JJhelp@service-now.com"]
+    'email_on_failure': True
+    'depends_on_past': False
+    'retries' : 0
+  doc_md: |-
+    ### Master DAG
+    This DAG is responsible for triggering the other transaction DAGs for procesing data
+  schedule_interval: '0 10 * * *'
+  tags: ['BOS', 'SALESRECON_JJ', 'MASTERDAG']
+  catchup : False  
+
+
+child_dags:
+  JJ_BOS_FTP_TO_ADLS_ALL_HI_PL: 'JJ_BOS_FTP_TO_ADLS_ALL_HI_PL'
+  JJ_BOS_ADLS_TO_RDS_ALL_HI_PL: 'JJ_BOS_ADLS_TO_RDS_ALL_HI_PL'
+  JJ_BOS_RDS_TO_IDS_DAILY_ALL_HI_PL: 'JJ_BOS_RDS_TO_IDS_DAILY_ALL_HI_PL'
+  JJ_BOS_DQ_ALL_HI_PL: 'JJ_BOS_DQ_ALL_HI_PL'

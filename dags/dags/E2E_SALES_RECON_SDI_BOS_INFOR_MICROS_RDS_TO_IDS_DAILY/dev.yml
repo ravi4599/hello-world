@@ -1,0 +1,7 @@
+dag_id: "E2E_SALES_RECON_SDI_BOS_INFOR_MICROS_RDS_TO_IDS_DAILY"
+dag_description: "Sonic BOS data load from RDS to IDS"
+email: ['udpfinanceengineeringpod@inspirebrands.com']
+source_env : "DEV"
+target_env : "DEV"
+warehouse_id : "IRB_PRCSSA_IRB_WH"
+schema_id : "SDI"

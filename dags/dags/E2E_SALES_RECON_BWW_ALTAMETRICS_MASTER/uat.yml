@@ -1,0 +1,22 @@
+
+dag_config:
+  dag_id: 'E2E_SALES_RECON_BWW_ALTAMETRICS_MASTER'
+  default_args:
+    'owner': 'SALESRECON'
+    'email': ['murugan.thirunavukar@inspirebrands.com','theja.h@inspirebrands.com']
+    'email_on_failure': True
+    'depends_on_past': False
+    'retries' : 0
+    schedule_interval: ""
+  doc_md: |-
+    ### Master DAG
+    This DAG is responsible for triggering the other transaction DAGs for procesing data
+  tags: ['SALESRECON_BWW', 'BWW', 'ALTAMETRICS', 'MASTERDAG']
+  catchup : False
+  
+child_dags:
+  E2E_SALES_RECON_BWW_ALTAMETRICS_ADLS_TO_RDS: 'E2E_SALES_RECON_BWW_ALTAMETRICS_ADLS_TO_RDS'
+  E2E_SALES_RECON_BWW_ALTAMETRICS_RDS_TO_IDS_DAILY: 'E2E_SALES_RECON_BWW_ALTAMETRICS_RDS_TO_IDS_DAILY'
+  E2E_SALES_RECON_BWW_ALTAMETRICS_IDS_TO_IDS_WEEKLY: 'E2E_SALES_RECON_BWW_ALTAMETRICS_IDS_TO_IDS_WEEKLY'
+  E2E_SALES_RECON_BWW_ALTAMETRICS_DQ: 'E2E_SALES_RECON_BWW_ALTAMETRICS_DQ'
+  

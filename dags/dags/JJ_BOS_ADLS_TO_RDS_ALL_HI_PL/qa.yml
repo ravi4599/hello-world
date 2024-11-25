@@ -1,0 +1,11 @@
+dag_id: "JJ_BOS_ADLS_TO_RDS_ALL_HI_PL"
+dag_description: "JJ Altametrics data load from ADLS2 to RDS"
+email: ['yatender.kumar@inspirebrands.com','udpfinanceengineeringpod@inspirebrands.com']
+env : "QA"
+snowflake_conn_id: "Snowflake-IRB-OWNER"
+warehouse_id: "RA_PRCSSA_IRB_WH"
+schema_id : "JJE"
+file_format: "RDS_QA.JJE.ALTAMETRICS_JJ_FILE_FORMAT"
+pattern: ".*JJ_Daily_Sales.*[.]csv"
+snowflake_rds_database_name: "RDS_QA"
+stage_name: "@RDS_QA.JJE.SALES_RECON_JJ_CSV_ADLS2"

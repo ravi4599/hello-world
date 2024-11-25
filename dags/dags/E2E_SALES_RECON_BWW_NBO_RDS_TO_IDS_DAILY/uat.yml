@@ -1,0 +1,8 @@
+dag_id: "E2E_SALES_RECON_BWW_NBO_RDS_TO_IDS_DAILY"
+dag_description: "BWW NBO data load from RDS to IDS"
+email: ["jagadish.cherukuri@inspirebrands.com","arun.munagapati@inspirebrands.com"]
+source_env : "GOLD"
+target_env : "UAT"
+warehouse_id : "IRB_PRCSSA_IRB_UAT_WH"
+snowflake_conn_id : "snowflake-SVC-IRB-UAT"
+schema_id : "BWW"

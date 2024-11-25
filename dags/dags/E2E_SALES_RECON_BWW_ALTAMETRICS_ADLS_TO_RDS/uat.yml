@@ -1,0 +1,11 @@
+dag_id: "E2E_SALES_RECON_BWW_ALTAMETRICS_ADLS_TO_RDS"
+dag_description: "BWW Altametrics data load from ADLS2 to RDS"
+email: ['jagadish.cherukuri@inspirebrands.com','arun.munagapati@inspirebrands.com','anjali.kumari@inspirebrands.com','iswarya.rajkumar@inspirebrands.com','amrita.das@inspirebrands.com','prayank.jain@inspirebrands.com']
+env : "UAT"
+snowflake_conn_id: "snowflake-SVC-IRB-UAT"
+warehouse_id: "RA_PRCSSA_IRB_UAT_WH"
+schema_id : "BWW"
+file_format: "RDS_UAT.BWW.ALTAMETRICS_BWW_FILE_FORMAT"
+pattern: ".*PROD.*[.]csv"
+snowflake_rds_database_name: "RDS_UAT"
+stage_name: "@RDS_UAT.BWW.SALES_RECON_BWW_CSV_ADLS2"

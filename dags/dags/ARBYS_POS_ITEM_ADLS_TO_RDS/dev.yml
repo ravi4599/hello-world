@@ -1,0 +1,11 @@
+dag_id: "ARBYS_POS_ITEM_ADLS_TO_RDS"
+dag_description: "Arbys Pos item data load from ADLS2 to RDS"
+emails: ['udpfinanceengineeringpod@inspirebrands.com']
+env : "DEV"
+warehouse_id: "RA_PRCSSA_IRB_WH"
+schema_id : "ARB"
+rds_env : "RDS_DEV"
+file_format: "RDS_DEV.ARB.POS_ITEM_FILE_FORMAT"
+stage_name: '@RDS_DEV.ARB.ITEM_XML_READ_ADLS2'
+delete_days: "180"
+

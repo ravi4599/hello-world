@@ -1,0 +1,10 @@
+dag_id: "E2E_SALES_RECON_BWW_NBO_ADLS_TO_RDS"
+dag_description: "BWW NBO data load from ADLS2 to RDS"
+email: ['jagadish.cherukuri@inspirebrands.com','arun.munagapati@inspirebrands.com','anjali.kumari@inspirebrands.com','iswarya.rajkumar@inspirebrands.com','amrita.das@inspirebrands.com','prayank.jain@inspirebrands.com']
+env : "UAT"
+warehouse_id : "RA_PRCSSA_IRB_UAT_WH"
+snowflake_conn_id : "snowflake-RA-PRCSSA"
+schema_id : "BWW"
+file_format: "RDS_UAT.BWW.NBO_BWW_FILE_FORMAT"
+pattern: ".*NBO_SALES.*[.]csv"
+

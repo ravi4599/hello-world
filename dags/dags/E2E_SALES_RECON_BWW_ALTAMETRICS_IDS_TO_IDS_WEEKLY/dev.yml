@@ -1,0 +1,7 @@
+dag_id: "E2E_SALES_RECON_BWW_ALTAMETRICS_IDS_TO_IDS_WEEKLY"
+dag_description: "BWW Altametrics data load from IDS to IDS"
+email: ['jagadish.cherukuri@inspirebrands.com','arun.munagapati@inspirebrands.com','anjali.kumari@inspirebrands.com','iswarya.rajkumar@inspirebrands.com','amrita.das@inspirebrands.com','prayank.jain@inspirebrands.com']
+source_env : "DEV"
+target_env : "DEV"
+warehouse_id : "IRB_PRCSSA_IRB_WH"
+schema_id : "BWW"

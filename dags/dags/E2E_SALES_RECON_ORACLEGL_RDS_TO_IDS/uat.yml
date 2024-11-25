@@ -1,0 +1,9 @@
+
+dag_id: "E2E_SALES_RECON_ORACLEGL_RDS_TO_IDS"
+dag_description: "Arbys Oracle GL data load from RDS to IDS"
+emails: ['udpfinanceengineeringpod@inspirebrands.com']
+source_env : "GOLD"
+target_env : "UAT"
+warehouse_id : "IRB_PRCSSA_IRB_UAT_WH"
+snowflake_conn_id : "snowflake-SVC-IRB-UAT"
+schema_id : "ARB"

@@ -1,0 +1,11 @@
+dag_id: "E2E_SALES_RECON_SDI_ORACLEGL_ADLS_TO_RDS"
+dag_description: "Sonic Oracle GL data load from ADLS2 to RDS"
+email: ['udpfinanceengineeringpod@inspirebrands.com']
+env : "UAT"
+warehouse_id : "RA_PRCSSA_IRB_UAT_WH"
+snowflake_conn_id : "snowflake-SVC-IRB-UAT"
+schema_id : "SDI"
+file_format: "RDS_UAT.SDI.GENERAL_LEDGER_SDI_FILE_FORMAT"
+pattern: ".*GL_SALES_JE_TO_UDP.*[.]csv"
+rds_env: "RDS_UAT"
+stage_name: "@RDS_UAT.SDI.SALES_RECON_READ_SDI_ADLS2"

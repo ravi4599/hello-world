@@ -1,0 +1,10 @@
+
+dag_id: "E2E_SALES_RECON_PARBRINKS_IDS_TO_IDS_DAILY"
+dag_description: "Arbys Parbrinks data load from IDS to IDS"
+emails: ['udpfinanceengineeringpod@inspirebrands.com']
+email: ['udpfinanceengineeringpod@inspirebrands.com']
+source_env : "GOLD"
+target_env : "UAT"
+warehouse_id : "IRB_PRCSSA_IRB_UAT_WH"
+snowflake_conn_id : "snowflake-SVC-IRB-UAT"
+schema_id : "ARB"

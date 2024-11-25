@@ -1,0 +1,24 @@
+# Paths
+utils_path: "/opt/airflow/dags/transaction/global_utils"
+airflow_path: "/opt/airflow/dags/transaction/global_utils/airflow"
+
+# Global settings
+dag_id: "E2E_SALES_RECON_ORACLEGL_DQ"
+dag_description: "Mailing DAG for DQ framework"
+emails: ['Etrejoleal@inspirebrands.com','OracleITERP@inspirebrands.com']
+owner: "DQ"
+
+snowflake_conn_irb_objowner_id: "Snowflake-IRB-PROD-OWNER"
+warehouse_name: "IRB_PRCSSA_IRB_PROD_WH"
+env: "PROD"
+
+database: "IDS_PROD"
+schema_name: "INT_REF"
+target_schema: "Sales Recon (ORACLE GL)"
+brand: "%"
+table_list:
+  - GL_WEEKLY_SALES_MEASURE
+
+# Paths
+utils_path: "/opt/airflow/dags/transaction/global_utils"
+airflow_path: "/opt/airflow/dags/transaction/global_utils/airflow"

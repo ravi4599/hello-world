@@ -1,0 +1,19 @@
+dag_config:
+  dag_id: 'DUNKIN_ORACLEGL_MASTER_ALL_HI_PL'
+  default_args:
+    'owner': 'SALESRECON'
+    'email': ['yatender.kumar@inspirebrands.com', 'theja.h@inspirebrands.com','shashikala.g@inspirebrands.com','murugan.thirunavukar@inspirebrands.com']
+    'email_on_failure': True
+    'depends_on_past': False
+    'retries' : 0
+    schedule_interval: ""
+  doc_md: |-
+    ### Master DAG
+    This DAG is responsible for triggering the other transaction DAGs for transaction data
+  tags: ['SALESRECON_DUNKIN', 'ORACLEGL', 'MASTERDAG']
+  catchup : False
+  
+child_dags:
+  DUNKIN_ORACLEGL_SFTP_TO_ADLS: 'DUNKIN_ORACLEGL_SFTP_TO_ADLS_ALL_HI_PL'
+  DUNKIN_ORACLEGL_ADLS_TO_RDS: 'DUNKIN_ORACLEGL_ADLS_TO_RDS_ALL_HI_PL'
+  DUNKIN_ORACLEGL_RDS_TO_IDS_DAILY: 'DUNKIN_ORACLEGL_RDS_TO_IDS_DAILY_ALL_HI_PL'

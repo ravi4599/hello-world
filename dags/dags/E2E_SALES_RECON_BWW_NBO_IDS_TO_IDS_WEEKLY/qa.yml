@@ -1,0 +1,8 @@
+dag_id: "E2E_SALES_RECON_BWW_NBO_IDS_TO_IDS_WEEKLY"
+dag_description: "BWW NBO data load from IDS to IDS"
+email: ["jagadish.cherukuri@inspirebrands.com","arun.munagapati@inspirebrands.com","iswarya.rajkumar@inspirebrands.com"]
+source_env : "QA"
+target_env : "QA"
+warehouse_id : "IRB_PRCSSA_IRB_WH"
+snowflake_conn_id : "Snowflake-IRB-OWNER"
+schema_id : "BWW"

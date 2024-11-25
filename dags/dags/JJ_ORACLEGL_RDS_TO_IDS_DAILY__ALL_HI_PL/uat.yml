@@ -1,0 +1,8 @@
+dag_id: "JJ_ORACLEGL_RDS_TO_IDS_DAILY__ALL_HI_PL"
+dag_description: "JJ Oracle GL data load from RDS to IDS"
+email: ['yatender.kumar@inspirebrands.com','udpfinanceengineeringpod@inspirebrands.com']
+source_env : "UAT"
+target_env : "UAT"
+warehouse_id : "IRB_PRCSSA_IRB_UAT_WH"
+snowflake_conn_id : "snowflake-SVC-IRB-UAT"
+schema_id : "JJE"

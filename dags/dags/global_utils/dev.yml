@@ -1,0 +1,50 @@
+cluster_init_script: "dbfs:/PolarisClusterInitScripts/ADLSFullAccess.sh"
+cluster_init_script_2: "dbfs:/PolarisClusterInitScripts/ADLSFullAccess.sh"
+databricks_env: "dev"
+cdm_db_name: "cdm_dev"
+snowflake_db: "cdm_dev"
+ids_db_name: "ids_dev"
+idm_db_name: "idm_dev"
+datamart_stage_db: "CDM_DEV"
+datamart_idl: "POLARIS_DEV"
+env: "DEV"
+emails: [] #TODO OVERRIDE ME IN YOUR DAG CONF
+azure_kv_url: "https://ibazdpolariskeyvault01.vault.azure.net"
+cluster_run_env_property: "Dev"
+
+# Paths
+sql_path: "/opt/airflow/files/snowsql/sales-recon/"
+utils_path: "/opt/airflow/dags/transaction/global_utils"
+airflow_path: "/opt/airflow/dags/transaction/global_utils/airflow"
+transformation_notebook_base_path: '/Polaris/DataEngineering/Transformations_Dev'
+datamart_notebook_path_staging: '/Polaris/DataEngineering/DataMart_Dev/Incremental'
+datamart_notebook_path_mart: '/Polaris/DataEngineering/DataMart_Dev/Incremental/STAGE_TO_DM'
+
+azure:
+  adf:
+    connection_id: "adf-dev"
+    factory_name: "adf-ib-ue2-dev01-udp"
+    resource_group: "rg-ib-ue2-dev01-udp-adf"
+    api_connection_kv_name: "IBUE2DEV01UDP-adf"
+    
+#Snowflake
+snowflake_conn_irb_id: "Snowflake-IRB-OWNER"
+snowflake_conn_id: "Snowflake-IRB-OWNER"
+snowflake_conn_irb_objowner_id: "Snowflake-IRB-OWNER"
+
+warehouse_irb: "IRB_PRCSSA_IRB_WH"
+warehouse_ua: "RA_UA_WH"
+
+warehouse_bww_irb: "IRB_PRCSSA_BWW_WH"
+warehouse_bww_ra: "RA_PRCSSA_BWW_WH"
+
+warehouse_arb_irb: "IRB_PRCSSA_ARB_WH"
+warehouse_arb_ra: "RA_PRCSSA_ARB_WH"
+
+warehouse_jje_irb: "IRB_PRCSSA_JJE_WH"
+warehouse_jje_ra: "RA_PRCSSA_JJE_WH"
+
+warehouse_nonbrand_irb: IRB_PRCSSA_IRB_WH
+
+warehouse_sdi_irb: "IRB_PRCSSA_SDI_WH"
+warehouse_sdi_ra: "RA_PRCSSA_SDI_WH"

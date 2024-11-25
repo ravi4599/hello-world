@@ -1,0 +1,20 @@
+# Global settings
+dag_id: "E2E_SALES_RECON_PARBRINKS_DQ"
+dag_description: "Mailing DAG for DQ framework"
+emails: ['theja.h@inspirebrands.com','leena.hatwar@inspirebrands.com','murugan.thirunavukar@inspirebrands.com']
+owner: "DQ"
+
+snowflake_conn_irb_objowner_id: "Snowflake-IRB-OWNER"
+warehouse_name: "IRB_PRCSSA_IRB_WH"
+env: "QA"
+
+database: "IDS_QA"
+schema_name: "INT_REF"
+target_schema: "Sales Recon (POS)-Arbys"
+brand: "%"
+table_list:
+  - POS_DAILY_SALES_MEASURE
+
+# Paths
+utils_path: "/opt/airflow/dags/transaction/global_utils"
+airflow_path: "/opt/airflow/dags/transaction/global_utils/airflow"

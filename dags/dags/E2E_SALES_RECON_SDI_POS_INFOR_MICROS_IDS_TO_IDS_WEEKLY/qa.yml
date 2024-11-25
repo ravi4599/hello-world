@@ -1,0 +1,8 @@
+dag_id: "E2E_SALES_RECON_SDI_POS_INFOR_MICROS_IDS_TO_IDS_WEEKLY"
+dag_description: "Sonic POS data load from IDS to IDS"
+email: ['udpfinanceengineeringpod@inspirebrands.com']
+source_env : "QA"
+target_env : "QA"
+warehouse_id : "IRB_PRCSSA_IRB_WH"
+snowflake_conn_id : "Snowflake-IRB-OWNER"
+schema_id : "SDI"

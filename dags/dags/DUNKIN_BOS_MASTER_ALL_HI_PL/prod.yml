@@ -1,0 +1,23 @@
+
+dag_config:
+  dag_id: 'DUNKIN_BOS_MASTER_ALL_HI_PL'
+  default_args:
+    'owner': 'SALESRECON'
+    'email': ["itdataservicessupport@inspirebrands.com", "DNKNhelp@service-now.com"]
+    'email_on_failure': True
+    'depends_on_past': False
+    'retries' : 0
+  doc_md: |-
+    ### Master DAG
+    This DAG is responsible for triggering the other transaction DAGs for processing data
+  schedule_interval: '0 10 * * *'
+  tags: ['BOS', 'SALESRECON_DUNKIN', 'MASTERDAG']
+  catchup : False  
+
+
+child_dags:
+  DUNKIN_BOS_SFTP_TO_ADLS_ALL_HI_PL: 'DUNKIN_BOS_SFTP_TO_ADLS_ALL_HI_PL'
+  DUNKIN_BOS_ADLS_TO_RDS_ALL_HI_PL: 'DUNKIN_BOS_ADLS_TO_RDS_ALL_HI_PL'
+  DUNKIN_BOS_RDS_TO_IDS_DAILY_ALL_HI_PL: 'DUNKIN_BOS_RDS_TO_IDS_DAILY_ALL_HI_PL'
+  DUNKIN_BOS_IDS_TO_IDS_WEEKLY_ALL_HI_PL: 'DUNKIN_BOS_IDS_TO_IDS_WEEKLY_ALL_HI_PL'
+  DUNKIN_BOS_DQ: 'DUNKIN_BOS_DQ'

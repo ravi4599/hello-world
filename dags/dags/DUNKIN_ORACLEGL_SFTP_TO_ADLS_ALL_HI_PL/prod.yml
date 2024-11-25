@@ -1,0 +1,8 @@
+dag_id: "DUNKIN_ORACLEGL_SFTP_TO_ADLS_ALL_HI_PL"
+dag_description: "DUNKIN Oracle GL data load from FTP to ADLS2"
+email: ["DataServicesHelp@inspirebrands.com", "itdataservicessupport@inspirebrands.com"]
+
+azure:
+  adf:
+    pipeline_name: "PL_COPY_SFTP_SOURCE"
+    job_name: "DUNKINSRC_Ingest_Oracle_GL"

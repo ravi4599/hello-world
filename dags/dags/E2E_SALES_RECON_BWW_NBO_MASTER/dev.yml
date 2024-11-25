@@ -1,0 +1,21 @@
+dag_config:
+  dag_id: 'E2E_SALES_RECON_BWW_NBO_MASTER'
+  default_args:
+    'owner': 'SALESRECON'
+    'email': ['jagadish.cherukuri@inspirebrands.com','arun.munagapati@inspirebrands.com','anjali.kumari@inspirebrands.com','iswarya.rajkumar@inspirebrands.com','amrita.das@inspirebrands.com','prayank.jain@inspirebrands.com']
+    'email_on_failure': True
+    'depends_on_past': False
+    'retries' : 0
+    schedule_interval: ""
+  doc_md: |-
+    ### Master DAG
+    This DAG is responsible for triggering the other transaction DAGs for transaction data
+  tags: ['SALESRECON_BWW', 'BWW', 'NBO', 'MASTERDAG']
+  catchup : False
+  
+child_dags:
+  E2E_SALES_RECON_BWW_NBO_SQL_TO_RDS: 'E2E_SALES_RECON_BWW_NBO_SQL_TO_RDS'
+  E2E_SALES_RECON_BWW_NBO_RDS_TO_IDS_DAILY: 'E2E_SALES_RECON_BWW_NBO_RDS_TO_IDS_DAILY'
+  E2E_SALES_RECON_BWW_NBO_IDS_TO_IDS_WEEKLY: 'E2E_SALES_RECON_BWW_NBO_IDS_TO_IDS_WEEKLY'
+  
+  

@@ -1,0 +1,9 @@
+
+dag_id: "E2E_SALES_RECON_ALTAMETRICS_IDS_TO_IDS_WEEKLY"
+dag_description: "Arbys Parbrinks data load from IDS to IDS"
+emails: ['udpfinanceengineeringpod@inspirebrands.com']
+source_env : "QA"
+target_env : "QA"
+warehouse_id : "IRB_PRCSSA_IRB_WH"
+snowflake_conn_id : "Snowflake-IRB-OWNER"
+schema_id : "ARB"

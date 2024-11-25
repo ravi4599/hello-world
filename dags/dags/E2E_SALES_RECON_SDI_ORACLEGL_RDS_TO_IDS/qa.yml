@@ -1,0 +1,8 @@
+dag_id: "E2E_SALES_RECON_SDI_ORACLEGL_RDS_TO_IDS"
+dag_description: "Sonic Oracle GL data load from RDS to IDS"
+email: ['udpfinanceengineeringpod@inspirebrands.com']
+source_env : "GOLD"
+target_env : "QA"
+warehouse_id : "IRB_PRCSSA_IRB_WH"
+snowflake_conn_id : "Snowflake-IRB-OWNER"
+schema_id : "SDI"

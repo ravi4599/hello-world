@@ -1,0 +1,11 @@
+dag_id: "E2E_SALES_RECON_BWW_GND_ITEM_ADLS_GEN1_TO_RDS"
+dag_description: "BWW  data load from ADLS Gen1 to ADLS Gen2 and ADLS Gen2 to RDS"
+email: ['jagadish.cherukuri@inspirebrands.com','arun.munagapati@inspirebrands.com','anjali.kumari@inspirebrands.com','biswadeep.mohanty@inspirebrands.com','vagicharla.sudana@inspirebrands.com']
+env : "UAT"
+warehouse_id : "RA_PRCSSA_IRB_UAT_WH"
+snowflake_conn_id : "snowflake-SVC-IRB-UAT"
+schema_id : "BWW"
+file_format: "RDS_UAT.BWW.DIGITAL_PIPE_DELIMITED_CSV_FILE_FORMAT"
+pipeline_name: "PL_SR_COPY_FILES_FROM_GEN1_TO_GEN2"
+SourceFolderName: "landing/bww/db/Insight/Corp/dpvHstGndItem/batch/processed"
+DestinationFolderName: "/bww/landing/ftp/SalesRecon/bww_insight/dpvHstGndItem/"

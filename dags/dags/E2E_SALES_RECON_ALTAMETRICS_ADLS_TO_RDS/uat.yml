@@ -1,0 +1,16 @@
+
+dag_id: "E2E_SALES_RECON_ALTAMETRICS_ADLS_TO_RDS"
+dag_description: "Arbys Altametrics data load from ADLS2 to RDS"
+emails: ['udpfinanceengineeringpod@inspirebrands.com']
+env : "UAT"
+snowflake_conn_id: "snowflake-SVC-IRB-UAT"
+warehouse_id: "RA_PRCSSA_IRB_UAT_WH"
+schema_id : "ARB"
+rds_env : "RDS_UAT"
+file_format: "RDS_UAT.ARB.ALTAMETRICS_ARB_FILE_FORMAT"
+ciscpattern: ".*PROD_CashItemSalesAndCounts.*[.]csv"
+cvpattern: ".*PROD_CashVariance.*[.]csv"
+depositspattern: ".*PROD_Deposits.*[.]csv"
+piopattern: ".*PROD_Arbys_PaidInOut.*[.]csv"
+riscpattern: ".*PROD_ReportingItemSalesAndCounts.*[.]csv"
+stage_name: '@RDS_UAT.ARB.ODI_READ_CSV_FROM_ADLS_TWO'
